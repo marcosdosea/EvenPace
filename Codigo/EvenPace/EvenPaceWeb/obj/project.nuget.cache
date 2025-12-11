@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "XXN4qHT+ZV0=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\felip\\Documents\\UFS\\6 - Sexto Periodo\\Engenharia de Software II\\EvenPace\\Codigo\\EvenPace\\EvenPaceWeb\\EvenPaceWeb.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\felip\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\microsoft.visualstudio.azure.containers.tools.targets.1.21.0.nupkg.sha512"
+  ],
+  "logs": []
+}
