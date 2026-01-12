@@ -1,0 +1,15 @@
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\bin\Debug\net8.0\Core.deps.json
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\bin\Debug\net8.0\Core.runtimeconfig.json
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\bin\Debug\net8.0\Core.dll
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\bin\Debug\net8.0\Core.pdb
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\Core.csproj.AssemblyReference.cache
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\Core.AssemblyInfoInputs.cache
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\Core.AssemblyInfo.cs
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\Core.csproj.CoreCompileInputs.cache
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\Core.sourcelink.json
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\Core.dll
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\refint\Core.dll
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\Core.pdb
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\Core.genruntimeconfig.cache
+C:\Users\lucas\OneDrive\Documentos\6° periodo\engenharia de software 2\EvenPace\Codigo\EvenPaceWeb\Core\obj\Debug\net8.0\ref\Core.dll
