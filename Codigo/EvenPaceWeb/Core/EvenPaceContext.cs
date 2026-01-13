@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core;
 
-public partial class BibliotecaContext : DbContext
+public partial class EvenPaceContext : DbContext
 {
-    public BibliotecaContext()
+    public EvenPaceContext()
     {
     }
 
-    public BibliotecaContext(DbContextOptions<BibliotecaContext> options)
+    public EvenPaceContext(DbContextOptions<EvenPaceContext> options)
         : base(options)
     {
     }
@@ -33,9 +33,9 @@ public partial class BibliotecaContext : DbContext
 
     public virtual DbSet<Organizacao> Organizacaos { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=123456;database=mydb");
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+//        => optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=123456;database=mydb");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
