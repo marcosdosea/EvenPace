@@ -6,6 +6,8 @@ namespace Core;
 public partial class Evento
 {
     public uint Id { get; set; }
+    
+    public string Nome { get; set; } = null!;
 
     public DateTime Data { get; set; }
 
