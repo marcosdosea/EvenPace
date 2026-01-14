@@ -3,8 +3,15 @@ using Core.Service;
 
 namespace Service
 {
-    internal class CupomService(EvenPaceContext context) : ICupom
+    internal class CupomService : ICupom
     {
+        private readonly EvenPaceContext _context;
+
+        public CupomService(EvenPaceContext context)
+        {
+            _context = context;
+        }
+
         /// <summary>
         /// Insere um cupom no banco de dados
         /// </summary>
@@ -12,8 +19,8 @@ namespace Service
         /// <returns>Retorna o Id do cupom</returns>
         public uint Insert(Cupom cupom)
         {
-            context.Add(cupom);
-            context.SaveChanges();
+            _context.Add(cupom);
+            _context.SaveChanges();
             return cupom.Id;
         }
 
@@ -23,9 +30,9 @@ namespace Service
         /// <param name="cupom"></param>
         public void Edit(Cupom cupom)
         {
-            context.Cupoms.Find(cupom.Id);
-            context.Update(cupom);
-            context.SaveChanges();
+            _context.Cupoms.Find(cupom.Id);
+            _context.Update(cupom);
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -34,9 +41,9 @@ namespace Service
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            var _cupom = context.Cupoms.Find(id);
-            context.Remove(_cupom); 
-            context.SaveChanges();
+            var _cupom = _context.Cupoms.Find(id);
+            _context.Remove(_cupom);
+            _context.SaveChanges();
 
         }
 
@@ -47,8 +54,7 @@ namespace Service
         /// <returns>Retorna o cupom</returns>
         public Cupom Get(int id)
         {
-            var _cupom = context.Cupoms.Find(id);
-            return _cupom;
+            return _context.Cupoms.Find(id);
         }
 
         /// <summary>
@@ -57,7 +63,7 @@ namespace Service
         /// <returns>Retorna todos os cupons no banco de dados</returns>
         public IEnumerable<Cupom> GetAll()
         {
-            return context.Cupoms.ToList();
+            return _context.Cupoms.ToList();
         }
 
         /// <summary>
@@ -67,7 +73,7 @@ namespace Service
         /// <returns>Retorna todos os cupons com o nome inserido</returns>
         public IEnumerable<Cupom> GetByName(string nome)
         {
-            return context.Cupoms.Where(c => c.Nome.Contains(nome)).ToList();
+            return _context.Cupoms.Where(c => c.Nome.Contains(nome)).ToList();
         }
     }
 }
