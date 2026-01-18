@@ -16,7 +16,7 @@ namespace Service
         /// </summary>
         /// <param name="kit"></param>
         /// <returns>Retorna o Id do Kit</returns>
-        public uint Insert(Kit kit)
+        public uint Create(Kit kit)
         {
             _context.Add(kit);
             _context.SaveChanges();

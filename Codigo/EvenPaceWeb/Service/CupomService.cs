@@ -17,7 +17,7 @@ namespace Service
         /// </summary>
         /// <param name="cupom"></param>
         /// <returns>Retorna o Id do cupom</returns>
-        public uint Insert(Cupom cupom)
+        public uint Create(Cupom cupom)
         {
             _context.Add(cupom);
             _context.SaveChanges();
