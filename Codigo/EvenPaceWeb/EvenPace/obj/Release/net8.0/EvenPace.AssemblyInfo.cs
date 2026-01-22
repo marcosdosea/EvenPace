@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EvenPace")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+239859518cf96d9031347bf9461290339c36e6e7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+90466332a18bcce3f1126e1cf4da0c078cb5e85a")]
 [assembly: System.Reflection.AssemblyProductAttribute("EvenPace")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EvenPace")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
