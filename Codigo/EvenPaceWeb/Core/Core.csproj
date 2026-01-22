@@ -18,4 +18,8 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.20" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\" />
+  </ItemGroup>
+
 </Project>

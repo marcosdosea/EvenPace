@@ -2459,9 +2459,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPace.csproj",
-      "projectName": "EvenPace",
-      "projectPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPace.csproj",
+      "projectUniqueName": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj",
+      "projectName": "EvenPaceWeb",
+      "projectPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj",
       "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\obj\\",
       "projectStyle": "PackageReference",
@@ -2533,19 +2533,19 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.23, 8.0.23]"
           },
           {
             "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.23, 8.0.23]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.23, 8.0.23]"
           },
           {
             "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.23, 8.0.23]"
           }
         ],
         "frameworkReferences": {
@@ -2556,7 +2556,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.112/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.113/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
