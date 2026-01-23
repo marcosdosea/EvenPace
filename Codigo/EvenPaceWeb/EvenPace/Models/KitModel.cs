@@ -12,7 +12,7 @@ namespace Models
 
         [Required(ErrorMessage = "O nome do kit é obrigatório")]
         [Display(Name = "Tipo de Kit")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome do kit deve ter entre 3 e 50 caracteres")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome do kit deve ter entre até 45 caracteres")]
         public string Nome { get; set; } = null!;
 
         [Required(ErrorMessage = "O valor do kit é obrigatório")]
@@ -25,7 +25,6 @@ namespace Models
         [StringLength(5, ErrorMessage = "Tamanho inválido")]
         public string TamanhoCamisa { get; set; } = null!;
 
-        // Propriedade auxiliar para dropdown de tamanhos, se necessário
-        public SelectList? ListaTamanhos { get; set; }
+    
     }
 }
