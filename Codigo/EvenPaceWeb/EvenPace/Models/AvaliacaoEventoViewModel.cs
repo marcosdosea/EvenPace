@@ -1,0 +1,19 @@
+namespace EvenPaceWeb.Models
+{
+    public class AvaliacaoEventoViewModel
+    {
+        [Display(Name = "Nota do Evento")]
+        [Required(ErrorMessage = "A nota é obrigatória.")]
+        [Range(1, 5, ErrorMessage = "A nota deve variar entre 1 e 5.")]
+        public int Nota { get; set; }
+
+        [Display(Name = "Comentário")]
+        [StringLength(300, ErrorMessage = "O comentário não pode exceder 300 caracteres.")]
+        public string Comentario { get; set; } = null!;
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Data da Avaliação")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime DataAvaliacao { get; set; }
+    }
+}
