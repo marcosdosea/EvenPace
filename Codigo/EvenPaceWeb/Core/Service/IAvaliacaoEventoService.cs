@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Core.Service
 {
-    internal interface IAvaliacaoEventoService
+    public interface IAvaliacaoEventoService
     {
+        void Edit(Avaliacaoevento avaliacaoEvento);
+        uint Create(Avaliacaoevento avaliacaoEvento);
+        Avaliacaoevento Get(int id);
+        void Delete(int id);
+        IEnumerable<Avaliacaoevento> GetAll();
+        IEnumerable<Avaliacaoevento> GetByEventoId(int eventoId);
     }
 }
