@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/EvenPace/EvenPace.csproj": {}
+    "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPace.csproj": {}
   },
   "projects": {
-    "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/EvenPace/EvenPace.csproj": {
+    "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/EvenPace/EvenPace.csproj",
-        "projectName": "EvenPace",
-        "projectPath": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/EvenPace/EvenPace.csproj",
-        "packagesPath": "/home/felipe/.nuget/packages/",
-        "outputPath": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/EvenPace/obj/",
+        "projectUniqueName": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj",
+        "projectName": "Core",
+        "projectPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\SANDRO\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/felipe/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\SANDRO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +43,99 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[14.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.22, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.22, )"
+            },
+            "MySql.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.20, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPace.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPace.csproj",
+        "projectName": "EvenPace",
+        "projectPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPace.csproj",
+        "packagesPath": "C:\\Users\\SANDRO\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\SANDRO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -83,7 +181,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
