@@ -3,7 +3,7 @@ using Core.Service;
 
 namespace Service
 {
-    internal class CupomService : ICupom
+    internal class CupomService : ICupomService
     {
         private readonly EvenPaceContext _context;
 

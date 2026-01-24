@@ -1,6 +1,6 @@
 namespace Core.Service
 {
-    public interface ICupom
+    public interface ICupomService
     {
         void Edit(Cupom cupom);
         uint Create(Cupom cupom);

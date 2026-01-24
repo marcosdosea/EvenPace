@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvenPace", "EvenPace\EvenPace.csproj", "{A81CE3E0-8E86-4FB7-BE75-A7BBCA8B67F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvenPaceWeb", "EvenPaceWeb\EvenPaceWeb.csproj", "{A81CE3E0-8E86-4FB7-BE75-A7BBCA8B67F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{352D37A0-5E2C-4DAC-8BC4-F3EB32E4A38F}"
 EndProject
