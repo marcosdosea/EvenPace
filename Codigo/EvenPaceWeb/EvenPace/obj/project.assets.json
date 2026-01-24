@@ -2485,24 +2485,31 @@
     ]
   },
   "packageFolders": {
-    "/home/felipe/.nuget/packages/": {}
+    "C:\\Users\\hevel\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/EvenPace/EvenPace.csproj",
+      "projectUniqueName": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPace.csproj",
       "projectName": "EvenPace",
-      "projectPath": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/EvenPace/EvenPace.csproj",
-      "packagesPath": "/home/felipe/.nuget/packages/",
-      "outputPath": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/EvenPace/obj/",
+      "projectPath": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPace.csproj",
+      "packagesPath": "C:\\Users\\hevel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/home/felipe/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\hevel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2520,7 +2527,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -2566,7 +2574,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
