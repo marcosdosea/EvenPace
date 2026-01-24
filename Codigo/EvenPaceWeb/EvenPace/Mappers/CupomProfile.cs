@@ -1,6 +1,6 @@
 using AutoMapper;
 using Core;
-using EvenPace.Models;
+using Models;
 
 public class CupomProfile : Profile
 {

@@ -1,6 +1,6 @@
 using AutoMapper;
-using EvenPace.Models;
 using Core;
+using Models;
 
 namespace EvenPace.Mappers;
 
@@ -8,6 +8,6 @@ public class InscricaoProfile : Profile
 {
     public InscricaoProfile()
     {
-        // CreateMap<InscricaoModel,Inscricao>().ReverseMap(); TODO: Retira o comentario quando o Modelo Inscricao for feito
+        CreateMap<InscricaoModel, Inscricao>().ReverseMap();
     }
 }
