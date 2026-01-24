@@ -16,6 +16,7 @@
 ## .NET
 bin/
 obj/
+Codigo/obj/
 
 ## Rider
 .idea/
@@ -24,3 +25,4 @@ obj/
 ## Build
 *.dll
 *.pdb
+
