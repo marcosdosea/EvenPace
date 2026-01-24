@@ -62,8 +62,8 @@ public class InscricaoController : Controller
       {
           if (ModelState.IsValid)
           {
-              var autor = _mapper.Map<Inscricao>(inscricaoModel);
-              _inscricaoService.Edit(autor);
+              var inscricao = _mapper.Map<Inscricao>(inscricaoModel);
+              _inscricaoService.Edit(inscricao);
           }
           return RedirectToAction(nameof(Index));
       }
