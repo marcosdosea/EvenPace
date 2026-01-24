@@ -6,7 +6,6 @@ public class CupomProfile : Profile
 {
     public CupomProfile()
     {
-        CreateMap<Cupom, CupomDto>();
-        CreateMap<CupomDto, Cupom>();
+        // CreateMap<Cupom, CupomModel>().ReverseMap(); TODO: retirar o comentario quando CupomModel estiver pronto
     }
 }

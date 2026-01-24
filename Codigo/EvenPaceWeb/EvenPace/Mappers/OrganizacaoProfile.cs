@@ -6,7 +6,6 @@ public class OrganizacaoProfile : Profile
 {
     public OrganizacaoProfile()
     {
-        CreateMap<Organizacao, OrganizacaoDto>();
-        CreateMap<OrganizacaoDto, Organizacao>();
+        CreateMap<Organizacao, OrganizacaoModel>().ReverseMap();
     }
 }

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace EvenPaceWeb.Models
 {
     public class AvaliacaoEventoViewModel

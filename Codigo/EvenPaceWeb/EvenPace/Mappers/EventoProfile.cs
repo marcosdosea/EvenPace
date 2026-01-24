@@ -6,7 +6,6 @@ public class EventoProfile : Profile
 {
     public EventoProfile()
     {
-        CreateMap<Evento, EventoDto>();
-        CreateMap<EventoDto, Evento>();
+        // CreateMap<Evento, EventoModel>().ReverseMap();  TODO: Retira comentario quando EventoModel estiver pronto 
     }
 }
