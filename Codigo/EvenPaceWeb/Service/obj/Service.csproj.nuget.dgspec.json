@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Service/Service.csproj": {}
+    "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj": {}
   },
   "projects": {
-    "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Core/Core.csproj": {
+    "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Core/Core.csproj",
+        "projectUniqueName": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Core/Core.csproj",
-        "packagesPath": "/home/felipe/.nuget/packages/",
-        "outputPath": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Core/obj/",
+        "projectPath": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\hevel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/felipe/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\hevel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -80,34 +87,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Service/Service.csproj": {
+    "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Service/Service.csproj",
+        "projectUniqueName": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj",
         "projectName": "Service",
-        "projectPath": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Service/Service.csproj",
-        "packagesPath": "/home/felipe/.nuget/packages/",
-        "outputPath": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Service/obj/",
+        "projectPath": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj",
+        "packagesPath": "C:\\Users\\hevel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/felipe/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\hevel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Core/Core.csproj": {
-                "projectPath": "/home/felipe/Documentos/UFS/6º Periodo/Engenharia II/EvenPace/Codigo/EvenPaceWeb/Core/Core.csproj"
+              "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\hevel\\OneDrive\\Documentos\\6 periodo\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj"
               }
             }
           }
@@ -121,7 +134,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -154,7 +168,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
