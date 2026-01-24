@@ -1,6 +1,12 @@
 .vs/
 bin/
 obj/
+.idea/
+*.iml
+/workspace.xml
+/projectSettingsUpdater.xml
+/modules.xml
+/contentModel.xml
 Codigo/EvenPaceWeb/Core/obj/
 Codigo/EvenPaceWeb/EvenPace/obj/
 Codigo/EvenPaceWeb/Service/obj/
