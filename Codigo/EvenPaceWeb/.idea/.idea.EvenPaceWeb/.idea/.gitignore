@@ -13,3 +13,14 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+## .NET
+bin/
+obj/
+
+## Rider
+.idea/
+*.sln.iml
+
+## Build
+*.dll
+*.pdb
