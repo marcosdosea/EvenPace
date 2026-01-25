@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Models
 {
-    public class InscricaoModel
+    public class InscricaoViewModel
     {
         [Key]
         [Display(Name = "Código da Inscrição")]

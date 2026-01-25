@@ -8,10 +8,10 @@ namespace EvenPace.Controllers;
 
 public class CartaoCreditoControler : Controller
 {
-    private ICartaoCredito _cartaoCredito;
+    private ICartaoCreditoService _cartaoCredito;
     private IMapper _mapper;
 
-    public CartaoCreditoControler(ICartaoCredito cartaoCredito, IMapper mapper)
+    public CartaoCreditoControler(ICartaoCreditoService cartaoCredito, IMapper mapper)
     {
         _cartaoCredito = cartaoCredito;
         _mapper = mapper;
@@ -21,7 +21,7 @@ public class CartaoCreditoControler : Controller
     public ActionResult Index()
     {
         var cartaoCredito = _cartaoCredito.GetAll();
-        var cartaoCreditoViewModels = _mapper.Map<List<CartaoCreditoViewModel>>(cartaoCredito);
+        var cartaoCreditoViewModels = _mapper.Map<List<CartaoCreditoViewViewModel>>(cartaoCredito);
         return View(cartaoCreditoViewModels);
     }
 
@@ -29,7 +29,7 @@ public class CartaoCreditoControler : Controller
     public ActionResult Details(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
-        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewModel>(cartaoCredito);
+        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewViewModel>(cartaoCredito);
         return View(cartaoCreditoViewModel);
     }
 
@@ -42,7 +42,7 @@ public class CartaoCreditoControler : Controller
     // POST: CartaoCreditoControler/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(CartaoCreditoViewModel cartaoCreditoViewModel)
+    public ActionResult Create(CartaoCreditoViewViewModel cartaoCreditoViewModel)
     {
         if (ModelState.IsValid)
         {
@@ -56,7 +56,7 @@ public class CartaoCreditoControler : Controller
     public ActionResult Edit(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
-        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewModel>(cartaoCredito);
+        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewViewModel>(cartaoCredito);
         return View(cartaoCreditoViewModel);
     }
 
@@ -77,14 +77,14 @@ public class CartaoCreditoControler : Controller
     public ActionResult Delete(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
-        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewModel>(cartaoCredito);
+        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewViewModel>(cartaoCredito);
         return View(cartaoCreditoViewModel);
     }
 
     // POST: CartaoCreditoControler/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, CartaoCreditoViewModel cartaoCreditoViewModel)
+    public ActionResult Delete(int id, CartaoCreditoViewViewModel cartaoCreditoViewModel)
     {
         _cartaoCredito.Delete((int)id);
         return RedirectToAction(nameof(Index));

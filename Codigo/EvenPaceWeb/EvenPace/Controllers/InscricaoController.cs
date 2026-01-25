@@ -11,10 +11,10 @@ namespace EvenPace.Controllers;
 
 public class InscricaoController : Controller
 {
-      private IInscricao _inscricaoService;
+      private IInscricaoService _inscricaoService;
       private IMapper _mapper;
 
-      public InscricaoController(IInscricao inscricao, IMapper mapper)
+      public InscricaoController(IInscricaoService inscricao, IMapper mapper)
       {
           _inscricaoService = inscricao;
           _mapper = mapper;

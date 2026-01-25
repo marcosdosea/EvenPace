@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Models
 {
-    public class CorredorModel
+    public class CorredorViewModel
     {
         [Key]
         [Display(Name = "Código do Corredor")]

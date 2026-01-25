@@ -6,10 +6,6 @@ namespace Core;
 public partial class Evento
 {
     public uint Id { get; set; }
-    
-    public string Nome { get; set; } = null!;
-
-    public string Nome { get; set; } = null!;
 
     public DateTime Data { get; set; }
 
@@ -42,6 +38,8 @@ public partial class Evento
     public string InfoRetiradaKit { get; set; } = null!;
 
     public uint IdOrganizacao { get; set; }
+
+    public string Nome { get; set; } = null!;
 
     public virtual ICollection<Cupom> Cupoms { get; set; } = new List<Cupom>();
 

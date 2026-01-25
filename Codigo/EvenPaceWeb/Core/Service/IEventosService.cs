@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Service
 {
-    public interface IEventos
+    public interface IEventosService
     {
         void Edit(Evento eventos);
         uint Insert(Evento eventos);

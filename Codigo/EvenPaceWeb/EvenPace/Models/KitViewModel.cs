@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Models
 {
-    public class KitModel
+    public class KitViewModel
     {
         [Key]
         [Display(Name = "Código do Kit")]

@@ -17,7 +17,7 @@ public partial class Corredor
 
     public string Senha { get; set; } = null!;
 
-    public virtual Cartaocredito? Cartaocredito { get; set; }
+    public virtual Cartaocredito? CartaoCredito { get; set; }
 
     public virtual ICollection<Inscricao> Inscricaos { get; set; } = new List<Inscricao>();
 }

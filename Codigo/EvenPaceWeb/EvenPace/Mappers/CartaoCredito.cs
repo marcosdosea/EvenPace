@@ -8,7 +8,7 @@ namespace EvenPaceWeb.Mappers
     {
         public CartaoCreditoProfile()
         {
-            CreateMap<Cartaocredito, CartaoCreditoViewModel>()
+            CreateMap<Cartaocredito, CartaoCreditoViewViewModel>()
                 .ReverseMap();
         }
     }

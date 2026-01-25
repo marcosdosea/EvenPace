@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Core;
 
@@ -15,11 +13,11 @@ public partial class EvenPaceContext : DbContext
     {
     }
 
-    public virtual DbSet<Admistrador> Admistradors { get; set; }
+    public virtual DbSet<Administrador> Administradors { get; set; }
 
-    public virtual DbSet<Avaliacaoevento> Avaliacaoeventos { get; set; }
+    public virtual DbSet<Avaliacaoevento> AvaliacaoEventos { get; set; }
 
-    public virtual DbSet<Cartaocredito> Cartaocreditos { get; set; }
+    public virtual DbSet<Cartaocredito> CartaoCreditos { get; set; }
 
     public virtual DbSet<Corredor> Corredors { get; set; }
 
@@ -33,17 +31,13 @@ public partial class EvenPaceContext : DbContext
 
     public virtual DbSet<Organizacao> Organizacaos { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=123456;database=mydb");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Admistrador>(entity =>
+        modelBuilder.Entity<Administrador>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("admistrador");
+            entity.ToTable("Administrador");
 
             entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
 
@@ -63,7 +57,7 @@ public partial class EvenPaceContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("avaliacaoevento");
+            entity.ToTable("AvaliacaoEvento");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Comentario)
@@ -76,7 +70,7 @@ public partial class EvenPaceContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("cartaocredito");
+            entity.ToTable("CartaoCredito");
 
             entity.HasIndex(e => e.IdCorredor, "fk_CartaoCredito_Corredor1_idx");
 
@@ -95,7 +89,7 @@ public partial class EvenPaceContext : DbContext
                 .HasColumnName("nome");
             entity.Property(e => e.Numero).HasColumnName("numero");
 
-            entity.HasOne(d => d.IdCorredorNavigation).WithOne(p => p.Cartaocredito)
+            entity.HasOne(d => d.IdCorredorNavigation).WithOne(p => p.CartaoCredito)
                 .HasForeignKey<Cartaocredito>(d => d.IdCorredor)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_CartaoCredito_Corredor1");
@@ -105,7 +99,7 @@ public partial class EvenPaceContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("corredor");
+            entity.ToTable("Corredor");
 
             entity.HasIndex(e => e.Cpf, "cpf_UNIQUE").IsUnique();
 
@@ -134,7 +128,7 @@ public partial class EvenPaceContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("cupom");
+            entity.ToTable("Cupom");
 
             entity.HasIndex(e => e.IdEvento, "fk_Cupom_Evento1_idx");
 
@@ -164,7 +158,7 @@ public partial class EvenPaceContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("evento");
+            entity.ToTable("Evento");
 
             entity.HasIndex(e => e.IdOrganizacao, "fk_Evento_Organizacao_idx");
 
@@ -194,6 +188,9 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.InfoRetiradaKit)
                 .HasMaxLength(45)
                 .HasColumnName("infoRetiradaKit");
+            entity.Property(e => e.Nome)
+                .HasMaxLength(45)
+                .HasColumnName("nome");
             entity.Property(e => e.NumeroParticipantes).HasColumnName("numeroParticipantes");
             entity.Property(e => e.Rua)
                 .HasMaxLength(45)
@@ -209,7 +206,7 @@ public partial class EvenPaceContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("inscricao");
+            entity.ToTable("Inscricao");
 
             entity.HasIndex(e => e.IdAvaliacaoEvento, "fk_Inscricao_AvaliacaoEvento1_idx");
 
@@ -266,7 +263,7 @@ public partial class EvenPaceContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("kit");
+            entity.ToTable("Kit");
 
             entity.HasIndex(e => e.IdEvento, "fk_Kit_Evento1_idx");
 
@@ -288,7 +285,9 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.UtilizadaG).HasColumnName("utilizadaG");
             entity.Property(e => e.UtilizadaM).HasColumnName("utilizadaM");
             entity.Property(e => e.UtilizadaP).HasColumnName("utilizadaP");
-            entity.Property(e => e.Valor).HasColumnName("valor");
+            entity.Property(e => e.Valor)
+                .HasPrecision(10)
+                .HasColumnName("valor");
 
             entity.HasOne(d => d.IdEventoNavigation).WithMany(p => p.Kits)
                 .HasForeignKey(d => d.IdEvento)
@@ -300,16 +299,16 @@ public partial class EvenPaceContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("organizacao");
+            entity.ToTable("Organizacao");
 
             entity.HasIndex(e => e.Cnpj, "cnpj_UNIQUE").IsUnique();
 
             entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
 
-            entity.HasIndex(e => e.AdmistradorId, "fk_Organizacao_Admistrador1_idx");
+            entity.HasIndex(e => e.AdministradorId, "fk_Organizacao_Admistrador1_idx");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AdmistradorId).HasColumnName("Admistrador_id");
+            entity.Property(e => e.AdministradorId).HasColumnName("Administrador_id");
             entity.Property(e => e.Bairro)
                 .HasMaxLength(45)
                 .HasColumnName("bairro");
@@ -344,9 +343,8 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.StatusSituacao).HasColumnName("statusSituacao");
             entity.Property(e => e.Telefone).HasColumnName("telefone");
 
-            entity.HasOne(d => d.Admistrador).WithMany(p => p.Organizacaos)
-                .HasForeignKey(d => d.AdmistradorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+            entity.HasOne(d => d.Administrador).WithMany(p => p.Organizacaos)
+                .HasForeignKey(d => d.AdministradorId)
                 .HasConstraintName("fk_Organizacao_Admistrador1");
         });
 

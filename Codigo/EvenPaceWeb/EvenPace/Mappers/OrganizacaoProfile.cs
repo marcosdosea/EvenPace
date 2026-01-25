@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Core;
+using EvenPace.Models;
+using Models;
 
 namespace EvenPaceWeb.Mappers
 {
@@ -6,7 +9,7 @@ namespace EvenPaceWeb.Mappers
     {
         public OrganizacaoProfile()
         {
-            CreateMap<Core.Organizacao, Models.OrganizacaoViewModel>().ReverseMap();
+            CreateMap<Organizacao, OrganizacaoViewModel>().ReverseMap();
         }
         
     }

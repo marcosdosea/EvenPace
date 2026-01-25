@@ -3,7 +3,7 @@ using Core.Service;
 
 namespace Service
 {
-    internal class InscricaoService : IInscricao
+    internal class InscricaoService : IInscricaoService
     {
         private EvenPaceContext _context;
 

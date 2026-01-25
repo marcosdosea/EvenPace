@@ -8,7 +8,7 @@ using Core.Service;
 
 namespace Service
 {
-    internal class KitService : IKits
+    internal class KitService : IKitService
     {
         private readonly EvenPaceContext _context;
         public KitService(EvenPaceContext context)

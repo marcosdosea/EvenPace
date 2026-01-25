@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EvenPaceWeb.Models
 {
-    public class CartaoCreditoViewModel
+    public class CartaoCreditoViewViewModel
     {
         [Display(Name = "Nome do Titular")]
         [Required(ErrorMessage = "O nome do titular é obrigatório.")]
