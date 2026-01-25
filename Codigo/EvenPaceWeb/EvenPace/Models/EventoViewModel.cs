@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace EvenPaceWeb.Models
+namespace EvenPace.ViewModels
 {
     public class EventoViewModel
     {
+        [Key]
+        [Display(Name = "Código do Evento")]
+        [Required(ErrorMessage = "Código do evento é obrigatório.")]
         public uint Id { get; set; }
 
         [Required(ErrorMessage = "O nome do evento é obrigatório.")]
         [Display(Name = "Nome do Evento")]
-        public string Nome { get; set; }
+        public string Nome { get; set; } = null!;
 
         [Required(ErrorMessage = "A data é obrigatória.")]
         [Display(Name = "Data do Evento")]
@@ -23,11 +25,10 @@ namespace EvenPaceWeb.Models
 
         [Required(ErrorMessage = "A descrição é obrigatória.")]
         [Display(Name = "Descrição")]
-        [DataType(DataType.MultilineText)] // Cria uma caixa de texto maior (textarea)
-        public string Descricao { get; set; }
+        [DataType(DataType.MultilineText)]
+        public string Descricao { get; set; } = null!;
 
         // --- Distâncias (Checkboxes) ---
-        // Agrupei para facilitar a organização na View
 
         [Display(Name = "3 km")]
         public bool Distancia3 { get; set; }
@@ -39,7 +40,7 @@ namespace EvenPaceWeb.Models
         public bool Distancia7 { get; set; }
 
         [Display(Name = "10 km")]
-        public bool Distancia10 { get; set; } // Adicionado conforme seu arquivo Evento.cs
+        public bool Distancia10 { get; set; }
 
         [Display(Name = "15 km")]
         public bool Distancia15 { get; set; }
@@ -53,30 +54,26 @@ namespace EvenPaceWeb.Models
         // --- Endereço ---
 
         [Required(ErrorMessage = "A rua é obrigatória.")]
-        public string Rua { get; set; }
+        public string Rua { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "O bairro é obrigatório.")]
-        public string Bairro { get; set; }
+        public string Bairro { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "A cidade é obrigatória.")]
-        public string Cidade { get; set; }
+        public string Cidade { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "O estado é obrigatório.")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "Use a sigla do estado (ex: SE).")]
-        public string Estado { get; set; }
+        public string Estado { get; set; } = string.Empty;
 
         [Display(Name = "Informações de Retirada do Kit")]
         [DataType(DataType.MultilineText)]
-        public string InfoRetiradaKit { get; set; }
+        public string InfoRetiradaKit { get; set; } = string.Empty;
 
         // --- Relacionamento (Organização) ---
 
         [Required(ErrorMessage = "Selecione a organização responsável.")]
         [Display(Name = "Organização")]
         public uint IdOrganizacao { get; set; }
-
-        // Esta lista serve APENAS para preencher o <select> na View.
-        // O Entity Framework ignora isso, serve só para a interface.
-        public IEnumerable<SelectListItem>? ListaOrganizacoes { get; set; }
     }
 }
