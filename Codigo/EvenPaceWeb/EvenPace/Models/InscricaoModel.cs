@@ -1,26 +1,28 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Models
 {
     public class InscricaoModel
     {
+        [Key]
+        [Display(Name = "Código da Inscrição")]
         public int Id { get; set; }
 
         [Display(Name = "Status")]
         public string? Status { get; set; }
 
+        [(ErrorMessage = "A data da inscrição é obrigatória")]
         [Display(Name = "Data da Inscrição")]
         [DataType(DataType.Date)]
         public DateTime DataInscricao { get; set; }
 
+        [(ErrorMessage = "Selecione a distância")]
         [Display(Name = "Distância")]
-        [Required(ErrorMessage = "Selecione a distância")]
         public string Distancia { get; set; } = null!;
 
+        [(ErrorMessage = "Selecione o tamanho da camisa")]
         [Display(Name = "Tamanho da Camisa")]
-        [Required(ErrorMessage = "Selecione o tamanho da camisa")]
         public string TamanhoCamisa { get; set; } = null!;
 
         [Display(Name = "Tempo")]
@@ -29,18 +31,17 @@ namespace Models
         [Display(Name = "Posição")]
         public int? Posicao { get; set; }
 
+        [(ErrorMessage = "Selecione o kit")]
         [Display(Name = "Kit")]
-        [Required(ErrorMessage = "Selecione o kit")]
         public int IdKit { get; set; }
 
+        [(ErrorMessage = "Selecione o evento")]
         [Display(Name = "Evento")]
-        [Required(ErrorMessage = "Selecione o evento")]
         public int IdEvento { get; set; }
 
+        [(ErrorMessage = "O corredor é obrigatório")]
         public int IdCorredor { get; set; }
 
         public int? IdAvaliacaoEvento { get; set; }
-
-  
     }
 }
