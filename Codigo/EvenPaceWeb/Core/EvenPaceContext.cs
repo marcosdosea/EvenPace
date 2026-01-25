@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core;
 
@@ -30,6 +32,10 @@ public partial class EvenPaceContext : DbContext
     public virtual DbSet<Kit> Kits { get; set; }
 
     public virtual DbSet<Organizacao> Organizacaos { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=123456;database=evenpace");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -175,6 +181,7 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Discricao)
                 .HasMaxLength(250)
                 .HasColumnName("discricao");
+            entity.Property(e => e.Distancia10).HasColumnName("distancia10");
             entity.Property(e => e.Distancia15).HasColumnName("distancia15");
             entity.Property(e => e.Distancia21).HasColumnName("distancia21");
             entity.Property(e => e.Distancia3).HasColumnName("distancia3");

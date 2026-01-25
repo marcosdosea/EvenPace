@@ -12,7 +12,7 @@ namespace EvenPaceWeb.Models
         [Display(Name = "Número do Cartão")]
         [Required(ErrorMessage = "O número do cartão é obrigatório.")]
         [StringLength(16, ErrorMessage = "O número do cartão deve conter 16 dígitos.")]
-        public string NumeroCartao { get; set; } = null!;
+        public float Numero { get; set; }
 
         [Display(Name = "Validade")]
         [Required(ErrorMessage = "A validade é obrigatória.")]

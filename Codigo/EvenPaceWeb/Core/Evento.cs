@@ -19,7 +19,7 @@ public partial class Evento
 
     public bool Distancia7 { get; set; }
 
-    public bool Eventocol1 { get; set; }
+    public bool Distancia10 { get; set; }
 
     public bool Distancia15 { get; set; }
 
