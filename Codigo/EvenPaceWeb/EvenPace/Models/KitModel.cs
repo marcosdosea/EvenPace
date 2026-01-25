@@ -7,49 +7,49 @@ namespace Models
         [Display(Name = "Código do Kit")]
         public int Id { get; set; }
 
-        [(ErrorMessage = "O nome do kit é obrigatório")]
+        [Required(ErrorMessage = "O nome do kit é obrigatório")]
         [Display(Name = "Tipo de Kit")]
         [StringLength(50, MinimumLength = 3)]
         public string Nome { get; set; } = null!;
 
-        [(ErrorMessage = "A descrição do kit é obrigatória")]
+        [Required(ErrorMessage = "A descrição do kit é obrigatória")]
         [Display(Name = "Descrição")]
         public string Descricao { get; set; } = null!;
 
-        [(ErrorMessage = "O valor do kit é obrigatório")]
+        [Required(ErrorMessage = "O valor do kit é obrigatório")]
         [Display(Name = "Valor")]
         [DataType(DataType.Currency)]
         public decimal Valor { get; set; }
 
-        
+        [Required]
         [Display(Name = "Disponibilidade P")]
         public int DisponibilidadeP { get; set; }
 
-       
+        [Required]
         [Display(Name = "Disponibilidade M")]
         public int DisponibilidadeM { get; set; }
 
-     
+        [Required]
         [Display(Name = "Disponibilidade G")]
         public int DisponibilidadeG { get; set; }
 
-     
+        [Required]
         [Display(Name = "Utilizado P")]
         public int UtilizadaP { get; set; }
 
-   
+        [Required]
         [Display(Name = "Utilizado M")]
         public int UtilizadaM { get; set; }
 
-       
+        [Required]
         [Display(Name = "Utilizado G")]
         public int UtilizadaG { get; set; }
 
-       
+        [Required]
         [Display(Name = "Evento")]
         public int IdEvento { get; set; }
 
-       
+        [Required]
         [Display(Name = "Status da Retirada do Kit")]
         public bool StatusRetiradaKit { get; set; }
 
