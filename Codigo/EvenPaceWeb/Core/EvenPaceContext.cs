@@ -93,7 +93,10 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
                 .HasColumnName("nome");
-            entity.Property(e => e.Numero).HasColumnName("numero");
+            entity.Property(e => e.Numero)
+                .HasMaxLength(16)
+                .IsFixedLength()
+                .HasColumnName("numero");
 
             entity.HasOne(d => d.IdCorredorNavigation).WithOne(p => p.CartaoCredito)
                 .HasForeignKey<CartaoCredito>(d => d.IdCorredor)
@@ -178,9 +181,9 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Data)
                 .HasColumnType("datetime")
                 .HasColumnName("data");
-            entity.Property(e => e.Discricao)
-                .HasMaxLength(250)
-                .HasColumnName("discricao");
+            entity.Property(e => e.Descricao)
+                .HasMaxLength(400)
+                .HasColumnName("descricao");
             entity.Property(e => e.Distancia10).HasColumnName("distancia10");
             entity.Property(e => e.Distancia15).HasColumnName("distancia15");
             entity.Property(e => e.Distancia21).HasColumnName("distancia21");

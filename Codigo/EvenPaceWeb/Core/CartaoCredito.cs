@@ -7,7 +7,7 @@ public partial class CartaoCredito
 {
     public uint Id { get; set; }
 
-    public float Numero { get; set; }
+    public string Numero { get; set; } = null!;
 
     public DateTime DataValidade { get; set; }
 

@@ -11,7 +11,7 @@ public partial class Evento
 
     public int NumeroParticipantes { get; set; }
 
-    public string Discricao { get; set; } = null!;
+    public string Descricao { get; set; } = null!;
 
     public bool Distancia3 { get; set; }
 
