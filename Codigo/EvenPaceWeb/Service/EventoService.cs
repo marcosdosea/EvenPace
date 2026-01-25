@@ -64,7 +64,7 @@ namespace Service
         /// <returns>Retorna um evento</returns>
         public Evento Get(int id)
         {
-            return _context.Cupoms.Find(id);
+            return _context.Eventos.Find(id);
         }
 
         /// <summary>

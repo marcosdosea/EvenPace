@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Avqv2ZbxsLM=",
+  "dgSpecHash": "Z9qz1Ww4G1A=",
   "success": true,
   "projectFilePath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\lucas\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\lucas\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\lucas\\.nuget\\packages\\google.protobuf\\3.32.0\\google.protobuf.3.32.0.nupkg.sha512",
     "C:\\Users\\lucas\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
