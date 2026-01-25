@@ -1,3 +1,8 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Core;
 using Core.Service;
 
@@ -16,7 +21,7 @@ namespace Service
         /// </summary>
         /// <param name="eventos"></param>
         /// <returns>Retorna o valor o id evento</returns>
-        public uint Create(Evento eventos)
+        public uint Insert(Evento eventos)
         {
             _context.Add(eventos);
             _context.SaveChanges();
@@ -29,10 +34,12 @@ namespace Service
         /// <param name="eventos"></param>
         public void Edit(Evento eventos)
         {
-            _context.Eventos.Find(eventos.Id);
-            _context.Update(eventos);
-            _context.SaveChanges();
-
+            if (eventos is not null)
+            {
+                _context.Eventos.Find(eventos.Id);
+                _context.Update(eventos);
+                _context.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -42,9 +49,12 @@ namespace Service
         public void Delete(int id)
         {
             var _evento = _context.Eventos.Find(id);
-            _context.Remove(_evento);
-            _context.SaveChanges();
-            
+
+            if (_evento is not null)
+            {
+                _context.Remove(_evento);
+                _context.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -73,7 +83,7 @@ namespace Service
         /// <returns>Retorna todos os Eventos que contein a string</returns>
         public IEnumerable<Evento> GetByName(string nome)
         {
-            return _context.Eventos.Where(e => e.Nome.Contains(nome)).ToList();
+            return _context.Eventos.Where(e => e.Nome.Contains(nome)).ToList(); 
         }
     }
 }

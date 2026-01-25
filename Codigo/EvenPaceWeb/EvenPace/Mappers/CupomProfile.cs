@@ -2,10 +2,14 @@ using AutoMapper;
 using Core;
 using Models;
 
-public class CupomProfile : Profile
+namespace EvenPaceWeb.Mappers
 {
-    public CupomProfile()
+    public class CupomProfile : Profile
     {
-        // CreateMap<Cupom, CupomModel>().ReverseMap(); TODO: retirar o comentario quando CupomModel estiver pronto
+        public CupomProfile() 
+        {
+            CreateMap<Core.Cupom, Models.CupomViewModel>().ReverseMap();
+        }
+
     }
 }

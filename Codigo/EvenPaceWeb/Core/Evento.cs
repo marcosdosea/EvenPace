@@ -9,6 +9,8 @@ public partial class Evento
     
     public string Nome { get; set; } = null!;
 
+    public string Nome { get; set; } = null!;
+
     public DateTime Data { get; set; }
 
     public int NumeroParticipantes { get; set; }

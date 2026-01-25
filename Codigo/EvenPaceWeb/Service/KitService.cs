@@ -1,3 +1,8 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Core;
 using Core.Service;
 
@@ -29,9 +34,12 @@ namespace Service
         /// <param name="kit"></param>
         public void Edit(Kit kit)
         {
-            _context.Kits.Find(kit.Id);
-            _context.Update(kit);
-            _context.SaveChanges();
+            if (kit is not null)
+            {
+                _context.Kits.Find(kit.Id);
+                _context.Update(kit);
+                _context.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -41,9 +49,12 @@ namespace Service
         public void Delete(int id)
         {
             var _kit = _context.Kits.Find(id);
-            _context.Remove(_kit);
-            _context.SaveChanges();
 
+            if (_kit is not null)
+            {
+                _context.Remove(_kit);
+                _context.SaveChanges();
+            }
         }
 
         /// <summary>
