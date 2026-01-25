@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EvenPace.Models;
 
-public class OrganizacaoModel
+public class OrganizacaoViewModel
 {
     [Display(Name = "Código")]
     [Key]

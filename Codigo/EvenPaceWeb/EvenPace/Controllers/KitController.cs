@@ -9,10 +9,10 @@ namespace EvenPace.Controllers;
 
 public class KitController : Controller
 {
-    private IKit _kitsService;
+    private IKitService _kitsService;
     private IMapper _mapper;
 
-    public KitController(IKit kits, IMapper mapper)
+    public KitController(IKitService kits, IMapper mapper)
     {
         _kitsService = kits;
         _mapper = mapper;

@@ -8,7 +8,7 @@ namespace EvenPaceWeb.Mappers
     {
         public CupomProfile() 
         {
-            CreateMap<Core.Cupom, Models.CupomViewModel>().ReverseMap();
+           // CreateMap<Cupom, CupomViewModel>().ReverseMap();  TODO: Retirar o comentario quando completar o CupomViewModel
         }
 
     }

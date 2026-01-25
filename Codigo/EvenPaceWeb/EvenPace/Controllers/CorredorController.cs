@@ -7,10 +7,10 @@ namespace EvenPace.Controllers;
 
 public class CorredorController : Controller
 {
-      private ICorredor _corredorService;
+      private ICorredorService _corredorService;
       private IMapper _mapper;
 
-      public CorredorController(ICorredor corredor, IMapper mapper)
+      public CorredorController(ICorredorService corredor, IMapper mapper)
       {
           _corredorService = corredor;
           _mapper = mapper;
