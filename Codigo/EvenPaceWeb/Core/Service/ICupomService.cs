@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Service
 {
-    public interface ICupom
+    public interface ICupomService
     {
         void Edit(Cupom cupom);
         uint Insert(Cupom cupom);

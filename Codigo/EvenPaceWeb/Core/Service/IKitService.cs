@@ -1,6 +1,6 @@
 namespace Core.Service
 {
-    public interface IKits
+    public interface IKitService
     {
         void Edit(Kit kit);
         uint Create(Kit kit);

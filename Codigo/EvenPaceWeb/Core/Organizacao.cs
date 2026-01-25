@@ -1,14 +1,17 @@
-﻿namespace Core;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Core;
 
 public partial class Organizacao
 {
     public uint Id { get; set; }
 
-    public string? Cnpj { get; set; }
+    public string Cnpj { get; set; } = null!;
 
     public string? Cpf { get; set; }
 
-    public string Telefone { get; set; } = null!;
+    public int Telefone { get; set; }
 
     public string Cep { get; set; } = null!;
 
@@ -28,9 +31,9 @@ public partial class Organizacao
 
     public bool StatusSituacao { get; set; }
 
-    public int? AdmistradorId { get; set; }
+    public int? AdministradorId { get; set; }
 
-    public virtual Admistrador? Admistrador { get; set; }
+    public virtual Administrador? Administrador { get; set; }
 
     public virtual ICollection<Evento> Eventos { get; set; } = new List<Evento>();
 }

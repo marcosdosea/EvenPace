@@ -7,7 +7,7 @@ public partial class Kit
 {
     public uint Id { get; set; }
 
-    public double Valor { get; set; }
+    public decimal Valor { get; set; }
 
     public string Nome { get; set; } = null!;
 
@@ -19,17 +19,17 @@ public partial class Kit
 
     public int DisponibilidadeM { get; set; }
 
-    public int UtilizadaP { get; set; }
+    public sbyte UtilizadaP { get; set; }
 
-    public int UtilizadaG { get; set; }
+    public sbyte UtilizadaG { get; set; }
 
-    public int UtilizadaM { get; set; }
+    public sbyte UtilizadaM { get; set; }
 
     public uint IdEvento { get; set; }
 
     public bool StatusRetiradaKit { get; set; }
 
-    public DateTime? DataRetirada { get; set; }
+    public DateTime DataRetirada { get; set; }
 
     public virtual Evento IdEventoNavigation { get; set; } = null!;
 

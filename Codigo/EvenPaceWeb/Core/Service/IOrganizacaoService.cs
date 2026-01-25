@@ -1,6 +1,6 @@
 namespace Core.Service;
 
-public interface IOrganizacao
+public interface IOrganizacaoService
 {
     void Edit(Organizacao organizacao);
     uint Create(Organizacao organizacao);

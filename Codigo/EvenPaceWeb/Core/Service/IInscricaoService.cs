@@ -1,6 +1,6 @@
 namespace Core.Service;
 
-public interface IInscricao
+public interface IInscricaoService
 {
     void Edit(Inscricao inscricao);
     uint Create(Inscricao inscricao);
