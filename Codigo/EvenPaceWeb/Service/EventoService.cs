@@ -8,7 +8,7 @@ using Core.Service;
 
 namespace Service
 {
-    internal class EventoService : IEventosService
+    public class EventoService : IEventosService
     {
         private readonly EvenPaceContext _context;
         public EventoService(EvenPaceContext context)

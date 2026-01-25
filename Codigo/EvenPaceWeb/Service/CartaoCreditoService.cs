@@ -8,7 +8,7 @@ using Core.Service;
 
 namespace Service
 {
-    internal class CartaoCreditoService : ICartaoCreditoService
+    public class CartaoCreditoService : ICartaoCreditoService
     {
         private readonly EvenPaceContext _context;
 

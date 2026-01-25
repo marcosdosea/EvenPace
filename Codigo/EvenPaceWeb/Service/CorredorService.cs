@@ -8,7 +8,7 @@ using Core.Service;
 
 namespace Service
 {
-    internal class CorredorService : ICorredorService
+    public class CorredorService : ICorredorService
     {
         private readonly EvenPaceContext _context;
 
