@@ -1,5 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using AutoMapper;
+using Core;
+using Models;
 
 namespace EvenPaceWeb.Mappers
 {
