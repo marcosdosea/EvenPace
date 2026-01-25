@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -8,23 +8,56 @@ namespace Models
     {
         [Key]
         [Display(Name = "Código do Kit")]
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "O nome do kit é obrigatório")]
         [Display(Name = "Tipo de Kit")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome do kit deve ter entre até 45 caracteres")]
+        [StringLength(50, MinimumLength = 3)]
         public string Nome { get; set; } = null!;
+
+        [Required(ErrorMessage = "A descrição do kit é obrigatória")]
+        [Display(Name = "Descrição")]
+        public string Descricao { get; set; } = null!;
 
         [Required(ErrorMessage = "O valor do kit é obrigatório")]
         [Display(Name = "Valor")]
-        [DataType(DataType.Currency, ErrorMessage = "Valor inválido")]
+        [DataType(DataType.Currency)]
         public decimal Valor { get; set; }
 
-        [Required(ErrorMessage = "Selecione o tamanho da camisa")]
-        [Display(Name = "Tamanho da Camisa")]
-        [StringLength(5, ErrorMessage = "Tamanho inválido")]
-        public string TamanhoCamisa { get; set; } = null!;
+        [Required]
+        [Display(Name = "Disponibilidade P")]
+        public int DisponibilidadeP { get; set; }
 
-    
+        [Required]
+        [Display(Name = "Disponibilidade M")]
+        public int DisponibilidadeM { get; set; }
+
+        [Required]
+        [Display(Name = "Disponibilidade G")]
+        public int DisponibilidadeG { get; set; }
+
+        [Required]
+        [Display(Name = "Utilizado P")]
+        public int UtilizadaP { get; set; }
+
+        [Required]
+        [Display(Name = "Utilizado M")]
+        public int UtilizadaM { get; set; }
+
+        [Required]
+        [Display(Name = "Utilizado G")]
+        public int UtilizadaG { get; set; }
+
+        [Required]
+        [Display(Name = "Evento")]
+        public int IdEvento { get; set; }
+
+        [Required]
+        [Display(Name = "Status da Retirada do Kit")]
+        public bool StatusRetiradaKit { get; set; }
+
+        [Display(Name = "Data da Retirada")]
+        [DataType(DataType.Date)]
+        public DateTime? DataRetirada { get; set; }
     }
 }
