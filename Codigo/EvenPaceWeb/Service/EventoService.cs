@@ -21,7 +21,7 @@ namespace Service
         /// </summary>
         /// <param name="eventos"></param>
         /// <returns>Retorna o valor o id evento</returns>
-        public uint Insert(Evento eventos)
+        public uint Create(Evento eventos)
         {
             _context.Add(eventos);
             _context.SaveChanges();

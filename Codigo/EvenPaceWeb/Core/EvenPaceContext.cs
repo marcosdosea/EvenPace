@@ -15,9 +15,9 @@ public partial class EvenPaceContext : DbContext
 
     public virtual DbSet<Administrador> Administradors { get; set; }
 
-    public virtual DbSet<Avaliacaoevento> AvaliacaoEventos { get; set; }
+    public virtual DbSet<AvaliacaoEvento> AvaliacaoEventos { get; set; }
 
-    public virtual DbSet<Cartaocredito> CartaoCreditos { get; set; }
+    public virtual DbSet<CartaoCredito> CartaoCreditos { get; set; }
 
     public virtual DbSet<Corredor> Corredors { get; set; }
 
@@ -53,7 +53,7 @@ public partial class EvenPaceContext : DbContext
                 .HasColumnName("senha");
         });
 
-        modelBuilder.Entity<Avaliacaoevento>(entity =>
+        modelBuilder.Entity<AvaliacaoEvento>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
@@ -66,7 +66,7 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Estrela).HasColumnName("estrela");
         });
 
-        modelBuilder.Entity<Cartaocredito>(entity =>
+        modelBuilder.Entity<CartaoCredito>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
@@ -90,7 +90,7 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Numero).HasColumnName("numero");
 
             entity.HasOne(d => d.IdCorredorNavigation).WithOne(p => p.CartaoCredito)
-                .HasForeignKey<Cartaocredito>(d => d.IdCorredor)
+                .HasForeignKey<CartaoCredito>(d => d.IdCorredor)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_CartaoCredito_Corredor1");
         });
