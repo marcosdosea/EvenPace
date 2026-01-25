@@ -5,7 +5,8 @@ namespace EvenPaceWeb.Models
     public class CupomViewModel
     {
         [Key]
-        [Required]
+        [Display(Name = "Código do Cupom")]
+        [Required(ErrorMessage = "Código do cupom é obrigatório.")]
         public uint Id { get; set; }
 
         [Required(ErrorMessage = "O código/nome do cupom é obrigatório.")]

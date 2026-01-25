@@ -54,21 +54,21 @@ namespace EvenPace.ViewModels
         // --- Endereço ---
 
         [Required(ErrorMessage = "A rua é obrigatória.")]
-        public string Rua { get; set; } = string.Empty;
+        public string Rua { get; set; } = null!;
 
         [Required(ErrorMessage = "O bairro é obrigatório.")]
-        public string Bairro { get; set; } = string.Empty;
+        public string Bairro { get; set; } = null!;
 
         [Required(ErrorMessage = "A cidade é obrigatória.")]
-        public string Cidade { get; set; } = string.Empty;
+        public string Cidade { get; set; } = null!;
 
         [Required(ErrorMessage = "O estado é obrigatório.")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "Use a sigla do estado (ex: SE).")]
-        public string Estado { get; set; } = string.Empty;
+        public string Estado { get; set; } = null!;
 
         [Display(Name = "Informações de Retirada do Kit")]
         [DataType(DataType.MultilineText)]
-        public string InfoRetiradaKit { get; set; } = string.Empty;
+        public string InfoRetiradaKit { get; set; } = null!;
 
         // --- Relacionamento (Organização) ---
 
