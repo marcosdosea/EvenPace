@@ -24,7 +24,7 @@ public class InscricaoController : Controller
       public ActionResult Index()
       {
           var listaIncricao = _inscricaoService.GetAll();
-          var listaInscricaoModel = _mapper.Map<List<InscricaoModel>>(listaIncricao);
+          var listaInscricaoModel = _mapper.Map<List<InscricaoViewModel>>(listaIncricao);
           return View(listaInscricaoModel);
       }
       
@@ -32,7 +32,7 @@ public class InscricaoController : Controller
       public ActionResult Get(int id)
       {
           Inscricao inscricao = _inscricaoService.Get(id);
-          InscricaoModel inscricaoModel = _mapper.Map<InscricaoModel>(inscricao);
+          InscricaoViewModel inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
           return View(inscricaoModel);
       }
       
@@ -45,7 +45,7 @@ public class InscricaoController : Controller
       // Post: InscricaoController/Create
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public ActionResult Create(InscricaoModel inscricaoModel)
+      public ActionResult Create(InscricaoViewModel inscricaoModel)
       {
           if (ModelState.IsValid)
           {
@@ -59,14 +59,14 @@ public class InscricaoController : Controller
       public ActionResult Edit(int id)
       {
           Inscricao inscricao = _inscricaoService.Get(id);
-          InscricaoModel inscricaoModel = _mapper.Map<InscricaoModel>(inscricao);
+          InscricaoViewModel inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
           return View(inscricaoModel);
       }
       
       // Post: InscricaoController/Edit/1
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public ActionResult Edit(int id, InscricaoModel inscricaoModel)
+      public ActionResult Edit(int id, InscricaoViewModel inscricaoModel)
       {
           if (ModelState.IsValid)
           {
@@ -79,13 +79,13 @@ public class InscricaoController : Controller
       public ActionResult Delete(int id)
       {
           Inscricao inscricao = _inscricaoService.Get(id);
-          InscricaoModel inscricaoModel = _mapper.Map<InscricaoModel>(inscricao);
+          InscricaoViewModel inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
           return View(inscricaoModel);
       }
       // Post: InscricaoController/Delete/1    
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public ActionResult Delete(int id, InscricaoModel inscricaoModel)
+      public ActionResult Delete(int id, InscricaoViewModel inscricaoModel)
       {
         _inscricaoService.Delete(id);
         return RedirectToAction(nameof(Index));
