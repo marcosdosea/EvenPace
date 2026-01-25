@@ -9,10 +9,10 @@ namespace EvenPace.Controllers;
 
 public class KitController : Controller
 {
-    private IKits _kitsService;
+    private IKit _kitsService;
     private IMapper _mapper;
 
-    public KitController(IKits kits, IMapper mapper)
+    public KitController(IKit kits, IMapper mapper)
     {
         _kitsService = kits;
         _mapper = mapper;
@@ -22,7 +22,7 @@ public class KitController : Controller
     public ActionResult Get(int id)
     {
         Kit kit = _kitsService.Get(id);
-        KitModel kitModel = _mapper.Map<KitModel>(kit);
+        KitViewModel kitModel = _mapper.Map<KitViewModel>(kit);
         return View(kitModel);
     }
 
@@ -35,7 +35,7 @@ public class KitController : Controller
     // Post: KitController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(KitModel kitModel)
+    public ActionResult Create(KitViewModel kitModel)
     {
         if (ModelState.IsValid)
         {
@@ -49,14 +49,14 @@ public class KitController : Controller
     public ActionResult Edit(int id)
     {
         Kit kit = _kitsService.Get(id);
-        KitModel kitModel = _mapper.Map<KitModel>(kit);
+        KitViewModel kitModel = _mapper.Map<KitViewModel>(kit);
         return View(kitModel);
     }
 
     // Post: KitController/Edit/1
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Edit(KitModel kitModel)
+    public ActionResult Edit(KitViewModel kitModel)
     {
         if (ModelState.IsValid)
         {
@@ -70,14 +70,14 @@ public class KitController : Controller
     public ActionResult Delete(int id)
     {
         Kit kit = _kitsService.Get(id);
-        KitModel kitModel = _mapper.Map<KitModel>(kit);
+        KitViewModel kitModel = _mapper.Map<KitViewModel>(kit);
         return View(kitModel);
     }
 
     // Post: KitController/Delete/1
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, KitModel kitModel)
+    public ActionResult Delete(int id, KitViewModel kitModel)
     {
         _kitsService.Delete(id);
         return RedirectToAction(nameof(Index));
