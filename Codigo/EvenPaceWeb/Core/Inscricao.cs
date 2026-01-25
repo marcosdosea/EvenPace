@@ -27,7 +27,7 @@ public partial class Inscricao
 
     public uint IdAvaliacaoEvento { get; set; }
 
-    public virtual Avaliacaoevento IdAvaliacaoEventoNavigation { get; set; } = null!;
+    public virtual AvaliacaoEvento IdAvaliacaoEventoNavigation { get; set; } = null!;
 
     public virtual Corredor IdCorredorNavigation { get; set; } = null!;
 
