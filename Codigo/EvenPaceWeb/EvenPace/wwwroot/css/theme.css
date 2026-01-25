@@ -1,0 +1,31 @@
+﻿/* EvenPace/wwwroot/css/theme.css */
+
+:root {
+    /* Paleta Principal EvenPace */
+    --primary-color: #FEEA00; /* Amarelo EvenPace */
+    --primary-hover: #DFAA18; /* Amarelo EvenPace (Hover) */
+    /* Tons Escuros (Letras e Elementos) */
+    --text-black: #000000; /* Preto padrão para texto */
+    --text-grey: #2E2E2E; /* Cinza para textos secundários/suaves */
+    /* Tons de Fundo e Superfícies */
+    --bg-white: #FFFFFF; /* Branco - Fundo Padrão */
+    --bg-light: #D9D9D9; /* Cinza claro - Para divisórias, inputs ou cards */
+    --bg-dark: #000000; /* Preto - Para rodapés ou seções de destaque */
+    /* Tipografia */
+    --font-standard: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Aplicação dos padrões no corpo do site */
+body {
+    background-color: var(--bg-white); /* Padrão BRANCO de cor de fundo*/
+    color: var(--text-black); /* Texto PRETO */
+    font-family: var(--font-standard);
+    margin: 0;
+    padding: 0;
+}
+
+/* Títulos com a cor preta padrão */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-black);
+    font-weight: 700; /* Deixa os títulos bem marcados */
+}
