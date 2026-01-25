@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EvenPaceWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7f9c8b709437bc8b0928c41f38e0ebf6ecd1c95b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+604618e2ecda55d2077c64666bbd72f43b7a94e2")]
 [assembly: System.Reflection.AssemblyProductAttribute("EvenPaceWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EvenPaceWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
