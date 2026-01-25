@@ -1,5 +1,6 @@
 using AutoMapper;
 using Core;
+using Core.Service;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
@@ -20,7 +21,7 @@ public class CorredorController : Controller
       public ActionResult Index()
       {
           var listaCorredor = _corredorService.GetAll();
-          var listaCorredorModel = _mapper.Map<List<InscricaoViewModel>>(listaCorredor);
+          var listaCorredorModel = _mapper.Map<List<CorredorViewModel>>(listaCorredor);
           return View(listaCorredorModel);
       }
       
@@ -45,7 +46,7 @@ public class CorredorController : Controller
       {
           if (ModelState.IsValid)
           {
-              var corredor = _mapper.Map<Inscricao>(corredorModel);
+              var corredor = _mapper.Map<Corredor>(corredorModel);
               _corredorService.Create(corredor); 
           }
           return View(corredorModel);
@@ -66,7 +67,7 @@ public class CorredorController : Controller
       {
           if (ModelState.IsValid)
           {
-              var corredor = _mapper.Map<Inscricao>(corredorModel);
+              var corredor = _mapper.Map<Corredor>(corredorModel);
               _corredorService.Edit(corredor);
           }
           return RedirectToAction(nameof(Index));

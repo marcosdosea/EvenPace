@@ -46,7 +46,7 @@ public class CartaoCreditoControler : Controller
     {
         if (ModelState.IsValid)
         {
-            var cartaoCredito = _mapper.Map<Core.Cartaocredito>(cartaoCreditoViewModel);
+            var cartaoCredito = _mapper.Map<Core.CartaoCredito>(cartaoCreditoViewModel);
             _cartaoCredito.Create(cartaoCredito);
         }
         return RedirectToAction(nameof(Index));
@@ -67,7 +67,7 @@ public class CartaoCreditoControler : Controller
     {
         if (ModelState.IsValid)
         {
-            var cartaoCredito = _mapper.Map<Core.Cartaocredito>(collection);
+            var cartaoCredito = _mapper.Map<Core.CartaoCredito>(collection);
             _cartaoCredito.Edit(cartaoCredito);
         }
         return RedirectToAction(nameof(Index));
