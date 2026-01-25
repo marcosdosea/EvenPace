@@ -22,7 +22,7 @@ namespace Service
         /// </summary>
         /// <param name="cartaoCredito"></param>
         /// <returns>Retorna o Id do cartão</returns>
-        public uint Insert(Cartaocredito cartaoCredito)
+        public uint Create(CartaoCredito cartaoCredito)
         {
             _context.Add(cartaoCredito);
             _context.SaveChanges();
@@ -33,7 +33,7 @@ namespace Service
         /// Edita um cartão de crédito no banco de dados
         /// </summary>
         /// <param name="cartaoCredito"></param>
-        public void Edit(Cartaocredito cartaoCredito)
+        public void Edit(CartaoCredito cartaoCredito)
         {
             if (cartaoCredito is not null)
             {
@@ -63,7 +63,7 @@ namespace Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Retorna o cartão</returns>
-        public Cartaocredito Get(int id)
+        public CartaoCredito Get(int id)
         {
             return _context.CartaoCreditos.Find(id);
         }
@@ -72,7 +72,7 @@ namespace Service
         /// Pega todos os cartões de crédito do banco de dados
         /// </summary>
         /// <returns>Retorna todos os cartões</returns>
-        public IEnumerable<Cartaocredito> GetAll()
+        public IEnumerable<CartaoCredito> GetAll()
         {
             return _context.CartaoCreditos.ToList();
         }

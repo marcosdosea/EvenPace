@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Core;
 
-public partial class Avaliacaoevento
+public partial class AvaliacaoEvento
 {
     public uint Id { get; set; }
 

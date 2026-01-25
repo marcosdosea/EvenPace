@@ -59,7 +59,7 @@ namespace EvenPaceWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var avaliacao = _mapper.Map<Core.Avaliacaoevento>(viewModel);
+                var avaliacao = _mapper.Map<Core.AvaliacaoEvento>(viewModel);
                 _avaliacaoEventoService.Create(avaliacao);
                 return RedirectToAction(nameof(Index));
             }
@@ -89,7 +89,7 @@ namespace EvenPaceWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var avaliacao = _mapper.Map<Core.Avaliacaoevento>(viewModel);
+                var avaliacao = _mapper.Map<Core.AvaliacaoEvento>(viewModel);
                 _avaliacaoEventoService.Edit(avaliacao);
                 return RedirectToAction(nameof(Index));
             }

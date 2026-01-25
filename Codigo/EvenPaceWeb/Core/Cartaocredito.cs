@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Core;
 
-public partial class Cartaocredito
+public partial class CartaoCredito
 {
     public uint Id { get; set; }
 
