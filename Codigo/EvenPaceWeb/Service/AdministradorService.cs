@@ -8,7 +8,7 @@ using Core.Service;
 
 namespace Service
 {
-    internal class AdministradorService : IAdministradorService
+    public class AdministradorService : IAdministradorService
     {
         private readonly EvenPaceContext _context;
 
