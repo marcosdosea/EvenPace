@@ -8,6 +8,6 @@ public class KitProfile : Profile
 {
     public KitProfile()
     { 
-        CreateMap<KitModel, Kit>().ReverseMap();
+        CreateMap<KitViewModel, Kit>().ReverseMap();
     }
 }

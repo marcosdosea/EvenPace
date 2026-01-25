@@ -8,6 +8,6 @@ public class InscricaoProfile : Profile
 {
     public InscricaoProfile()
     {
-        CreateMap<InscricaoModel, Inscricao>().ReverseMap();
+        CreateMap<InscricaoViewModel, Inscricao>().ReverseMap();
     }
 }

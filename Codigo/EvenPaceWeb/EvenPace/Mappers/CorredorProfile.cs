@@ -8,6 +8,6 @@ public class CorredorProfile : Profile
 {
     public CorredorProfile()
     {
-        CreateMap<CorredorModel,Corredor>().ReverseMap();
+        CreateMap<CorredorViewModel,Corredor>().ReverseMap();
     }
 }
