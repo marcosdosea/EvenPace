@@ -16,6 +16,7 @@ public class CorredorController : Controller
           _mapper = mapper;
       }
 
+      // Get: CorredorController/Index
       public ActionResult Index()
       {
           var listaCorredor = _corredorService.GetAll();
@@ -23,18 +24,23 @@ public class CorredorController : Controller
           return View(listaCorredorModel);
       }
       
-      public ActionResult Details(int id)
+      // Get: CorredorController/Get/4
+      public ActionResult Get(int id)
       {
           Corredor corredor = _corredorService.Get(id);
           CorredorModel corredorModel = _mapper.Map<CorredorModel>(corredor);
           return View(corredorModel);
       }
       
+      // Get: CorredorController/Create
       public ActionResult Create()
       {
           return View();
       }
       
+      // Post: CorredorController/Create
+      [HttpPost]
+      [ValidateAntiForgeryToken]
       public ActionResult Create(CorredorModel corredorModel)
       {
           if (ModelState.IsValid)
@@ -45,6 +51,7 @@ public class CorredorController : Controller
           return View(corredorModel);
       }
 
+      // Get: CorredorController/Edit/5
       public ActionResult Edit(int id)
       {
           Corredor corredor = _corredorService.Get(id);
@@ -52,6 +59,7 @@ public class CorredorController : Controller
           return View(corredorModel);
       }
       
+      // Post: CorredorController/Edit/4
       [HttpPost]
       [ValidateAntiForgeryToken]
       public ActionResult Edit(int id, CorredorModel corredorModel)
@@ -64,6 +72,7 @@ public class CorredorController : Controller
           return RedirectToAction(nameof(Index));
       }
 
+      // Get: CorredorController/Delite/5
       public ActionResult Delete(int id)
       {
           Corredor corredor = _corredorService.Get(id);
@@ -71,6 +80,7 @@ public class CorredorController : Controller
           return View(corredorModel);
       }
         
+      // Post: CorredorController/Delete/1
       [HttpPost]
       [ValidateAntiForgeryToken]
       public ActionResult Delete(int id, CorredorModel corredorModel)

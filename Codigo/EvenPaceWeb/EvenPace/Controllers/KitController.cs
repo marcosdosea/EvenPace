@@ -18,18 +18,21 @@ public class KitController : Controller
         _mapper = mapper;
     }
 
-    public ActionResult Details(int id)
+    // Get: KitController/Get/1
+    public ActionResult Get(int id)
     {
         Kit kit = _kitsService.Get(id);
         KitModel kitModel = _mapper.Map<KitModel>(kit);
         return View(kitModel);
     }
 
+    // Get: KitController/Create
     public ActionResult Create()
     {
         return View();
     }
 
+    // Post: KitController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Create(KitModel kitModel)
@@ -42,6 +45,7 @@ public class KitController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // Get: KitController/Edit/1
     public ActionResult Edit(int id)
     {
         Kit kit = _kitsService.Get(id);
@@ -49,6 +53,9 @@ public class KitController : Controller
         return View(kitModel);
     }
 
+    // Post: KitController/Edit/1
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public ActionResult Edit(KitModel kitModel)
     {
         if (ModelState.IsValid)
@@ -59,6 +66,7 @@ public class KitController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // Get: KitController/Delete/2
     public ActionResult Delete(int id)
     {
         Kit kit = _kitsService.Get(id);
@@ -66,6 +74,7 @@ public class KitController : Controller
         return View(kitModel);
     }
 
+    // Post: KitController/Delete/1
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Delete(int id, KitModel kitModel)

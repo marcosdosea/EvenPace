@@ -20,6 +20,7 @@ public class InscricaoController : Controller
           _mapper = mapper;
       }
 
+      // Get: InscricaoController/Index
       public ActionResult Index()
       {
           var listaIncricao = _inscricaoService.GetAll();
@@ -27,18 +28,23 @@ public class InscricaoController : Controller
           return View(listaInscricaoModel);
       }
       
-      public ActionResult Details(int id)
+      // Get: InscricaoController/Get/2
+      public ActionResult Get(int id)
       {
           Inscricao inscricao = _inscricaoService.Get(id);
           InscricaoModel inscricaoModel = _mapper.Map<InscricaoModel>(inscricao);
           return View(inscricaoModel);
       }
       
+      // Get: InscricaoController/Create
       public ActionResult Create()
       {
           return View();
       }
       
+      // Post: InscricaoController/Create
+      [HttpPost]
+      [ValidateAntiForgeryToken]
       public ActionResult Create(InscricaoModel inscricaoModel)
       {
           if (ModelState.IsValid)
@@ -49,6 +55,7 @@ public class InscricaoController : Controller
           return View(_inscricaoService);
       }
 
+      // Get: InscricaoController/Edit/4
       public ActionResult Edit(int id)
       {
           Inscricao inscricao = _inscricaoService.Get(id);
@@ -56,6 +63,7 @@ public class InscricaoController : Controller
           return View(inscricaoModel);
       }
       
+      // Post: InscricaoController/Edit/1
       [HttpPost]
       [ValidateAntiForgeryToken]
       public ActionResult Edit(int id, InscricaoModel inscricaoModel)
@@ -67,14 +75,14 @@ public class InscricaoController : Controller
           }
           return RedirectToAction(nameof(Index));
       }
-
+      // Get: InscricaoController/Delete/1
       public ActionResult Delete(int id)
       {
           Inscricao inscricao = _inscricaoService.Get(id);
           InscricaoModel inscricaoModel = _mapper.Map<InscricaoModel>(inscricao);
           return View(inscricaoModel);
       }
-        
+      // Post: InscricaoController/Delete/1    
       [HttpPost]
       [ValidateAntiForgeryToken]
       public ActionResult Delete(int id, InscricaoModel inscricaoModel)
