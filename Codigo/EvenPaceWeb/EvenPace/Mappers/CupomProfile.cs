@@ -1,12 +1,14 @@
-using AutoMapper;
-using Core;
-using EvenPace.Models;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
-public class CupomProfile : Profile
+namespace EvenPaceWeb.Mappers
 {
-    public CupomProfile()
+    public class CupomProfile : Profile
     {
-        CreateMap<Cupom, CupomDto>();
-        CreateMap<CupomDto, Cupom>();
+        public CupomProfile() 
+        {
+            CreateMap<Core.Cupom, Models.CupomViewModel>().ReverseMap();
+        }
+
     }
 }

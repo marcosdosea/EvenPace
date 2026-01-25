@@ -1,12 +1,13 @@
-using AutoMapper;
-using Core;
-using EvenPace.Models;
+﻿using AutoMapper;
 
-public class OrganizacaoProfile : Profile
+namespace EvenPaceWeb.Mappers
 {
-    public OrganizacaoProfile()
+    public class OrganizacaoProfile : Profile
     {
-        CreateMap<Organizacao, OrganizacaoDto>();
-        CreateMap<OrganizacaoDto, Organizacao>();
+        public OrganizacaoProfile()
+        {
+            CreateMap<Core.Organizacao, Models.OrganizacaoViewModel>().ReverseMap();
+        }
+        
     }
 }
