@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj": {}
+    "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
+    "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj",
+        "projectUniqueName": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\obj\\",
+        "projectPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\SANDRO\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\SANDRO\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -82,43 +82,29 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.113/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj": {
+    "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj",
+        "projectUniqueName": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj",
         "projectName": "EvenPaceWeb",
-        "projectPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj",
-        "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\obj\\",
+        "projectPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\EvenPaceWeb.csproj",
+        "packagesPath": "C:\\Users\\SANDRO\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\EvenPace\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\SANDRO\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -133,11 +119,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj"
+              "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj"
               },
-              "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj": {
-                "projectPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj"
+              "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj": {
+                "projectPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj"
               }
             }
           }
@@ -152,7 +138,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -190,24 +176,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -216,24 +184,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.113/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj": {
+    "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj",
+        "projectUniqueName": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj",
         "projectName": "Service",
-        "projectPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj",
-        "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\obj\\",
+        "projectPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\Service.csproj",
+        "packagesPath": "C:\\Users\\SANDRO\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Service\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\SANDRO\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -248,8 +216,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\lucas\\OneDrive\\Documentos\\6° periodo\\engenharia de software 2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj"
+              "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\SANDRO\\OneDrive - ufs.br\\UFS\\6ºperíodo\\Eng2\\Projeto2025.2\\EvenPace\\Codigo\\EvenPaceWeb\\Core\\Core.csproj"
               }
             }
           }
@@ -264,7 +232,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -292,26 +260,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.113/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
