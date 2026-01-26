@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace EvenPace.Models;
+namespace Models;
 
 public class OrganizacaoViewModel
 {

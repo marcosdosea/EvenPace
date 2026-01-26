@@ -1,0 +1,68 @@
+@model IEnumerable<Models.CorredorViewModel>
+
+@{
+    ViewData["Title"] = "Index"; 
+}
+
+<!DOCTYPE html>
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CPF)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataNascimento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Senha)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Id)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.CPF)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.DataNascimento)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Nome)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Email)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Senha)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id} ) 
+                @Html.ActionLink("Details", "Details", new { id = item.Id} ) 
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id} ) 
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
