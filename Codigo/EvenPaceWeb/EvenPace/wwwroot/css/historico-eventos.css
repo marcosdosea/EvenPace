@@ -1,7 +1,129 @@
-.card-title {
-    font-size: 1.1rem;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-.card {
-    border-radius: 12px;
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 400px; /* Simula largura de celular */
+    background-color: white;
+    min-height: 100vh;
+    padding-bottom: 80px; /* Espaço para a navbar */
+    position: relative;
+}
+
+/* Header */
+.header {
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    left: 20px;
+    top: 25px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.header h1 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Grid de Eventos */
+.events-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas como na imagem */
+    gap: 10px;
+    padding: 10px;
+}
+
+.event-card {
+    background: #e0e0e0;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 0.7rem;
+    border: 1px dashed #ccc; /* Linha tracejada da imagem */
+}
+
+.card-image img {
+    width: 100%;
+    border-radius: 2px;
+}
+
+.card-content h3 {
+    font-size: 0.75rem;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.info-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+/* Botões */
+.button-group {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 5px;
+}
+
+.btn {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 5px 2px;
+    font-size: 0.6rem;
+    cursor: pointer;
+}
+
+.btn-dark { background-color: #000; }
+.btn-green { background-color: #32ff00; color: #000; font-weight: bold; }
+.btn-red { background-color: #ff3131; border-radius: 15px; }
+
+/* Navbar Inferior */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.65rem;
+    color: #333;
+}
+
+.nav-item i {
+    font-size: 1.2rem;
+    margin-bottom: 3px;
+}
+
+.nav-item.active {
+    color: #000;
+    font-weight: bold;
 }
