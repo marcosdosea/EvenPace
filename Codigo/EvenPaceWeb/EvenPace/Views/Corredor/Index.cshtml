@@ -1,45 +1,41 @@
-@model IEnumerable<Models.CorredorViewModel>
-
 @{
-    ViewData["Title"] = "Corredores";
+    ViewData["Title"] = "Avaliação realizada";
 }
 
-<h2>Lista de Corredores</h2>
+<article class="avaliacao-container">
 
-<table class="table table-striped table-responsive">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var corredor in Model)
-    {
-        <tr>
-            <td>@corredor.Nome</td>
-            <td>@corredor.Email</td>
-            <td>
-                <a asp-action="Get"
-                   asp-route-id="@corredor.Id"
-                   class="btn btn-sm btn-info">
-                    Detalhes
-                </a>
+    <!-- Card central -->
+    <section class="avaliacao-card">
 
-                <a asp-action="Edit"
-                   asp-route-id="@corredor.Id"
-                   class="btn btn-sm btn-warning">
-                    Editar
-                </a>
+        <h2>Avaliação da corrida</h2>
 
-                <a asp-action="Delete"
-                   asp-route-id="@corredor.Id"
-                   class="btn btn-sm btn-danger">
-                    Excluir
-                </a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+        <!-- Estrelas fixas -->
+        <section class="estrelas estrelas-fixas">
+            ★★★★★
+        </section>
+
+        <p class="avaliacao-texto">
+            Deixe seu comentário
+        </p>
+
+        <section class="comentario-exibido">
+            Corrida bem organizada gostei muito
+        </section>
+
+    </section>
+
+    <!-- Link final -->
+    <section class="voltar-inicio">
+        <a href="/Home/Index">Ir para tela inicial</a>
+    </section>
+
+    <!-- Menu inferior -->
+    <nav class="menu-inferior">
+        <a href="/Home/Index">Início</a>
+        <a href="/Conquistas">Conquistas</a>
+        <a href="/Cupons">Cupons</a>
+        <a href="/HistoricoEventos" class="ativo">Histórico</a>
+        <a href="/Perfil">Perfil</a>
+    </nav>
+
+</article>
