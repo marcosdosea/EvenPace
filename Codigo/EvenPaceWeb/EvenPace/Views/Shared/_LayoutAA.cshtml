@@ -2,54 +2,24 @@
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewData["Title"] - EvenPace</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - EvenPace</title>
+
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/avaliar-evento.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                    EvenPace
-                </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Corredor" asp-action="Index">
-                                Corredores
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Evento" asp-action="Index">
-                                Eventos
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <main role="main" class="container mt-4">
+    <main class="app-container">
         @RenderBody()
     </main>
 
-    <footer class="border-top footer text-muted mt-5">
-        <div class="container text-center">
-            &copy; @DateTime.Now.Year - EvenPace
-        </div>
-    </footer>
+    @RenderSection("Scripts", required: false)
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
