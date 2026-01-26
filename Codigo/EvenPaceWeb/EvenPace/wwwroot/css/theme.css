@@ -39,4 +39,89 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 auto;
     margin-bottom: 20px; /* Dá um espaço antes dos links começarem */
 }
+/* Barra Lateral */
+/*.sidebar {
+    width: 160px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    z-index: 11; /* Um pouco acima do header para a linha vertical brilhar *
+}*/
+.sidebar {
+    width: 200px; /* Largura que você definiu anteriormente */
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid #000; /* ESTA É A LINHA VERTICAL QUE FICA */
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    flex-shrink: 0;
+}
 
+.sidebar-header {
+    height: 120px;
+    border-bottom: 1px solid #000; /* Mantida para alinhar com o cabeçalho dos kits */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Links do Menu */
+.sidebar-menu {
+    padding-top: 0;
+    margin-top: 0;
+}
+.sidebar-footer {
+    margin-top: auto; /* Empurra o perfil para o rodapé */
+    padding: 30px 20px;
+    text-align: center;
+    border-top: none; /* REMOVE A LINHA ACIMA DO PERFIL  */
+}
+/*.menu-item {
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #eee;
+}*/
+.menu-item {
+    padding: 15px 25px; /* Aumentamos o padding lateral interno */
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row; /* Ícone ao lado do texto fica melhor em barras largas */
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #e0e0e0;
+
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s; 
+    background-color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.menu-item:hover {
+    background-color: #fff; /* Mantém branco para destacar a sombra */
+    transform: translateY(-3px) translateX(5px); /* Sobe e vai levemente para a direita */
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1); /* Sombra dura estilo adesivo, igual ao card  */
+    z-index: 2; /* Garante que o item saltado fique por cima da linha do vizinho */
+    border-radius: 4px; /* Leve arredondado ao saltar */
+}
+.menu-item.active {
+    background-color: #fffde7;
+    transform: translateX(8px); /* Fica permanentemente deslocado */
+    border-left: 5px solid #FEEA00;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+}

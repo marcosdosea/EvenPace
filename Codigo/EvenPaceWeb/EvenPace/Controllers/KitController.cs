@@ -63,8 +63,7 @@ public class KitController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Tela17_Organizacao_CriarKit(KitViewModel model)
     {
-        // 1. LIMPEZA DE VALIDAÇÕES (O Segredo para sumir a barra vermelha)
-        // Removemos erros de campos que não existem no formulário
+        // 1. LIMPEZA DE VALIDAÇÕES (Para não bloquear o salvamento)
         ModelState.Remove("ImagemUpload");
         ModelState.Remove("IdEvento");
         ModelState.Remove("UtilizadaP");
@@ -78,22 +77,35 @@ public class KitController : Controller
             {
                 var kit = _mapper.Map<Kit>(model);
 
-                // --- LÓGICA DE UPLOAD DE IMAGEM ---
+                // --- LÓGICA DE UPLOAD DE IMAGEM (COM FAXINA) ---
                 if (model.ImagemUpload != null)
                 {
+                    // A. FAXINA: Se já existia uma foto antiga, APAGA ELA do computador
+                    // (O campo model.Imagem contém o nome da foto velha vindo do input hidden)
+                    DeletarImagemDoDisco(model.Imagem);
+
+                    // B. SALVAR A NOVA
                     string pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
+
+                    // Cria a pasta se não existir
                     if (!Directory.Exists(pastaDestino)) Directory.CreateDirectory(pastaDestino);
 
+                    // Gera nome único (UUID) para segurança interna
                     string nomeUnico = Guid.NewGuid().ToString() + "_" + model.ImagemUpload.FileName;
-                    using (var stream = new FileStream(Path.Combine(pastaDestino, nomeUnico), FileMode.Create))
+                    string caminhoCompleto = Path.Combine(pastaDestino, nomeUnico);
+
+                    // Salva o arquivo fisicamente
+                    using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
                     {
                         model.ImagemUpload.CopyTo(stream);
                     }
+
+                    // Atualiza o objeto para salvar o novo nome no banco
                     kit.Imagem = nomeUnico;
                 }
                 else
                 {
-                    // Mantém a imagem antiga
+                    // Se NÃO enviou foto nova, mantém a string da foto antiga
                     kit.Imagem = model.Imagem;
                 }
                 // ----------------------------------
@@ -101,7 +113,7 @@ public class KitController : Controller
                 // --- SALVAR NO BANCO ---
                 if (model.Id > 0)
                 {
-                    // EDIÇÃO (Usa o método Edit corrigido do Service)
+                    // EDIÇÃO
                     _kitsService.Edit(kit);
                     TempData["MensagemSucesso"] = "Kit atualizado com sucesso! ✏️";
                 }
@@ -112,16 +124,16 @@ public class KitController : Controller
                     TempData["MensagemSucesso"] = "Kit criado com sucesso! ✅";
                 }
 
+                // Redireciona para a lista mantendo o filtro do evento
                 return RedirectToAction("Tela09_Organizacao_Kits", new { idEvento = model.IdEvento });
             }
             catch (Exception ex)
             {
-                // Captura erros do banco (ex: Tracking Error)
-                ModelState.AddModelError("", "Erro técnico ao salvar: " + ex.Message);
+                ModelState.AddModelError("", "Erro ao salvar: " + ex.Message);
             }
         }
 
-        // Se falhar, recarrega o nome do evento para a tela não quebrar
+        // SE DEU ERRO: Recarrega o nome do evento para a tela não quebrar
         var evento = _eventosService.Get(model.IdEvento);
         ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
 
@@ -236,27 +248,47 @@ public class KitController : Controller
     [HttpGet]
     public IActionResult Excluir(int id)
     {
-        // 1. Busca o kit antes de excluir para saber de qual evento ele é
         var kit = _kitsService.Get(id);
 
         if (kit != null)
         {
-            // Guardamos o ID do evento numa variável
             int idEventoDoKit = (int)kit.IdEvento;
 
-            // 2. Agora sim excluímos
+            // --- NOVO: APAGA A FOTO ANTES DE APAGAR O REGISTRO ---
+            DeletarImagemDoDisco(kit.Imagem);
+            // -----------------------------------------------------
+
             _kitsService.Delete(id);
 
             TempData["MensagemSucesso"] = "Kit excluído com sucesso! 🗑️";
 
-            // 3. Voltamos para a lista PASSANDO O ID DO EVENTO
-            // Se não fizermos isso, a Tela 09 não sabe o que carregar
             return RedirectToAction("Tela09_Organizacao_Kits", new { idEvento = idEventoDoKit });
         }
 
-        // Se o kit não existir (erro estranho), volta para a lista padrão
         return RedirectToAction("Tela09_Organizacao_Kits");
     }
+    // MÉTODO PRIVADO PARA APAGAR FOTOS DA PASTA WWWROOT
+    private void DeletarImagemDoDisco(string nomeImagem)
+    {
+        // 1. Se não tiver nome, não faz nada
+        if (string.IsNullOrEmpty(nomeImagem)) return;
 
-    
+        // 2. Monta o caminho completo onde a foto está
+        string caminhoCompleto = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", nomeImagem);
+
+        // 3. Verifica se o arquivo realmente existe e deleta
+        if (System.IO.File.Exists(caminhoCompleto))
+        {
+            try
+            {
+                System.IO.File.Delete(caminhoCompleto);
+            }
+            catch (Exception)
+            {
+                // Se der erro ao apagar (arquivo em uso, permissão, etc), 
+                // a gente ignora para não travar o sistema, mas poderia logar o erro.
+            }
+        }
+    }
+
 }

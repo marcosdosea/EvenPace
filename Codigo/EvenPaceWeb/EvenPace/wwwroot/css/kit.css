@@ -1,21 +1,36 @@
 ﻿/* wwwroot/css/kit.css */
 
 /* --- 1. CONFIGURAÇÃO GERAL --- */
-.main-container {
+/*.main-container {
     font-family: 'Segoe UI', sans-serif;
     padding: 20px;
     max-width: 900px;
-    margin: 0 auto; /* Centraliza na tela */
+    margin: 0 auto; /* Centraliza na tela 
+}*/
+.main-container {
+    font-family: 'Segoe UI', sans-serif;
+    max-width: none;
+    width: 100%;
+    margin: 0;
 }
 
 /* --- 2. CABEÇALHO (Título + Ícone) --- */
 .page-header {
+    height: 120px; /* Alinhado com a sidebar-header */
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 30px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
+    padding: 0 40px;
+    background-color: #fff;
+    /* A mágica da profundidade: uma linha sólida + uma sombra suave */
+    border-bottom: 1px solid #000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    /* Mantém fixo no topo da área de conteúdo */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .icon-marker {
@@ -165,68 +180,22 @@ body {
 
 .dashboard-container {
     display: flex;
-    min-height: 100vh; /* Ocupa a altura toda da tela */
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* Barra Lateral */
-.sidebar {
-    width: 250px; /* Largura fixa */
-    border-right: 1px solid #000; /* Linha preta separando */
-    display: flex;
-    flex-direction: column;
+
+/* Item Selecionado (Kits) */
+.menu-item.active {
     background-color: #fff;
-    flex-shrink: 0;
+    border-left: 5px solid #000; /* Detalhe lateral se quiser */
 }
-
-.sidebar-header {
-    padding: 30px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
-
-.logo-pin {
-    font-size: 3rem;
-    color: #FFD700; /* Amarelo */
-    background-color: #fff;
-    border-radius: 50%;
-    /* Sombra opcional para parecer o ícone do Maps */
-    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
-}
-
-/* Links do Menu */
-.sidebar-menu {
-    display: flex;
-    flex-direction: column;
-    padding-top: 20px;
-}
-
-.menu-item {
-    padding: 15px 20px;
-    text-decoration: none;
-    color: #000;
-    font-weight: bold;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    border-bottom: 1px solid #eee;
-}
-
-    .menu-item:hover {
-        background-color: #f0f0f0;
-    }
-
-    /* Item Selecionado (Kits) */
-    .menu-item.active {
-        background-color: #fff;
-        border-left: 5px solid #000; /* Detalhe lateral se quiser */
-    }
 
 .sidebar-footer {
-    margin-top: auto; /* Empurra para o final */
+    margin-top: auto; /* Empurra para o fim do menu */
     padding: 20px;
     text-align: center;
-    border-top: 1px solid #000;
+    border-top: none; /* <--- REMOVE A LINHA SUPERIOR */
 }
 
 .user-avatar {
@@ -297,9 +266,9 @@ body {
     display: inline-block;
 }
 
-    .btn-icon:hover {
-        transform: scale(1.2);
-    }
+.btn-icon:hover {
+    transform: scale(1.2);
+}
 
 .empty-state {
     text-align: center;
@@ -333,7 +302,9 @@ body {
 /* Área do Conteúdo (Onde fica o form) */
 .content-area {
     flex-grow: 1;
-    padding: 40px;
+    overflow-y: auto; /* Ativa o scroll apenas aqui */
+    display: flex;
+    flex-direction: column;
 }
 
 /* --- 9. ESTILO DA TABELA --- */
@@ -350,27 +321,27 @@ body {
     background-color: #fff;
 }
 
-    .table-custom thead {
-        background-color: #D9D9D9; /* Cinza do cabeçalho */
-        border-bottom: 2px solid #000;
-    }
+.table-custom thead {
+    background-color: #D9D9D9; /* Cinza do cabeçalho */
+    border-bottom: 2px solid #000;
+}
 
-    .table-custom th {
-        text-align: left;
-        padding: 15px;
-        font-weight: 800;
-        color: #000;
-    }
+.table-custom th {
+    text-align: left;
+    padding: 15px;
+    font-weight: 800;
+    color: #000;
+}
 
-    .table-custom td {
-        padding: 15px;
-        border-bottom: 1px solid #eee;
-        color: #333;
-    }
+.table-custom td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
 
-    .table-custom tr:last-child td {
-        border-bottom: none;
-    }
+.table-custom tr:last-child td {
+    border-bottom: none;
+}
 
 .badge {
     background-color: #eee;
@@ -398,32 +369,32 @@ body {
     border-collapse: collapse;
 }
 
-    /* Cabeçalho da Tabela (Cinza igual aos inputs) */
-    .table-custom thead {
-        background-color: #D9D9D9;
-        border-bottom: 2px solid #000; /* Linha separadora forte */
-    }
+/* Cabeçalho da Tabela (Cinza igual aos inputs) */
+.table-custom thead {
+    background-color: #D9D9D9;
+    border-bottom: 2px solid #000; /* Linha separadora forte */
+}
 
-    .table-custom th {
-        padding: 15px 20px;
-        text-align: left;
-        font-weight: 800; /* Negrito forte */
-        font-size: 1.1rem;
-        color: #000;
-    }
+.table-custom th {
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: 800; /* Negrito forte */
+    font-size: 1.1rem;
+    color: #000;
+}
 
-    /* Linhas da Tabela */
-    .table-custom td {
-        padding: 15px 20px;
-        border-bottom: 1px solid #000; /* Linhas divisórias pretas */
-        color: #000;
-        font-size: 1rem;
-    }
+/* Linhas da Tabela */
+.table-custom td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #000; /* Linhas divisórias pretas */
+    color: #000;
+    font-size: 1rem;
+}
 
-    /* Remove borda da última linha para não duplicar com a borda da caixa */
-    .table-custom tr:last-child td {
-        border-bottom: none;
-    }
+/* Remove borda da última linha para não duplicar com a borda da caixa */
+.table-custom tr:last-child td {
+    border-bottom: none;
+}
 
 /* Badges de Quantidade (Estilo "Caixinha") */
 .badge-qtd {
@@ -466,43 +437,43 @@ body {
     font-family: 'Inter', sans-serif; /* Garante a fonte padrão */
 }
 
-    /* 3. Cabeçalho da Tabela (A faixa cinza) */
-    .table-custom thead {
-        background-color: #D9D9D9; /* O mesmo cinza dos títulos do formulário */
-        border-bottom: 2px solid #000; /* Linha preta separando do conteúdo */
-    }
+/* 3. Cabeçalho da Tabela (A faixa cinza) */
+.table-custom thead {
+    background-color: #D9D9D9; /* O mesmo cinza dos títulos do formulário */
+    border-bottom: 2px solid #000; /* Linha preta separando do conteúdo */
+}
 
-    .table-custom th {
-        padding: 18px 20px; /* Mais espaço para respirar */
-        text-align: left;
-        font-weight: 800; /* Negrito forte */
-        font-size: 1.1rem;
-        color: #000;
-        text-transform: uppercase; /* (Opcional) Letras maiúsculas no título */
-    }
+.table-custom th {
+    padding: 18px 20px; /* Mais espaço para respirar */
+    text-align: left;
+    font-weight: 800; /* Negrito forte */
+    font-size: 1.1rem;
+    color: #000;
+    text-transform: uppercase; /* (Opcional) Letras maiúsculas no título */
+}
 
-    /* 4. Linhas do Conteúdo */
-    .table-custom tbody tr {
-        background-color: #fff;
-        transition: background-color 0.2s; /* Efeito suave ao passar o mouse */
-    }
+/* 4. Linhas do Conteúdo */
+.table-custom tbody tr {
+    background-color: #fff;
+    transition: background-color 0.2s; /* Efeito suave ao passar o mouse */
+}
 
-        .table-custom tbody tr:hover {
-            background-color: #f0f0f0; /* Fica cinzinha quando passa o mouse */
-        }
+.table-custom tbody tr:hover {
+    background-color: #f0f0f0; /* Fica cinzinha quando passa o mouse */
+}
 
-    .table-custom td {
-        padding: 15px 20px;
-        border-bottom: 1px solid #000; /* Linha divisória preta */
-        color: #000;
-        font-size: 1rem;
-        vertical-align: middle;
-    }
+.table-custom td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #000; /* Linha divisória preta */
+    color: #000;
+    font-size: 1rem;
+    vertical-align: middle;
+}
 
-    /* Remove a borda da última linha para não ficar dupla com a borda da caixa */
-    .table-custom tr:last-child td {
-        border-bottom: none;
-    }
+/* Remove a borda da última linha para não ficar dupla com a borda da caixa */
+.table-custom tr:last-child td {
+    border-bottom: none;
+}
 
 /* 5. Badges (As caixinhas de quantidade P/M/G) */
 .badge-group {
@@ -536,19 +507,17 @@ body {
     display: inline-block;
 }
 
-    .btn-icon:hover {
-        transform: scale(1.2); /* Aumenta um pouco ao passar o mouse */
-    }
+.btn-icon:hover {
+    transform: scale(1.2); /* Aumenta um pouco ao passar o mouse */
+}
 /* --- 13. LAYOUT EM GRID (LADO A LADO) --- */
 
 .kits-grid {
     display: grid;
-    /* MÁGICA: Cria colunas automáticas. 
-       minmax(280px, 1fr) significa: O card tem no mínimo 280px. 
-       Se a tela for grande, cabem 3 ou 4. Se for pequena, cabe 1 ou 2. */
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px; /* Espaço entre os cards */
-    padding-bottom: 50px;
+    grid-template-columns: repeat(3, 1fr); /* Mantém os 3 kits por linha */
+    gap: 25px;
+    padding: 40px; /* O respiro volta aqui */
+    overflow-y: auto;
 }
 
 /* O CARTÃO (CARD) */
@@ -562,10 +531,10 @@ body {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-    .kit-card:hover {
-        transform: translateY(-5px); /* Sobe um pouquinho ao passar o mouse */
-        box-shadow: 6px 6px 0px rgba(0,0,0,0.2); /* Sombra dura estilo Sticker */
-    }
+.kit-card:hover {
+    transform: translateY(-5px); /* Sobe um pouquinho ao passar o mouse */
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.2); /* Sombra dura estilo Sticker */
+}
 
 /* 1. Área da Imagem */
 .kit-card-image {
@@ -575,13 +544,13 @@ body {
     border-bottom: 2px solid #000;
 }
 
-    .kit-card-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Mostra a imagem inteira sem cortar */
-        padding: 10px; /* Espacinho para não colar na borda */
-        background-color: #fff;
-    }
+.kit-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Mostra a imagem inteira sem cortar */
+    padding: 10px; /* Espacinho para não colar na borda */
+    background-color: #fff;
+}
 
 .placeholder-img {
     width: 100%;
@@ -634,23 +603,23 @@ body {
     transition: background 0.2s;
 }
 
-    .btn-action.edit {
-        background-color: #fff;
-        border-right: 2px solid #000; /* Linha separando os botões */
+.btn-action.edit {
+    background-color: #fff;
+    border-right: 2px solid #000; /* Linha separando os botões */
+}
+
+    .btn-action.edit:hover {
+        background-color: #f0f0f0;
     }
 
-        .btn-action.edit:hover {
-            background-color: #f0f0f0;
-        }
+.btn-action.delete {
+    background-color: #ffcccc; /* Vermelhinho claro */
+    color: #cc0000;
+}
 
-    .btn-action.delete {
-        background-color: #ffcccc; /* Vermelhinho claro */
-        color: #cc0000;
-    }
-
-        .btn-action.delete:hover {
-            background-color: #ffaaaa;
-        }
+.btn-action.delete:hover {
+    background-color: #ffaaaa;
+}
 
 /* Estado Vazio */
 .empty-state-card {
@@ -700,4 +669,32 @@ body {
     margin-right: 10px;   /* Espaço entre o ícone e a palavra "Kits" */
     vertical-align: middle;
 }
+.content-area {
+    flex-grow: 1;
+    padding: 0; /* Removido o padding geral para alinhar o header */
+    display: flex;
+    flex-direction: column;
+}
+.sidebar-header {
+    height: 120px; /* Mesma altura do .page-header */
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #000; /* Linha preta sólida */
+    box-sizing: border-box;
+}
+/* --- OPÇÃO ATIVA (KITS) COM O MESMO PADRÃO DE HOVER --- */
+.menu-item.active {
+    background-color: #fffde7; /* Fundo levemente amarelado para indicar que está ativo */
+    border-left: 6px solid #FEEA00; /* Barra lateral de destaque */
+    transform: translateX(5px); /* Já começa levemente deslocado */
+    transition: all 0.2s ease-in-out;
+}
 
+/* Efeito de "Salto" adicional quando passar o mouse mesmo estando ativo */
+.menu-item.active:hover {
+    transform: translateX(15px); /* Salta ainda mais que o normal (10px -> 15px) */
+    background-color: #fffde7; /* Mantém a cor de ativo */
+    box-shadow: -5px 5px 15px rgba(0,0,0,0.08); /* Ganha a profundidade */
+}
