@@ -2,21 +2,34 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EvenPaceWeb.Models
 {
-    public class CartaoCreditoViewViewModel
+    public class CartaoCreditoViewModel
     {
-        [Display(Name = "Nome do Titular")]
-        [Required(ErrorMessage = "O nome do titular é obrigatório.")]
-        [StringLength(100, ErrorMessage = "O nome não pode exceder 100 caracteres.")]
-        public string NomeTitular { get; set; } = null!;
+        [Key]
+        [Display(Name = "Código")]
+        [Required(ErrorMessage = "O campo Id é obrigatório.")]
+        public uint Id { get; set; }
 
-        [Display(Name = "Número do Cartão")]
-        [Required(ErrorMessage = "O número do cartão é obrigatório.")]
-        [StringLength(16, ErrorMessage = "O número do cartão deve conter 16 dígitos.")]
-        public float Numero { get; set; }
+        [Display(Name = "Corredor")]
+        [Required(ErrorMessage = "O campo IdCorredor é obrigatório.")]
+        public uint IdCorredor { get; set; }
 
-        [Display(Name = "Validade")]
-        [Required(ErrorMessage = "A validade é obrigatória.")]
-        [StringLength(7, ErrorMessage = "Formato esperado: MM/AAAA.")]
-        public string Validade { get; set; } = null!;
+        [Display(Name = "Nome")]
+        [Required(ErrorMessage = "O nome é obrigatório.")]
+        [StringLength(100)]
+        public string Nome { get; set; } = null!;
+
+        [Display(Name = "Número")]
+        [Required(ErrorMessage = "O número é obrigatório.")]
+        [StringLength(16)]
+        public string Numero { get; set; } = null!;
+
+        [Display(Name = "Data de Validade")]
+        [Required(ErrorMessage = "A data de validade é obrigatória.")]
+        public DateTime DataValidade { get; set; }
+
+        [Display(Name = "Código de Segurança")]
+        [Required(ErrorMessage = "O código de segurança é obrigatório.")]
+        [StringLength(3)]
+        public string CodigoSeguranca { get; set; } = null!;
     }
 }
