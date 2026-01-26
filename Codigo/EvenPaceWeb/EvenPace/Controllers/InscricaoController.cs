@@ -89,5 +89,23 @@ public class InscricaoController : Controller
       {
         _inscricaoService.Delete(id);
         return RedirectToAction(nameof(Index));
+
+        
       }
+
+      private IEventoService _eventoService;
+private IKitService _kitService;
+
+public InscricaoController(
+    IInscricaoService inscricao, 
+    IEventoService evento,
+    IKitService kit,
+    IMapper mapper)
+{
+    _inscricaoService = inscricao;
+    _eventoService = evento;
+    _kitService = kit;
+    _mapper = mapper;
+}
+
 }
