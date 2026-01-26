@@ -1,68 +1,63 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Eventos</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+@{
+    ViewData["Title"] = "Histórico de Eventos";
+}
 
-    <main class="app-container">
-        <header class="header">
-            <button class="back-btn"><i class="fas fa-chevron-left"></i></button>
-            <h1>Histórico de eventos</h1>
-        </header>
+<div class="historico-container">
 
-        <section class="events-grid">
-            <div class="event-card">
-                <div class="card-image">
-                    <img src="https://via.placeholder.com/150x80" alt="Circuito Sesc">
+    <!-- Cabeçalho -->
+    <header class="historico-header">
+        <a href="javascript:history.back()" class="btn-voltar">
+            &#8592;
+        </a>
+        <h1>Histórico de eventos</h1>
+    </header>
+
+    <!-- Lista de eventos -->
+    <section class="lista-eventos">
+
+        <!-- Card Evento -->
+        <div class="evento-card">
+            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
+
+            <div class="evento-info">
+                <h2>Circuito Sesc de Corridas</h2>
+                <p class="evento-data">Itabaiana · Dia 20/08</p>
+
+                <div class="evento-botoes">
+                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
+                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
                 </div>
-                <div class="card-content">
-                    <h3>Circuito Sesc de Corridas</h3>
-                    <div class="info-row">
-                        <span><strong>Local:</strong> Itabaiana</span>
-                        <span><strong>Data:</strong> 20/09</span>
-                        <span><strong>Horário:</strong> 6:00</span>
-                    </div>
-                    <div class="button-group">
-                        <button class="btn btn-dark">Detalhes</button>
-                        <button class="btn btn-green">Avaliar Corrida</button>
-                    </div>
-                    <button class="btn btn-red">Cancelar inscrição</button>
+
+                <button class="btn-cancelar">Cancelar Inscrição</button>
+            </div>
+        </div>
+
+        <!-- Card Evento -->
+        <div class="evento-card">
+            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
+
+            <div class="evento-info">
+                <h2>Circuito Sesc de Corridas</h2>
+                <p class="evento-data">Itabaiana · Dia 20/08</p>
+
+                <div class="evento-botoes">
+                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
+                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
                 </div>
-            </div>
 
-            <div class="event-card">...</div>
-            <div class="event-card">...</div>
-            <div class="event-card">...</div>
-        </section>
+                <button class="btn-cancelar">Cancelar Inscrição</button>
+            </div>
+        </div>
 
-        <nav class="bottom-nav">
-            <div class="nav-item">
-                <i class="fas fa-home"></i>
-                <span>Início</span>
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-trophy"></i>
-                <span>Conquistas</span>
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-ticket-alt"></i>
-                <span>Cupons</span>
-            </div>
-            <div class="nav-item active">
-                <i class="fas fa-history"></i>
-                <span>Histórico</span>
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-user-circle"></i>
-                <span>Perfil</span>
-            </div>
-        </nav>
-    </main>
+    </section>
 
-</body>
-</html>
+    <!-- Menu inferior -->
+    <nav class="menu-inferior">
+        <a href="/Home/Index">Início</a>
+        <a href="/Conquistas">Conquistas</a>
+        <a href="/Cupons">Cupons</a>
+        <a href="/HistoricoEventos" class="ativo">Histórico</a>
+        <a href="/Perfil">Perfil</a>
+    </nav>
+
+</div>
