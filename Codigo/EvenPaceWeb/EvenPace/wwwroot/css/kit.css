@@ -1,0 +1,703 @@
+﻿/* wwwroot/css/kit.css */
+
+/* --- 1. CONFIGURAÇÃO GERAL --- */
+.main-container {
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto; /* Centraliza na tela */
+}
+
+/* --- 2. CABEÇALHO (Título + Ícone) --- */
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.icon-marker {
+    color: #FFD700; /* Amarelo do ícone */
+    font-size: 2.5rem;
+}
+
+.header-titles h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+}
+
+/* --- 3. INPUTS E CAMPOS (O estilo cinza do protótipo) --- */
+.form-block {
+    margin-bottom: 20px;
+}
+
+.label-bold {
+    display: block;
+    font-weight: 800;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+/* O Segredo do visual: Inputs Cinzas e Arredondados */
+.input-gray {
+    width: 100%;
+    background-color: #D9D9D9; /* Cinza do protótipo */
+    border: 2px solid #000; /* Borda preta */
+    border-radius: 10px; /* Arredondado */
+    padding: 10px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Garante que padding não estoure a largura */
+}
+
+/* --- 4. LAYOUT (Lado a Lado) --- */
+.row-flex {
+    display: flex;
+    gap: 30px; /* Espaço entre colunas */
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.col-fixed {
+    width: 200px; /* Tamanho fixo para o Valor */
+}
+
+.col-grow {
+    flex: 1; /* Ocupa o resto do espaço */
+    position: relative;
+}
+
+/* --- 5. CAMISETAS --- */
+.sizes-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.header-sizes {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 10px;
+    width: 200px; /* Largura controlada */
+}
+
+.size-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 200px; /* Largura controlada */
+    cursor: pointer;
+}
+
+.input-qtd {
+    width: 80px;
+    text-align: center;
+    background-color: #D9D9D9;
+    border: 2px solid #000;
+    border-radius: 8px;
+    padding: 5px;
+    font-weight: bold;
+}
+
+/* --- 6. ÍCONE DE UPLOAD --- */
+.input-wrapper {
+    position: relative;
+}
+
+.icon-upload {
+    position: absolute;
+    right: 15px;
+    top: 40px;
+    font-size: 1.5rem;
+    pointer-events: none; /* Deixa clicar através do ícone */
+}
+
+.file-hidden {
+    position: absolute;
+    top: 32px;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* --- 7. BOTÕES (Cinza Escuro) --- */
+.form-actions {
+    display: flex;
+    justify-content: flex-end; /* Joga para a direita */
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.btn-gray {
+    background-color: #999; /* Cinza mais escuro */
+    color: #000;
+    font-weight: bold;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+    .btn-gray:hover {
+        background-color: #777; /* Efeito ao passar o mouse */
+    }
+/* --- 8. LAYOUT DASHBOARD (Menu Lateral) --- */
+body {
+    margin: 0;
+    background-color: #fff; /* Fundo branco geral */
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh; /* Ocupa a altura toda da tela */
+}
+
+/* Barra Lateral */
+.sidebar {
+    width: 250px; /* Largura fixa */
+    border-right: 1px solid #000; /* Linha preta separando */
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    padding: 30px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo-pin {
+    font-size: 3rem;
+    color: #FFD700; /* Amarelo */
+    background-color: #fff;
+    border-radius: 50%;
+    /* Sombra opcional para parecer o ícone do Maps */
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+}
+
+/* Links do Menu */
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.menu-item {
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+    .menu-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* Item Selecionado (Kits) */
+    .menu-item.active {
+        background-color: #fff;
+        border-left: 5px solid #000; /* Detalhe lateral se quiser */
+    }
+
+.sidebar-footer {
+    margin-top: auto; /* Empurra para o final */
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #000;
+}
+
+.user-avatar {
+    font-size: 2rem;
+    background-color: #ddd;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* --- ESTILOS GERAIS E RESPONSIVIDADE --- */
+
+/* Wrapper da tabela para permitir scroll no celular */
+.table-wrapper {
+    margin-top: 20px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    width: 100%;
+    overflow-x: auto; /* A Mágica: Cria barra de rolagem se a tabela for larga */
+}
+
+/* Header Responsivo */
+.header-responsive {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permite quebrar linha se faltar espaço */
+    gap: 20px;
+}
+
+.header-title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Grupo de Badges (Camisetas) */
+.badge-group {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap; /* Badges descem se não couberem */
+}
+
+.badge {
+    background-color: #eee;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    white-space: nowrap; /* Não deixa quebrar o texto dentro do badge */
+}
+
+.action-buttons {
+    white-space: nowrap;
+}
+
+.btn-icon {
+    text-decoration: none;
+    font-size: 1.2rem;
+    margin: 0 5px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+    .btn-icon:hover {
+        transform: scale(1.2);
+    }
+
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-style: italic;
+}
+
+/* --- REGRAS PARA CELULAR (Telas menores que 600px) --- */
+@media (max-width: 600px) {
+
+    /* Centraliza o cabeçalho e coloca o botão embaixo do título */
+    .header-responsive {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-responsive {
+        width: 100%; /* Botão ocupa a largura toda no celular */
+        text-align: center;
+    }
+
+    /* Ajustes finos na tabela para celular */
+    .table-custom th,
+    .table-custom td {
+        padding: 10px; /* Menos espaçamento para caber mais coisa */
+        font-size: 0.9rem;
+    }
+}
+
+/* Área do Conteúdo (Onde fica o form) */
+.content-area {
+    flex-grow: 1;
+    padding: 40px;
+}
+
+/* --- 9. ESTILO DA TABELA --- */
+.table-container {
+    margin-top: 20px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    overflow: hidden; /* Arredonda os cantos da tabela */
+}
+
+.table-custom {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+    .table-custom thead {
+        background-color: #D9D9D9; /* Cinza do cabeçalho */
+        border-bottom: 2px solid #000;
+    }
+
+    .table-custom th {
+        text-align: left;
+        padding: 15px;
+        font-weight: 800;
+        color: #000;
+    }
+
+    .table-custom td {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        color: #333;
+    }
+
+    .table-custom tr:last-child td {
+        border-bottom: none;
+    }
+
+.badge {
+    background-color: #eee;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+}
+/* --- 10. ESTILO DA LISTAGEM (IGUAL PROTÓTIPO) --- */
+
+/* O Container da Tabela parece uma "Caixa" do formulário */
+.table-wrapper {
+    margin-top: 30px;
+    background-color: #fff;
+    /* Borda preta grossa igual aos inputs */
+    border: 2px solid #000;
+    border-radius: 10px; /* Cantos arredondados */
+    overflow: hidden; /* Garante que o cabeçalho não saia do arredondado */
+}
+
+.table-custom {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    /* Cabeçalho da Tabela (Cinza igual aos inputs) */
+    .table-custom thead {
+        background-color: #D9D9D9;
+        border-bottom: 2px solid #000; /* Linha separadora forte */
+    }
+
+    .table-custom th {
+        padding: 15px 20px;
+        text-align: left;
+        font-weight: 800; /* Negrito forte */
+        font-size: 1.1rem;
+        color: #000;
+    }
+
+    /* Linhas da Tabela */
+    .table-custom td {
+        padding: 15px 20px;
+        border-bottom: 1px solid #000; /* Linhas divisórias pretas */
+        color: #000;
+        font-size: 1rem;
+    }
+
+    /* Remove borda da última linha para não duplicar com a borda da caixa */
+    .table-custom tr:last-child td {
+        border-bottom: none;
+    }
+
+/* Badges de Quantidade (Estilo "Caixinha") */
+.badge-qtd {
+    display: inline-block;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.action-cell {
+    text-align: right;
+}
+
+.btn-icon {
+    text-decoration: none;
+    font-size: 1.3rem;
+    margin-left: 15px;
+    cursor: pointer;
+}
+/* --- ESTILO "PROTÓTIPO" DA LISTAGEM --- */
+
+/* 1. O Container da Tabela (A "Caixa" Principal) */
+.table-wrapper {
+    margin-top: 30px;
+    background-color: #fff;
+    border: 2px solid #000; /* Borda grossa igual aos inputs */
+    border-radius: 8px; /* Cantos arredondados */
+    overflow: hidden; /* Corta o que passar da borda */
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.1); /* (Opcional) Sombra dura para dar destaque */
+}
+
+/* 2. A Tabela em si */
+.table-custom {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaços entre as células */
+    font-family: 'Inter', sans-serif; /* Garante a fonte padrão */
+}
+
+    /* 3. Cabeçalho da Tabela (A faixa cinza) */
+    .table-custom thead {
+        background-color: #D9D9D9; /* O mesmo cinza dos títulos do formulário */
+        border-bottom: 2px solid #000; /* Linha preta separando do conteúdo */
+    }
+
+    .table-custom th {
+        padding: 18px 20px; /* Mais espaço para respirar */
+        text-align: left;
+        font-weight: 800; /* Negrito forte */
+        font-size: 1.1rem;
+        color: #000;
+        text-transform: uppercase; /* (Opcional) Letras maiúsculas no título */
+    }
+
+    /* 4. Linhas do Conteúdo */
+    .table-custom tbody tr {
+        background-color: #fff;
+        transition: background-color 0.2s; /* Efeito suave ao passar o mouse */
+    }
+
+        .table-custom tbody tr:hover {
+            background-color: #f0f0f0; /* Fica cinzinha quando passa o mouse */
+        }
+
+    .table-custom td {
+        padding: 15px 20px;
+        border-bottom: 1px solid #000; /* Linha divisória preta */
+        color: #000;
+        font-size: 1rem;
+        vertical-align: middle;
+    }
+
+    /* Remove a borda da última linha para não ficar dupla com a borda da caixa */
+    .table-custom tr:last-child td {
+        border-bottom: none;
+    }
+
+/* 5. Badges (As caixinhas de quantidade P/M/G) */
+.badge-group {
+    display: flex;
+    gap: 8px;
+}
+
+.badge-qtd {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    min-width: 40px; /* Garante que fiquem do mesmo tamanho */
+}
+
+/* 6. Botões de Ação (Ícones) */
+.action-cell {
+    text-align: right; /* Joga os ícones para a direita */
+}
+
+.btn-icon {
+    text-decoration: none;
+    font-size: 1.2rem;
+    margin-left: 15px;
+    color: #000; /* Ícone preto */
+    display: inline-block;
+}
+
+    .btn-icon:hover {
+        transform: scale(1.2); /* Aumenta um pouco ao passar o mouse */
+    }
+/* --- 13. LAYOUT EM GRID (LADO A LADO) --- */
+
+.kits-grid {
+    display: grid;
+    /* MÁGICA: Cria colunas automáticas. 
+       minmax(280px, 1fr) significa: O card tem no mínimo 280px. 
+       Se a tela for grande, cabem 3 ou 4. Se for pequena, cabe 1 ou 2. */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px; /* Espaço entre os cards */
+    padding-bottom: 50px;
+}
+
+/* O CARTÃO (CARD) */
+.kit-card {
+    background-color: #fff;
+    border: 2px solid #000; /* Borda grossa preta */
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Conteúdo um embaixo do outro dentro do card */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .kit-card:hover {
+        transform: translateY(-5px); /* Sobe um pouquinho ao passar o mouse */
+        box-shadow: 6px 6px 0px rgba(0,0,0,0.2); /* Sombra dura estilo Sticker */
+    }
+
+/* 1. Área da Imagem */
+.kit-card-image {
+    width: 100%;
+    height: 200px; /* Altura fixa para todas ficarem iguais */
+    background-color: #eee;
+    border-bottom: 2px solid #000;
+}
+
+    .kit-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Mostra a imagem inteira sem cortar */
+        padding: 10px; /* Espacinho para não colar na borda */
+        background-color: #fff;
+    }
+
+.placeholder-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* 2. Corpo do Card */
+.kit-card-body {
+    padding: 20px;
+    text-align: center;
+    flex-grow: 1; /* Empurra os botões para o final */
+}
+
+.kit-title {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #000;
+}
+
+.kit-price {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 10px 0 15px 0;
+}
+
+.center-badges {
+    justify-content: center; /* Centraliza os P/M/G */
+}
+
+/* 3. Ações (Rodapé do Card) */
+.kit-card-actions {
+    display: flex;
+    border-top: 2px solid #000;
+}
+
+.btn-action {
+    flex: 1; /* Ocupa metade cada um */
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+    transition: background 0.2s;
+}
+
+    .btn-action.edit {
+        background-color: #fff;
+        border-right: 2px solid #000; /* Linha separando os botões */
+    }
+
+        .btn-action.edit:hover {
+            background-color: #f0f0f0;
+        }
+
+    .btn-action.delete {
+        background-color: #ffcccc; /* Vermelhinho claro */
+        color: #cc0000;
+    }
+
+        .btn-action.delete:hover {
+            background-color: #ffaaaa;
+        }
+
+/* Estado Vazio */
+.empty-state-card {
+    grid-column: 1 / -1; /* Ocupa a largura toda */
+    text-align: center;
+    padding: 40px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    color: #777;
+}
+
+/* --- ALERTA DE SUCESSO (TOAST) --- */
+.alert-custom {
+    position: fixed; /* Flutua na frente de tudo */
+    top: 20px; /* Distância do topo */
+    right: 20px; /* Canto direito (estilo notificação) */
+    background-color: #28a745; /* Verde Sucesso */
+    color: white; /* Texto branco */
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Sombra suave */
+    font-weight: bold;
+    z-index: 1000; /* Garante que fique na frente de tudo */
+    /* Preparação para animação */
+    opacity: 1;
+    transition: opacity 1s ease-out, transform 0.5s ease-out;
+}
+
+/* Classe que será adicionada pelo JS para sumir */
+.alert-hide {
+    opacity: 0;
+    transform: translateY(-20px); /* Sobe um pouquinho enquanto some */
+    pointer-events: none; /* Impede cliques enquanto desaparece */
+}
+/* --- ÍCONE DO CABEÇALHO (PINO AMARELO) --- */
+.icon-logo-header {
+    width: 45px; /* Tamanho ideal para cabeçalho */
+    height: auto; /* Mantém a proporção */
+    margin-right: 15px; /* Espaço para o texto */
+    vertical-align: middle;
+}
+
+/* --- ÍCONE DO MENU LATERAL --- */
+.sidebar-icon {
+    width: 24px;          /* Tamanho pequeno para caber no menu */
+    height: auto;
+    margin-right: 10px;   /* Espaço entre o ícone e a palavra "Kits" */
+    vertical-align: middle;
+}
+

@@ -29,3 +29,14 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-black);
     font-weight: 700; /* Deixa os títulos bem marcados */
 }
+/* --- ESTILOS GERAIS DO LAYOUT (MENU LATERAL) --- */
+
+/* Logo grande no topo do menu */
+.logo-sidebar-top {
+    width: 50px; /* <--- Aumente ou diminua este valor aqui */
+    height: auto; /* Deixe 'auto' para não esticar a imagem */
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px; /* Dá um espaço antes dos links começarem */
+}
+

@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EvenPace</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/kit.css" />
+</head>
+<body>
+    <div class="dashboard-container">
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="~/imagens/logo-amarela-evenpace.jpeg" alt="Logo EvenPace" class="logo-sidebar-top" />
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item">🏠 Home</a>
+                <a href="#" class="menu-item">📑 Resumo</a>
+                <a href="#" class="menu-item">🎟️ Ingressos</a>
+                <a href="#" class="menu-item">🏷️ Cupons</a>
+                <a href="#" class="menu-item">📄 Informações</a>
+                <a href="#" class="menu-item">💰 Financeiro</a>
+                <a href="#" class="menu-item active">✔️ Kits</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-avatar">👤</div>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
