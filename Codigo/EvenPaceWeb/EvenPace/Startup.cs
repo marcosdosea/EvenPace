@@ -18,6 +18,7 @@ namespace EvenPaceWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             // Adicione outros serviços necessários aqui
             services.AddDbContext<EvenPaceContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("EvenPaceDatabase")));
