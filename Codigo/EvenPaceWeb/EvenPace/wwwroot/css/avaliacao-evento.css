@@ -1,12 +1,12 @@
-form {
-    max-width: 500px;
-    margin: 30px auto;
+.btn-avaliar {
+    padding: 6px 12px;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-button {
-    width: 100%;
+.btn-avaliar:hover {
+    background-color: #0b5ed7;
 }
