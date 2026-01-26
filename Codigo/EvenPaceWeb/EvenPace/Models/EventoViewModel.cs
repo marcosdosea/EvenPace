@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EvenPace.ViewModels
+namespace Models
 {
     public class EventoViewModel
     {
