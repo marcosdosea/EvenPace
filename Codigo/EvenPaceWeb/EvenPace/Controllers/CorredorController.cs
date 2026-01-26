@@ -89,4 +89,12 @@ public class CorredorController : Controller
           _corredorService.Delete(id);
           return RedirectToAction(nameof(Index));
       }
+
+      // GET: Corredor/HistoricoEventos/5
+      public ActionResult HistoricoEventos(int id)
+      {
+          var eventos = _corredorService.GetHistoricoEventos(id);
+          var eventosModel = _mapper.Map<List<HistoricoEventoViewModel>>(eventos);
+          return View(eventosModel);
+      }
 }
