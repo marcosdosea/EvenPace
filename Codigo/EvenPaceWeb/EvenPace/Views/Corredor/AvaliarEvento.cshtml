@@ -1,0 +1,34 @@
+@model Models.AvaliacaoEventoViewModel
+
+<h2>Avaliar Evento</h2>
+
+<form asp-action="AvaliarEvento" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label asp-for="Nota"></label>
+        <select asp-for="Nota" class="form-control">
+            <option value="">Selecione</option>
+            <option value="1">⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="5">⭐⭐⭐⭐⭐</option>
+        </select>
+        <span asp-validation-for="Nota" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Comentario"></label>
+        <textarea asp-for="Comentario" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Comentario" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Enviar Avaliação
+    </button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
