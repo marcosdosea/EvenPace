@@ -25,7 +25,6 @@ namespace EvenPace.Controllers
             _mapper = mapper;
         }
 
-        // GET: Inscricao/Index
         public ActionResult Index()
         {
             var listaInscricao = _inscricaoService.GetAll();
@@ -33,7 +32,6 @@ namespace EvenPace.Controllers
             return View(listaInscricaoModel);
         }
 
-        // GET: Inscricao/Get/2
         public ActionResult Get(int id)
         {
             var inscricao = _inscricaoService.Get(id);
@@ -41,13 +39,11 @@ namespace EvenPace.Controllers
             return View(inscricaoModel);
         }
 
-        // GET: Inscricao/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Inscricao/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(InscricaoViewModel inscricaoModel)
@@ -61,7 +57,6 @@ namespace EvenPace.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Inscricao/Edit/4
         public ActionResult Edit(int id)
         {
             var inscricao = _inscricaoService.Get(id);
@@ -69,7 +64,6 @@ namespace EvenPace.Controllers
             return View(inscricaoModel);
         }
 
-        // POST: Inscricao/Edit/4
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, InscricaoViewModel inscricaoModel)
@@ -83,7 +77,6 @@ namespace EvenPace.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Inscricao/Delete/1
         public ActionResult Delete(int id)
         {
             var inscricao = _inscricaoService.Get(id);
@@ -91,12 +84,53 @@ namespace EvenPace.Controllers
             return View(inscricaoModel);
         }
 
-        // POST: Inscricao/Delete/1
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             _inscricaoService.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // GET
+        public IActionResult Tela14_InscricaoNaCorrida1(int idEvento)
+        {
+            var evento = _eventoService.Get(idEvento);
+            var kits = _kitService.GetByEvento(idEvento);
+
+            var vm = new TelaInscricaoViewModel
+            {
+                IdEvento = evento.Id,
+                NomeEvento = evento.Nome,
+                ImagemEvento = evento.Imagem,
+                Local = evento.Local,
+                DataEvento = evento.DataEvento,
+                Descricao = evento.Descricao,
+                Percursos = new List<string> { "3km", "5km", "10km" },
+                Kits = _mapper.Map<List<KitViewModel>>(kits),
+                Inscricao = new InscricaoViewModel
+                {
+                    IdEvento = evento.Id,
+                    DataInscricao = DateTime.Now
+                }
+            };
+
+            return View(vm);
+        }
+
+        // POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SalvarInscricao(TelaInscricaoViewModel vm)
+        {
+            if (!ModelState.IsValid)
+                return View("Tela14_InscricaoNaCorrida1", vm);
+
+            var inscricao = _mapper.Map<Inscricao>(vm.Inscricao);
+            _inscricaoService.Create(inscricao);
+
+            TempData["MensagemSucesso"] = "Inscrição realizada com sucesso!";
             return RedirectToAction(nameof(Index));
         }
     }
