@@ -1,0 +1,23 @@
+@model IEnumerable<Models.HistoricoEventoViewModel>
+
+<h2>Histórico de Eventos Participados</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Evento</th>
+            <th>Data</th>
+            <th>Local</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Nome</td>
+            <td>@item.Data.ToShortDateString()</td>
+            <td>@item.Local</td>
+        </tr>
+    }
+    </tbody>
+</table>
