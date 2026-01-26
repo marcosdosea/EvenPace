@@ -3,23 +3,22 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SeuSistema</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - EvenPace</title>
+
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/historico-eventos.css" />
+
+    <!-- Ícones (Font Awesome) -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-<body class="bg-light">
+<body>
 
-    <nav class="navbar navbar-dark bg-primary">
-        <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">🏃 Sistema de Eventos</span>
-        </div>
-    </nav>
-
-    <main class="container py-3">
+    <main class="app-container">
         @RenderBody()
     </main>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
