@@ -1,24 +1,37 @@
-@model IEnumerable<Models.HistoricoEventoViewModel>
-
-<link rel="stylesheet" href="~/css/historico-eventos.css" />
-
-<h4 class="mb-3 text-center">📅 Histórico de Eventos</h4>
-
-<div class="d-flex flex-column gap-3">
-@foreach (var item in Model)
-{
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">@item.Nome</h5>
-
-            <p class="mb-1">
-                <strong>📆 Data:</strong> @item.Data.ToShortDateString()
-            </p>
-
-            <p class="mb-0">
-                <strong>📍 Local:</strong> @item.Local
-            </p>
-        </div>
-    </div>
+@{
+    ViewData["Title"] = "Detalhes do Evento";
 }
+
+<div class="detalhes-container">
+
+    <!-- Cabeçalho -->
+    <header class="detalhes-header">
+        <a href="javascript:history.back()" class="btn-voltar">
+            &#8592;
+        </a>
+        <h1>Detalhes do Evento</h1>
+    </header>
+
+    <!-- Conteúdo -->
+    <section class="detalhes-evento">
+
+        <img src="~/img/evento-exemplo.png" alt="Evento" class="detalhes-imagem">
+
+        <h2>Circuito Sesc de Corridas</h2>
+
+        <p><strong>Local:</strong> Itabaiana</p>
+        <p><strong>Data:</strong> 20/08</p>
+        <p><strong>Horário:</strong> 06:00</p>
+
+        <p class="descricao-evento">
+            Evento esportivo promovido pelo SESC com foco em saúde,
+            bem-estar e integração social.
+        </p>
+
+        <a href="/HistoricoEventos/Avaliar" class="btn-avaliar-grande">
+            Avaliar Evento
+        </a>
+
+    </section>
+
 </div>
