@@ -1,0 +1,85 @@
+
+@model EvenPaceWeb.Models.InscricaoViewModel
+@{
+    ViewData["Title"] = "Evento";
+    Layout = "~/Views/Shared/_LayoutAtleta.cshtml";
+}
+
+<!-- CAPA -->
+<div class="event-hero">
+    <a asp-action="Index" asp-controller="Home" class="btn-back">←</a>
+    <img src="~/imagens/@Model.ImagemEvento" />
+</div>
+
+<!-- CARD PRINCIPAL -->
+<div class="event-main-card">
+    <h1>@Model.NomeEvento</h1>
+
+    <div class="event-meta">📍 @Model.Local</div>
+    <div class="event-meta">📅 @Model.DataEvento.ToString("dd 'de' MMMM 'de' yyyy")</div>
+    <div class="event-meta">📌 @Model.EnderecoLargada</div>
+</div>
+
+<!-- SOBRE -->
+<div class="section-card">
+    <h2>Sobre o Evento</h2>
+    <p>@Model.Descricao</p>
+</div>
+
+<!-- PERCURSOS -->
+<form asp-action="SelecionarKit" method="post">
+
+    <input type="hidden" asp-for="IdEvento" />
+
+    <div class="section-card">
+        <h2>Percurso</h2>
+
+        <div class="percurso-options">
+            @foreach (var p in Model.PercursosDisponiveis)
+            {
+                <input type="radio" id="km@p" name="PercursoSelecionado" value="@p" />
+                <label for="km@p">@p km</label>
+            }
+        </div>
+    </div>
+
+    <!-- INFORMAÇÕES -->
+    <div class="section-card">
+        <h2>Informações</h2>
+        <p>@Model.Informacoes</p>
+    </div>
+
+    <!-- KITS -->
+    <div class="section-card">
+        <h2>Escolha seu Kit</h2>
+    </div>
+
+    @foreach (var kit in Model.Kits)
+    {
+        <div class="kit-option">
+            <img src="~/imagens/@kit.Imagem" />
+
+            <div class="kit-info">
+                <h3>@kit.Nome</h3>
+                <div class="kit-price">R$ @kit.Valor.ToString("N2")</div>
+            </div>
+
+            <button type="submit"
+                    name="KitSelecionadoId"
+                    value="@kit.Id"
+                    class="btn-kit-select">
+                Inscrever-se
+            </button>
+        </div>
+    }
+
+</form>
+
+<!-- MENU INFERIOR -->
+<nav class="bottom-nav">
+    <a asp-controller="Home" asp-action="Index">🏠<br/>Início</a>
+    <a href="#">🏆<br/>Conquistas</a>
+    <a href="#">🎟️<br/>Cupons</a>
+    <a href="#">📜<br/>Histórico</a>
+    <a href="#">👤<br/>Perfil</a>
+</nav>
