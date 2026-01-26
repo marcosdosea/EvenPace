@@ -2,110 +2,102 @@ using AutoMapper;
 using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Models;
 
-namespace EvenPace.Controllers;
-
-public class InscricaoController : Controller
+namespace EvenPace.Controllers
 {
-      private IInscricaoService _inscricaoService;
-      private IMapper _mapper;
+    public class InscricaoController : Controller
+    {
+        private readonly IInscricaoService _inscricaoService;
+        private readonly IEventoService _eventoService;
+        private readonly IKitService _kitService;
+        private readonly IMapper _mapper;
 
-      public InscricaoController(IInscricaoService inscricao, IMapper mapper)
-      {
-          _inscricaoService = inscricao;
-          _mapper = mapper;
-      }
+        public InscricaoController(
+            IInscricaoService inscricaoService,
+            IEventoService eventoService,
+            IKitService kitService,
+            IMapper mapper)
+        {
+            _inscricaoService = inscricaoService;
+            _eventoService = eventoService;
+            _kitService = kitService;
+            _mapper = mapper;
+        }
 
-      // Get: InscricaoController/Index
-      public ActionResult Index()
-      {
-          var listaIncricao = _inscricaoService.GetAll();
-          var listaInscricaoModel = _mapper.Map<List<InscricaoViewModel>>(listaIncricao);
-          return View(listaInscricaoModel);
-      }
-      
-      // Get: InscricaoController/Get/2
-      public ActionResult Get(int id)
-      {
-          Inscricao inscricao = _inscricaoService.Get(id);
-          InscricaoViewModel inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
-          return View(inscricaoModel);
-      }
-      
-      // Get: InscricaoController/Create
-      public ActionResult Create()
-      {
-          return View();
-      }
-      
-      // Post: InscricaoController/Create
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult Create(InscricaoViewModel inscricaoModel)
-      {
-          if (ModelState.IsValid)
-          {
-              var inscricao = _mapper.Map<Inscricao>(inscricaoModel);
-              _inscricaoService.Create(inscricao); 
-          }
-          return View(_inscricaoService);
-      }
+        // GET: Inscricao/Index
+        public ActionResult Index()
+        {
+            var listaInscricao = _inscricaoService.GetAll();
+            var listaInscricaoModel = _mapper.Map<List<InscricaoViewModel>>(listaInscricao);
+            return View(listaInscricaoModel);
+        }
 
-      // Get: InscricaoController/Edit/4
-      public ActionResult Edit(int id)
-      {
-          Inscricao inscricao = _inscricaoService.Get(id);
-          InscricaoViewModel inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
-          return View(inscricaoModel);
-      }
-      
-      // Post: InscricaoController/Edit/1
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult Edit(int id, InscricaoViewModel inscricaoModel)
-      {
-          if (ModelState.IsValid)
-          {
-              var inscricao = _mapper.Map<Inscricao>(inscricaoModel);
-              _inscricaoService.Edit(inscricao);
-          }
-          return RedirectToAction(nameof(Index));
-      }
-      // Get: InscricaoController/Delete/1
-      public ActionResult Delete(int id)
-      {
-          Inscricao inscricao = _inscricaoService.Get(id);
-          InscricaoViewModel inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
-          return View(inscricaoModel);
-      }
-      // Post: InscricaoController/Delete/1    
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult Delete(int id, InscricaoViewModel inscricaoModel)
-      {
-        _inscricaoService.Delete(id);
-        return RedirectToAction(nameof(Index));
+        // GET: Inscricao/Get/2
+        public ActionResult Get(int id)
+        {
+            var inscricao = _inscricaoService.Get(id);
+            var inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
+            return View(inscricaoModel);
+        }
 
-        
-      }
+        // GET: Inscricao/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
 
-      private IEventoService _eventoService;
-private IKitService _kitService;
+        // POST: Inscricao/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(InscricaoViewModel inscricaoModel)
+        {
+            if (!ModelState.IsValid)
+                return View(inscricaoModel);
 
-public InscricaoController(
-    IInscricaoService inscricao, 
-    IEventoService evento,
-    IKitService kit,
-    IMapper mapper)
-{
-    _inscricaoService = inscricao;
-    _eventoService = evento;
-    _kitService = kit;
-    _mapper = mapper;
-}
+            var inscricao = _mapper.Map<Inscricao>(inscricaoModel);
+            _inscricaoService.Create(inscricao);
 
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Inscricao/Edit/4
+        public ActionResult Edit(int id)
+        {
+            var inscricao = _inscricaoService.Get(id);
+            var inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
+            return View(inscricaoModel);
+        }
+
+        // POST: Inscricao/Edit/4
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, InscricaoViewModel inscricaoModel)
+        {
+            if (!ModelState.IsValid)
+                return View(inscricaoModel);
+
+            var inscricao = _mapper.Map<Inscricao>(inscricaoModel);
+            _inscricaoService.Edit(inscricao);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Inscricao/Delete/1
+        public ActionResult Delete(int id)
+        {
+            var inscricao = _inscricaoService.Get(id);
+            var inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
+            return View(inscricaoModel);
+        }
+
+        // POST: Inscricao/Delete/1
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            _inscricaoService.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+    }
 }
