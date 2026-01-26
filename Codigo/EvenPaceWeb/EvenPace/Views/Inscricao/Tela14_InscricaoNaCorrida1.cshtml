@@ -41,7 +41,8 @@
         }
     </div>
 
-    <form asp-action="ConfirmarInscricao" method="post">
+    <form asp-action="SalvarInscricao" method="post">
+
         <input type="hidden" asp-for="Inscricao.IdEvento" />
         <input type="hidden" asp-for="Inscricao.IdKit" id="kitSelecionado" />
         <input type="hidden" asp-for="Inscricao.Distancia" id="distanciaSelecionada" />
