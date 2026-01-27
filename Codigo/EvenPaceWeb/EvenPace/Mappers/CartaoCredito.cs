@@ -1,6 +1,6 @@
 using AutoMapper;
 using Core;
-using EvenPaceWeb.Models;
+using Models;
 
 namespace EvenPaceWeb.Mappers
 {
