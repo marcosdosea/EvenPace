@@ -57,7 +57,7 @@ namespace EvenPaceWeb
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Cupom}/{action=Index}/{id?}");
             });
         }
     }

@@ -1,0 +1,178 @@
+﻿@model Models.CupomViewModel
+
+@{
+    ViewData["Title"] = "Criar Cupom";
+}
+
+<style>
+    main.cupom-page {
+        padding: 20px;
+        font-family: var(--font-standard);
+        background-color: var(--bg-white);
+    }
+
+    header.form-header h1 {
+        color: var(--text-black);
+        font-weight: 800;
+    }
+
+    header.form-header p {
+        color: var(--text-grey); 
+        font-size: 1.2rem;
+    }
+
+    /* Container com o fundo cinza claro */
+    section.form-container {
+        background-color: var(--bg-light);
+        border-radius: 25px;
+        padding: 50px;
+        border: 1px solid #ccc; 
+    }
+
+    form.cupom-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 40px;
+    }
+
+    fieldset {
+        border: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    label {
+        color: var(--text-black);
+        font-weight: bold;
+    }
+
+    input.custom-input {
+        border: 2px solid var(--text-black);
+        border-radius: 15px;
+        padding: 12px;
+        background-color: var(--bg-white); 
+        color: var(--text-black);
+        width: 100%;
+    }
+
+    /* Botão de Status */
+    .status-btn {
+        border: 2px solid var(--text-black);
+        border-radius: 12px;
+        padding: 10px 20px;
+        background-color: var(--bg-white);
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    input[type="radio"]:checked + .status-btn {
+        background-color: var(--primary-color); 
+        border-color: var(--text-black);
+    }
+
+    /* Botões de Ação no Rodapé */
+    footer.form-footer {
+        grid-column: 1 / span 3;
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .btn-save {
+        background-color: var(--primary-color); 
+        color: var(--text-black);
+        border: none;
+        border-radius: 10px;
+        padding: 12px 40px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-save:hover {
+            background-color: var(--primary-hover);
+        }
+
+    .btn-back {
+        background-color: var(--bg-dark); 
+        color: var(--bg-white);
+        border-radius: 10px;
+        padding: 12px 40px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .btn-back:hover {
+
+            color: var(--bg-white);
+        }
+
+</style>
+
+<main class="cupom-page">
+    <header class="form-header">
+        <h1>Criar Cupom</h1>
+        <p>[Nome Corrida]</p>
+    </header>
+
+    <section class="form-container">
+        <form asp-action="Create" method="post" class="cupom-form">
+            @* 1. Campo oculto para o ID do Evento (obrigatório na Model) *@
+            <input type="hidden" asp-for="IdEvento" value="1" />
+
+            <fieldset>
+                <section>
+                    <label asp-for="Nome">Nome do Cupom</label>
+                    <input asp-for="Nome" class="custom-input" placeholder="EX: VERAO20" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </section>
+                <section>
+                    @* 2. Ajustado para 'Desconto' para bater com a ViewModel *@
+                    <label asp-for="Desconto">Porcentagem do desconto %</label>
+                    <input asp-for="Desconto" type="number" class="custom-input" placeholder="10" />
+                    <span asp-validation-for="Desconto" class="text-danger"></span>
+                </section>
+                <section>
+                    <label asp-for="QuantiadeDisponibilizada">Quantidade disponível</label>
+                    <input asp-for="QuantiadeDisponibilizada" class="custom-input" />
+                    <span asp-validation-for="QuantiadeDisponibilizada" class="text-danger"></span>
+                </section>
+            </fieldset>
+
+            <fieldset>
+                <section>
+                    <label asp-for="DataInicio">Data de Início</label>
+                    <input asp-for="DataInicio" class="custom-input" />
+                    <span asp-validation-for="DataInicio" class="text-danger"></span>
+                </section>
+                <section>
+                    <label asp-for="DataTermino">Data de Término</label>
+                    <input asp-for="DataTermino" class="custom-input" />
+                    <span asp-validation-for="DataTermino" class="text-danger"></span>
+                </section>
+            </fieldset>
+
+            <fieldset>
+                <label>Status do cupom</label>
+                <section style="display: flex; gap: 10px;">
+                    @* 3. Ajustado para 'bool' para bater com a sua Model (Status é bool) *@
+                    <label>
+                        <input type="radio" asp-for="Status" value="true" checked hidden>
+                        <span class="status-btn">Ativo</span>
+                    </label>
+                    <label>
+                        <input type="radio" asp-for="Status" value="false" hidden>
+                        <span class="status-btn">Desativado</span>
+                    </label>
+                </section>
+            </fieldset>
+
+            <footer class="form-footer">
+                <button type="submit" class="btn-save">Salvar</button>
+                <a asp-action="Index" class="btn-back text-center">Voltar</a>
+            </footer>
+        </form>
+    </section>
+</main>

@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Models.CupomViewModel>
+
+@{
+    ViewData["Title"] = "Listagem de Cupons";
+}
+
+<style>
+    /* Estilização baseada nas variáveis globais */
+    main.index-page {
+        padding: 20px;
+        font-family: var(--font-standard);
+        background-color: var(--bg-white);
+    }
+
+    header.index-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    /* Link "Novo Cupom" com estilo de botão usando o amarelo EvenPace */
+    .btn-create {
+        background-color: var(--bg-light);
+        color: var(--text-black);
+        padding: 12px 30px;
+        border-radius: 12px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-create:hover {
+            background-color: var(--primary-hover);
+            color: var(--text-black);
+        }
+
+    /* Tabela customizada */
+    section.table-container {
+        overflow-x: auto;
+    }
+
+    .evenpace-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+        .evenpace-table th {
+            background-color: var(--bg-light);
+            color: var(--text-black);
+            padding: 15px;
+            text-align: left;
+        }
+
+        .evenpace-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--bg-light);
+            color: var(--text-black);
+        }
+
+        /* Cores alternadas usando seu cinza claro */
+        .evenpace-table tbody tr:nth-child(even) {
+            background-color: var(--bg-light);
+        }
+
+    .action-link {
+        color: var(--text-grey);
+        font-weight: bold;
+        text-decoration: none;
+        margin-right: 15px;
+    }
+
+        .action-link:hover {
+            color: var(--text-black);
+            text-decoration: underline;
+        }
+
+    .link-delete {
+        color: #d9534f; /* Cor de erro/alerta padrão */
+    }
+</style>
+
+<main class="index-page">
+    <header class="index-header">
+        <section>
+            <h1>Cupons</h1>
+            <p style="color: var(--text-grey);">[Nome da Corrida].</p>
+        </section>
+
+        <nav>
+            <a asp-action="Create" class="btn-create">Criar Cupom</a>
+        </nav>
+    </header>
+
+    <section class="table-container">
+        <table class="evenpace-table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                    <th>Início</th>
+                    <th>Término</th>
+                    <th>Status</th>
+                    <th>Disponível</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>@item.Nome</strong></td>
+                        <td>@item.DataInicio.ToShortDateString()</td>
+                        <td>@item.DataTermino.ToShortDateString()</td>
+                        <td>@item.Status</td>
+                        <td>@item.QuantiadeDisponibilizada</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="action-link">Editar</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="action-link">Ver</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="action-link link-delete">Excluir</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+</main>
