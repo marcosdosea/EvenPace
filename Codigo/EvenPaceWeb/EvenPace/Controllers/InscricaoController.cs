@@ -70,7 +70,7 @@ namespace EvenPace.Controllers
                 vm.Percursos = new List<string> { "3km", "5km", "10km" };
                 vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
 
-                return View("Tela14_InscricaoNaCorrida1", vm);
+                return View("TelaInscricao", vm);
             }
 
             var inscricao = _mapper.Map<Inscricao>(vm.Inscricao);
