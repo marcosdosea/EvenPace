@@ -3,8 +3,10 @@
 
 <div class="mobile-container">
 
+    <!-- IMAGEM EVENTO -->
     <img src="~/imagens/@Model.ImagemEvento" class="event-banner" />
 
+    <!-- INFO EVENTO -->
     <div class="event-card">
         <h2>@Model.NomeEvento</h2>
         <p>📍 @Model.Local</p>
@@ -16,6 +18,7 @@
         <p>@Model.Descricao</p>
     </div>
 
+    <!-- PERCURSOS -->
     <div class="section">
         <h3>Percurso</h3>
         <div class="distance-buttons">
@@ -26,6 +29,7 @@
         </div>
     </div>
 
+    <!-- KITS -->
     <div class="section">
         <h3>Kits</h3>
         @foreach (var kit in Model.Kits)
@@ -41,7 +45,9 @@
         }
     </div>
 
+    <!-- FORM INSCRIÇÃO -->
     <form asp-action="SalvarInscricao" method="post">
+        @Html.AntiForgeryToken()
 
         <input type="hidden" asp-for="Inscricao.IdEvento" />
         <input type="hidden" asp-for="Inscricao.IdKit" id="kitSelecionado" />
@@ -50,6 +56,7 @@
         <div class="section">
             <label>Tamanho da Camisa</label>
             <select asp-for="Inscricao.TamanhoCamisa">
+                <option value="">Selecione</option>
                 <option>P</option>
                 <option>M</option>
                 <option>G</option>
@@ -58,6 +65,7 @@
 
         <button type="submit" class="btn-inscrever">INSCREVER-SE</button>
     </form>
+
 </div>
 
 <script>
