@@ -1,47 +1,42 @@
 ﻿/* EvenPace/wwwroot/css/theme.css */
 
 :root {
-    /* Paleta Principal EvenPace */
-    --primary-color: #FEEA00; /* Amarelo EvenPace */
-    --primary-hover: #DFAA18; /* Amarelo EvenPace (Hover) */
-    /* Tons Escuros (Letras e Elementos) */
-    --text-black: #000000; /* Preto padrão para texto */
-    --text-grey: #2E2E2E; /* Cinza para textos secundários/suaves */
-    /* Tons de Fundo e Superfícies */
-    --bg-white: #FFFFFF; /* Branco - Fundo Padrão */
-    --bg-light: #D9D9D9; /* Cinza claro - Para divisórias, inputs ou cards */
-    --bg-dark: #000000; /* Preto - Para rodapés ou seções de destaque */
-    /* Tipografia */
+    --primary-color: #FEEA00;
+    --primary-hover: #DFAA18;
+    --text-black: #000000;
+    --text-grey: #2E2E2E;
+    --bg-white: #FFFFFF;
+    --bg-light: #D9D9D9;
+    --bg-dark: #000000;
     --font-standard: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Aplicação dos padrões no corpo do site */
 body {
-    background-color: var(--bg-white); /* Padrão BRANCO de cor de fundo*/
-    color: var(--text-black); /* Texto PRETO */
+    background-color: var(--bg-white);
+    color: var(--text-black);
     font-family: var(--font-standard);
     margin: 0;
     padding: 0;
 }
 
-/* Títulos com a cor preta padrão */
 h1, h2, h3, h4, h5, h6 {
     color: var(--text-black);
-    font-weight: 700; /* Deixa os títulos bem marcados */
+    font-weight: 700;
 }
-/* --- ESTILOS GERAIS DO LAYOUT (MENU LATERAL) --- */
 
-/* Logo grande no topo do menu */
+/* --- LOGO ANIMADO --- */
 .logo-sidebar-top {
-    width: 50px; /* <--- Aumente ou diminua este valor aqui */
-    height: auto; /* Deixe 'auto' para não esticar a imagem */
+    width: 50px;
+    height: auto;
     display: block;
     margin: 0 auto;
-    margin-bottom: 20px; /* Dá um espaço antes dos links começarem */
+    margin-bottom: 20px;
+    transition: width 0.3s ease, margin 0.3s ease;
 }
-/* Barra Lateral */
-/*.sidebar {
-    width: 160px;
+
+/* --- BARRA LATERAL --- */
+.sidebar {
+    width: 200px;
     height: 100vh;
     position: sticky;
     top: 0;
@@ -49,55 +44,61 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     flex-direction: column;
     background-color: #fff;
-    z-index: 11; /* Um pouco acima do header para a linha vertical brilhar *
-}*/
-.sidebar {
-    width: 200px; /* Largura que você definiu anteriormente */
-    height: 100vh;
-    position: sticky;
-    top: 0;
-    border-right: 1px solid #000; /* ESTA É A LINHA VERTICAL QUE FICA */
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
     flex-shrink: 0;
+    z-index: 100;
 }
 
 .sidebar-header {
     height: 120px;
-    border-bottom: 1px solid #000; /* Mantida para alinhar com o cabeçalho dos kits */
+    border-bottom: 1px solid #000;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: height 0.3s ease;
 }
-/* Links do Menu */
+
 .sidebar-menu {
     padding-top: 0;
     margin-top: 0;
 }
+
+/* --- RODAPÉ DA BARRA (PERFIL) --- */
 .sidebar-footer {
-    margin-top: auto; /* Empurra o perfil para o rodapé */
+    margin-top: auto;
     padding: 30px 20px;
-    text-align: center;
-    border-top: none; /* REMOVE A LINHA ACIMA DO PERFIL  */
+    border-top: none;
+    /* CENTRALIZAÇÃO PERFEITA */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
 }
-/*.menu-item {
-    padding: 15px 20px;
-    text-decoration: none;
-    color: #000;
-    font-weight: bold;
-    font-size: 1.1rem;
+
+/* Ícone de Perfil (Avatar) */
+.user-avatar {
+    font-size: 2rem;
+    background-color: #ddd;
+    width: 60px; /* Tamanho Desktop */
+    height: 60px;
+    border-radius: 50%;
+    /* Centraliza o emoji/foto dentro da bolinha */
     display: flex;
     align-items: center;
-    gap: 15px;
-    border-bottom: 1px solid #eee;
-}*/
+    justify-content: center;
+    transition: all 0.3s ease; /* Animação suave ao mudar de tamanho */
+    cursor: pointer;
+}
+
+    .user-avatar:hover {
+        background-color: #ccc; /* Efeito hover leve */
+    }
+
+/* --- ITENS DO MENU --- */
 .menu-item {
-    padding: 15px 25px; /* Aumentamos o padding lateral interno */
+    padding: 15px 25px;
     width: 100%;
     box-sizing: border-box;
     display: flex;
-    flex-direction: row; /* Ícone ao lado do texto fica melhor em barras largas */
+    flex-direction: row;
     align-items: center;
     gap: 15px;
     text-decoration: none;
@@ -105,23 +106,130 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
     font-size: 1.1rem;
     border-bottom: 1px solid #e0e0e0;
-
-    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s; 
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
     background-color: #fff;
     position: relative;
     z-index: 1;
 }
 
-.menu-item:hover {
-    background-color: #fff; /* Mantém branco para destacar a sombra */
-    transform: translateY(-3px) translateX(5px); /* Sobe e vai levemente para a direita */
-    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1); /* Sombra dura estilo adesivo, igual ao card  */
-    z-index: 2; /* Garante que o item saltado fique por cima da linha do vizinho */
-    border-radius: 4px; /* Leve arredondado ao saltar */
+    .menu-item:hover {
+        background-color: #fff;
+        transform: translateY(-3px) translateX(5px);
+        box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+        z-index: 2;
+        border-radius: 4px;
+    }
+
+    .menu-item:active {
+        background-color: #fffde7;
+        transform: translateX(8px);
+        border-left: 5px solid #FEEA00;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+/* --- RESPONSIVIDADE (CELULAR) --- */
+@media (max-width: 768px) {
+
+    /* 1. Logo Fica Pequeno */
+    .logo-sidebar-top {
+        width: 35px;
+        margin-bottom: 15px;
+    }
+
+    /* 2. Barra Lateral Fina */
+    .sidebar {
+        width: 70px;
+        transition: width 0.3s ease;
+        overflow: visible;
+    }
+
+    .sidebar-header {
+        height: 100px;
+        padding: 0;
+    }
+
+    /* 3. Ajuste do Rodapé (Perfil) */
+    .sidebar-footer {
+        padding: 20px 0; /* Remove padding lateral para não empurrar o avatar */
+    }
+
+    /* Avatar diminui para caber na barra fina */
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5rem; /* Ajusta tamanho do emoji */
+    }
+
+    /* 4. Ícones do Menu */
+    .menu-item {
+        justify-content: center;
+        padding: 15px 0;
+    }
+
+    .menu-icon {
+        font-size: 1.5rem;
+        margin-right: 0;
+    }
+
+    /* 5. Etiqueta (Tooltip) */
+    .menu-text {
+        display: none;
+        position: absolute;
+        left: 60px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #000;
+        color: #FEEA00;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+        z-index: 999;
+    }
+
+        .menu-text::before {
+            content: "";
+            position: absolute;
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 6px 6px 6px 0;
+            border-style: solid;
+            border-color: transparent #000 transparent transparent;
+        }
+
+    .menu-item:hover .menu-text {
+        display: block;
+        animation: fadeIn 0.2s ease;
+    }
 }
-.menu-item:active {
-    background-color: #fffde7;
-    transform: translateX(8px); /* Fica permanentemente deslocado */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+/* --- ITEM ATIVO (SELECIONADO) --- */
+.menu-item.active {
+    background-color: #fffde7; /* Fundo amarelo bem clarinho */
+    color: #000; /* Garante texto preto */
+    /* Barra lateral de destaque */
     border-left: 5px solid #FEEA00;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+    /* Removemos o 'transform' fixo que causava desalinhamento */
+    font-weight: 800; /* Texto mais grosso */
 }
+
+    /* Efeito ao passar o mouse no item que JÁ está ativo */
+    .menu-item.active:hover {
+        background-color: #fff9c4; /* Amarelo um pouquinho mais forte */
+        box-shadow: none; /* Remove sombra para não poluir */
+        transform: none; /* Não "pula" se já está ativo */
+        border-radius: 0; /* Mantém quadrado */
+    }
