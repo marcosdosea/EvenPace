@@ -29,7 +29,7 @@ namespace EvenPace.Controllers
 
         public IActionResult TelaInscricao(int id)
         {
-            var evento = _eventoService.Get((uint)id);
+            var evento = _eventoService.Get(id);
             var kits = _kitService.Get(id);
 
             var vm = new TelaInscricaoViewModel
@@ -59,7 +59,7 @@ namespace EvenPace.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var evento = _eventoService.Get(vm.IdEvento);
+                var evento = _eventoService.Get((int)vm.IdEvento);
                 var kits = _kitService.Get((int)vm.IdEvento);
 
                 vm.NomeEvento = evento.Nome;
