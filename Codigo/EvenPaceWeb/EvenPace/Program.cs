@@ -7,6 +7,7 @@ var startup = new EvenPaceWeb.Startup(builder.Configuration);
 startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
+startup.Configure(app, app.Environment);
 
 startup.Configure(app, app.Environment);
 
@@ -27,6 +28,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Corredor}/{action=Index}/{id?}");
+    pattern: "{controller=Cupom}/{action=Index}/{id?}");
 
 app.Run();
