@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core;
+﻿using Core;
 using Core.Service;
 
 namespace Service
@@ -28,6 +23,27 @@ namespace Service
             _context.Add(corredor);
             _context.SaveChanges();
             return corredor.Id;
+        }
+
+        /// <summary>
+        /// Encontra o Corredor com o id correspondente
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Retorna um Corredor</returns>
+        public Corredor Get(uint id)
+        {
+            return _context.Corredors.Find(id);
+        }
+        
+        /// <summary>
+        /// Pega o corredor com email e senha compativeis
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="senha"></param>
+        /// <returns>retorna corredor com email e senha compativeis</returns>
+        public Corredor Login(string email, string senha)
+        {
+            return _context.Corredors.FirstOrDefault(e => e.Email == email && e.Senha == senha);
         }
 
         /// <summary>
@@ -59,16 +75,6 @@ namespace Service
                 _context.Update(corredor);
                 _context.SaveChanges();
             }
-        }
-
-        /// <summary>
-        /// Busca um corredor pelo Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public Corredor Get(int id)
-        {
-            return _context.Corredors.Find(id);
         }
 
         /// <summary>

@@ -1,3 +1,5 @@
+using System.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -30,6 +32,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Inscricao}/{action=Index}/{id?}");
+    pattern: "{controller=Corredor}/{action=Create}/{id?}");
 
 app.Run();
