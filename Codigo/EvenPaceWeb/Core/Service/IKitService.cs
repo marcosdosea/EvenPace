@@ -6,5 +6,7 @@ namespace Core.Service
         uint Create(Kit kit);
         Kit Get(int id);
         void Delete(int id);
+        IEnumerable<Kit> GetAll();
+        IEnumerable<Kit> GetByName(string nome);
     }
 }

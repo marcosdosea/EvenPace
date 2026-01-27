@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Core.Service;
-using EvenPace.Models;
-using EvenPaceWeb.Models;
+using Models;
 
 namespace EvenPaceWeb.Controllers
 {

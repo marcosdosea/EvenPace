@@ -9,14 +9,19 @@ namespace EvenPace.Controllers;
 public class CorredorController : Controller
 {
       private ICorredorService _corredorService;
+      private IAvaliacaoEventoService _avaliacaoEventoService;
       private IMapper _mapper;
 
-      public CorredorController(ICorredorService corredor, IMapper mapper)
+      public CorredorController(
+          ICorredorService corredor,
+          IAvaliacaoEventoService avaliacaoEventoService,
+          IMapper mapper)
       {
           _corredorService = corredor;
+          _avaliacaoEventoService = avaliacaoEventoService;
           _mapper = mapper;
       }
-
+      
       // Get: CorredorController/Index
       public ActionResult Index()
       {
@@ -97,4 +102,33 @@ public class CorredorController : Controller
           var eventosModel = _mapper.Map<List<HistoricoEventoViewModel>>(eventos);
           return View(eventosModel);
       }
+      // GET: Corredor/AvaliarEvento/5
+      public ActionResult AvaliarEvento(int idEvento)
+      {
+          var model = new AvaliacaoEventoViewModel
+      {
+          DataAvaliacao = DateTime.Now
+      };
+
+          ViewBag.IdEvento = idEvento; // só para contexto da View
+          return View(model);
+      }
+
+      [HttpPost]
+      [ValidateAntiForgeryToken]
+      public ActionResult AvaliarEvento(AvaliacaoEventoViewModel model)
+      {
+          if (ModelState.IsValid)
+      {
+          var avaliacao = _mapper.Map<AvaliacaoEvento>(model);
+          _avaliacaoEventoService.Create(avaliacao);
+
+          return RedirectToAction(nameof(Index));
+      }
+
+          return View(model);
+      }
+          View(model);
+}
+
 }

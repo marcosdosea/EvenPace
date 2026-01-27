@@ -1,17 +1,25 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace EvenPaceWeb.Models
+namespace Models
 {
     public class AdministradorViewModel
     {
+        [Key]
+        [Display(Name = "Código")]
+        [Required(ErrorMessage = "O campo Id é obrigatório.")]
+        public uint Id { get; set; }
+
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "O nome é obrigatório.")]
-        [StringLength(100, ErrorMessage = "O nome não pode exceder 100 caracteres.")]
+        [StringLength(100)]
         public string Nome { get; set; } = null!;
 
-        [Display(Name = "E-mail")]
+        [Display(Name = "Email")]
         [Required(ErrorMessage = "O e-mail é obrigatório.")]
-        [EmailAddress(ErrorMessage = "E-mail inválido.")]
         public string Email { get; set; } = null!;
+
+        [Display(Name = "Senha")]
+        [Required(ErrorMessage = "A senha é obrigatória.")]
+        public string Senha { get; set; } = null!;
     }
 }
