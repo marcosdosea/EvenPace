@@ -95,6 +95,13 @@ public class CorredorController : Controller
           return RedirectToAction(nameof(Index));
       }
 
+      // GET: Corredor/HistoricoEventos/5
+      public ActionResult HistoricoEventos(int id)
+      {
+          var eventos = _corredorService.GetHistoricoEventos(id);
+          var eventosModel = _mapper.Map<List<HistoricoEventoViewModel>>(eventos);
+          return View(eventosModel);
+      }
       // GET: Corredor/AvaliarEvento/5
       public ActionResult AvaliarEvento(int idEvento)
       {

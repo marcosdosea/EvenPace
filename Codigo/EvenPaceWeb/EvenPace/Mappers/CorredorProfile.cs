@@ -10,6 +10,5 @@ public class CorredorProfile : Profile
     {
         CreateMap<CorredorViewModel,Corredor>().ReverseMap();
         CreateMap<Evento, HistoricoEventoViewModel>();
-        CreateMap<AvaliacaoEvento, AvaliacaoEventoViewModel>().ReverseMap();
     }
 }

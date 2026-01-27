@@ -1,32 +1,54 @@
 @{
-    ViewData["Title"] = "Avaliação realizada";
+    ViewData["Title"] = "Histórico de Eventos";
 }
 
-<article class="avaliacao-container">
+<article class="historico-container">
 
-    <!-- Card central -->
-    <section class="avaliacao-card">
+    <!-- Cabeçalho -->
+    <header class="historico-header">
+        <a href="javascript:history.back()" class="btn-voltar">
+            &#8592;
+        </a>
+        <h1>Histórico de eventos</h1>
+    </header>
 
-        <h2>Avaliação da corrida</h2>
+    <!-- Lista de eventos -->
+    <section class="lista-eventos">
 
-        <!-- Estrelas fixas -->
-        <section class="estrelas estrelas-fixas">
-            ★★★★★
-        </section>
+        <!-- Card Evento -->
+        <article class="evento-card">
+            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
 
-        <p class="avaliacao-texto">
-            Deixe seu comentário
-        </p>
+            <section class="evento-info">
+                <h2>Circuito Sesc de Corridas</h2>
+                <p class="evento-data">Itabaiana · Dia 20/08</p>
 
-        <section class="comentario-exibido">
-            Corrida bem organizada gostei muito
-        </section>
+                <section class="evento-botoes">
+                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
+                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
+                </section>
 
-    </section>
+                <button class="btn-cancelar">Cancelar Inscrição</button>
+            </section>
+        </article>
 
-    <!-- Link final -->
-    <section class="voltar-inicio">
-        <a href="/Home/Index">Ir para tela inicial</a>
+        <!-- Card Evento -->
+        <article class="evento-card">
+            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
+
+            <section class="evento-info">
+                <h2>Circuito Sesc de Corridas</h2>
+                <p class="evento-data">Itabaiana · Dia 20/08</p>
+
+                <section class="evento-botoes">
+                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
+                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
+                </section>
+
+                <button class="btn-cancelar">Cancelar Inscrição</button>
+            </section>
+        </article>
+
     </section>
 
     <!-- Menu inferior -->
