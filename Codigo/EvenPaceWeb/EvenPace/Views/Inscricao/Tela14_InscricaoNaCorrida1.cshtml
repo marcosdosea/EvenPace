@@ -22,20 +22,35 @@
         <div class="distance-buttons">
             @foreach (var p in Model.Percursos)
             {
-                <button type="button" onclick="selecionarDistancia('@p')">@p</button>
+                <button
+                    type="button"
+                    class="btn-distance"
+                    onclick="selecionarDistancia(this, '@p')">
+                    @p
+                </button>
             }
         </div>
     </div>
 
     <div class="section">
         <h3>Kits</h3>
+
         @foreach (var kit in Model.Kits)
         {
             <div class="kit-card">
-                <img src="~/imagens/@kit.Imagem" />
-                <h4>@kit.Nome</h4>
-                <p>R$ @kit.Valor.ToString("N2")</p>
-                <button type="button" onclick="selecionarKit(@kit.Id)">Selecionar</button>
+                <img src="~/imagens/@kit.Imagem" class="kit-img" />
+
+                <div class="kit-info">
+                    <div class="kit-title">@kit.Nome</div>
+                    <div class="kit-price">R$ @kit.Valor.ToString("N2")</div>
+
+                    <button
+                        type="button"
+                        class="btn-kit"
+                        onclick="selecionarKit(this, @kit.Id)">
+                        Selecionar
+                    </button>
+                </div>
             </div>
         }
     </div>
@@ -50,7 +65,7 @@
 
         <div class="section">
             <label>Tamanho da Camisa</label>
-            <select asp-for="Inscricao.TamanhoCamisa">
+            <select asp-for="Inscricao.TamanhoCamisa" class="input-select">
                 <option value="">Selecione</option>
                 <option>P</option>
                 <option>M</option>
@@ -59,18 +74,8 @@
             <span asp-validation-for="Inscricao.TamanhoCamisa"></span>
         </div>
 
-        <button type="submit">INSCREVER-SE</button>
+        <button type="submit" class="btn-inscrever">
+            INSCREVER-SE
+        </button>
     </form>
 </div>
-
-@section Scripts {
-<script>
-    function selecionarDistancia(valor) {
-        document.getElementById("distanciaSelecionada").value = valor;
-    }
-
-    function selecionarKit(id) {
-        document.getElementById("kitSelecionado").value = id;
-    }
-</script>
-}
