@@ -47,3 +47,4 @@ namespace Models
         public int? IdAvaliacaoEvento { get; set; }
     }
 }
+ 
