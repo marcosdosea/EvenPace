@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Avaliação enviada";
+}
+
+<div class="app-container">
+
+    <!-- HEADER -->
+    <header class="avaliacao-header">
+        <a href="javascript:history.back()" class="btn-voltar">&#8592;</a>
+        <h1>Avaliação</h1>
+    </header>
+
+    <!-- CONTEÚDO -->
+    <article class="avaliacao-container">
+
+        <section class="avaliacao-card">
+
+            <!-- Estrelas fixas (exemplo: 5 estrelas) -->
+            <div class="estrelas-fixas">
+                ★★★★★
+            </div>
+
+            <h2>Avaliação enviada!</h2>
+
+            <p>
+                Obrigado por avaliar a corrida.  
+                Sua opinião é muito importante 😊
+            </p>
+
+            <a href="/Corredor/Index" class="btn-enviar">
+                Meus eventos
+            </a>
+
+        </section>
+
+        <div class="voltar-inicio">
+            <a href="/Home/Index">Voltar ao início</a>
+        </div>
+
+    </article>
+
+    <!-- MENU INFERIOR -->
+    <nav class="menu-inferior">
+        <a href="/Home/Index">Início</a>
+        <a href="/Corredor/Index" class="ativo">Eventos</a>
+        <a href="/Perfil/Index">Perfil</a>
+    </nav>
+
+</div>
