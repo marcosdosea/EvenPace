@@ -2,8 +2,9 @@ using AutoMapper;
 using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
+using EvenPace.Models;
 using Models;
-using ;
+using EvenPaceWeb.Models;
 
 namespace EvenPace.Controllers
 {
@@ -26,24 +27,24 @@ namespace EvenPace.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Tela14_InscricaoNaCorrida1(int idEvento)
+        public IActionResult TelaInscricao(int id)
         {
-            var evento = _eventoService.Get(idEvento);
-            var kits = _kitService.GetByEvento(idEvento);
+            var evento = _eventoService.Get((uint)id);
+            var kits = _kitService.Get(id);
 
             var vm = new TelaInscricaoViewModel
             {
                 IdEvento = evento.Id,
                 NomeEvento = evento.Nome,
                 ImagemEvento = evento.Imagem,
-                Local = evento.Local,
-                DataEvento = evento.DataEvento,
+                Local= evento.Rua,
+                DataEvento = evento.Data,
                 Descricao = evento.Descricao,
                 Percursos = new List<string> { "3km", "5km", "10km" },
                 Kits = _mapper.Map<List<KitViewModel>>(kits),
                 Inscricao = new InscricaoViewModel
                 {
-                    IdEvento = evento.Id,
+                    IdEvento = (int)evento.Id,
                     DataInscricao = DateTime.Now,
                     IdCorredor = 1 
                 }
@@ -59,12 +60,12 @@ namespace EvenPace.Controllers
             if (!ModelState.IsValid)
             {
                 var evento = _eventoService.Get(vm.IdEvento);
-                var kits = _kitService.GetByEvento(vm.IdEvento);
+                var kits = _kitService.Get((int)vm.IdEvento);
 
                 vm.NomeEvento = evento.Nome;
                 vm.ImagemEvento = evento.Imagem;
-                vm.Local = evento.Local;
-                vm.DataEvento = evento.DataEvento;
+                vm.Local = evento.Cidade;
+                vm.DataEvento = evento.Data;
                 vm.Descricao = evento.Descricao;
                 vm.Percursos = new List<string> { "3km", "5km", "10km" };
                 vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
