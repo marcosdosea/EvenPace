@@ -22,7 +22,7 @@
         </div>
     </header>
 
-    <form asp-action="Tela17_Organizacao_CriarKit" method="post" enctype="multipart/form-data" class="form-kits">
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="form-kits">
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="Imagem" />
         <input type="hidden" asp-for="IdEvento" />
@@ -87,7 +87,7 @@
         <footer class="form-actions">
             <button type="submit" class="btn-gray">Salvar</button>
 
-            <a asp-action="Tela09_Organizacao_Kits"
+            <a asp-action="IndexKit"
                asp-route-idEvento="@Model.IdEvento"
                class="btn-gray">
                 Voltar
