@@ -67,32 +67,29 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: auto;
     padding: 30px 20px;
     border-top: none;
-    /* CENTRALIZAÇÃO PERFEITA */
     display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
+    justify-content: center;
+    align-items: center;
 }
 
-/* Ícone de Perfil (Avatar) */
 .user-avatar {
     font-size: 2rem;
     background-color: #ddd;
-    width: 60px; /* Tamanho Desktop */
+    width: 60px;
     height: 60px;
     border-radius: 50%;
-    /* Centraliza o emoji/foto dentro da bolinha */
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease; /* Animação suave ao mudar de tamanho */
+    transition: all 0.3s ease;
     cursor: pointer;
 }
 
     .user-avatar:hover {
-        background-color: #ccc; /* Efeito hover leve */
+        background-color: #ccc;
     }
 
-/* --- ITENS DO MENU --- */
+/* --- ITENS DO MENU (GERAL) --- */
 .menu-item {
     padding: 15px 25px;
     width: 100%;
@@ -127,10 +124,31 @@ h1, h2, h3, h4, h5, h6 {
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
     }
 
+    /* --- ITEM ATIVO (SELECIONADO - DESKTOP) --- */
+    .menu-item.active {
+        background-color: #fffde7;
+        color: #000;
+        border-left: 5px solid #FEEA00;
+        font-weight: 800;
+        transition: all 0.2s ease;
+        position: relative;
+        z-index: 1;
+    }
+
+        /* Hover no item ativo (Pulo 3D + Destaque) */
+        .menu-item.active:hover {
+            background-color: #FFF59D;
+            transform: translateY(-3px) translateX(5px);
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            z-index: 2;
+            border-left: 5px solid #FFD600;
+        }
+
 /* --- RESPONSIVIDADE (CELULAR) --- */
 @media (max-width: 768px) {
 
-    /* 1. Logo Fica Pequeno */
+    /* 1. Logo Pequeno */
     .logo-sidebar-top {
         width: 35px;
         margin-bottom: 15px;
@@ -148,19 +166,18 @@ h1, h2, h3, h4, h5, h6 {
         padding: 0;
     }
 
-    /* 3. Ajuste do Rodapé (Perfil) */
+    /* 3. Rodapé Compacto */
     .sidebar-footer {
-        padding: 20px 0; /* Remove padding lateral para não empurrar o avatar */
+        padding: 20px 0;
     }
 
-    /* Avatar diminui para caber na barra fina */
     .user-avatar {
         width: 45px;
         height: 45px;
-        font-size: 1.5rem; /* Ajusta tamanho do emoji */
+        font-size: 1.5rem;
     }
 
-    /* 4. Ícones do Menu */
+    /* 4. Ícones Centralizados */
     .menu-item {
         justify-content: center;
         padding: 15px 0;
@@ -171,7 +188,7 @@ h1, h2, h3, h4, h5, h6 {
         margin-right: 0;
     }
 
-    /* 5. Etiqueta (Tooltip) */
+    /* 5. Tooltip (Etiqueta) */
     .menu-text {
         display: none;
         position: absolute;
@@ -199,10 +216,32 @@ h1, h2, h3, h4, h5, h6 {
             border-color: transparent #000 transparent transparent;
         }
 
+    /* Mostra Tooltip no Hover (Item Normal) */
     .menu-item:hover .menu-text {
         display: block;
         animation: fadeIn 0.2s ease;
     }
+
+    /* --- AJUSTES DO ITEM ATIVO NO CELULAR --- */
+    .menu-item.active {
+        background-color: #fffde7;
+        /* Borda fina compensada com padding para centralizar */
+        border-left: 4px solid #FEEA00;
+        padding-left: 0;
+        padding-right: 4px;
+    }
+
+        /* Remove o "pulo" no celular para não desalinhar */
+        .menu-item.active:hover {
+            transform: none;
+            box-shadow: none;
+            background-color: #FFF59D;
+        }
+
+            /* Garante que o Tooltip apareça também no item ativo */
+            .menu-item.active:hover .menu-text {
+                display: block;
+            }
 }
 
 @keyframes fadeIn {
@@ -216,20 +255,3 @@ h1, h2, h3, h4, h5, h6 {
         transform: translateY(-50%) translateX(0);
     }
 }
-/* --- ITEM ATIVO (SELECIONADO) --- */
-.menu-item.active {
-    background-color: #fffde7; /* Fundo amarelo bem clarinho */
-    color: #000; /* Garante texto preto */
-    /* Barra lateral de destaque */
-    border-left: 5px solid #FEEA00;
-    /* Removemos o 'transform' fixo que causava desalinhamento */
-    font-weight: 800; /* Texto mais grosso */
-}
-
-    /* Efeito ao passar o mouse no item que JÁ está ativo */
-    .menu-item.active:hover {
-        background-color: #fff9c4; /* Amarelo um pouquinho mais forte */
-        box-shadow: none; /* Remove sombra para não poluir */
-        transform: none; /* Não "pula" se já está ativo */
-        border-radius: 0; /* Mantém quadrado */
-    }

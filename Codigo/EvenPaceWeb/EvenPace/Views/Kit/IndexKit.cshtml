@@ -16,7 +16,7 @@
 
     <header class="page-header header-responsive" style="margin-bottom: 30px;">
         <div class="header-title-group">
-            
+
 
             <div class="header-text">
                 <h1>Kits</h1>
@@ -68,7 +68,7 @@
                            class="btn-action edit">
                             ✏️ Editar
                         </a>
-                       
+
                         <a asp-action="Excluir" asp-route-id="@kit.Id" class="btn-action delete"
                            onclick="return confirm('Tem certeza que deseja apagar o kit @kit.Nome?');">
                             🗑️ Excluir
@@ -109,4 +109,3 @@
         }
     });
 </script>
-
