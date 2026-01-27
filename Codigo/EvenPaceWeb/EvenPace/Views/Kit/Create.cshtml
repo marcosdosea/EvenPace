@@ -11,11 +11,8 @@
         <div asp-validation-summary="All" class="alert alert-danger" style="background: #f8d7da; color: #721c24; padding: 10px; border: 1px solid #f5c6cb; margin-bottom: 20px;">
         </div>
     }
-    
-  
-    <header class="page-header">
-        
 
+    <header class="page-header">
         <div class="header-titles">
             <h1>Kit</h1>
             <p class="subtitle">@ViewBag.NomeCorrida</p>
@@ -65,20 +62,17 @@
 
                 <label class="size-row">
                     <span>P</span>
-                    <input asp-for="DisponibilidadeP" type="number" min="0" class="input-qtd"
-                           onchange="if(this.value < 0) this.value = 0;" />
+                    <input asp-for="DisponibilidadeP" type="number" min="0" class="input-qtd" onchange="if(this.value < 0) this.value = 0;" />
                 </label>
 
                 <label class="size-row">
                     <span>M</span>
-                    <input asp-for="DisponibilidadeM" type="number" min="0" class="input-qtd"
-                           onchange="if(this.value < 0) this.value = 0;" />
+                    <input asp-for="DisponibilidadeM" type="number" min="0" class="input-qtd" onchange="if(this.value < 0) this.value = 0;" />
                 </label>
 
                 <label class="size-row">
                     <span>G</span>
-                    <input asp-for="DisponibilidadeG" type="number" min="0" class="input-qtd"
-                           onchange="if(this.value < 0) this.value = 0;" />
+                    <input asp-for="DisponibilidadeG" type="number" min="0" class="input-qtd" onchange="if(this.value < 0) this.value = 0;" />
                 </label>
 
             </fieldset>
@@ -86,45 +80,31 @@
 
         <footer class="form-actions">
             <button type="submit" class="btn-gray">Salvar</button>
-
-            <a asp-action="IndexKit"
-               asp-route-idEvento="@Model.IdEvento"
-               class="btn-gray">
-                Voltar
-            </a>
+            <a asp-action="IndexKit" asp-route-idEvento="@Model.IdEvento" class="btn-gray">Voltar</a>
         </footer>
 
     </form>
-
 </main>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Tenta pegar o valor do campo oculto (que vem do banco com o UUID)
         var hiddenInput = document.getElementById("Imagem");
-
-        // Pega o campo visual (o cinza)
         var visualInput = document.querySelector(".input-wrapper input[type='text']");
 
         if (hiddenInput && visualInput && hiddenInput.value) {
             var nomeCompleto = hiddenInput.value;
 
-            // TRUQUE VISUAL:
-            // O nome é algo tipo: "8a1938d3-8bc0..._MinhaFoto.png"
-            // Nós queremos pegar tudo que vem DEPOIS do primeiro underline (_)
-
+            // Lógica para limpar o nome da imagem (remover o UUID)
             if (nomeCompleto.includes('_')) {
-                // Corta a string a partir do primeiro caractere depois do '_'
                 var nomeLimpo = nomeCompleto.substring(nomeCompleto.indexOf('_') + 1);
                 visualInput.value = nomeLimpo;
             } else {
-                // Se não tiver underline (ex: sistemas antigos), mostra normal
                 visualInput.value = nomeCompleto;
             }
         }
     });
 
-    // Atualiza o nome quando você seleciona um arquivo novo do computador
-    // (Aqui o nome já vem limpo do Windows/Mac, então não precisa tratar)
+    // Atualiza o input visual quando o usuário seleciona um arquivo
     var fileInput = document.querySelector('.file-hidden');
     if (fileInput) {
         fileInput.addEventListener('change', function(e) {
