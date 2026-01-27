@@ -19,9 +19,6 @@ namespace EvenPaceWeb
         {
             services.AddControllersWithViews();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            // Adicione outros serviços necessários aqui
-            services.AddDbContext<EvenPaceContext>(options =>
-                options.UseMySQL(Configuration.GetConnectionString("EvenPaceDatabase")));
 
             // Injeção de dependência Services
             services.AddTransient<IAdministradorService, AdministradorService>();
@@ -37,7 +34,14 @@ namespace EvenPaceWeb
             // Injeção de dependência AutoMapper
             services.AddAutoMapper(typeof(Startup).Assembly);
 
+                        
+            var connectionString = Configuration.GetConnectionString("EvenPaceDatabase");
+            
+            if (string.IsNullOrEmpty(connectionString))
+                throw new InvalidOperationException("Connection string 'EvenPaceDatabase' não encontrada.");
 
+            services.AddDbContext<EvenPaceContext>(options =>
+                options.UseMySQL(connectionString));
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -50,6 +54,7 @@ namespace EvenPaceWeb
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
