@@ -9,11 +9,16 @@ namespace EvenPace.Controllers;
 public class CorredorController : Controller
 {
       private ICorredorService _corredorService;
+      private IAvaliacaoEventoService _avaliacaoEventoService;
       private IMapper _mapper;
 
-      public CorredorController(ICorredorService corredor, IMapper mapper)
+      public CorredorController(
+          ICorredorService corredor,
+          IAvaliacaoEventoService avaliacaoEventoService,
+          IMapper mapper)
       {
           _corredorService = corredor;
+          _avaliacaoEventoService = avaliacaoEventoService;
           _mapper = mapper;
       }
       
@@ -90,3 +95,4 @@ public class CorredorController : Controller
           return RedirectToAction(nameof(Index));
       }
 }
+

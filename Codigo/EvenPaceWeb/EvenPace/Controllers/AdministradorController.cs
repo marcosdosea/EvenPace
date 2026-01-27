@@ -1,20 +1,35 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Core.Service;
+using AutoMapper;
+using Models;
 
 namespace EvenPaceWeb.Controllers
 {
     public class AdministradorController : Controller
     {
+        private readonly IAdministradorService _administradorService;
+        private readonly IMapper _mapper;
+
+        public AdministradorController(IAdministradorService administradorService, IMapper mapper)
+        {
+            _administradorService = administradorService;
+            _mapper = mapper;
+        }
         // GET: AdministradorController
         public ActionResult Index()
         {
-            return View();
+            var administradores = _administradorService.GetAll();
+            var administradorViewModels = _mapper.Map<List<AdministradorViewModel>>(administradores);
+            return View(administradorViewModels);
         }
 
         // GET: AdministradorController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var administrador = _administradorService.Get((int)id);
+            var administradorViewModel = _mapper.Map<AdministradorViewModel>(administrador);
+            return View(administradorViewModel);
         }
 
         // GET: AdministradorController/Create
@@ -23,61 +38,57 @@ namespace EvenPaceWeb.Controllers
             return View();
         }
 
-        // POST: AdministradorController/Create
+        // POST: AdministadorController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(AdministradorViewModel administradorViewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                var administrador = _mapper.Map<Core.Administrador>(administradorViewModel);
+                _administradorService.Create(administrador);
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: AdministradorController/Edit/5
+        // GET: AdministadorController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var administrador = _administradorService.Get((int)id);
+            var administradorViewModel = _mapper.Map<AdministradorViewModel>(administrador);
+            return View(administradorViewModel);
         }
 
-        // POST: AdministradorController/Edit/5
+        // POST: AdministadorController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                var administrador = _mapper.Map<Core.Administrador>(collection);
+                _administradorService.Edit(administrador);
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: AdministradorController/Delete/5
+        // GET: AdministadorController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var administrador = _administradorService.Get((int)id);
+            var administradorViewModel = _mapper.Map<AdministradorViewModel>(administrador);
+            return View(administradorViewModel);
         }
 
-        // POST: AdministradorController/Delete/5
+        // POST: AdministadorController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, AdministradorViewModel administradorViewModel)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _administradorService.Delete((int)id);
+            return RedirectToAction(nameof(Index));
         }
+        
+
     }
 }

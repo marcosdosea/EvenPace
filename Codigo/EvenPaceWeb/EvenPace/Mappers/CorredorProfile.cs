@@ -2,7 +2,7 @@ using AutoMapper;
 using Models;
 using Core;
 
-namespace EvenPace.Mappers;
+namespace Mappers;
 
 public class CorredorProfile : Profile
 {

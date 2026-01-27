@@ -3,7 +3,7 @@ using Core;
 using EvenPace.Models;
 using Models;
 
-namespace EvenPaceWeb.Mappers
+namespace Mappers
 {
     public class OrganizacaoProfile : Profile
     {

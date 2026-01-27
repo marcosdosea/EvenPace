@@ -1,20 +1,35 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Core;
+using Core.Service;
+using Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EvenPaceWeb.Controllers
 {
     public class EventoController : Controller
     {
+        private readonly IEventosService _eventoService;
+        private readonly IMapper _mapper;
+        public EventoController(IEventosService eventoService, IMapper mapper)
+        {
+            _eventoService = eventoService;
+            _mapper = mapper;
+        }
         // GET: EventoController
         public ActionResult Index()
         {
-            return View();
+            var eventos = _eventoService.GetAll();
+            var eventoViewModels = _mapper.Map<List<EventoViewModel>>(eventos);
+            return View(eventoViewModels);
         }
 
         // GET: EventoController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var evento = _eventoService.Get((int)id);
+            var eventoViewModel = _mapper.Map<EventoViewModel>(evento);
+            return View(eventoViewModel);
         }
 
         // GET: EventoController/Create
@@ -26,43 +41,44 @@ namespace EvenPaceWeb.Controllers
         // POST: EventoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(EventoViewModel eventoViewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                var evento = _mapper.Map<Core.Evento>(eventoViewModel);
+                _eventoService.Create(evento);
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: EventoController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var evento = _eventoService.Get((int)id);
+            var eventoViewModel = _mapper.Map<EventoViewModel>(evento);
+            return View(eventoViewModel);
         }
 
         // POST: EventoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(EventoViewModel eventoViewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                var evento = _mapper.Map<Core.Evento>(eventoViewModel);
+                _eventoService.Edit(evento);
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: EventoController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var evento = _eventoService.Get((int)id);
+            var eventoViewModel = _mapper.Map<EventoViewModel>(evento);
+            return View(eventoViewModel);
         }
 
         // POST: EventoController/Delete/5
@@ -70,14 +86,9 @@ namespace EvenPaceWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _eventoService.Delete((int)id);
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }

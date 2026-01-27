@@ -21,7 +21,7 @@ public class CartaoCreditoControler : Controller
     public ActionResult Index()
     {
         var cartaoCredito = _cartaoCredito.GetAll();
-        var cartaoCreditoViewModels = _mapper.Map<List<CartaoCreditoViewViewModel>>(cartaoCredito);
+        var cartaoCreditoViewModels = _mapper.Map<List<CartaoCreditoViewModel>>(cartaoCredito);
         return View(cartaoCreditoViewModels);
     }
 
@@ -29,7 +29,7 @@ public class CartaoCreditoControler : Controller
     public ActionResult Details(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
-        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewViewModel>(cartaoCredito);
+        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewModel>(cartaoCredito);
         return View(cartaoCreditoViewModel);
     }
 
@@ -42,7 +42,7 @@ public class CartaoCreditoControler : Controller
     // POST: CartaoCreditoControler/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(CartaoCreditoViewViewModel cartaoCreditoViewModel)
+    public ActionResult Create(CartaoCreditoViewModel cartaoCreditoViewModel)
     {
         if (ModelState.IsValid)
         {
@@ -56,7 +56,7 @@ public class CartaoCreditoControler : Controller
     public ActionResult Edit(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
-        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewViewModel>(cartaoCredito);
+        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewModel>(cartaoCredito);
         return View(cartaoCreditoViewModel);
     }
 
@@ -77,14 +77,14 @@ public class CartaoCreditoControler : Controller
     public ActionResult Delete(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
-        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewViewModel>(cartaoCredito);
+        var cartaoCreditoViewModel = _mapper.Map<CartaoCreditoViewModel>(cartaoCredito);
         return View(cartaoCreditoViewModel);
     }
 
     // POST: CartaoCreditoControler/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, CartaoCreditoViewViewModel cartaoCreditoViewModel)
+    public ActionResult Delete(int id, CartaoCreditoViewModel cartaoCreditoViewModel)
     {
         _cartaoCredito.Delete((int)id);
         return RedirectToAction(nameof(Index));

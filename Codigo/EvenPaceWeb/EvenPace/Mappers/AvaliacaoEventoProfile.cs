@@ -7,7 +7,7 @@ namespace EvenPaceWeb.Mappers
 
         public AvaliacaoEventoProfile()
         {
-            CreateMap<Core.AvaliacaoEvento, Models.AvaliacaoEventoViewModel>().ReverseMap();
+            CreateMap<Core.AvaliacaoEvento, Models.AdministradorViewModel>().ReverseMap();
         }
     }
 }

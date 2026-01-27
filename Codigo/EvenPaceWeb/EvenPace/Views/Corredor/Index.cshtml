@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "Histórico de Eventos";
+}
+
+<article class="historico-container">
+
+    <!-- Cabeçalho -->
+    <header class="historico-header">
+        <a href="javascript:history.back()" class="btn-voltar">
+            &#8592;
+        </a>
+        <h1>Histórico de eventos</h1>
+    </header>
+
+    <!-- Lista de eventos -->
+    <section class="lista-eventos">
+
+        <!-- Card Evento -->
+        <article class="evento-card">
+            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
+
+            <section class="evento-info">
+                <h2>Circuito Sesc de Corridas</h2>
+                <p class="evento-data">Itabaiana · Dia 20/08</p>
+
+                <section class="evento-botoes">
+                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
+                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
+                </section>
+
+                <button class="btn-cancelar">Cancelar Inscrição</button>
+            </section>
+        </article>
+
+        <!-- Card Evento -->
+        <article class="evento-card">
+            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
+
+            <section class="evento-info">
+                <h2>Circuito Sesc de Corridas</h2>
+                <p class="evento-data">Itabaiana · Dia 20/08</p>
+
+                <section class="evento-botoes">
+                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
+                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
+                </section>
+
+                <button class="btn-cancelar">Cancelar Inscrição</button>
+            </section>
+        </article>
+
+    </section>
+
+    <!-- Menu inferior -->
+    <nav class="menu-inferior">
+        <a href="/Home/Index">Início</a>
+        <a href="/Conquistas">Conquistas</a>
+        <a href="/Cupons">Cupons</a>
+        <a href="/HistoricoEventos" class="ativo">Histórico</a>
+        <a href="/Perfil">Perfil</a>
+    </nav>
+
+</article>

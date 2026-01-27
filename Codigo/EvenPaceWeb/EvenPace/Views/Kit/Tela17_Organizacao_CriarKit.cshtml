@@ -1,0 +1,137 @@
+﻿@model Models.KitViewModel
+@{
+    ViewData["Title"] = "Criar Kit";
+    Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+}
+<link rel="stylesheet" href="~/css/kit.css" />
+
+<main class="main-container">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div asp-validation-summary="All" class="alert alert-danger" style="background: #f8d7da; color: #721c24; padding: 10px; border: 1px solid #f5c6cb; margin-bottom: 20px;">
+        </div>
+    }
+    
+  
+    <header class="page-header">
+        
+
+        <div class="header-titles">
+            <h1>Kit</h1>
+            <p class="subtitle">@ViewBag.NomeCorrida</p>
+        </div>
+    </header>
+
+    <form asp-action="Tela17_Organizacao_CriarKit" method="post" enctype="multipart/form-data" class="form-kits">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Imagem" />
+        <input type="hidden" asp-for="IdEvento" />
+
+        <p class="form-block">
+            <label asp-for="Nome" class="label-bold">Nome</label>
+            <input asp-for="Nome" class="input-gray" placeholder="Ex: Kit Premium" />
+            <span asp-validation-for="Nome" style="color:red;"></span>
+        </p>
+
+        <section class="row-flex">
+            <p class="col-fixed">
+                <label asp-for="Valor" class="label-bold">Valor</label>
+                <input asp-for="Valor" class="input-gray" placeholder="R$ 0,00" />
+                <span asp-validation-for="Valor" style="color:red;"></span>
+            </p>
+
+            <p class="col-grow input-wrapper">
+                <label class="label-bold">Imagem</label>
+                <input type="text" class="input-gray" placeholder="Nenhum arquivo" readonly />
+                <span class="icon-upload" aria-hidden="true">⬆️</span>
+                <input type="file" name="imagemUpload" class="file-hidden" />
+            </p>
+        </section>
+
+        <section class="row-flex">
+            <p class="col-grow desc-area">
+                <label asp-for="Descricao" class="label-bold">Descrição</label>
+                <textarea asp-for="Descricao" class="input-gray" rows="8"></textarea>
+                <span asp-validation-for="Descricao" style="color:red;"></span>
+            </p>
+
+            <fieldset class="col-grow sizes-fieldset">
+                <legend class="legend-title">Disponibilidade de camisetas</legend>
+
+                <div class="header-sizes">
+                    <strong>Tamanho</strong>
+                    <strong>Quantidade</strong>
+                </div>
+
+                <label class="size-row">
+                    <span>P</span>
+                    <input asp-for="DisponibilidadeP" type="number" min="0" class="input-qtd"
+                           onchange="if(this.value < 0) this.value = 0;" />
+                </label>
+
+                <label class="size-row">
+                    <span>M</span>
+                    <input asp-for="DisponibilidadeM" type="number" min="0" class="input-qtd"
+                           onchange="if(this.value < 0) this.value = 0;" />
+                </label>
+
+                <label class="size-row">
+                    <span>G</span>
+                    <input asp-for="DisponibilidadeG" type="number" min="0" class="input-qtd"
+                           onchange="if(this.value < 0) this.value = 0;" />
+                </label>
+
+            </fieldset>
+        </section>
+
+        <footer class="form-actions">
+            <button type="submit" class="btn-gray">Salvar</button>
+
+            <a asp-action="Tela09_Organizacao_Kits"
+               asp-route-idEvento="@Model.IdEvento"
+               class="btn-gray">
+                Voltar
+            </a>
+        </footer>
+
+    </form>
+
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Tenta pegar o valor do campo oculto (que vem do banco com o UUID)
+        var hiddenInput = document.getElementById("Imagem");
+
+        // Pega o campo visual (o cinza)
+        var visualInput = document.querySelector(".input-wrapper input[type='text']");
+
+        if (hiddenInput && visualInput && hiddenInput.value) {
+            var nomeCompleto = hiddenInput.value;
+
+            // TRUQUE VISUAL:
+            // O nome é algo tipo: "8a1938d3-8bc0..._MinhaFoto.png"
+            // Nós queremos pegar tudo que vem DEPOIS do primeiro underline (_)
+
+            if (nomeCompleto.includes('_')) {
+                // Corta a string a partir do primeiro caractere depois do '_'
+                var nomeLimpo = nomeCompleto.substring(nomeCompleto.indexOf('_') + 1);
+                visualInput.value = nomeLimpo;
+            } else {
+                // Se não tiver underline (ex: sistemas antigos), mostra normal
+                visualInput.value = nomeCompleto;
+            }
+        }
+    });
+
+    // Atualiza o nome quando você seleciona um arquivo novo do computador
+    // (Aqui o nome já vem limpo do Windows/Mac, então não precisa tratar)
+    var fileInput = document.querySelector('.file-hidden');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                var nome = e.target.files[0].name;
+                document.querySelector(".input-wrapper input[type='text']").value = nome;
+            }
+        });
+    }
+</script>

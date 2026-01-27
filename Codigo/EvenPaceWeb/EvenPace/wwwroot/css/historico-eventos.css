@@ -1,0 +1,224 @@
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* FUNDO GERAL */
+body {
+    background-color: #c89b9b;
+}
+
+/* CONTAINER PRINCIPAL */
+.app-container {
+    max-width: 430px;
+    margin: 0 auto;
+    background-color: #fff;
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 70px; /* espaço do menu */
+}
+
+/* ================= HEADER ================= */
+.historico-header,
+.detalhes-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.historico-header h1,
+.detalhes-header h1 {
+    font-size: 18px;
+    margin: 0 auto;
+}
+
+.btn-voltar {
+    font-size: 22px;
+    text-decoration: none;
+    color: #000;
+}
+
+/* ================= LISTA EVENTOS ================= */
+.lista-eventos {
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* CARD EVENTO */
+.evento-card {
+    border: 1px dashed #b39ddb;
+    border-radius: 10px;
+    padding: 8px;
+    background-color: #fff;
+}
+
+.evento-imagem {
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* INFO EVENTO */
+.evento-info h2 {
+    font-size: 14px;
+    margin: 6px 0;
+}
+
+.evento-data {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+/* BOTÕES */
+.evento-botoes {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 6px;
+}
+
+.btn-detalhes {
+    flex: 1;
+    font-size: 11px;
+    padding: 5px;
+    border-radius: 12px;
+    text-align: center;
+    background-color: #eee;
+    text-decoration: none;
+    color: #000;
+}
+
+.btn-avaliar {
+    flex: 1;
+    font-size: 11px;
+    padding: 5px;
+    border-radius: 12px;
+    text-align: center;
+    background-color: #7ed957;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* CANCELAR */
+.btn-cancelar {
+    width: 100%;
+    font-size: 11px;
+    padding: 5px;
+    border-radius: 12px;
+    background-color: #ff5c5c;
+    color: #fff;
+    border: none;
+}
+
+/* ================= DETALHES ================= */
+.detalhes-evento {
+    padding: 20px;
+    text-align: center;
+}
+
+.detalhes-imagem {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.detalhes-evento h2 {
+    margin-bottom: 10px;
+}
+
+.detalhes-evento p {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.descricao-evento {
+    margin: 15px 0;
+    color: #555;
+}
+
+/* BOTÃO AVALIAR GRANDE */
+.btn-avaliar-grande {
+    display: block;
+    background-color: #7ed957;
+    color: #fff;
+    padding: 12px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ================= MENU INFERIOR ================= */
+.menu-inferior {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 430px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.menu-inferior a {
+    font-size: 12px;
+    text-decoration: none;
+    color: #555;
+}
+
+.menu-inferior a.ativo {
+    color: #000;
+    font-weight: bold;
+.historico-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 15px;
+}
+
+.historico-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.historico-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.historico-table th,
+.historico-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .historico-table thead {
+        display: none;
+    }
+
+    .historico-table tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 10px;
+    }
+
+    .historico-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+    }
+
+    .historico-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+    }
+}

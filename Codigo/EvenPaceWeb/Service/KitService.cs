@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core;
+﻿using Core;
 using Core.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -34,12 +30,22 @@ namespace Service
         /// <param name="kit"></param>
         public void Edit(Kit kit)
         {
-            if (kit is not null)
+            // 1. Verifica se já existe algum Kit com esse ID na memória do EF
+            var local = _context.Set<Kit>()
+                .Local
+                .FirstOrDefault(entry => entry.Id.Equals(kit.Id));
+
+            // 2. Se existir, "desanexa" (solta) ele para não dar conflito
+            if (local != null)
             {
-                _context.Kits.Find(kit.Id);
-                _context.Update(kit);
-                _context.SaveChanges();
+                _context.Entry(local).State = EntityState.Detached;
             }
+
+            // 3. Agora dizemos que O NOSSO kit (que veio da tela) é o que vale e foi modificado
+            _context.Entry(kit).State = EntityState.Modified;
+
+            // 4. Salva
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -48,7 +54,7 @@ namespace Service
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            var _kit = _context.Kits.Find(id);
+            var _kit = _context.Kits.Find((uint)id);
 
             if (_kit is not null)
             {
@@ -64,7 +70,17 @@ namespace Service
         /// <returns>Retorna o kit</returns>
         public Kit Get(int id)
         {
-            return _context.Kits.Find(id);
+            return _context.Kits.Find((uint)id)!;
+        }
+
+        public IEnumerable<Kit> GetAll()
+        {
+            return _context.Kits.ToList();
+        }
+
+        public IEnumerable<Kit> GetByName(string nome)
+        {
+            throw new NotImplementedException();
         }
     }
 }
