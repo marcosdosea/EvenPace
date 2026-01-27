@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Core;
 using Core.Service;
 using Models;
@@ -27,7 +27,7 @@ namespace EvenPaceWeb.Controllers
         // GET: EventoController/Details/5
         public ActionResult Details(int id)
         {
-            var evento = _eventoService.Get((int)id);
+            var evento = _eventoService.Get((uint)id);
             var eventoViewModel = _mapper.Map<EventoViewModel>(evento);
             return View(eventoViewModel);
         }
@@ -54,7 +54,7 @@ namespace EvenPaceWeb.Controllers
         // GET: EventoController/Edit/5
         public ActionResult Edit(int id)
         {
-            var evento = _eventoService.Get((int)id);
+            var evento = _eventoService.Get((uint)id);
             var eventoViewModel = _mapper.Map<EventoViewModel>(evento);
             return View(eventoViewModel);
         }
@@ -76,7 +76,7 @@ namespace EvenPaceWeb.Controllers
         // GET: EventoController/Delete/5
         public ActionResult Delete(int id)
         {
-            var evento = _eventoService.Get((int)id);
+            var evento = _eventoService.Get((uint)id);
             var eventoViewModel = _mapper.Map<EventoViewModel>(evento);
             return View(eventoViewModel);
         }
