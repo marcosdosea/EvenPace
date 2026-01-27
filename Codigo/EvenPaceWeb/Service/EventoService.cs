@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core;
 using Core.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -73,7 +74,7 @@ namespace Service
         /// <returns>Retorna todos os Eventos cadastrados</returns>
         public IEnumerable<Evento> GetAll()
         {
-            return _context.Eventos.ToList();
+            return _context.Eventos.AsNoTracking();
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace Service
         /// <returns>Retorna todos os Eventos que contein a string</returns>
         public IEnumerable<Evento> GetByName(string nome)
         {
-            return _context.Eventos.Where(e => e.Nome.Contains(nome)).ToList(); 
+            return _context.Eventos.Where(e => e.Nome.Contains(nome)).AsNoTracking(); 
         }
     }
 }

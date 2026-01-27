@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core;
 using Core.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -35,19 +36,18 @@ namespace Service
         /// <param name="cupom"></param>
         public void Edit(Cupom cupom)
         {
-            if (cupom is not null)
-            {
-                _context.Cupoms.Find(cupom.Id);
-                _context.Update(cupom);
-                _context.SaveChanges();
-            }
+            if (cupom == null && cupom.Id > 0) throw new ServiceException("Cupom inválido");
+
+            _context.Update(cupom);
+            _context.SaveChanges();
+            
         }
 
         /// <summary>
         /// Deleta um cupom do banco de dados
         /// </summary>
         /// <param name="id"></param>
-        public void Delete(int id)
+        public void Delete(uint id)
         {
             var _cupom = _context.Cupoms.Find(id);
 
@@ -63,9 +63,11 @@ namespace Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Retorna o cupom</returns>
-        public Cupom Get(int id)
+        public Cupom Get(uint id)
         {
-            return _context.Cupoms.Find(id);
+            //return _context.Cupoms.Find(id);
+            return _context.Cupoms.FirstOrDefault(cupom => cupom.Id == id)
+            ?? throw new ServiceException("Cupom não encontrado");
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace Service
         /// <returns>Retorna todos os cupons no banco de dados</returns>
         public IEnumerable<Cupom> GetAll()
         {
-            return _context.Cupoms.ToList();
+            return _context.Cupoms.AsNoTracking();
         }
 
         /// <summary>
@@ -84,7 +86,8 @@ namespace Service
         /// <returns>Retorna todos os cupons com o nome inserido</returns>
         public IEnumerable<Cupom> GetByName(string nome)
         {
-            return _context.Cupoms.Where(c => c.Nome.Contains(nome)).ToList();
+            return _context.Cupoms.Where(c => c.Nome.Contains(nome)).AsNoTracking();
         }
     }
+
 }

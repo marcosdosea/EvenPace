@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{3A38A7D9-5649-44D0-AF16-FDFBEB591C92}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvenPaceWebTests", "EvenPaceWebTests\EvenPaceWebTests.csproj", "{2223C170-8C05-4AAD-ADF8-5B851DCD171E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTests", "ServiceTests\ServiceTests.csproj", "{04C40DCB-C092-48AD-9ADA-D30265C70998}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{3A38A7D9-5649-44D0-AF16-FDFBEB591C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A38A7D9-5649-44D0-AF16-FDFBEB591C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A38A7D9-5649-44D0-AF16-FDFBEB591C92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2223C170-8C05-4AAD-ADF8-5B851DCD171E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2223C170-8C05-4AAD-ADF8-5B851DCD171E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2223C170-8C05-4AAD-ADF8-5B851DCD171E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2223C170-8C05-4AAD-ADF8-5B851DCD171E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C40DCB-C092-48AD-9ADA-D30265C70998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C40DCB-C092-48AD-9ADA-D30265C70998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C40DCB-C092-48AD-9ADA-D30265C70998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C40DCB-C092-48AD-9ADA-D30265C70998}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

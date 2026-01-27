@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core;
 using Core.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -77,7 +78,7 @@ namespace Service
         /// <exception cref="NotImplementedException"></exception>
         public IEnumerable<AvaliacaoEvento> GetAll()
         {
-            return _context.AvaliacaoEventos.ToList();
+            return _context.AvaliacaoEventos.AsNoTracking();
         }
 
         // Este método está aqui apenas para não dar erro na classe, no entanto,

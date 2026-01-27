@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core;
 using Core.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -74,7 +75,7 @@ namespace Service
         /// <returns>Retorna todos os cartões</returns>
         public IEnumerable<CartaoCredito> GetAll()
         {
-            return _context.CartaoCreditos.ToList();
+            return _context.CartaoCreditos.AsNoTracking();
         }
     }
 }
