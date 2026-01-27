@@ -55,23 +55,47 @@
     margin-bottom: 20px;
 }
 
+
 .label-bold {
     display: block;
-    font-weight: 800;
-    margin-bottom: 5px;
-    font-size: 1.1rem;
+    font-weight: 700; /* Negrito */
+    margin-bottom: 8px; /* Espaço entre o nome e a caixa */
+    font-size: 0.95rem; /* Tamanho levemente menor */
+    color: #444; /* Cinza escuro em vez de preto total (mais elegante) */
+    text-transform: uppercase; /* (Opcional) Letras maiúsculas dão ar profissional */
+    letter-spacing: 0.5px; /* Espacinho entre letras */
 }
 
 /* O Segredo do visual: Inputs Cinzas e Arredondados */
+/* --- INPUTS MAIS MODERNOS E LEVES --- */
 .input-gray {
     width: 100%;
-    background-color: #D9D9D9; /* Cinza do protótipo */
-    border: 2px solid #000; /* Borda preta */
-    border-radius: 10px; /* Arredondado */
-    padding: 10px;
+    /* Fundo muito mais claro (quase branco), tirando o peso do cinza escuro */
+    background-color: #F4F4F4;
+    /* Borda mais fina (1px) para elegância, mas ainda preta para manter identidade */
+    border: 1px solid #333;
+    border-radius: 8px; /* Canto levemente menos arredondado (mais profissional) */
+    padding: 12px 15px; /* Mais espaço interno para o texto respirar */
     font-size: 1rem;
-    box-sizing: border-box; /* Garante que padding não estoure a largura */
+    color: #333;
+    /* Suavidade na mudança de cor */
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
+
+    /* O "Pulo do Gato": Quando clica, ele destaca */
+    .input-gray:focus {
+        background-color: #FFFFFF; /* Fica branco puro ao digitar */
+        border: 2px solid #000; /* A borda engrossa para mostrar foco */
+        outline: none; /* Remove o brilho azul padrão do navegador */
+        box-shadow: 4px 4px 0px rgba(0,0,0,0.1); /* Sombra suave igual ao menu */
+    }
+
+    /* Placeholder (texto de ajuda) mais suave */
+    .input-gray::placeholder {
+        color: #999;
+        font-style: italic;
+    }
 
 /* --- 4. LAYOUT (Lado a Lado) --- */
 .row-flex {
@@ -117,11 +141,21 @@
 .input-qtd {
     width: 80px;
     text-align: center;
-    background-color: #D9D9D9;
-    border: 2px solid #000;
-    border-radius: 8px;
-    padding: 5px;
+    background-color: #FFFFFF;
+    border: 2px solid #E0E0E0; /* Começa discreto */
+    border-radius: 12px;
+    padding: 10px;
     font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.input-qtd:focus {
+    border-color: #000;
+    background-color: #fffde7; /* Leve amarelo */
+    box-shadow: 4px 4px 0px #000000; /* Sombra dura menor */
+    transform: translateY(-2px) scale(1.05);
+    outline: none;
 }
 
 /* --- 6. ÍCONE DE UPLOAD --- */
@@ -512,44 +546,83 @@ body {
 }
 /* --- 13. LAYOUT EM GRID (LADO A LADO) --- */
 
+/* --- 13. LAYOUT DA LISTAGEM (GRID 3 COLUNAS) --- */
+
 .kits-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Mantém os 3 kits por linha */
-    gap: 25px;
-    padding: 40px; /* O respiro volta aqui */
-    overflow-y: auto;
+    /* FORÇA EXATAMENTE 3 COLUNAS DO MESMO TAMANHO */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px; /* Espaço entre os cards */
+    /* LIMITA A LARGURA E CENTRALIZA NA TELA */
+    max-width: 1100px; /* Largura ideal para 3 cards ficarem bonitos */
+    margin: 0 auto; /* Centraliza o bloco na tela */
+    padding: 40px; /* Margem interna para não cortar as sombras */
+
+    box-sizing: border-box;
+}
+
+/* --- RESPONSIVIDADE (PARA NÃO QUEBRAR NO CELULAR) --- */
+/* Quando a tela for menor (tablet/celular), muda para 1 ou 2 colunas automaticamente */
+@media (max-width: 900px) {
+    .kits-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 por linha em tablets */
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .kits-grid {
+        grid-template-columns: 1fr; /* 1 por linha no celular */
+    }
 }
 
 /* O CARTÃO (CARD) */
 .kit-card {
-    background-color: #fff;
-    border: 2px solid #000; /* Borda grossa preta */
-    border-radius: 10px;
+    background-color: #FFFFFF;
+    /* Estado Inicial: Clean e Elegante */
+    border: 1px solid #E0E0E0; /* Borda fininha cinza */
+    border-radius: 20px; /* Cantos bem arredondados */
     overflow: hidden;
     display: flex;
-    flex-direction: column; /* Conteúdo um embaixo do outro dentro do card */
-    transition: transform 0.2s, box-shadow 0.2s;
+    flex-direction: column;
+    /* Sombra suave e difusa (moderna) */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+    /* Animação macia */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
 }
 
+/* O EFEITO UAU: Ao passar o mouse */
 .kit-card:hover {
-    transform: translateY(-5px); /* Sobe um pouquinho ao passar o mouse */
-    box-shadow: 6px 6px 0px rgba(0,0,0,0.2); /* Sombra dura estilo Sticker */
+    border-color: #000; /* Borda fica preta */
+    transform: translateY(-8px); /* Sobe bastante */
+    /* Sombra dura preta (Assinatura do seu design) */
+    box-shadow: 8px 8px 0px #000000;
+    z-index: 2;
 }
 
 /* 1. Área da Imagem */
 .kit-card-image {
     width: 100%;
-    height: 200px; /* Altura fixa para todas ficarem iguais */
-    background-color: #eee;
-    border-bottom: 2px solid #000;
+    height: 220px;
+    background-color: #F9F9F9; /* Fundo cinza bem clarinho pra foto destacar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .kit-card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Mostra a imagem inteira sem cortar */
-    padding: 10px; /* Espacinho para não colar na borda */
-    background-color: #fff;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); /* Sombra na própria foto do kit */
+    transition: transform 0.3s ease;
+}
+.kit-card:hover .kit-card-image img {
+    transform: scale(1.05);
 }
 
 .placeholder-img {
@@ -565,60 +638,83 @@ body {
 
 /* 2. Corpo do Card */
 .kit-card-body {
-    padding: 20px;
+    padding: 25px;
     text-align: center;
-    flex-grow: 1; /* Empurra os botões para o final */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .kit-title {
     margin: 0;
-    font-size: 1.4rem;
-    font-weight: 800;
+    font-size: 1.3rem;
+    font-weight: 800; /* Extra bold */
     color: #000;
+    letter-spacing: -0.5px;
 }
 
 .kit-price {
-    font-size: 1.2rem;
-    color: #333;
-    margin: 10px 0 15px 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #444;
+    margin: 5px 0;
 }
 
+/* Badges de Tamanho (P M G) */
 .center-badges {
-    justify-content: center; /* Centraliza os P/M/G */
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: auto; /* Empurra para o fim do corpo */
+}
+.badge-qtd {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    color: #666;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
 }
 
 /* 3. Ações (Rodapé do Card) */
 .kit-card-actions {
     display: flex;
-    border-top: 2px solid #000;
+    border-top: 1px solid #f0f0f0; /* Divisória sutil */
 }
 
 .btn-action {
-    flex: 1; /* Ocupa metade cada um */
-    padding: 12px;
+    flex: 1;
+    padding: 15px;
     text-align: center;
     text-decoration: none;
-    font-weight: bold;
-    color: #000;
+    font-weight: 700;
+    font-size: 0.9rem;
     transition: background 0.2s;
 }
 
+/* Botão Editar */
 .btn-action.edit {
     background-color: #fff;
-    border-right: 2px solid #000; /* Linha separando os botões */
+    color: #333;
+    border-right: 1px solid #f0f0f0;
 }
 
-    .btn-action.edit:hover {
-        background-color: #f0f0f0;
-    }
+.btn-action.edit:hover {
+    background-color: #FEEA00; /* Amarelo EvenPace no hover! */
+    color: #000;
+}
 
+/* Botão Excluir */
 .btn-action.delete {
-    background-color: #ffcccc; /* Vermelhinho claro */
-    color: #cc0000;
+    background-color: #fff;
+    color: #d32f2f; /* Vermelho elegante */
 }
 
 .btn-action.delete:hover {
-    background-color: #ffaaaa;
+    background-color: #ffebee; /* Fundo rosinha suave */
+    color: #b71c1c;
 }
 
 /* Estado Vazio */
@@ -697,4 +793,10 @@ body {
     transform: translateX(15px); /* Salta ainda mais que o normal (10px -> 15px) */
     background-color: #fffde7; /* Mantém a cor de ativo */
     box-shadow: -5px 5px 15px rgba(0,0,0,0.08); /* Ganha a profundidade */
+}
+
+.form-kits {
+    max-width: 1000px; /* Limita a largura para não esticar até o infinito */
+    padding: 40px; /* Dá um respiro nas laterais e no topo */
+    box-sizing: border-box; /* Garante que o padding não quebre o layout */
 }
