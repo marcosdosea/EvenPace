@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Core;
 using Microsoft.AspNetCore.Mvc;
 using Core.Service;
@@ -33,9 +33,9 @@ namespace EvenPaceWeb.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Details(int id)
+        public ActionResult Details(string nome)
         {
-            var avaliacao = _avaliacaoEventoService.Get((int)id);
+            var avaliacao = _avaliacaoEventoService.GetByName((string)nome);
             var viewModel = _mapper.Map<AvaliacaoEventoViewModel>(avaliacao);
             return View(viewModel);
         }
@@ -122,32 +122,6 @@ namespace EvenPaceWeb.Controllers
             _avaliacaoEventoService.Delete((int)id);
             return RedirectToAction(nameof(Index));
         }
-        
-        // GET: Corredor/AvaliarEvento/5
-        public ActionResult AvaliarEvento(int idEvento)
-        {
-            var model = new AvaliacaoEventoViewModel
-            {
-                DataAvaliacao = DateTime.Now
-            };
 
-            ViewBag.IdEvento = idEvento; // só para contexto da View
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AvaliarEvento(AvaliacaoEventoViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var avaliacao = _mapper.Map<AvaliacaoEvento>(model);
-                _avaliacaoEventoService.Create(avaliacao);
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(model);
-        }
     }
 }
