@@ -41,6 +41,8 @@ public partial class Evento
 
     public string Nome { get; set; } = null!;
 
+    public string? Imagem { get; set; }
+
     public virtual ICollection<Cupom> Cupoms { get; set; } = new List<Cupom>();
 
     public virtual Organizacao IdOrganizacaoNavigation { get; set; } = null!;

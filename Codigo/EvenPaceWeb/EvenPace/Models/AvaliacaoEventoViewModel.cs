@@ -17,5 +17,10 @@ namespace Models
         [Display(Name = "Comentário")]
         [StringLength(300)]
         public string Comentario { get; set; } = null!;
+
+        public DateTime DataAvaliacao { get; set; }
+
+
+
     }
 }

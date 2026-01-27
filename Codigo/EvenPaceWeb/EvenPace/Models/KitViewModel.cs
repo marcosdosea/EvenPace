@@ -7,7 +7,7 @@ namespace Models
     {
         [Key]
         [Display(Name = "Código do Kit")]
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         [Required(ErrorMessage = "O nome do kit é obrigatório")]
         [Display(Name = "Tipo de Kit")]
