@@ -1,0 +1,802 @@
+﻿/* wwwroot/css/kit.css */
+
+/* --- 1. CONFIGURAÇÃO GERAL --- */
+/*.main-container {
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto; /* Centraliza na tela 
+}*/
+.main-container {
+    font-family: 'Segoe UI', sans-serif;
+    max-width: none;
+    width: 100%;
+    margin: 0;
+}
+
+/* --- 2. CABEÇALHO (Título + Ícone) --- */
+.page-header {
+    height: 120px; /* Alinhado com a sidebar-header */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    background-color: #fff;
+    /* A mágica da profundidade: uma linha sólida + uma sombra suave */
+    border-bottom: 1px solid #000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    /* Mantém fixo no topo da área de conteúdo */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.icon-marker {
+    color: #FFD700; /* Amarelo do ícone */
+    font-size: 2.5rem;
+}
+
+.header-titles h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+}
+
+/* --- 3. INPUTS E CAMPOS (O estilo cinza do protótipo) --- */
+.form-block {
+    margin-bottom: 20px;
+}
+
+
+.label-bold {
+    display: block;
+    font-weight: 700; /* Negrito */
+    margin-bottom: 8px; /* Espaço entre o nome e a caixa */
+    font-size: 0.95rem; /* Tamanho levemente menor */
+    color: #444; /* Cinza escuro em vez de preto total (mais elegante) */
+    text-transform: uppercase; /* (Opcional) Letras maiúsculas dão ar profissional */
+    letter-spacing: 0.5px; /* Espacinho entre letras */
+}
+
+/* O Segredo do visual: Inputs Cinzas e Arredondados */
+/* --- INPUTS MAIS MODERNOS E LEVES --- */
+.input-gray {
+    width: 100%;
+    /* Fundo muito mais claro (quase branco), tirando o peso do cinza escuro */
+    background-color: #F4F4F4;
+    /* Borda mais fina (1px) para elegância, mas ainda preta para manter identidade */
+    border: 1px solid #333;
+    border-radius: 8px; /* Canto levemente menos arredondado (mais profissional) */
+    padding: 12px 15px; /* Mais espaço interno para o texto respirar */
+    font-size: 1rem;
+    color: #333;
+    /* Suavidade na mudança de cor */
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+    /* O "Pulo do Gato": Quando clica, ele destaca */
+    .input-gray:focus {
+        background-color: #FFFFFF; /* Fica branco puro ao digitar */
+        border: 2px solid #000; /* A borda engrossa para mostrar foco */
+        outline: none; /* Remove o brilho azul padrão do navegador */
+        box-shadow: 4px 4px 0px rgba(0,0,0,0.1); /* Sombra suave igual ao menu */
+    }
+
+    /* Placeholder (texto de ajuda) mais suave */
+    .input-gray::placeholder {
+        color: #999;
+        font-style: italic;
+    }
+
+/* --- 4. LAYOUT (Lado a Lado) --- */
+.row-flex {
+    display: flex;
+    gap: 30px; /* Espaço entre colunas */
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.col-fixed {
+    width: 200px; /* Tamanho fixo para o Valor */
+}
+
+.col-grow {
+    flex: 1; /* Ocupa o resto do espaço */
+    position: relative;
+}
+
+/* --- 5. CAMISETAS --- */
+.sizes-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.header-sizes {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 10px;
+    width: 200px; /* Largura controlada */
+}
+
+.size-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 200px; /* Largura controlada */
+    cursor: pointer;
+}
+
+.input-qtd {
+    width: 80px;
+    text-align: center;
+    background-color: #FFFFFF;
+    border: 2px solid #E0E0E0; /* Começa discreto */
+    border-radius: 12px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.input-qtd:focus {
+    border-color: #000;
+    background-color: #fffde7; /* Leve amarelo */
+    box-shadow: 4px 4px 0px #000000; /* Sombra dura menor */
+    transform: translateY(-2px) scale(1.05);
+    outline: none;
+}
+
+/* --- 6. ÍCONE DE UPLOAD --- */
+.input-wrapper {
+    position: relative;
+}
+
+.icon-upload {
+    position: absolute;
+    right: 15px;
+    top: 40px;
+    font-size: 1.5rem;
+    pointer-events: none; /* Deixa clicar através do ícone */
+}
+
+.file-hidden {
+    position: absolute;
+    top: 32px;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* --- 7. BOTÕES (Cinza Escuro) --- */
+.form-actions {
+    display: flex;
+    justify-content: flex-end; /* Joga para a direita */
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.btn-gray {
+    background-color: #999; /* Cinza mais escuro */
+    color: #000;
+    font-weight: bold;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+    .btn-gray:hover {
+        background-color: #777; /* Efeito ao passar o mouse */
+    }
+/* --- 8. LAYOUT DASHBOARD (Menu Lateral) --- */
+body {
+    margin: 0;
+    background-color: #fff; /* Fundo branco geral */
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+/* Item Selecionado (Kits) */
+.menu-item.active {
+    background-color: #fff;
+    border-left: 5px solid #000; /* Detalhe lateral se quiser */
+}
+
+.sidebar-footer {
+    margin-top: auto; /* Empurra para o fim do menu */
+    padding: 20px;
+    text-align: center;
+    border-top: none; /* <--- REMOVE A LINHA SUPERIOR */
+}
+
+.user-avatar {
+    font-size: 2rem;
+    background-color: #ddd;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* --- ESTILOS GERAIS E RESPONSIVIDADE --- */
+
+/* Wrapper da tabela para permitir scroll no celular */
+.table-wrapper {
+    margin-top: 20px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    width: 100%;
+    overflow-x: auto; /* A Mágica: Cria barra de rolagem se a tabela for larga */
+}
+
+/* Header Responsivo */
+.header-responsive {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permite quebrar linha se faltar espaço */
+    gap: 20px;
+}
+
+.header-title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Grupo de Badges (Camisetas) */
+.badge-group {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap; /* Badges descem se não couberem */
+}
+
+.badge {
+    background-color: #eee;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    white-space: nowrap; /* Não deixa quebrar o texto dentro do badge */
+}
+
+.action-buttons {
+    white-space: nowrap;
+}
+
+.btn-icon {
+    text-decoration: none;
+    font-size: 1.2rem;
+    margin: 0 5px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.btn-icon:hover {
+    transform: scale(1.2);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-style: italic;
+}
+
+/* --- REGRAS PARA CELULAR (Telas menores que 600px) --- */
+@media (max-width: 600px) {
+
+    /* Centraliza o cabeçalho e coloca o botão embaixo do título */
+    .header-responsive {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-responsive {
+        width: 100%; /* Botão ocupa a largura toda no celular */
+        text-align: center;
+    }
+
+    /* Ajustes finos na tabela para celular */
+    .table-custom th,
+    .table-custom td {
+        padding: 10px; /* Menos espaçamento para caber mais coisa */
+        font-size: 0.9rem;
+    }
+}
+
+/* Área do Conteúdo (Onde fica o form) */
+.content-area {
+    flex-grow: 1;
+    overflow-y: auto; /* Ativa o scroll apenas aqui */
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- 9. ESTILO DA TABELA --- */
+.table-container {
+    margin-top: 20px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    overflow: hidden; /* Arredonda os cantos da tabela */
+}
+
+.table-custom {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+.table-custom thead {
+    background-color: #D9D9D9; /* Cinza do cabeçalho */
+    border-bottom: 2px solid #000;
+}
+
+.table-custom th {
+    text-align: left;
+    padding: 15px;
+    font-weight: 800;
+    color: #000;
+}
+
+.table-custom td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+.table-custom tr:last-child td {
+    border-bottom: none;
+}
+
+.badge {
+    background-color: #eee;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+}
+/* --- 10. ESTILO DA LISTAGEM (IGUAL PROTÓTIPO) --- */
+
+/* O Container da Tabela parece uma "Caixa" do formulário */
+.table-wrapper {
+    margin-top: 30px;
+    background-color: #fff;
+    /* Borda preta grossa igual aos inputs */
+    border: 2px solid #000;
+    border-radius: 10px; /* Cantos arredondados */
+    overflow: hidden; /* Garante que o cabeçalho não saia do arredondado */
+}
+
+.table-custom {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Cabeçalho da Tabela (Cinza igual aos inputs) */
+.table-custom thead {
+    background-color: #D9D9D9;
+    border-bottom: 2px solid #000; /* Linha separadora forte */
+}
+
+.table-custom th {
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: 800; /* Negrito forte */
+    font-size: 1.1rem;
+    color: #000;
+}
+
+/* Linhas da Tabela */
+.table-custom td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #000; /* Linhas divisórias pretas */
+    color: #000;
+    font-size: 1rem;
+}
+
+/* Remove borda da última linha para não duplicar com a borda da caixa */
+.table-custom tr:last-child td {
+    border-bottom: none;
+}
+
+/* Badges de Quantidade (Estilo "Caixinha") */
+.badge-qtd {
+    display: inline-block;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.action-cell {
+    text-align: right;
+}
+
+.btn-icon {
+    text-decoration: none;
+    font-size: 1.3rem;
+    margin-left: 15px;
+    cursor: pointer;
+}
+/* --- ESTILO "PROTÓTIPO" DA LISTAGEM --- */
+
+/* 1. O Container da Tabela (A "Caixa" Principal) */
+.table-wrapper {
+    margin-top: 30px;
+    background-color: #fff;
+    border: 2px solid #000; /* Borda grossa igual aos inputs */
+    border-radius: 8px; /* Cantos arredondados */
+    overflow: hidden; /* Corta o que passar da borda */
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.1); /* (Opcional) Sombra dura para dar destaque */
+}
+
+/* 2. A Tabela em si */
+.table-custom {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaços entre as células */
+    font-family: 'Inter', sans-serif; /* Garante a fonte padrão */
+}
+
+/* 3. Cabeçalho da Tabela (A faixa cinza) */
+.table-custom thead {
+    background-color: #D9D9D9; /* O mesmo cinza dos títulos do formulário */
+    border-bottom: 2px solid #000; /* Linha preta separando do conteúdo */
+}
+
+.table-custom th {
+    padding: 18px 20px; /* Mais espaço para respirar */
+    text-align: left;
+    font-weight: 800; /* Negrito forte */
+    font-size: 1.1rem;
+    color: #000;
+    text-transform: uppercase; /* (Opcional) Letras maiúsculas no título */
+}
+
+/* 4. Linhas do Conteúdo */
+.table-custom tbody tr {
+    background-color: #fff;
+    transition: background-color 0.2s; /* Efeito suave ao passar o mouse */
+}
+
+.table-custom tbody tr:hover {
+    background-color: #f0f0f0; /* Fica cinzinha quando passa o mouse */
+}
+
+.table-custom td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #000; /* Linha divisória preta */
+    color: #000;
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+/* Remove a borda da última linha para não ficar dupla com a borda da caixa */
+.table-custom tr:last-child td {
+    border-bottom: none;
+}
+
+/* 5. Badges (As caixinhas de quantidade P/M/G) */
+.badge-group {
+    display: flex;
+    gap: 8px;
+}
+
+.badge-qtd {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    min-width: 40px; /* Garante que fiquem do mesmo tamanho */
+}
+
+/* 6. Botões de Ação (Ícones) */
+.action-cell {
+    text-align: right; /* Joga os ícones para a direita */
+}
+
+.btn-icon {
+    text-decoration: none;
+    font-size: 1.2rem;
+    margin-left: 15px;
+    color: #000; /* Ícone preto */
+    display: inline-block;
+}
+
+.btn-icon:hover {
+    transform: scale(1.2); /* Aumenta um pouco ao passar o mouse */
+}
+/* --- 13. LAYOUT EM GRID (LADO A LADO) --- */
+
+/* --- 13. LAYOUT DA LISTAGEM (GRID 3 COLUNAS) --- */
+
+.kits-grid {
+    display: grid;
+    /* FORÇA EXATAMENTE 3 COLUNAS DO MESMO TAMANHO */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px; /* Espaço entre os cards */
+    /* LIMITA A LARGURA E CENTRALIZA NA TELA */
+    max-width: 1100px; /* Largura ideal para 3 cards ficarem bonitos */
+    margin: 0 auto; /* Centraliza o bloco na tela */
+    padding: 40px; /* Margem interna para não cortar as sombras */
+
+    box-sizing: border-box;
+}
+
+/* --- RESPONSIVIDADE (PARA NÃO QUEBRAR NO CELULAR) --- */
+/* Quando a tela for menor (tablet/celular), muda para 1 ou 2 colunas automaticamente */
+@media (max-width: 900px) {
+    .kits-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 por linha em tablets */
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .kits-grid {
+        grid-template-columns: 1fr; /* 1 por linha no celular */
+    }
+}
+
+/* O CARTÃO (CARD) */
+.kit-card {
+    background-color: #FFFFFF;
+    /* Estado Inicial: Clean e Elegante */
+    border: 1px solid #E0E0E0; /* Borda fininha cinza */
+    border-radius: 20px; /* Cantos bem arredondados */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Sombra suave e difusa (moderna) */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+    /* Animação macia */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+}
+
+/* O EFEITO UAU: Ao passar o mouse */
+.kit-card:hover {
+    border-color: #000; /* Borda fica preta */
+    transform: translateY(-8px); /* Sobe bastante */
+    /* Sombra dura preta (Assinatura do seu design) */
+    box-shadow: 8px 8px 0px #000000;
+    z-index: 2;
+}
+
+/* 1. Área da Imagem */
+.kit-card-image {
+    width: 100%;
+    height: 220px;
+    background-color: #F9F9F9; /* Fundo cinza bem clarinho pra foto destacar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.kit-card-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); /* Sombra na própria foto do kit */
+    transition: transform 0.3s ease;
+}
+.kit-card:hover .kit-card-image img {
+    transform: scale(1.05);
+}
+
+.placeholder-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* 2. Corpo do Card */
+.kit-card-body {
+    padding: 25px;
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.kit-title {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 800; /* Extra bold */
+    color: #000;
+    letter-spacing: -0.5px;
+}
+
+.kit-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #444;
+    margin: 5px 0;
+}
+
+/* Badges de Tamanho (P M G) */
+.center-badges {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: auto; /* Empurra para o fim do corpo */
+}
+.badge-qtd {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    color: #666;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+/* 3. Ações (Rodapé do Card) */
+.kit-card-actions {
+    display: flex;
+    border-top: 1px solid #f0f0f0; /* Divisória sutil */
+}
+
+.btn-action {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+/* Botão Editar */
+.btn-action.edit {
+    background-color: #fff;
+    color: #333;
+    border-right: 1px solid #f0f0f0;
+}
+
+.btn-action.edit:hover {
+    background-color: #FEEA00; /* Amarelo EvenPace no hover! */
+    color: #000;
+}
+
+/* Botão Excluir */
+.btn-action.delete {
+    background-color: #fff;
+    color: #d32f2f; /* Vermelho elegante */
+}
+
+.btn-action.delete:hover {
+    background-color: #ffebee; /* Fundo rosinha suave */
+    color: #b71c1c;
+}
+
+/* Estado Vazio */
+.empty-state-card {
+    grid-column: 1 / -1; /* Ocupa a largura toda */
+    text-align: center;
+    padding: 40px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    color: #777;
+}
+
+/* --- ALERTA DE SUCESSO (TOAST) --- */
+.alert-custom {
+    position: fixed; /* Flutua na frente de tudo */
+    top: 20px; /* Distância do topo */
+    right: 20px; /* Canto direito (estilo notificação) */
+    background-color: #28a745; /* Verde Sucesso */
+    color: white; /* Texto branco */
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Sombra suave */
+    font-weight: bold;
+    z-index: 1000; /* Garante que fique na frente de tudo */
+    /* Preparação para animação */
+    opacity: 1;
+    transition: opacity 1s ease-out, transform 0.5s ease-out;
+}
+
+/* Classe que será adicionada pelo JS para sumir */
+.alert-hide {
+    opacity: 0;
+    transform: translateY(-20px); /* Sobe um pouquinho enquanto some */
+    pointer-events: none; /* Impede cliques enquanto desaparece */
+}
+/* --- ÍCONE DO CABEÇALHO (PINO AMARELO) --- */
+.icon-logo-header {
+    width: 45px; /* Tamanho ideal para cabeçalho */
+    height: auto; /* Mantém a proporção */
+    margin-right: 15px; /* Espaço para o texto */
+    vertical-align: middle;
+}
+
+/* --- ÍCONE DO MENU LATERAL --- */
+.sidebar-icon {
+    width: 24px;          /* Tamanho pequeno para caber no menu */
+    height: auto;
+    margin-right: 10px;   /* Espaço entre o ícone e a palavra "Kits" */
+    vertical-align: middle;
+}
+.content-area {
+    flex-grow: 1;
+    padding: 0; /* Removido o padding geral para alinhar o header */
+    display: flex;
+    flex-direction: column;
+}
+.sidebar-header {
+    height: 120px; /* Mesma altura do .page-header */
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #000; /* Linha preta sólida */
+    box-sizing: border-box;
+}
+/* --- OPÇÃO ATIVA (KITS) COM O MESMO PADRÃO DE HOVER --- */
+.menu-item.active {
+    background-color: #fffde7; /* Fundo levemente amarelado para indicar que está ativo */
+    border-left: 6px solid #FEEA00; /* Barra lateral de destaque */
+    transform: translateX(5px); /* Já começa levemente deslocado */
+    transition: all 0.2s ease-in-out;
+}
+
+/* Efeito de "Salto" adicional quando passar o mouse mesmo estando ativo */
+.menu-item.active:hover {
+    transform: translateX(15px); /* Salta ainda mais que o normal (10px -> 15px) */
+    background-color: #fffde7; /* Mantém a cor de ativo */
+    box-shadow: -5px 5px 15px rgba(0,0,0,0.08); /* Ganha a profundidade */
+}
+
+.form-kits {
+    max-width: 1000px; /* Limita a largura para não esticar até o infinito */
+    padding: 40px; /* Dá um respiro nas laterais e no topo */
+    box-sizing: border-box; /* Garante que o padding não quebre o layout */
+}

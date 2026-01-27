@@ -11,6 +11,8 @@ startup.Configure(app, app.Environment);
 
 startup.Configure(app, app.Environment);
 
+startup.Configure(app, app.Environment);
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -28,6 +30,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Cupom}/{action=Index}/{id?}");
+    pattern: "{controller=Corredor}/{action=Index}/{id?}");
 
 app.Run();

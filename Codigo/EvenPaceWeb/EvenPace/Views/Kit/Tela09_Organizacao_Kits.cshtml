@@ -1,0 +1,109 @@
+﻿@model IEnumerable<EvenPaceWeb.Models.KitViewModel>
+
+@{
+    ViewData["Title"] = "Meus Kits";
+    Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+}
+
+<main class="main-container">
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert-custom">
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    <header class="page-header header-responsive" style="margin-bottom: 30px;">
+        <div class="header-title-group">
+            
+
+            <div class="header-text">
+                <h1>Kits</h1>
+                <p class="subtitle">@ViewBag.NomeCorrida</p>
+            </div>
+        </div>
+
+        <a asp-action="Tela17_Organizacao_CriarKit"
+           asp-route-idEvento="@ViewBag.IdEventoAtual"
+           class="btn-gray btn-responsive">
+            + Criar Kit
+        </a>
+    </header>
+
+    <section class="kits-grid">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var kit in Model)
+            {
+                <div class="kit-card">
+                    <div class="kit-card-image">
+                        @if (!string.IsNullOrEmpty(kit.Imagem))
+                        {
+                            <img src="~/imagens/@kit.Imagem" alt="Foto do Kit" />
+                        }
+                        else
+                        {
+                            <div class="placeholder-img">📷 Sem Foto</div>
+                        }
+                    </div>
+
+                    <div class="kit-card-body">
+                        <h3 class="kit-title">@kit.Nome</h3>
+                        <p class="kit-price">R$ @kit.Valor.ToString("N2")</p>
+
+                        <div class="badge-group center-badges">
+                            <span class="badge-qtd">P: @kit.DisponibilidadeP</span>
+                            <span class="badge-qtd">M: @kit.DisponibilidadeM</span>
+                            <span class="badge-qtd">G: @kit.DisponibilidadeG</span>
+                        </div>
+                    </div>
+
+                    <div class="kit-card-actions">
+                        <a asp-action="Tela17_Organizacao_CriarKit"
+                           asp-route-id="@kit.Id"
+                           class="btn-action edit">
+                            ✏️ Editar
+                        </a>
+                       
+                        <a asp-action="Excluir" asp-route-id="@kit.Id" class="btn-action delete"
+                           onclick="return confirm('Tem certeza que deseja apagar o kit @kit.Nome?');">
+                            🗑️ Excluir
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state-card" style="grid-column: 1 / -1; text-align: center; padding: 40px; border: 2px dashed #ccc;">
+                <p>Nenhum kit encontrado.</p>
+                <a asp-action="Tela17_Organizacao_CriarKit"
+                   asp-route-idEvento="@ViewBag.IdEventoAtual"
+                   style="text-decoration: underline; color: #000; font-weight: bold;">
+                    Clique aqui para criar o primeiro
+                </a>
+            </div>
+        }
+    </section>
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Procura a mensagem de sucesso
+        var alerta = document.querySelector(".alert-custom");
+
+        if (alerta) {
+            // Espera 3 segundos (3000ms) antes de começar a sumir
+            setTimeout(function() {
+                // Adiciona a classe que deixa transparente (CSS)
+                alerta.classList.add("alert-hide");
+
+                // Espera mais 1 segundo (tempo da animação) para remover do HTML
+                setTimeout(function() {
+                    alerta.remove();
+                }, 1000);
+            }, 3000);
+        }
+    });
+</script>
+
