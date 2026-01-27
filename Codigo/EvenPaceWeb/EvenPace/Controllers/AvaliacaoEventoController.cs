@@ -124,16 +124,16 @@ namespace EvenPaceWeb.Controllers
         }
         
         // GET: Corredor/AvaliarEvento/5
-        public ActionResult AvaliarEvento(int idEvento)
-        {
-            var model = new AvaliacaoEventoViewModel
-            {
-                DataAvaliacao = DateTime.Now
-            };
+        //public ActionResult AvaliarEvento(int idEvento)
+        //{
+        //    var model = new AvaliacaoEventoViewModel
+        //    {
+        //        DataAvaliacao = DateTime.Now
+        //    };
 
-            ViewBag.IdEvento = idEvento; // só para contexto da View
-            return View(model);
-        }
+        //    ViewBag.IdEvento = idEvento; // só para contexto da View
+        //    return View(model);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]

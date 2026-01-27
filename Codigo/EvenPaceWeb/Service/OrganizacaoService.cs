@@ -1,5 +1,6 @@
 using Core;
 using Core.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service;
 
@@ -40,6 +41,6 @@ public class OrganizacaoService : IOrganizacaoService
 
     public IEnumerable<Organizacao> GetAll()
     {
-        return _context.Organizacaos;
+        return _context.Organizacaos.AsNoTracking();
     }
 }

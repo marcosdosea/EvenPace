@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core;
 using Core.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -78,7 +79,7 @@ namespace Service
         /// <exception cref="NotImplementedException"></exception>
         public IEnumerable<Administrador> GetAll()
         {
-            return _context.Administradors.ToList();
+            return _context.Administradors.AsNoTracking();
         }
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace Service
         /// <returns></returns>
         public IEnumerable<Administrador> GetByName(string nome)
         {
-            return _context.Administradors.Where(a => a.Nome.Contains(nome)).ToList();
+            return _context.Administradors.Where(a => a.Nome.Contains(nome)).AsNoTracking();
         }
         
     }

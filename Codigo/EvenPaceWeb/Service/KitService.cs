@@ -75,7 +75,7 @@ namespace Service
 
         public IEnumerable<Kit> GetAll()
         {
-            return _context.Kits.ToList();
+            return _context.Kits.AsNoTracking();
         }
 
         public IEnumerable<Kit> GetByName(string nome)

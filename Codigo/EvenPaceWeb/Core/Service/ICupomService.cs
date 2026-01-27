@@ -10,8 +10,8 @@ namespace Core.Service
     {
         void Edit(Cupom cupom);
         uint Create(Cupom cupom);
-        Cupom Get(int id);
-        void Delete(int id);
+        Cupom Get(uint id);
+        void Delete(uint id);
         IEnumerable<Cupom> GetAll();
         IEnumerable<Cupom> GetByName(string nome);
 

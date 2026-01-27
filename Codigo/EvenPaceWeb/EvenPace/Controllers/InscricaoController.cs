@@ -6,26 +6,26 @@ using EvenPace.Models;
 using Models;
 using EvenPaceWeb.Models;
 
-namespace EvenPace.Controllers
-{
-    public class InscricaoController : Controller
-    {
-        private readonly IInscricaoService _inscricaoService;
-        private readonly IEventosService _eventoService;
-        private readonly IKitService _kitService;
-        private readonly IMapper _mapper;
+//namespace EvenPace.Controllers
+//{
+//    public class InscricaoController : Controller
+//    {
+//        private readonly IInscricaoService _inscricaoService;
+//        private readonly IEventosService _eventoService;
+//        private readonly IKitService _kitService;
+//        private readonly IMapper _mapper;
 
-        public InscricaoController(
-            IInscricaoService inscricaoService,
-            IEventosService eventoService,
-            IKitService kitService,
-            IMapper mapper)
-        {
-            _inscricaoService = inscricaoService;
-            _eventoService = eventoService;
-            _kitService = kitService;
-            _mapper = mapper;
-        }
+//        public InscricaoController(
+//            IInscricaoService inscricaoService,
+//            IEventosService eventoService,
+//            IKitService kitService,
+//            IMapper mapper)
+//        {
+//            _inscricaoService = inscricaoService;
+//            _eventoService = eventoService;
+//            _kitService = kitService;
+//            _mapper = mapper;
+//        }
 
         public IActionResult TelaInscricao(int id)
         {
@@ -55,8 +55,8 @@ namespace EvenPace.Controllers
                 }
             };
 
-            return View(vm);
-        }
+//            return View(vm);
+//        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -78,11 +78,11 @@ namespace EvenPace.Controllers
                 return View("TelaInscricao", vm);
             }
 
-            var inscricao = _mapper.Map<Inscricao>(vm.Inscricao);
-            _inscricaoService.Create(inscricao);
+//            var inscricao = _mapper.Map<Inscricao>(vm.Inscricao);
+//            _inscricaoService.Create(inscricao);
 
-            TempData["MensagemSucesso"] = "Inscrição realizada com sucesso!";
-            return RedirectToAction("Index", "Home");
-        }
-    }
-}
+//            TempData["MensagemSucesso"] = "Inscrição realizada com sucesso!";
+//            return RedirectToAction("Index", "Home");
+//        }
+//    }
+//}
