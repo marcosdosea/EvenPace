@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Core;
@@ -8,8 +8,6 @@ public partial class Evento
     public uint Id { get; set; }
 
     public DateTime Data { get; set; }
-
-    public String Imagem { get; set; }
 
     public int NumeroParticipantes { get; set; }
 
@@ -42,6 +40,8 @@ public partial class Evento
     public uint IdOrganizacao { get; set; }
 
     public string Nome { get; set; } = null!;
+
+    public string? Imagem { get; set; }
 
     public virtual ICollection<Cupom> Cupoms { get; set; } = new List<Cupom>();
 

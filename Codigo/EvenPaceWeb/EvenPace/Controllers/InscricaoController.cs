@@ -32,6 +32,11 @@ namespace EvenPace.Controllers
             var evento = _eventoService.Get(id);
             var kits = _kitService.Get(id);
 
+            if (evento == null || kits == null)
+            {
+                return NotFound("Evento não encontrado!");
+            }
+            
             var vm = new TelaInscricaoViewModel
             {
                 IdEvento = evento.Id,
