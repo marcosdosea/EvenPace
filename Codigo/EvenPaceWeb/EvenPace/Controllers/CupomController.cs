@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Core.Service;
-using EvenPaceWeb.Models;
+using Models;
 
 namespace EvenPaceWeb.Controllers
 {
@@ -58,9 +58,11 @@ namespace EvenPaceWeb.Controllers
             {
                 var cupom = _mapper.Map<Core.Cupom>(cupomViewModel);
                 _cupomService.Create(cupom);
+                return RedirectToAction(nameof(Index)); // Só redireciona se salvar com sucesso
             }
-            return RedirectToAction(nameof(Index));
 
+            // Se o modelo for inválido, devolvemos a ViewModel para a View mostrar os erros
+            return View(cupomViewModel);
         }
 
         /// <summary>

@@ -13,6 +13,8 @@ public partial class Kit
 
     public string Descricao { get; set; } = null!;
 
+    public string? Imagem { get; set; }
+
     public int DisponibilidadeP { get; set; }
 
     public int DisponibilidadeG { get; set; }

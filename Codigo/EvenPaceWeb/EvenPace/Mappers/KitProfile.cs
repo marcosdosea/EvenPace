@@ -1,5 +1,5 @@
 using AutoMapper;
-using Models; 
+using EvenPaceWeb.Models; 
 using Core;
 
 namespace EvenPace.Mappers;
