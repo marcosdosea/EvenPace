@@ -26,9 +26,6 @@ namespace EvenPace.Controllers
             _mapper = mapper;
         }
 
-        // ============================
-        // TELA DE INSCRIÇÃO
-        // ============================
         public IActionResult Tela14_InscricaoNaCorrida1(int idEvento)
         {
             var evento = _eventoService.Get(idEvento);
@@ -48,16 +45,13 @@ namespace EvenPace.Controllers
                 {
                     IdEvento = evento.Id,
                     DataInscricao = DateTime.Now,
-                    IdCorredor = 1 // ⚠️ Substitua pelo usuário logado
+                    IdCorredor = 1 
                 }
             };
 
             return View(vm);
         }
 
-        // ============================
-        // SALVAR INSCRIÇÃO
-        // ============================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SalvarInscricao(TelaInscricaoViewModel vm)
