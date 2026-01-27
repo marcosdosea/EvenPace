@@ -2,13 +2,12 @@ using AutoMapper;
 using Models;
 using Core;
 
-namespace EvenPace.Mappers;
+namespace Mappers;
 
 public class CorredorProfile : Profile
 {
     public CorredorProfile()
     {
         CreateMap<CorredorViewModel,Corredor>().ReverseMap();
-        CreateMap<Evento, HistoricoEventoViewModel>();
     }
 }

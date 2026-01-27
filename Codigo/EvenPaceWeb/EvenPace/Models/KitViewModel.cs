@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 
-namespace EvenPaceWeb.Models
+namespace Models
 {
     public class KitViewModel
     {

@@ -3,20 +3,20 @@ using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
 using Models;
-using EvenPace.Models;
+using ;
 
 namespace EvenPace.Controllers
 {
     public class InscricaoController : Controller
     {
         private readonly IInscricaoService _inscricaoService;
-        private readonly IEventoService _eventoService;
+        private readonly IEventosService _eventoService;
         private readonly IKitService _kitService;
         private readonly IMapper _mapper;
 
         public InscricaoController(
             IInscricaoService inscricaoService,
-            IEventoService eventoService,
+            IEventosService eventoService,
             IKitService kitService,
             IMapper mapper)
         {

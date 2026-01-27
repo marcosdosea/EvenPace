@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Core.Service;
 using AutoMapper;
-using EvenPaceWeb.Models;
+using Models;
 
 namespace EvenPaceWeb.Controllers
 {
@@ -88,5 +88,7 @@ namespace EvenPaceWeb.Controllers
             _administradorService.Delete((int)id);
             return RedirectToAction(nameof(Index));
         }
+        
+
     }
 }

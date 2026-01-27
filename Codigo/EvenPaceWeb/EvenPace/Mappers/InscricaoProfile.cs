@@ -2,7 +2,7 @@ using AutoMapper;
 using Core;
 using Models;
 
-namespace EvenPace.Mappers;
+namespace Mappers;
 
 public class InscricaoProfile : Profile
 {

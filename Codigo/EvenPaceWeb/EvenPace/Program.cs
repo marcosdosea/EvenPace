@@ -30,6 +30,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Corredor}/{action=Index}/{id?}");
+    pattern: "{controller=Inscricao}/{action=Index}/{id?}");
 
 app.Run();

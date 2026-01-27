@@ -1,8 +1,8 @@
 using AutoMapper;
-using EvenPaceWeb.Models; 
+using Models; 
 using Core;
 
-namespace EvenPace.Mappers;
+namespace Mappers;
 
 public class KitProfile : Profile
 {

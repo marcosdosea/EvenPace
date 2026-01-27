@@ -90,7 +90,8 @@ namespace Service
         {
             return _context.Corredors.Where(c => c.Nome.Contains(nome)).ToList();
         }
-
+        
+        /*
         /// <summary>
         /// Retorna o histórico de eventos já participados por um corredor
         /// </summary>
@@ -98,11 +99,12 @@ namespace Service
         /// <returns>Lista de eventos participados</returns>
         public IEnumerable<Evento> GetHistoricoEventos(int idCorredor)
         {
-            return _context.Inscricoes
-            .Where(i => i.IdCorredor == idCorredor)
+            return _context.Corredors
+            .Where(i => i.Id == idCorredor)
             .Include(i => i.Evento)
             .Select(i => i.Evento)
             .ToList();
         }
+        */
     }
 }

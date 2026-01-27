@@ -94,41 +94,5 @@ public class CorredorController : Controller
           _corredorService.Delete(id);
           return RedirectToAction(nameof(Index));
       }
-
-      // GET: Corredor/HistoricoEventos/5
-      public ActionResult HistoricoEventos(int id)
-      {
-          var eventos = _corredorService.GetHistoricoEventos(id);
-          var eventosModel = _mapper.Map<List<HistoricoEventoViewModel>>(eventos);
-          return View(eventosModel);
-      }
-      // GET: Corredor/AvaliarEvento/5
-      public ActionResult AvaliarEvento(int idEvento)
-      {
-          var model = new AvaliacaoEventoViewModel
-      {
-          DataAvaliacao = DateTime.Now
-      };
-
-          ViewBag.IdEvento = idEvento; // só para contexto da View
-          return View(model);
-      }
-
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult AvaliarEvento(AvaliacaoEventoViewModel model)
-      {
-          if (ModelState.IsValid)
-      {
-          var avaliacao = _mapper.Map<AvaliacaoEvento>(model);
-          _avaliacaoEventoService.Create(avaliacao);
-
-          return RedirectToAction(nameof(Index));
-      }
-
-          return View(model);
-      }
-          View(model);
 }
 
-}
