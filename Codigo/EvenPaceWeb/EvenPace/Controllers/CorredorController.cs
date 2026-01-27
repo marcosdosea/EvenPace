@@ -17,8 +17,16 @@ public class CorredorController : Controller
           _mapper = mapper;
       }
       
-      // Get: CorredorController/Get/4
-      public ActionResult Get(int id)
+      // Post: CorredorController/Login
+      public ActionResult Login(string email, string senha)
+      {
+          Corredor corredor = _corredorService.Login(email, senha);
+          CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+          return View(corredorModel);
+      }
+      
+      // Get: CorredorController/Login/4
+      public ActionResult Get(uint id)
       {
           Corredor corredor = _corredorService.Get(id);
           CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
@@ -45,7 +53,7 @@ public class CorredorController : Controller
       }
 
       // Get: CorredorController/Edit/5
-      public ActionResult Edit(int id)
+      public ActionResult Edit(uint id)
       {
           Corredor corredor = _corredorService.Get(id);
           CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
@@ -66,7 +74,7 @@ public class CorredorController : Controller
       }
 
       // Get: CorredorController/Delite/5
-      public ActionResult Delete(int id)
+      public ActionResult Delete(uint id)
       {
           Corredor corredor = _corredorService.Get(id);
           CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);

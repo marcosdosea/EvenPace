@@ -27,6 +27,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Corredor}/{action=Get}/{id?}");
+    pattern: "{controller=Corredor}/{action=Login}/{id?}");
 
 app.Run();

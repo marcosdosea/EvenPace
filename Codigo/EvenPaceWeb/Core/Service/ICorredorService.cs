@@ -10,7 +10,8 @@ namespace Core.Service
     {
         void Edit(Corredor corredor);
         uint Create(Corredor corredor);
-        Corredor Get(int id);
+        Corredor Get(uint id);
+        Corredor Login(string email, string senha);
         void Delete(int id);
         IEnumerable<Corredor> GetAll();
         IEnumerable<Corredor> GetByName(string nome);
