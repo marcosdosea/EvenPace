@@ -3,6 +3,7 @@ using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using EvenPace.Models;
 
 namespace EvenPace.Controllers
 {
@@ -25,75 +26,9 @@ namespace EvenPace.Controllers
             _mapper = mapper;
         }
 
-        public ActionResult Index()
-        {
-            var listaInscricao = _inscricaoService.GetAll();
-            var listaInscricaoModel = _mapper.Map<List<InscricaoViewModel>>(listaInscricao);
-            return View(listaInscricaoModel);
-        }
-
-        public ActionResult Get(int id)
-        {
-            var inscricao = _inscricaoService.Get(id);
-            var inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
-            return View(inscricaoModel);
-        }
-
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(InscricaoViewModel inscricaoModel)
-        {
-            if (!ModelState.IsValid)
-                return View(inscricaoModel);
-
-            var inscricao = _mapper.Map<Inscricao>(inscricaoModel);
-            _inscricaoService.Create(inscricao);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        public ActionResult Edit(int id)
-        {
-            var inscricao = _inscricaoService.Get(id);
-            var inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
-            return View(inscricaoModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, InscricaoViewModel inscricaoModel)
-        {
-            if (!ModelState.IsValid)
-                return View(inscricaoModel);
-
-            var inscricao = _mapper.Map<Inscricao>(inscricaoModel);
-            _inscricaoService.Edit(inscricao);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        public ActionResult Delete(int id)
-        {
-            var inscricao = _inscricaoService.Get(id);
-            var inscricaoModel = _mapper.Map<InscricaoViewModel>(inscricao);
-            return View(inscricaoModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
-        {
-            _inscricaoService.Delete(id);
-            return RedirectToAction(nameof(Index));
-        }
-
-
-        // GET
+        // ============================
+        // TELA DE INSCRIÇÃO
+        // ============================
         public IActionResult Tela14_InscricaoNaCorrida1(int idEvento)
         {
             var evento = _eventoService.Get(idEvento);
@@ -112,26 +47,42 @@ namespace EvenPace.Controllers
                 Inscricao = new InscricaoViewModel
                 {
                     IdEvento = evento.Id,
-                    DataInscricao = DateTime.Now
+                    DataInscricao = DateTime.Now,
+                    IdCorredor = 1 // ⚠️ Substitua pelo usuário logado
                 }
             };
 
             return View(vm);
         }
 
-        // POST
+        // ============================
+        // SALVAR INSCRIÇÃO
+        // ============================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SalvarInscricao(TelaInscricaoViewModel vm)
         {
             if (!ModelState.IsValid)
+            {
+                var evento = _eventoService.Get(vm.IdEvento);
+                var kits = _kitService.GetByEvento(vm.IdEvento);
+
+                vm.NomeEvento = evento.Nome;
+                vm.ImagemEvento = evento.Imagem;
+                vm.Local = evento.Local;
+                vm.DataEvento = evento.DataEvento;
+                vm.Descricao = evento.Descricao;
+                vm.Percursos = new List<string> { "3km", "5km", "10km" };
+                vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
+
                 return View("Tela14_InscricaoNaCorrida1", vm);
+            }
 
             var inscricao = _mapper.Map<Inscricao>(vm.Inscricao);
             _inscricaoService.Create(inscricao);
 
             TempData["MensagemSucesso"] = "Inscrição realizada com sucesso!";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
     }
 }
