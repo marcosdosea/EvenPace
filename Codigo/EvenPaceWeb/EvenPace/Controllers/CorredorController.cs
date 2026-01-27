@@ -16,14 +16,6 @@ public class CorredorController : Controller
           _corredorService = corredor;
           _mapper = mapper;
       }
-
-      // Get: CorredorController/Index
-      public ActionResult Index()
-      {
-          var listaCorredor = _corredorService.GetAll();
-          var listaCorredorModel = _mapper.Map<List<CorredorViewModel>>(listaCorredor);
-          return View(listaCorredorModel);
-      }
       
       // Get: CorredorController/Get/4
       public ActionResult Get(int id)
