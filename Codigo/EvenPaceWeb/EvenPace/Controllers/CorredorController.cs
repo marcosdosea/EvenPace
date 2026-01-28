@@ -31,9 +31,9 @@ public class CorredorController : Controller
       }
       
       // Get: CorredorController/Login/4
-      public ActionResult Get(uint id)
+      public ActionResult Get(int id)
       {
-          Corredor corredor = _corredorService.Get(id);
+          Corredor corredor = _corredorService.Get((uint)id);
           CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
           return View(corredorModel);
       }

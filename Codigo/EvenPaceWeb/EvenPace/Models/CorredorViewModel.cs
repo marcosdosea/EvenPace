@@ -36,5 +36,7 @@ namespace Models
         [DataType(DataType.Password)]
         [StringLength(45, MinimumLength = 6, ErrorMessage = "A senha deve ter  até 45 caracteres")]
         public string Senha { get; set; } = null!;
+        
+        public string? Imagem { get; set; }
     }
 }

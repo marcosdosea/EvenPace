@@ -6,22 +6,13 @@ namespace Core;
 
 public partial class EvenPaceContext : DbContext
 {
-    public EvenPaceContext(DbContextOptions<EvenPaceContext> options)
-        : base(options)
+    public EvenPaceContext()
     {
     }
 
-    // 2. Comente ou remova o construtor vazio se não for estritamente necessário
-    // public EvenPaceContext() { } 
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public EvenPaceContext(DbContextOptions<EvenPaceContext> options)
+        : base(options)
     {
-        // 3. O SEGREDO: Só configura o MySQL se ninguém (como o Teste) configurou nada antes
-        if (!optionsBuilder.IsConfigured)
-        {
-            // Substitua pela sua string real
-            optionsBuilder.UseMySQL("server=localhost;database=evenpace;user=root;password=...");
-        }
     }
 
     public virtual DbSet<Administrador> Administradors { get; set; }
@@ -42,9 +33,9 @@ public partial class EvenPaceContext : DbContext
 
     public virtual DbSet<Organizacao> Organizacaos { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=123456;database=evenpace");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=123456;database=evenpace");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -134,6 +125,7 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(45)
                 .HasColumnName("email");
+            entity.Property(e => e.Imagem).HasMaxLength(255);
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
                 .HasColumnName("nome");
