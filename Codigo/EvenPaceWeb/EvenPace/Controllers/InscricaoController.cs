@@ -27,7 +27,7 @@ using EvenPaceWeb.Models;
 //            _mapper = mapper;
 //        }
 
-        public IActionResult TelaInscricao(int id)
+        /*public IActionResult TelaInscricao(int id)
         {
             var evento = _eventoService.Get(id);
             var kits = _kitService.Get(id);
@@ -58,7 +58,7 @@ using EvenPaceWeb.Models;
 //            return View(vm);
 //        }
 
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SalvarInscricao(TelaInscricaoViewModel vm)
         {
@@ -77,7 +77,7 @@ using EvenPaceWeb.Models;
 
                 return View("TelaInscricao", vm);
             }
-
+            */
 //            var inscricao = _mapper.Map<Inscricao>(vm.Inscricao);
 //            _inscricaoService.Create(inscricao);
 
