@@ -1,63 +1,49 @@
+@model IEnumerable<Models.EventoViewModel>
+
 @{
     ViewData["Title"] = "Histórico de Eventos";
 }
 
-<article class="historico-container">
+<link rel="stylesheet" href="~/css/eventos.css" />
 
-    <!-- Cabeçalho -->
-    <header class="historico-header">
-        <a href="javascript:history.back()" class="btn-voltar">
-            &#8592;
-        </a>
-        <h1>Histórico de eventos</h1>
-    </header>
+<div class="historico-container">
+    <h2 class="titulo-pagina">Histórico de eventos</h2>
 
-    <!-- Lista de eventos -->
-    <section class="lista-eventos">
+    <div class="grid-eventos">
+        @foreach (var item in Model)
+        {
+                <div class="card-evento">
+                    <img src="@(string.IsNullOrEmpty(item.Imagem) ? "/img/default-race.png" : item.Imagem)" 
+                         alt="Banner do Evento" class="card-img" />
 
-        <!-- Card Evento -->
-        <article class="evento-card">
-            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
+                    <div class="card-content">
+                        <h3>@item.Nome</h3>
 
-            <section class="evento-info">
-                <h2>Circuito Sesc de Corridas</h2>
-                <p class="evento-data">Itabaiana · Dia 20/08</p>
+                        <div class="info-row">
+                            <div class="info-item">
+                                <span>Local</span>
+                            @item.Cidade
+                            </div>
+                            <div class="info-item">
+                                <span>Data</span>
+                            @item.Data.ToString("dd/MM")
+                            </div>
+                            <div class="info-item">
+                                <span>Horário</span>
+                            @item.Data.ToString("HH:mm")
+                            </div>
+                        </div>
 
-                <section class="evento-botoes">
-                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
-                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
-                </section>
+                        <div class="buttons-row">
+                            <a href="#" class="btn-acao btn-cancelar">Cancelar Inscrição</a>
+                            <a href="#" class="btn-acao btn-status">Status da inscrição</a>
+                        </div>
 
-                <button class="btn-cancelar">Cancelar Inscrição</button>
-            </section>
-        </article>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn-avaliar">Avaliar Corrida</a>
+                    </div>
+                </div>
+        }
+    </div>
 
-        <!-- Card Evento -->
-        <article class="evento-card">
-            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
-
-            <section class="evento-info">
-                <h2>Circuito Sesc de Corridas</h2>
-                <p class="evento-data">Itabaiana · Dia 20/08</p>
-
-                <section class="evento-botoes">
-                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
-                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
-                </section>
-
-                <button class="btn-cancelar">Cancelar Inscrição</button>
-            </section>
-        </article>
-
-    </section>
-
-    <!-- Menu inferior -->
-    <nav class="menu-inferior">
-        <a href="/Home/Index">Início</a>
-        <a href="/Conquistas">Conquistas</a>
-        <a href="/Cupons">Cupons</a>
-        <a href="/HistoricoEventos" class="ativo">Histórico</a>
-        <a href="/Perfil">Perfil</a>
-    </nav>
-
-</article>
+    <a href="javascript:history.back()" class="btn-voltar">Voltar</a>
+</div>
