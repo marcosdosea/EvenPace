@@ -1,88 +1,50 @@
-using AutoMapper;
-using Core;
-using Core.Service;
-using Microsoft.AspNetCore.Mvc;
-using EvenPace.Models;
-using Models;
-using EvenPaceWeb.Models;
+using System;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-//namespace EvenPace.Controllers
-//{
-//    public class InscricaoController : Controller
-//    {
-//        private readonly IInscricaoService _inscricaoService;
-//        private readonly IEventosService _eventoService;
-//        private readonly IKitService _kitService;
-//        private readonly IMapper _mapper;
 
-//        public InscricaoController(
-//            IInscricaoService inscricaoService,
-//            IEventosService eventoService,
-//            IKitService kitService,
-//            IMapper mapper)
-//        {
-//            _inscricaoService = inscricaoService;
-//            _eventoService = eventoService;
-//            _kitService = kitService;
-//            _mapper = mapper;
-//        }
+namespace Models
+{
+    public class InscricaoViewModel
+    {
+        [Key]
+        [Display(Name = "Código da Inscrição")]
+        public int Id { get; set; }
 
-        /*public IActionResult TelaInscricao(int id)
-        {
-            var evento = _eventoService.Get(id);
-            var kits = _kitService.Get(id);
+        [Display(Name = "Status")]
+        public string? Status { get; set; }
 
-            if (evento == null || kits == null)
-            {
-                return NotFound("Evento não encontrado!");
-            }
-            
-            var vm = new TelaInscricaoViewModel
-            {
-                IdEvento = evento.Id,
-                NomeEvento = evento.Nome,
-                ImagemEvento = evento.Imagem,
-                Local= evento.Rua,
-                DataEvento = evento.Data,
-                Descricao = evento.Descricao,
-                Percursos = new List<string> { "3km", "5km", "10km" },
-                Kits = _mapper.Map<List<KitViewModel>>(kits),
-                Inscricao = new InscricaoViewModel
-                {
-                    IdEvento = (int)evento.Id,
-                    DataInscricao = DateTime.Now,
-                    IdCorredor = 1 
-                }
-            };
+        [Required(ErrorMessage = "A data da inscrição é obrigatória")]
+        [Display(Name = "Data da Inscrição")]
+        [DataType(DataType.Date)]
+        public DateTime DataInscricao { get; set; }
 
-//            return View(vm);
-//        }
+        [Required(ErrorMessage = "Selecione a distância")]
+        [Display(Name = "Distância")]
+        public string Distancia { get; set; } = null!;
 
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SalvarInscricao(TelaInscricaoViewModel vm)
-        {
-            if (!ModelState.IsValid)
-            {
-                var evento = _eventoService.Get((int)vm.IdEvento);
-                var kits = _kitService.Get((int)vm.IdEvento);
+        [Required(ErrorMessage = "Selecione o tamanho da camisa")]
+        [Display(Name = "Tamanho da Camisa")]
+        public string TamanhoCamisa { get; set; } = null!;
 
-                vm.NomeEvento = evento.Nome;
-                vm.ImagemEvento = evento.Imagem;
-                vm.Local = evento.Cidade;
-                vm.DataEvento = evento.Data;
-                vm.Descricao = evento.Descricao;
-                vm.Percursos = new List<string> { "3km", "5km", "10km" };
-                vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
+        [Display(Name = "Tempo")]
+        public TimeSpan? Tempo { get; set; }
 
-                return View("TelaInscricao", vm);
-            }
-            */
-//            var inscricao = _mapper.Map<Inscricao>(vm.Inscricao);
-//            _inscricaoService.Create(inscricao);
+        [Display(Name = "Posição")]
+        public int? Posicao { get; set; }
 
-//            TempData["MensagemSucesso"] = "Inscrição realizada com sucesso!";
-//            return RedirectToAction("Index", "Home");
-//        }
-//    }
-//}
+        [Required(ErrorMessage = "Selecione o kit")]
+        [Display(Name = "Kit")]
+        public int IdKit { get; set; }
+
+        [Required(ErrorMessage = "Selecione o evento")]
+        [Display(Name = "Evento")]
+        public int IdEvento { get; set; }
+
+        [Required(ErrorMessage = "O corredor é obrigatório")]
+        public int IdCorredor { get; set; }
+
+        public int? IdAvaliacaoEvento { get; set; }
+    }
+}
+ 

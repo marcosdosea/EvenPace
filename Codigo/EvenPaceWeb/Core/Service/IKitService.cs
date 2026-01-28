@@ -8,5 +8,7 @@ namespace Core.Service
         void Delete(int id);
         IEnumerable<Kit> GetAll();
         IEnumerable<Kit> GetByName(string nome);
+        IEnumerable<Kit> GetKitsPorEvento(int id);
+
     }
 }

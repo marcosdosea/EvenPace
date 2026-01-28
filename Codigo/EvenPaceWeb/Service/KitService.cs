@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 using Core.Service;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,21 +30,21 @@ namespace Service
         /// <param name="kit"></param>
         public void Edit(Kit kit)
         {
-            // 1. Verifica se já existe algum Kit com esse ID na memória do EF
+           
             var local = _context.Set<Kit>()
                 .Local
                 .FirstOrDefault(entry => entry.Id.Equals(kit.Id));
 
-            // 2. Se existir, "desanexa" (solta) ele para não dar conflito
+           
             if (local != null)
             {
                 _context.Entry(local).State = EntityState.Detached;
             }
 
-            // 3. Agora dizemos que O NOSSO kit (que veio da tela) é o que vale e foi modificado
+           
             _context.Entry(kit).State = EntityState.Modified;
 
-            // 4. Salva
+           
             _context.SaveChanges();
         }
 
@@ -72,15 +72,24 @@ namespace Service
         {
             return _context.Kits.Find((uint)id)!;
         }
-
+      
         public IEnumerable<Kit> GetAll()
         {
-            return _context.Kits.AsNoTracking();
+            return _context.Kits.ToList();
         }
 
         public IEnumerable<Kit> GetByName(string nome)
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Kit> GetKitsPorEvento(int idEvento)
+        {
+            // Convertemos o idEvento para uint para bater com o tipo da tabela
+            return _context.Kits
+                           .Where(k => k.IdEvento == (uint)idEvento)
+                           .ToList();
+        }
+
     }
 }
