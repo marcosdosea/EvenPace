@@ -1,0 +1,26 @@
+@model IEnumerable<Models.AvaliacaoEventoViewModel>
+
+<div class="container mt-4">
+    <h2>Avaliações Realizadas</h2>
+    <hr />
+    <div class="row">
+        @foreach (var item in Model)
+        {
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-warning">
+                            @for (int i = 0; i < item.Estrela; i++)
+                            {
+                                <span>★</span>
+                            }
+                            </h5>
+                            <p class="card-text">"@item.Comentario"</p>
+                            <small class="text-muted">ID: @item.Id</small>
+                        </div>
+                    </div>
+                </div>
+        }
+    </div>
+    <a asp-action="Create" class="btn btn-primary">Nova Avaliação</a>
+</div>
