@@ -1,5 +1,6 @@
 @model EvenPaceWeb.Models.TelaInscricaoViewModel
 
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -89,49 +90,134 @@
         <!-- Conteúdo -->
         <div class="app-content">
 
-            <h6 class="fw-bold">@Model.NomeEvento</h6>
+            <h6 class="fw-bold text-center mt-3 mb-4">@Model.NomeEvento</h6>
 
-            <p class="mb-1">📍 @Model.Local</p>
-            <p class="mb-1">📅 @Model.DataEvento.ToString("dd/MM/yyyy")</p>
+<style>
+    /* Criamos um "embrulho" para empurrar o conteúdo para a direita */
+    .conteudo-deslocado {
+        margin-left: 15%; /* Ajuste essa porcentagem para chegar no seu "quase meio" */
+        max-width: 70%;   /* Limita a largura para o texto não espalhar demais */
+    }
 
-            <p class="mb-3">@Model.Descricao</p>
+    .evento-container {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    /* ... restante do seu CSS do icon-circle e info-column ... */
+    .icon-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #FFD700;
+        border-radius: 50%;
+        min-width: 35px;
+        height: 35px;
+        margin-right: 12px;
+        margin-top: 5px;
+        font-size: 18px;
+    }
+
+    .info-column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .label-pequeno {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-bottom: 0;
+        line-height: 1.2;
+    }
+
+    .valor-negrito {
+        font-weight: bold;
+        margin: 0;
+        font-size: 1rem;
+    }
+</style>
+
+<div class="conteudo-deslocado">
+
+    <div class="evento-container">
+        <div class="icon-circle">📍</div>
+        <div class="info-column">
+            <span class="label-pequeno">Local:</span>
+            <p class="valor-negrito">@Model.Local</p>
+        </div>
+    </div>
+
+    <div class="evento-container">
+        <div class="icon-circle">📅</div>
+        <div class="info-column">
+            <span class="label-pequeno">Data do evento:</span>
+            <p class="valor-negrito">@Model.DataEvento.ToString("dd/MM/yyyy")</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <strong>Sobre o Evento</strong>
+        <p class="mb-3 text-break">@Model.Descricao</p>
+    </div>
+
+</div>
+
+
+
+
+            @if (!string.IsNullOrEmpty(Model.InfoRetiradaKit))
+            {
+            <div class="evento-container">
+                <div class="icon-circle">📦</div>
+                <div class="info-column">
+                    <span class="label-pequeno">Retirada de Kit:</span>
+                    <div class="valor-negrito">
+                            @* O Html.Raw com Replace garante que as quebras de linha apareçam *@
+                            @Html.Raw(Model.InfoRetiradaKit.Replace("\n", "<br />"))
+                    </div>
+                </div>
+            </div>
+            }
+
 
             <!-- Percursos -->
             <h6 class="fw-bold mt-3">Percurso</h6>
             <div class="mb-3">
                 @foreach (var percurso in Model.Percursos)
-            {
-                <span class="badge-distance">@percurso</span>
-            }
+                {
+                    <span class="badge-distance">@percurso</span>
+                }
             </div>
 
             <!-- Kits -->
             <h6 class="fw-bold">Escolha seu kit</h6>
 
             @foreach (var kit in Model.Kits)
-        {
-            <div class="kit-card">
-                <div>
-                    <div class="fw-bold">@kit.Nome</div>
-                    <small>@kit.Descricao</small><br />
-                    <span class="fw-bold">R$ @kit.Valor.ToString("N2")</span>
-                </div>
+            {
+                <div class="kit-card">
+                    <div>
+                        <div class="fw-bold">@kit.Nome</div>
+                        <small>@kit.Descricao</small><br />
+                        <span class="fw-bold">R$ @kit.Valor.ToString("N2")</span>
+                    </div>
 
-                <form asp-action="SalvarInscricao" method="post" class="ms-auto">
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" name="Inscricao.IdEvento" value="@Model.IdEvento" />
-                    <input type="hidden" name="Inscricao.IdKit" value="@kit.Id" />
+                    <form asp-action="SalvarInscricao" method="post" class="ms-auto">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Inscricao.IdEvento" value="@Model.IdEvento" />
+                        <input type="hidden" name="Inscricao.IdKit" value="@kit.Id" />
 
-                    <button class="btn btn-warning btn-sm">
-                        Inscrever-se
-                    </button>
+                  <a href="@Url.Action("Tela1", "Inscricao", new { id = Model.IdEvento })" class="btn btn-warning btn-sm rounded-3">
+        Inscrever-se
+    </a>
                 </form>
             </div>
         }
 
         </div>
 
-      
+
+        <!-- Menu inferior -->
         <div class="bottom-nav">
             <div>🏠<br />Início</div>
             <div>🏆<br />Conquistas</div>
