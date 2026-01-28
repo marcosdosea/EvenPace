@@ -2,45 +2,94 @@ using Core;
 using Core.Service;
 using Microsoft.EntityFrameworkCore;
 
-namespace Service;
-
-public class OrganizacaoService : IOrganizacaoService
+namespace Service
 {
-    private EvenPaceContext _context;
-
-    public OrganizacaoService(EvenPaceContext context)
+    public class KitService : IKitService
     {
-        _context = context;
-    }
+        private readonly EvenPaceContext _context;
+        public KitService(EvenPaceContext context)
+        {
+            _context = context;
+        }
 
-    public void Edit(Organizacao organizacao)
-    {
-        _context.Update(organizacao);
-        _context.SaveChanges();
-    }
+        /// <summary>
+        /// Insere um kit no banco de dados
+        /// </summary>
+        /// <param name="kit"></param>
+        /// <returns>Retorna o Id do Kit</returns>
+        public uint Create(Kit kit)
+        {
+            _context.Add(kit);
+            _context.SaveChanges();
+            return kit.Id;
+        }
 
-    public uint Create(Organizacao organizacao)
-    {
-        _context.Add(organizacao);
-        _context.SaveChanges();
-        return organizacao.Id;
-    }
+        /// <summary>
+        /// Edita um kit no banco de dados
+        /// </summary>
+        /// <param name="kit"></param>
+        public void Edit(Kit kit)
+        {
+            // 1. Verifica se já existe algum Kit com esse ID na memória do EF
+            var local = _context.Set<Kit>()
+                .Local
+                .FirstOrDefault(entry => entry.Id.Equals(kit.Id));
 
-    public Organizacao Get(int id)
-    {
-        var _organizacao = _context.Organizacaos.Find(id);
-        return _organizacao;
-    }
+            // 2. Se existir, "desanexa" (solta) ele para não dar conflito
+            if (local != null)
+            {
+                _context.Entry(local).State = EntityState.Detached;
+            }
 
-    public void Delete(int id)
-    {
-        var  _organizacao = _context.Organizacaos.Find(id);
-        _context.Remove(_organizacao);
-        _context.SaveChanges();
-    }
+            // 3. Agora dizemos que O NOSSO kit (que veio da tela) é o que vale e foi modificado
+            _context.Entry(kit).State = EntityState.Modified;
 
-    public IEnumerable<Organizacao> GetAll()
-    {
-        return _context.Organizacaos.AsNoTracking();
+            // 4. Salva
+            _context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Deleta um kit do banco de dados
+        /// </summary>
+        /// <param name="id"></param>
+        public void Delete(int id)
+        {
+            var _kit = _context.Kits.Find((uint)id);
+
+            if (_kit is not null)
+            {
+                _context.Remove(_kit);
+                _context.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Busca um kit pelo id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Retorna o kit</returns>
+        public Kit Get(int id)
+        {
+            return _context.Kits.Find((uint)id)!;
+        }
+      
+        public IEnumerable<Kit> GetAll()
+        {
+            return _context.Kits.ToList();
+        }
+
+        public IEnumerable<Kit> GetByName(string nome)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Kit> GetKitsPorEvento(int idEvento)
+        {
+            // Convertemos o idEvento para uint para bater com o tipo da tabela
+            return _context.Kits
+                           .Where(k => k.IdEvento == (uint)idEvento)
+                           .ToList();
+        }
+
     }
 }
