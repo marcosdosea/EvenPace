@@ -1,89 +1,50 @@
-using AutoMapper;
-using Core;
-using Core.Service;
-using Microsoft.AspNetCore.Mvc;
-using EvenPace.Models;
-using Models;
-using EvenPaceWeb.Models;
-using Service;
+using System;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace EvenPace.Controllers
+
+namespace Models
 {
-    public class InscricaoController : Controller
+    public class InscricaoViewModel
     {
-        private readonly IInscricaoService _inscricaoService;
-        private readonly IEventosService _eventoService;
-        private readonly IKitService _kitService;
-        private readonly IMapper _mapper;
+        [Key]
+        [Display(Name = "Código da Inscrição")]
+        public int Id { get; set; }
 
-        public InscricaoController(
-            IInscricaoService inscricaoService,
-            IEventosService eventoService,
-            IKitService kitService,
-            IMapper mapper)
-        {
-            _inscricaoService = inscricaoService;
-            _eventoService = eventoService;
-            _kitService = kitService;
-            _mapper = mapper;
-        }
+        [Display(Name = "Status")]
+        public string? Status { get; set; }
 
-        public IActionResult Inscricao(int id)
-        {
-            var evento = _eventoService.Get(id); // Ou o método que você usa para buscar
+        [Required(ErrorMessage = "A data da inscrição é obrigatória")]
+        [Display(Name = "Data da Inscrição")]
+        [DataType(DataType.Date)]
+        public DateTime DataInscricao { get; set; }
 
-            if (evento == null)
-            {
-                return NotFound("Evento não encontrado no banco de dados.");
-            }
+        [Required(ErrorMessage = "Selecione a distância")]
+        [Display(Name = "Distância")]
+        public string Distancia { get; set; } = null!;
 
-            var kitsFromDb = _kitService.GetKitsPorEvento(id).ToList();
+        [Required(ErrorMessage = "Selecione o tamanho da camisa")]
+        [Display(Name = "Tamanho da Camisa")]
+        public string TamanhoCamisa { get; set; } = null!;
 
-            var vm = new TelaInscricaoViewModel
-            {
-                IdEvento = evento.Id,
-                NomeEvento = evento.Nome,
-                Local = evento.Rua,
-                DataEvento = evento.Data,
-                Descricao = evento.Descricao,
-                Percursos = new List<string> { "3km", "5km", "10km" },
-                Kits = _mapper.Map<List<KitViewModel>>(kitsFromDb),
-                Inscricao = new InscricaoViewModel
-                {
-                    IdEvento = (int)evento.Id,
-                    DataInscricao = DateTime.Now,
-                    IdCorredor = 1
-                }
-            };
+        [Display(Name = "Tempo")]
+        public TimeSpan? Tempo { get; set; }
 
-            return View("TelaInscricao", vm);
-        }
+        [Display(Name = "Posição")]
+        public int? Posicao { get; set; }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SalvarInscricao(TelaInscricaoViewModel vm)
-        {
-            if (!ModelState.IsValid)
-            {
-                var evento = _eventoService.Get((int)vm.IdEvento);
-                var kits = _kitService.Get((int)vm.IdEvento);
+        [Required(ErrorMessage = "Selecione o kit")]
+        [Display(Name = "Kit")]
+        public int IdKit { get; set; }
 
-                vm.NomeEvento = evento.Nome;
-                //vm.ImagemEvento = evento.Imagem;
-                vm.Local = evento.Cidade;
-                vm.DataEvento = evento.Data;
-                vm.Descricao = evento.Descricao;
-                vm.Percursos = new List<string> { "3km", "5km", "10km" };
-                vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
+        [Required(ErrorMessage = "Selecione o evento")]
+        [Display(Name = "Evento")]
+        public int IdEvento { get; set; }
 
-                return View("TelaInscricao", vm);
-            }
+        [Required(ErrorMessage = "O corredor é obrigatório")]
+        public int IdCorredor { get; set; }
 
-            var inscricao = _mapper.Map<Inscricao>(vm.Inscricao);
-            _inscricaoService.Create(inscricao);
-
-            TempData["MensagemSucesso"] = "Inscrição realizada com sucesso!";
-            return RedirectToAction("Index", "Home");
-        }
+        public int? IdAvaliacaoEvento { get; set; }
     }
 }
+ 
