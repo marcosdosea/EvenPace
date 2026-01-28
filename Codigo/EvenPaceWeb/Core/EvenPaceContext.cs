@@ -20,7 +20,7 @@ public partial class EvenPaceContext : DbContext
         if (!optionsBuilder.IsConfigured)
         {
             // Substitua pela sua string real
-            optionsBuilder.UseMySQL("server=localhost;database=evenpace;user=root;password=...");
+            optionsBuilder.UseMySQL("server=localhost;database=evenpace;user=root;password=123456");
         }
     }
 
