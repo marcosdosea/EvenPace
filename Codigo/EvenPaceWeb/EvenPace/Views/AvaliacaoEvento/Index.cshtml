@@ -1,49 +1,26 @@
-@{
-    ViewData["Title"] = "Avaliação enviada";
-}
+@model IEnumerable<Models.AvaliacaoEventoViewModel>
 
-<div class="app-container">
-
-    <!-- HEADER -->
-    <header class="avaliacao-header">
-        <a href="javascript:history.back()" class="btn-voltar">&#8592;</a>
-        <h1>Avaliação</h1>
-    </header>
-
-    <!-- CONTEÚDO -->
-    <article class="avaliacao-container">
-
-        <section class="avaliacao-card">
-
-            <!-- Estrelas fixas (exemplo: 5 estrelas) -->
-            <div class="estrelas-fixas">
-                ★★★★★
-            </div>
-
-            <h2>Avaliação enviada!</h2>
-
-            <p>
-                Obrigado por avaliar a corrida.  
-                Sua opinião é muito importante 😊
-            </p>
-
-            <a href="/Corredor/Index" class="btn-enviar">
-                Meus eventos
-            </a>
-
-        </section>
-
-        <div class="voltar-inicio">
-            <a href="/Home/Index">Voltar ao início</a>
-        </div>
-
-    </article>
-
-    <!-- MENU INFERIOR -->
-    <nav class="menu-inferior">
-        <a href="/Home/Index">Início</a>
-        <a href="/Corredor/Index" class="ativo">Eventos</a>
-        <a href="/Perfil/Index">Perfil</a>
-    </nav>
-
+<div class="container mt-4">
+    <h2>Avaliações Realizadas</h2>
+    <hr />
+    <div class="row">
+        @foreach (var item in Model)
+        {
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-warning">
+                            @for (int i = 0; i < item.Estrela; i++)
+                            {
+                                <span>★</span>
+                            }
+                            </h5>
+                            <p class="card-text">"@item.Comentario"</p>
+                            <small class="text-muted">ID: @item.Id</small>
+                        </div>
+                    </div>
+                </div>
+        }
+    </div>
+    <a asp-action="Create" class="btn btn-primary">Nova Avaliação</a>
 </div>
