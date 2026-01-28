@@ -1,0 +1,93 @@
+/* Estilo para o container principal */
+.evaluation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+.card-avaliacao {
+    background-color: #fffafb;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+    .card-avaliacao h2 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+/* Sistema de Estrelas */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        font-size: 40px;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #ffcc00; /* Cor amarela da imagem */
+        }
+
+/* Área de comentário */
+.comment-section label {
+    display: block;
+    color: #0066cc;
+    text-decoration: underline;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.comment-box {
+    width: 100%;
+    border: none;
+    background-color: #e0e0e0;
+    padding: 15px;
+    border-radius: 4px;
+    min-height: 100px;
+    resize: none;
+}
+
+/* Botão inferior */
+.btn-home {
+    margin-top: 40px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #000;
+}
+
+.btn-submit {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}

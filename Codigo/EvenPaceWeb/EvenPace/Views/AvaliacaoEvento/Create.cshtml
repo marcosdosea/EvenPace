@@ -1,0 +1,49 @@
+@model Models.AvaliacaoEventoViewModel
+
+@{
+    ViewData["Title"] = "Avaliar Evento";
+}
+
+<link rel="stylesheet" href="~/css/avaliacao.css" />
+
+<div class="evaluation-container">
+    <form asp-action="AvaliarEvento" method="post" class="card-avaliacao">
+        @Html.AntiForgeryToken()
+
+        <h2>Avaliação da corrida</h2>
+
+        <div class="star-rating">
+            <input type="radio" id="star5" asp-for="Estrela" value="5" />
+            <label for="star5" title="5 estrelas">★</label>
+
+            <input type="radio" id="star4" asp-for="Estrela" value="4" />
+            <label for="star4" title="4 estrelas">★</label>
+
+            <input type="radio" id="star3" asp-for="Estrela" value="3" />
+            <label for="star3" title="3 estrelas">★</label>
+
+            <input type="radio" id="star2" asp-for="Estrela" value="2" />
+            <label for="star2" title="2 estrelas">★</label>
+
+            <input type="radio" id="star1" asp-for="Estrela" value="1" />
+            <label for="star1" title="1 estrela">★</label>
+        </div>
+        <span asp-validation-for="Estrela" class="text-danger"></span>
+
+        <div class="comment-section">
+            <label asp-for="Comentario">Deixe seu comentário</label>
+            <textarea asp-for="Comentario" class="comment-box" placeholder="Corrida bem organizada gostei muito!"></textarea>
+            <span asp-validation-for="Comentario" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar Avaliação</button>
+    </form>
+
+    <a href="@Url.Action("Index", "Home")" class="btn-home">Ir para tela inicial</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
