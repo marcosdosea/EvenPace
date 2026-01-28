@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -28,8 +28,6 @@ namespace Models
         [DataType(DataType.MultilineText)]
         public string Descricao { get; set; } = null!;
 
-        // --- Distâncias (Checkboxes) ---
-
         [Display(Name = "3 km")]
         public bool Distancia3 { get; set; }
 
@@ -50,9 +48,7 @@ namespace Models
 
         [Display(Name = "42 km")]
         public bool Distancia42 { get; set; }
-
-        // --- Endereço ---
-
+        
         [Required(ErrorMessage = "A rua é obrigatória.")]
         public string Rua { get; set; } = null!;
 
@@ -69,8 +65,6 @@ namespace Models
         [Display(Name = "Informações de Retirada do Kit")]
         [DataType(DataType.MultilineText)]
         public string InfoRetiradaKit { get; set; } = null!;
-
-        // --- Relacionamento (Organização) ---
 
         [Required(ErrorMessage = "Selecione a organização responsável.")]
         [Display(Name = "Organização")]
