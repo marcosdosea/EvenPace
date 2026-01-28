@@ -3,7 +3,6 @@ using Core;
 using Core.Service;
 using Models;
 using Microsoft.AspNetCore.Mvc;
-using Service;
 
 namespace EvenPace.Controllers;
 
@@ -20,10 +19,9 @@ public class KitController : Controller
         _eventosService = eventosService;
     }
 
-    // GET: Abre a Tela 17 para o usuário preencher
-    // GET: Abre a Tela 17
+    // GET: Abre a Tela 17 (Create) para o usuário preencher
     [HttpGet]
-    public IActionResult Tela17_Organizacao_CriarKit(int? id, int? idEvento)
+    public IActionResult Create(int? id, int? idEvento)
     {
         KitViewModel viewModel = new KitViewModel();
 
@@ -58,10 +56,10 @@ public class KitController : Controller
     }
 
     // POST: Recebe os dados do formulário quando clica em Salvar
-    // POST: KitController/Tela17_Organizacao_CriarKit
+    // POST: KitController/Tela17_Organizacao_CriarKit (Create)
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Tela17_Organizacao_CriarKit(KitViewModel model)
+    public IActionResult Create(KitViewModel model)
     {
         // 1. LIMPEZA DE VALIDAÇÕES (Para não bloquear o salvamento)
         ModelState.Remove("ImagemUpload");
@@ -82,8 +80,10 @@ public class KitController : Controller
                 {
                     // A. FAXINA: Se já existia uma foto antiga, APAGA ELA do computador
                     // (O campo model.Imagem contém o nome da foto velha vindo do input hidden)
-                    DeletarImagemDoDisco(model.Imagem);
-
+                    if (model.Imagem != null)
+                    {
+                        DeletarImagemDoDisco(model.Imagem);
+                    }
                     // B. SALVAR A NOVA
                     string pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
 
@@ -108,7 +108,6 @@ public class KitController : Controller
                     // Se NÃO enviou foto nova, mantém a string da foto antiga
                     kit.Imagem = model.Imagem;
                 }
-                // ----------------------------------
 
                 // --- SALVAR NO BANCO ---
                 if (model.Id > 0)
@@ -125,7 +124,7 @@ public class KitController : Controller
                 }
 
                 // Redireciona para a lista mantendo o filtro do evento
-                return RedirectToAction("Tela09_Organizacao_Kits", new { idEvento = model.IdEvento });
+                return RedirectToAction("IndexKit", new { idEvento = model.IdEvento });
             }
             catch (Exception ex)
             {
@@ -140,16 +139,14 @@ public class KitController : Controller
         return View(model);
     }
 
-    // GET: Tela09_Organizacao_Kits
+    // GET: Tela09_Organizacao_Kits (IndexKit)
     [HttpGet]
-    public IActionResult Tela09_Organizacao_Kits(int? idEvento)
+    public IActionResult IndexKit(int? idEvento)
     {
         // 1. DEFINIMOS A ORGANIZAÇÃO ATUAL (Simulando o login)
-        // Como combinamos no SQL, estamos usando a Organização ID = 1
         int idOrganizacaoLogada = 1;
 
         // 2. BUSCA EVENTOS *APENAS* DESSA ORGANIZAÇÃO
-        // Não buscamos do banco todo, apenas os que "pertencem" ao usuário
         var eventosDaOrganizacao = _eventosService.GetAll()
                                     .Where(e => e.IdOrganizacao == idOrganizacaoLogada)
                                     .ToList();
@@ -189,62 +186,6 @@ public class KitController : Controller
         return View(listaViewModel);
     }
 
-    // Get: KitController/Get/1
-    public ActionResult Get(int id)
-    {
-        Kit kit = _kitsService.Get(id);
-        KitViewModel kitModel = _mapper.Map<KitViewModel>(kit);
-        return View(kitModel);
-    }
-
-    // Get: KitController/Create
-    public ActionResult Create()
-    {
-        return View();
-    }
-
-    // Post: KitController/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Create(KitViewModel kitModel)
-    {
-        if (ModelState.IsValid)
-        {
-            var kit = _mapper.Map<Kit>(kitModel);
-            _kitsService.Create(kit);
-        }
-        return RedirectToAction(nameof(Index));
-    }
-
-    // Get: KitController/Edit/1
-    public ActionResult Edit(int id)
-    {
-        Kit kit = _kitsService.Get(id);
-        KitViewModel kitModel = _mapper.Map<KitViewModel>(kit);
-        return View(kitModel);
-    }
-
-    // Post: KitController/Edit/1
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Edit(KitViewModel kitModel)
-    {
-        if (ModelState.IsValid)
-        {
-            var kit = _mapper.Map<Kit>(kitModel);
-            _kitsService.Edit(kit);
-        }
-        return RedirectToAction(nameof(Index));
-    }
-
-    // Get: KitController/Delete/2
-    /*public ActionResult Delete(int id)
-    {
-        Kit kit = _kitsService.Get(id);
-        KitViewModel kitModel = _mapper.Map<KitViewModel>(kit);
-        return View(kitModel);
-    }*/
-
     [HttpGet]
     public IActionResult Excluir(int id)
     {
@@ -254,29 +195,32 @@ public class KitController : Controller
         {
             int idEventoDoKit = (int)kit.IdEvento;
 
-            // --- NOVO: APAGA A FOTO ANTES DE APAGAR O REGISTRO ---
-            DeletarImagemDoDisco(kit.Imagem);
-            // -----------------------------------------------------
+            //APAGA A FOTO ANTES DE APAGAR O REGISTRO ---
+            if (!string.IsNullOrEmpty(kit.Imagem))
+            {
+                DeletarImagemDoDisco(kit.Imagem);
+            }
+            
 
             _kitsService.Delete(id);
 
             TempData["MensagemSucesso"] = "Kit excluído com sucesso! 🗑️";
 
-            return RedirectToAction("Tela09_Organizacao_Kits", new { idEvento = idEventoDoKit });
+            return RedirectToAction("IndexKit", new { idEvento = idEventoDoKit });
         }
 
-        return RedirectToAction("Tela09_Organizacao_Kits");
+        return RedirectToAction("IndexKit");
     }
+
     // MÉTODO PRIVADO PARA APAGAR FOTOS DA PASTA WWWROOT
     private void DeletarImagemDoDisco(string nomeImagem)
     {
-        // 1. Se não tiver nome, não faz nada
+       
         if (string.IsNullOrEmpty(nomeImagem)) return;
 
-        // 2. Monta o caminho completo onde a foto está
+        
         string caminhoCompleto = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", nomeImagem);
 
-        // 3. Verifica se o arquivo realmente existe e deleta
         if (System.IO.File.Exists(caminhoCompleto))
         {
             try

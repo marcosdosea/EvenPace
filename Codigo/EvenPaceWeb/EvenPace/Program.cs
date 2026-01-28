@@ -32,6 +32,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Corredor}/{action=Create}/{id?}");
+    pattern: "{controller=Cupom}/{action=Create}/{id?}");
 
 app.Run();

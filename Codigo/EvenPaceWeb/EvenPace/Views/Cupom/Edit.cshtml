@@ -1,7 +1,7 @@
 ﻿@model Models.CupomViewModel
 
 @{
-    ViewData["Title"] = "Criar Cupom";
+    ViewData["Title"] = "Editar Cupom";
 }
 
 <style>
@@ -17,16 +17,15 @@
     }
 
     header.form-header p {
-        color: var(--text-grey); 
+        color: var(--text-grey);
         font-size: 1.2rem;
     }
 
-    /* Container com o fundo cinza claro */
     section.form-container {
         background-color: var(--bg-light);
         border-radius: 25px;
         padding: 50px;
-        border: 1px solid #ccc; 
+        border: 1px solid #ccc;
     }
 
     form.cupom-form {
@@ -52,26 +51,12 @@
         border: 2px solid var(--text-black);
         border-radius: 15px;
         padding: 12px;
-        background-color: var(--bg-white); 
+        background-color: var(--bg-white);
         color: var(--text-black);
         width: 100%;
     }
 
-    /* Botão de Status */
-    @*.status-btn {
-        border: 2px solid var(--text-black);
-        border-radius: 12px;
-        padding: 10px 20px;
-        background-color: var(--bg-white);
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    input[type="radio"]:checked + .status-btn {
-        background-color: var(--primary-color); 
-        border-color: var(--text-black);
-    } *@
-    /* Container do Switch */
+    /* Estilo do Switch (Toggle) */
     .switch {
         position: relative;
         display: inline-block;
@@ -79,14 +64,12 @@
         height: 34px;
     }
 
-    /* Esconde o checkbox original */
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-    /* O fundo do interruptor (Cinza quando desligado) */
     .slider {
         position: absolute;
         cursor: pointer;
@@ -98,7 +81,6 @@
         transition: .4s;
     }
 
-        /* A "bolinha" do interruptor */
         .slider:before {
             position: absolute;
             content: "";
@@ -110,21 +92,14 @@
             transition: .4s;
         }
 
-    /* Cor quando estiver ATIVO (Usando sua cor primária) */
     input:checked + .slider {
         background-color: var(--primary-color);
     }
 
-    input:focus + .slider {
-        box-shadow: 0 0 1px var(--primary-color);
-    }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
 
-    /* Move a bolinha para a direita quando marcado */
-    input:checked + .slider:before {
-        transform: translateX(26px);
-    }
-
-    /* Deixa as bordas arredondadas */
     .slider.round {
         border-radius: 34px;
     }
@@ -133,7 +108,6 @@
             border-radius: 50%;
         }
 
-    /* Botões de Ação no Rodapé */
     footer.form-footer {
         grid-column: 1 / span 3;
         display: flex;
@@ -142,7 +116,7 @@
     }
 
     .btn-save {
-        background-color: var(--primary-color); 
+        background-color: var(--primary-color);
         color: var(--text-black);
         border: none;
         border-radius: 10px;
@@ -157,7 +131,7 @@
         }
 
     .btn-back {
-        background-color: var(--bg-dark); 
+        background-color: var(--bg-dark);
         color: var(--bg-white);
         border-radius: 10px;
         padding: 12px 40px;
@@ -165,34 +139,32 @@
         font-weight: bold;
     }
 
-        .btn-back:hover {
-
-            color: var(--bg-white);
-        }
-
+		.btn-back:hover {
+		    color: white;
+		}
 </style>
 
 <main class="cupom-page">
     <header class="form-header">
-        <h1>Criar Cupom</h1>
+        <h1>Editar Cupom</h1>
         <p>[Nome Corrida]</p>
     </header>
 
     <section class="form-container">
-        <form asp-action="Create" method="post" class="cupom-form">
-            @* 1. Campo oculto para o ID do Evento (obrigatório na Model) *@
-            <input type="hidden" asp-for="IdEvento" value="1" />
+        <form asp-action="Edit" method="post" class="cupom-form">
+            
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="IdEvento" />
 
             <fieldset>
                 <section>
                     <label asp-for="Nome">Nome do Cupom</label>
-                    <input asp-for="Nome" class="custom-input" placeholder="EX: VERAO20" />
+                    <input asp-for="Nome" class="custom-input" />
                     <span asp-validation-for="Nome" class="text-danger"></span>
                 </section>
                 <section>
-                    @* 2. Ajustado para 'Desconto' para bater com a ViewModel *@
                     <label asp-for="Desconto">Porcentagem do desconto %</label>
-                    <input asp-for="Desconto" type="number" class="custom-input" placeholder="10" />
+                    <input asp-for="Desconto" type="number" class="custom-input" />
                     <span asp-validation-for="Desconto" class="text-danger"></span>
                 </section>
                 <section>
@@ -205,31 +177,41 @@
             <fieldset>
                 <section>
                     <label asp-for="DataInicio">Data de Início</label>
-                    <input asp-for="DataInicio" class="custom-input" />
-                    <span asp-validation-for="DataInicio" class="text-danger"></span>
+                    <input asp-for="DataInicio" type="date" class="custom-input"
+                           value="@Model.DataInicio.ToString("yyyy-MM-dd")" />
                 </section>
                 <section>
                     <label asp-for="DataTermino">Data de Término</label>
-                    <input asp-for="DataTermino" class="custom-input" />
-                    <span asp-validation-for="DataTermino" class="text-danger"></span>
+                    <input asp-for="DataTermino" type="date" class="custom-input"
+                           value="@Model.DataTermino.ToString("yyyy-MM-dd")" />
                 </section>
             </fieldset>
 
             <fieldset>
                 <label asp-for="Status">Status do Cupom</label>
                 <label class="switch">
-                    @* O checkbox mapeia diretamente para o bool da sua Model *@
                     <input type="checkbox" asp-for="Status" id="status-toggle">
                     <span class="slider round"></span>
                 </label>
-                @* Texto dinâmico que muda ao clicar *@
-                <span id="status-text" style="font-weight: bold; margin-left: 10px;">Ativo</span>
+                <span id="status-text" style="font-weight: bold; margin-left: 10px;"></span>
             </fieldset>
 
             <footer class="form-footer">
-                <button type="submit" class="btn-save">Salvar</button>
-                <a asp-action="Index" class="btn-back text-center">Voltar</a>
+                <button type="submit" class="btn-save">Atualizar Cupom</button>
+                <a asp-action="Index" class="btn-back text-center">Cancelar</a>
             </footer>
         </form>
     </section>
 </main>
+
+<script>
+    const toggle = document.getElementById('status-toggle');
+    const statusText = document.getElementById('status-text');
+
+    const updateText = () => {
+        statusText.textContent = toggle.checked ? "Ativo" : "Desativado";
+    };
+
+    updateText(); // Inicializa o texto correto baseado no model que veio do banco
+    toggle.addEventListener('change', updateText);
+</script>

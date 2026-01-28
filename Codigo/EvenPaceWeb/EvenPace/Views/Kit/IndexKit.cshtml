@@ -16,7 +16,7 @@
 
     <header class="page-header header-responsive" style="margin-bottom: 30px;">
         <div class="header-title-group">
-            
+
 
             <div class="header-text">
                 <h1>Kits</h1>
@@ -24,10 +24,13 @@
             </div>
         </div>
 
-        <a asp-action="Tela17_Organizacao_CriarKit"
+        <a asp-action="Create"
            asp-route-idEvento="@ViewBag.IdEventoAtual"
            class="btn-gray btn-responsive">
-            + Criar Kit
+
+            <span class="btn-symbol">+</span>
+
+            <span class="btn-text">Criar Kit</span>
         </a>
     </header>
 
@@ -60,12 +63,12 @@
                     </div>
 
                     <div class="kit-card-actions">
-                        <a asp-action="Tela17_Organizacao_CriarKit"
+                        <a asp-action="Create"
                            asp-route-id="@kit.Id"
                            class="btn-action edit">
                             ✏️ Editar
                         </a>
-                       
+
                         <a asp-action="Excluir" asp-route-id="@kit.Id" class="btn-action delete"
                            onclick="return confirm('Tem certeza que deseja apagar o kit @kit.Nome?');">
                             🗑️ Excluir
@@ -78,7 +81,7 @@
         {
             <div class="empty-state-card" style="grid-column: 1 / -1; text-align: center; padding: 40px; border: 2px dashed #ccc;">
                 <p>Nenhum kit encontrado.</p>
-                <a asp-action="Tela17_Organizacao_CriarKit"
+                <a asp-action="Create"
                    asp-route-idEvento="@ViewBag.IdEventoAtual"
                    style="text-decoration: underline; color: #000; font-weight: bold;">
                     Clique aqui para criar o primeiro
@@ -106,4 +109,3 @@
         }
     });
 </script>
-

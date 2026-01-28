@@ -122,6 +122,27 @@ namespace EvenPaceWeb.Controllers
             _avaliacaoEventoService.Delete((int)id);
             return RedirectToAction(nameof(Index));
         }
+        
+        // GET: Corredor/AvaliarEvento/5
+        //public ActionResult AvaliarEvento(int idEvento)
+        //{
+        //    var model = new AvaliacaoEventoViewModel
+        //    {
+        //        DataAvaliacao = DateTime.Now
+        //    };
+
+        //    ViewBag.IdEvento = idEvento; // só para contexto da View
+        //    return View(model);
+        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AvaliarEvento(AvaliacaoEventoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var avaliacao = _mapper.Map<AvaliacaoEvento>(model);
+                _avaliacaoEventoService.Create(avaliacao);
 
     }
 }

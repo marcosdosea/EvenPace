@@ -18,18 +18,38 @@
             </div>
 
             <nav class="sidebar-menu">
-                <a href="#" class="menu-item">🏠 Home</a>
-                <a href="#" class="menu-item">📑 Resumo</a>
-                <a href="#" class="menu-item">🎟️ Ingressos</a>
-                <a href="#" class="menu-item">🏷️ Cupons</a>
-                <a href="#" class="menu-item">📄 Informações</a>
-                <a href="#" class="menu-item">💰 Financeiro</a>
+                <a href="#" class="menu-item">
+                    <span class="menu-icon">🏠</span>
+                    <span class="menu-text">Home</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <span class="menu-icon">📑</span>
+                    <span class="menu-text">Resumo</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <span class="menu-icon">🎟️</span>
+                    <span class="menu-text">Ingressos</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <span class="menu-icon">🏷️</span>
+                    <span class="menu-text">Cupons</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <span class="menu-icon">📄</span>
+                    <span class="menu-text">Informações</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <span class="menu-icon">💰</span>
+                    <span class="menu-text">Financeiro</span>
+                </a>
 
                 <a class="menu-item active"
                    asp-controller="Kit"
-                   asp-action="Tela09_Organizacao_Kits"
+                   asp-action="IndexKit"
                    asp-route-idEvento="@ViewBag.IdEventoAtual">
-                    ✔️ Kits
+
+                    <span class="menu-icon">✔️</span>
+                    <span class="menu-text">Kits</span>
                 </a>
             </nav>
 

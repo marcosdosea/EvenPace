@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+using AutoMapper;
+using EvenPace.Models;
+using Models;
 
 namespace EvenPaceWeb.Mappers
 {
@@ -7,7 +9,7 @@ namespace EvenPaceWeb.Mappers
 
         public AvaliacaoEventoProfile()
         {
-            CreateMap<Core.AvaliacaoEvento, Models.AdministradorViewModel>().ReverseMap();
+            CreateMap<Core.AvaliacaoEvento, AvaliacaoEventoViewModel>().ReverseMap();
         }
     }
 }

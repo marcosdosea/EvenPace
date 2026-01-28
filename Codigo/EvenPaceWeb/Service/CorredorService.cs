@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -83,7 +84,7 @@ namespace Service
         /// <returns></returns>
         public IEnumerable<Corredor> GetAll()
         {
-            return _context.Corredors.ToList();
+            return _context.Corredors.AsNoTracking();
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace Service
         /// <exception cref="NotImplementedException"></exception>
         public IEnumerable<Corredor> GetByName(string nome)
         {
-            return _context.Corredors.Where(c => c.Nome.Contains(nome)).ToList();
+            return _context.Corredors.Where(c => c.Nome.Contains(nome)).AsNoTracking();
         }
         
         /*

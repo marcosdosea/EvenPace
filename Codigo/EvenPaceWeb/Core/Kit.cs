@@ -13,8 +13,6 @@ public partial class Kit
 
     public string Descricao { get; set; } = null!;
 
-    public string? Imagem { get; set; }
-
     public int DisponibilidadeP { get; set; }
 
     public int DisponibilidadeG { get; set; }
@@ -32,6 +30,8 @@ public partial class Kit
     public bool StatusRetiradaKit { get; set; }
 
     public DateTime DataRetirada { get; set; }
+
+    public string Imagem { get; set; } = null!;
 
     public virtual Evento IdEventoNavigation { get; set; } = null!;
 
