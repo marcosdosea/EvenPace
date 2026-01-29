@@ -179,17 +179,15 @@
                     <span class="badge-distance">@percurso</span>
                 }
         </div>
-
         
-            @if (!string.IsNullOrEmpty(Model.InfoRetiradaKit))
+@*            @if (!string.IsNullOrEmpty(Model.InfoRetiradaKit))
             {
                 <h6 class="fw-bold">Informações de retirada de kits</h6>
                 <p>
                     @Html.Raw(Model.InfoRetiradaKit.Replace("\n", "<br />"))
                 </p>
             }
-
-        
+*@
             @foreach (var kit in Model.Kits)
             {
                 <div class="kit-card">

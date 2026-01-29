@@ -96,7 +96,7 @@ namespace EvenPace.Controllers
                 TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
                 IdEvento = (uint)vm.Inscricao.IdEvento,
                 IdKit = (uint)vm.Inscricao.IdKit,
-                IdCorredor = uint.Parse(idCorredorClaim.Value)
+                IdCorredor = int.Parse(idCorredorClaim.Value)
             };
 
             _inscricaoService.Create(inscricao);
@@ -127,7 +127,7 @@ namespace EvenPace.Controllers
             vm.Local = evento.Cidade;
             vm.DataEvento = evento.Data;
             vm.Descricao = evento.Descricao;
-            vm.InfoRetiradaKit = evento.InfoRetiradaKit;
+           // vm.InfoRetiradaKit = evento.InfoRetiradaKit;
 
             vm.Percursos = new List<string> { "3km", "5km", "10km" };
             vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
