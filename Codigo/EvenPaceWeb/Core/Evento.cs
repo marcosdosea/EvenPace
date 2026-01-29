@@ -5,27 +5,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core;
 
-[Table("evento")] // Use "evento" em minúsculo se o nome da tabela no MySQL também for assim
+[Table("evento")] 
 public partial class Evento
 {
     [Key]
-    [Column("id")] // Garante que o ID mapeie para a coluna 'id' minúscula
+    [Column("id")] 
     public uint Id { get; set; }
 
     [Column("data")]
     public DateTime Data { get; set; }
 
-
-    //[Column("imagem")]
-    //public string? Imagem { get; set; }
+    [Column("imagem")]
+    public string? Imagem { get; set; }
 
     [Column("numeroParticipantes")]
     public int NumeroParticipantes { get; set; }
 
-    [Column("discricao")] // Conforme sua imagem do banco
+    [Column("discricao")] 
     public string Descricao { get; set; } = null!;
-
-    // Mapeamento das distâncias com 'd' minúsculo
+    
     [Column("distancia3")]
     public bool Distancia3 { get; set; }
 
@@ -67,8 +65,6 @@ public partial class Evento
 
     [Column("nome")]
     public string Nome { get; set; } = null!;
-
-    // Relacionamentos e Navegação
     public virtual ICollection<Cupom> Cupoms { get; set; } = new List<Cupom>();
 
     [ForeignKey("IdOrganizacao")]
@@ -77,3 +73,4 @@ public partial class Evento
     public virtual ICollection<Inscricao> Inscricaos { get; set; } = new List<Inscricao>();
     public virtual ICollection<Kit> Kits { get; set; } = new List<Kit>();
 }
+
