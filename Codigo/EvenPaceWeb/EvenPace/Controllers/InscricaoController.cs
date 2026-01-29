@@ -33,7 +33,7 @@ namespace EvenPace.Controllers
         public IActionResult TelaInscricao(int id)
         {
             if (id == 0)
-                return BadRequest("https://localhost:7131/Inscricao/TelaInscricao/1");
+                return BadRequest("https://localhost:5157/Inscricao/TelaInscricao/1");
 
             var vm = new TelaInscricaoViewModel
             {
@@ -119,7 +119,7 @@ namespace EvenPace.Controllers
             if (vm.IdEvento == 0)
                 throw new Exception("IdEvento não foi informado");
 
-            var evento = _eventoService.Get((int)vm.IdEvento);
+            var evento = _eventoService.Get(vm.IdEvento);
             if (evento == null)
                 throw new Exception($"Evento {vm.IdEvento} não existe no banco");
 

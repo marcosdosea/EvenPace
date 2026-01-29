@@ -36,6 +36,7 @@ namespace EvenPaceWeb
             services.AddScoped<IInscricaoService, InscricaoService>();
             services.AddScoped<IEventosService, EventoService>();
             services.AddScoped<IKitService, KitService>();
+            services.AddScoped<IInscricaoService, InscricaoService>();
 
         }
 
@@ -58,7 +59,7 @@ namespace EvenPaceWeb
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Inscricao}/{action=TelaInscricao}/{id?}");
+                    pattern: "{controller=Corredor}/{action=Edit}/{id=2}");
             });
         }
 

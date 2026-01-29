@@ -5,15 +5,13 @@ using Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(EvenPaceWeb.Mappers.AutoMapperProfile));
 
-var connectionString = "Server=localhost;Database=evenpace;Uid=root;Pwd=Hevellyn09;";
 
 builder.Services.AddDbContext<EvenPaceContext>(options =>
-    options.UseMySQL(connectionString));
+    options.UseMySQL("EvenPaceDatabase"));
 
 builder.Services.AddScoped<IInscricaoService, InscricaoService>();
 builder.Services.AddScoped<IEventosService, EventoService>();
@@ -36,6 +34,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Inscricao}/{action=TelaInscricao}/{id?}");
+    pattern: "{controller=Inscricao}/{action=TelaInscricao}/{id=1}");
 
 app.Run();
