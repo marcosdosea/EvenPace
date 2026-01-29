@@ -5,7 +5,7 @@ using Service;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ServiceTests
+namespace EvenPaceWebTests.Service
 {
     [TestClass]
     public class InscricaoServiceTest
