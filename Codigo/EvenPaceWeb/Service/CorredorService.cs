@@ -19,9 +19,10 @@ namespace Service
         /// <summary>
         /// Insere um evento no banco de dados
         /// </summary>
-        /// <param name="eventos"></param>
-        /// <returns>Retorna o valor o id evento</returns>
-        public uint Create(Evento eventos)
+        /// <param name="corredor"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public int Create(Corredor corredor)
         {
             _context.Add(eventos);
             _context.SaveChanges();
@@ -29,7 +30,24 @@ namespace Service
         }
 
         /// <summary>
-        /// Edita um evento no banco de dados
+        /// Encontra o Corredor com o id correspondente
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Retorna um Corredor</returns>
+        public Corredor Get(int id)
+        {
+            var lista = _context.Corredors.ToList();
+            Console.WriteLine($"[DEBUG] Total de corredores no contexto: {lista.Count}");
+            if (lista.Count > 0)
+            {
+                Console.WriteLine($"[DEBUG] IDs encontrados: {string.Join(", ", lista.Select(c => c.Id))}");
+            }
+
+            return lista.FirstOrDefault(c => c.Id == id);
+        }
+        
+        /// <summary>
+        /// Pega o corredor com email e senha compativeis
         /// </summary>
         /// <param name="eventos"></param>
         public void Edit(Evento eventos)
@@ -64,9 +82,13 @@ namespace Service
         /// <returns>Retorna um evento</returns>
         public Evento Get(int id)
         {
-            return _context.Eventos.Find((uint)id)!;
+            if (corredor == null && corredor.Id == 0) throw new ServiceException("Corredor Invalido");
+            
+            _context.Corredors.Update(corredor);
+            _context.SaveChanges();
         }
-
+        
+        
         /// <summary>
         /// Pega todos os eventos do banco de dados
         /// </summary>
@@ -80,20 +102,5 @@ namespace Service
         {
             return _context.Eventos.Where(e => e.Nome.Contains(nome)).ToList();
         }
-
-        public IEnumerable<Kit> GetKitsPorEvento(int idEvento)
-        {
-            
-            return _context.Kits
-                           .Where(k => k.IdEvento == (uint)idEvento)
-                           .ToList();
-        }
-
-        /// <summary>
-        /// Pega eventos pelo nome
-        /// </summary>
-        /// <param name="nome"></param>
-        /// <returns>Retorna todos os Eventos que contein a string</returns>
-
     }
 }

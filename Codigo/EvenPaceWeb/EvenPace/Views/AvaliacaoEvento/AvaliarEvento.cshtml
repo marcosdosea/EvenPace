@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Avaliar Evento";
+}
+
+<article class="avaliacao-container">
+
+    <!-- Cabeçalho -->
+    <header class="avaliacao-header">
+        <a href="javascript:history.back()" class="btn-voltar">&#8592;</a>
+        <h1>Avaliação da corrida</h1>
+    </header>
+
+    <!-- Avaliação -->
+    <section class="avaliacao-card">
+
+        <h2>Avaliação da corrida</h2>
+
+        <!-- Estrelas -->
+        <section class="estrelas">
+            <input type="radio" id="star5" name="rating" value="5">
+            <label for="star5">★</label>
+
+            <input type="radio" id="star4" name="rating" value="4">
+            <label for="star4">★</label>
+
+            <input type="radio" id="star3" name="rating" value="3">
+            <label for="star3">★</label>
+
+            <input type="radio" id="star2" name="rating" value="2">
+            <label for="star2">★</label>
+
+            <input type="radio" id="star1" name="rating" value="1">
+            <label for="star1">★</label>
+        </section>
+
+        <!-- Comentário -->
+        <label for="comentario">Deixe seu comentário</label>
+
+        <textarea id="comentario" placeholder="Corrida bem organizada gostei muito"></textarea>
+
+        <a href="/AvaliarEvento/Index" class="btn-enviar">
+            Enviar avaliação
+        </a>
+
+    </section>
+
+</article>

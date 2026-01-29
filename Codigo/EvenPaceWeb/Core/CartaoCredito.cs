@@ -15,7 +15,7 @@ public partial class CartaoCredito
 
     public string Nome { get; set; } = null!;
 
-    public uint IdCorredor { get; set; }
+    public int IdCorredor { get; set; }
 
     public virtual Corredor IdCorredorNavigation { get; set; } = null!;
 }

@@ -22,10 +22,14 @@ public partial class Kit
     [Column("idEvento")]
     public int IdEvento { get; set; }
 
-    [ForeignKey(nameof(IdEvento))]
-    public virtual Evento IdEventoNavigation { get; set; } = null!;
     public bool StatusRetiradaKit { get; set; }
-    public DateTime DataRetirada { get; set; } 
+
+    public DateTime DataRetirada { get; set; }
+
+  //public string? Imagem { get; set; }
+
+    public virtual Evento IdEventoNavigation { get; set; } = null!;
 
     public virtual ICollection<Inscricao> Inscricaos { get; set; } = new List<Inscricao>();
 }
+
