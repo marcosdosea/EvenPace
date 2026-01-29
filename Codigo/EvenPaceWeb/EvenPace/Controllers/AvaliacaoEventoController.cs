@@ -122,7 +122,7 @@ namespace EvenPaceWeb.Controllers
             _avaliacaoEventoService.Delete((int)id);
             return RedirectToAction(nameof(Index));
         }
-        
+
         // GET: Corredor/AvaliarEvento/5
         //public ActionResult AvaliarEvento(int idEvento)
         //{
@@ -143,6 +143,12 @@ namespace EvenPaceWeb.Controllers
             {
                 var avaliacao = _mapper.Map<AvaliacaoEvento>(model);
                 _avaliacaoEventoService.Create(avaliacao);
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
+        }
 
     }
 }

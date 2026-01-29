@@ -5,63 +5,52 @@
 }
 
 <style>
+    :root {
+        --primary-color: #ffd700; /* Exemplo de cor primária, ajuste se necessário */
+        --primary-hover: #e6c200;
+        --bg-light: #f8f9fa;
+        --text-black: #000;
+        --text-grey: #6c757d;
+    }
+
     main.cupom-page {
         padding: 20px;
-        font-family: var(--font-standard);
-        background-color: var(--bg-white);
+        background-color: #fff;
     }
 
     header.form-header h1 {
-        color: var(--text-black);
         font-weight: 800;
-    }
-
-    header.form-header p {
-        color: var(--text-grey);
-        font-size: 1.2rem;
+        color: var(--text-black);
     }
 
     section.form-container {
         background-color: var(--bg-light);
         border-radius: 25px;
-        padding: 50px;
-        border: 1px solid #ccc;
+        padding: 30px;
+        border: 1px solid #dee2e6;
     }
 
-    form.cupom-form {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 40px;
-    }
-
-    fieldset {
-        border: none;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    label {
-        color: var(--text-black);
-        font-weight: bold;
-    }
-
-    input.custom-input {
+    /* Custom Input Estilizado */
+    .custom-input {
         border: 2px solid var(--text-black);
-        border-radius: 15px;
-        padding: 12px;
-        background-color: var(--bg-white);
-        color: var(--text-black);
+        border-radius: 12px;
+        padding: 10px;
         width: 100%;
+        transition: 0.2s;
     }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
 
     /* Estilo do Switch (Toggle) */
     .switch {
         position: relative;
         display: inline-block;
-        width: 60px;
-        height: 34px;
+        width: 50px;
+        height: 26px;
     }
 
         .switch input {
@@ -79,51 +68,37 @@
         bottom: 0;
         background-color: #ccc;
         transition: .4s;
+        border-radius: 34px;
     }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
+            height: 18px;
+            width: 18px;
             left: 4px;
             bottom: 4px;
             background-color: white;
             transition: .4s;
-        }
-
-    input:checked + .slider {
-        background-color: var(--primary-color);
-    }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-    .slider.round {
-        border-radius: 34px;
-    }
-
-        .slider.round:before {
             border-radius: 50%;
         }
 
-    footer.form-footer {
-        grid-column: 1 / span 3;
-        display: flex;
-        justify-content: flex-end;
-        gap: 15px;
+    input:checked + .slider {
+        background-color: #28a745;
     }
 
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+    /* Botões */
     .btn-save {
         background-color: var(--primary-color);
-        color: var(--text-black);
+        color: #000;
         border: none;
         border-radius: 10px;
-        padding: 12px 40px;
+        padding: 12px 30px;
         font-weight: bold;
-        cursor: pointer;
-        transition: 0.3s;
     }
 
         .btn-save:hover {
@@ -131,75 +106,79 @@
         }
 
     .btn-back {
-        background-color: var(--bg-dark);
-        color: var(--bg-white);
+        background-color: #343a40;
+        color: #fff;
         border-radius: 10px;
-        padding: 12px 40px;
+        padding: 12px 30px;
         text-decoration: none;
         font-weight: bold;
     }
 
-		.btn-back:hover {
-		    color: white;
-		}
+        .btn-back:hover {
+            color: #fff;
+            opacity: 0.9;
+        }
 </style>
 
-<main class="cupom-page">
-    <header class="form-header">
+<main class="container cupom-page">
+    <header class="form-header mb-4">
         <h1>Editar Cupom</h1>
-        <p>[Nome Corrida]</p>
+        <p class="text-muted small">ID: @Model.Id | Evento: [Nome Corrida]</p>
     </header>
 
-    <section class="form-container">
-        <form asp-action="Edit" method="post" class="cupom-form">
-            
+    <section class="form-container shadow-sm">
+        <form asp-action="Edit" method="post">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="IdEvento" />
 
-            <fieldset>
-                <section>
-                    <label asp-for="Nome">Nome do Cupom</label>
-                    <input asp-for="Nome" class="custom-input" />
-                    <span asp-validation-for="Nome" class="text-danger"></span>
-                </section>
-                <section>
-                    <label asp-for="Desconto">Porcentagem do desconto %</label>
-                    <input asp-for="Desconto" type="number" class="custom-input" />
-                    <span asp-validation-for="Desconto" class="text-danger"></span>
-                </section>
-                <section>
-                    <label asp-for="QuantiadeDisponibilizada">Quantidade disponível</label>
-                    <input asp-for="QuantiadeDisponibilizada" class="custom-input" />
-                    <span asp-validation-for="QuantiadeDisponibilizada" class="text-danger"></span>
-                </section>
-            </fieldset>
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="mb-3">
+                        <label asp-for="Nome" class="form-label fw-bold">Nome do Cupom</label>
+                        <input asp-for="Nome" class="custom-input" placeholder="Ex: VERAO20" />
+                        <span asp-validation-for="Nome" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Desconto" class="form-label fw-bold">Desconto %</label>
+                        <input asp-for="Desconto" type="number" class="custom-input" />
+                        <span asp-validation-for="Desconto" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="QuantiadeDisponibilizada" class="form-label fw-bold">Qtd. Disponível</label>
+                        <input asp-for="QuantiadeDisponibilizada" class="custom-input" />
+                        <span asp-validation-for="QuantiadeDisponibilizada" class="text-danger small"></span>
+                    </div>
+                </div>
 
-            <fieldset>
-                <section>
-                    <label asp-for="DataInicio">Data de Início</label>
-                    <input asp-for="DataInicio" type="date" class="custom-input"
-                           value="@Model.DataInicio.ToString("yyyy-MM-dd")" />
-                </section>
-                <section>
-                    <label asp-for="DataTermino">Data de Término</label>
-                    <input asp-for="DataTermino" type="date" class="custom-input"
-                           value="@Model.DataTermino.ToString("yyyy-MM-dd")" />
-                </section>
-            </fieldset>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="mb-3">
+                        <label asp-for="DataInicio" class="form-label fw-bold">Data de Início</label>
+                        <input asp-for="DataInicio" type="date" class="custom-input"
+                               value="@Model.DataInicio.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="DataTermino" class="form-label fw-bold">Data de Término</label>
+                        <input asp-for="DataTermino" type="date" class="custom-input"
+                               value="@Model.DataTermino.ToString("yyyy-MM-dd")" />
+                    </div>
+                </div>
 
-            <fieldset>
-                <label asp-for="Status">Status do Cupom</label>
-                <label class="switch">
-                    <input type="checkbox" asp-for="Status" id="status-toggle">
-                    <span class="slider round"></span>
-                </label>
-                <span id="status-text" style="font-weight: bold; margin-left: 10px;"></span>
-            </fieldset>
+                <div class="col-12 col-lg-4">
+                    <label class="form-label d-block fw-bold">Status do Cupom</label>
+                    <div class="d-flex align-items-center bg-white p-3 border rounded">
+                        <label class="switch me-3">
+                            <input type="checkbox" asp-for="Status" id="status-toggle">
+                            <span class="slider"></span>
+                        </label>
+                        <span id="status-text" class="fw-bold text-uppercase"></span>
+                    </div>
+                </div>
 
-            <footer class="form-footer">
-                <button type="submit" class="btn-save">Atualizar Cupom</button>
-                <a asp-action="Index" class="btn-back text-center">Cancelar</a>
-            </footer>
+                <div class="col-12 d-flex flex-column flex-sm-row justify-content-end gap-3 mt-4">
+                    <a asp-action="Index" class="btn-back text-center order-2 order-sm-1">Cancelar</a>
+                    <button type="submit" class="btn-save order-1 order-sm-2">Atualizar Cupom</button>
+                </div>
+            </div>
         </form>
     </section>
 </main>
@@ -210,8 +189,9 @@
 
     const updateText = () => {
         statusText.textContent = toggle.checked ? "Ativo" : "Desativado";
+        statusText.style.color = toggle.checked ? "#28a745" : "#dc3545";
     };
 
-    updateText(); // Inicializa o texto correto baseado no model que veio do banco
+    updateText();
     toggle.addEventListener('change', updateText);
 </script>
