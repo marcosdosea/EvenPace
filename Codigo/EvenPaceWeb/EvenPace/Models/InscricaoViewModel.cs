@@ -9,7 +9,7 @@ namespace Models
     {
         [Key]
         [Display(Name = "Código da Inscrição")]
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         [Display(Name = "Status")]
         public string? Status { get; set; }
@@ -39,7 +39,7 @@ namespace Models
 
         [Required(ErrorMessage = "Selecione o evento")]
         [Display(Name = "Evento")]
-        public int IdEvento { get; set; }
+        public uint IdEvento { get; set; }
 
         [Required(ErrorMessage = "O corredor é obrigatório")]
         public int IdCorredor { get; set; }
