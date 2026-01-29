@@ -41,6 +41,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Inscricao}/{action=TelaInscricao}/{id=3}");
+    pattern: "{controller=Cupom}/{action=index}/{id=3}");
 
 app.Run();
