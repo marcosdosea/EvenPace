@@ -5,141 +5,130 @@
 }
 
 <style>
-    main.index-page {
-        padding: 20px;
-        font-family: var(--font-standard);
-        background-color: var(--bg-white);
+    :root {
+        --primary-yellow: #ffd700;
+        --primary-hover: #e6c200;
+        --bg-light: #f8f9fa;
     }
 
-    header.index-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
+    main.index-page {
+        padding: 20px;
     }
 
     .btn-create {
         background-color: var(--bg-light);
-        color: var(--text-black);
-        padding: 12px 30px;
-        border-radius: 12px;
+        color: #000;
+        border: 2px solid #000;
         font-weight: bold;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
+        border-radius: 12px;
+        transition: 0.3s;
     }
 
         .btn-create:hover {
-            background-color: var(--primary-hover);
-            color: var(--text-black);
+            background-color: var(--primary-yellow);
+            color: #000;
         }
 
-    section.table-container {
-        overflow-x: auto;
+    .evenpace-table thead th {
+        background-color: var(--bg-light);
+        border-bottom: 2px solid #dee2e6;
+        padding: 15px;
     }
 
-    .evenpace-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
+    .evenpace-table td {
+        vertical-align: middle;
+        padding: 15px;
     }
 
-        .evenpace-table th {
-            background-color: var(--bg-light);
-            color: var(--text-black);
-            padding: 15px;
-            text-align: left;
-        }
-
-        .evenpace-table td {
-            padding: 15px;
-            border-bottom: 1px solid var(--bg-light);
-            color: var(--text-black);
-        }
-
-        .evenpace-table tbody tr:nth-child(even) {
-            background-color: var(--bg-light);
-        }
-
-    .action-link {
-        color: var(--text-grey);
-        font-weight: bold;
-        text-decoration: none;
-        margin-right: 15px;
-    }
-
-        .action-link:hover {
-            color: var(--text-black);
-            text-decoration: underline;
-        }
-
-    .link-delete {
-        color: #d9534f;
+    .status-badge {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+        border-radius: 20px;
     }
 </style>
 
-<main class="index-page">
-    <header class="index-header">
-        <section>
-            <h1>Cupons</h1>
-            <p style="color: var(--text-grey);">[Nome da Corrida].</p>
+<main class="container index-page">
+    <header class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+        <section class="text-center text-md-start">
+            <h1 class="fw-bold mb-0">Cupons</h1>
+            <p class="text-muted mb-0">[Nome da Corrida]</p>
         </section>
 
         <nav>
-            <a asp-action="Create" class="btn-create">Criar Cupom</a>
+            <a asp-action="Create" class="btn btn-create px-4 py-2">
+                <i class="bi bi-plus-lg"></i> Criar Cupom
+            </a>
         </nav>
     </header>
 
-    <section class="table-container">
-        <table class="evenpace-table">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Nome)</th>
-                    <th>Início</th>
-                    <th>Término</th>
-                    <th>Status</th>
-                    <th>Disponível</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    <section class="card shadow-sm border-0 rounded-4">
+        <div class="table-responsive p-2">
+            <table class="table evenpace-table mb-0">
+                <thead>
                     <tr>
-                        <td><strong>@item.Nome</strong></td>
-                        <td>@item.DataInicio.ToShortDateString()</td>
-                        <td>@item.DataTermino.ToShortDateString()</td>
-                        <td>@item.Status</td>
-                        <td>@item.QuantiadeDisponibilizada</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="action-link">Editar</a>
-                            <a href="javascript:void(0)"
-                               class="action-link link-delete"
-                               onclick="confirmarExclusao('@item.Id', '@item.Nome')">
-                                Excluir
-                            </a>
-                        </td>
+                        <th class="border-0">@Html.DisplayNameFor(model => model.Nome)</th>
+                        <th class="border-0">Início</th>
+                        <th class="border-0">Término</th>
+                        <th class="border-0 text-center">Status</th>
+                        <th class="border-0 text-center">Disponível</th>
+                        <th class="border-0 text-end">Ações</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><span class="fw-bold">@item.Nome</span></td>
+                            <td class="text-nowrap">@item.DataInicio.ToShortDateString()</td>
+                            <td class="text-nowrap">@item.DataTermino.ToShortDateString()</td>
+                            <td class="text-center">
+                                @if (item.Status)
+                                {
+                                    <span class="badge bg-success status-badge">Ativo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger status-badge">Desativado</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-light text-dark border">@item.QuantiadeDisponibilizada</span>
+                            </td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-dark border-0 fw-bold">
+                                        Editar
+                                    </a>
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger border-0 fw-bold"
+                                            onclick="confirmarExclusao('@item.Id', '@item.Nome')">
+                                        Excluir
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </section>
 
     <div class="modal fade" id="modalExcluir" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 15px;">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmar Exclusão</h5>
+            <div class="modal-content border-0 shadow" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Confirmar Exclusão</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    Tem certeza que deseja excluir o cupom <strong id="nomeCupomModal"></strong>?
+                <div class="modal-body py-4">
+                    Tem certeza que deseja excluir o cupom <strong id="nomeCupomModal" class="text-danger"></strong>?
+                    <p class="small text-muted mt-2 mb-0">Esta ação não pode ser desfeita.</p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light fw-bold px-4" data-bs-dismiss="modal">Cancelar</button>
                     <form id="formExcluir" method="post">
                         @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-danger">Excluir</button>
+                        <button type="submit" class="btn btn-danger fw-bold px-4">Confirmar Exclusão</button>
                     </form>
                 </div>
             </div>
@@ -149,13 +138,9 @@
 
 <script>
     function confirmarExclusao(id, nome) {
-        // Preenche o nome do cupom no texto do modal
         document.getElementById('nomeCupomModal').textContent = nome;
-
-        // Ajusta a URL do formulário para o ID selecionado
         document.getElementById('formExcluir').action = '/Cupom/Delete/' + id;
 
-        // Abre o modal
         var modal = new bootstrap.Modal(document.getElementById('modalExcluir'));
         modal.show();
     }
