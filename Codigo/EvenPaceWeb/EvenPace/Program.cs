@@ -1,21 +1,30 @@
-using System.Configuration;
+using Core;
+using Core.Service;
+using Microsoft.EntityFrameworkCore;
+using Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
-var startup = new EvenPaceWeb.Startup(builder.Configuration);
-startup.ConfigureServices(builder.Services);
+builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(EvenPaceWeb.Mappers.AutoMapperProfile));
+
+var connectionString = "Server=localhost;Database=evenpace;Uid=root;Pwd=Hevellyn09;";
+
+builder.Services.AddDbContext<EvenPaceContext>(options =>
+    options.UseMySQL(connectionString));
+
+builder.Services.AddScoped<IInscricaoService, InscricaoService>();
+builder.Services.AddScoped<IEventosService, EventoService>();
+builder.Services.AddScoped<IKitService, KitService>();
 
 var app = builder.Build();
-startup.Configure(app, app.Environment);
 
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -23,11 +32,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Inscricao}/{action=TelaInscricao}/{5}");
+    pattern: "{controller=Inscricao}/{action=TelaInscricao}/{id?}");
 
 app.Run();

@@ -6,6 +6,7 @@ using EvenPaceWeb.Models;
 using Service;
 using Models;
 
+//https://localhost:7131/Inscricao/TelaInscricao/1 para rodar 
 namespace EvenPace.Controllers
 {
     public class InscricaoController : Controller
@@ -27,7 +28,7 @@ namespace EvenPace.Controllers
             _mapper = mapper;
         }
 
-
+    
         [HttpGet]
         public IActionResult TelaInscricao(uint id)
         {
@@ -65,9 +66,10 @@ namespace EvenPace.Controllers
 
             PopularTelaInscricao(vm);
 
-            return View("Tela1", vm); 
+            return View("Tela1", vm); // 👈 Tela1.cshtml
         }
 
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult TelaInscricao(TelaInscricaoViewModel vm)
@@ -109,6 +111,7 @@ namespace EvenPace.Controllers
             );
         }
 
+      
         private void PopularTelaInscricao(TelaInscricaoViewModel vm)
         {
             if (vm == null)
