@@ -1,50 +1,138 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using AutoMapper;
+using Core;
+using Core.Service;
+using Microsoft.AspNetCore.Mvc;
+using EvenPaceWeb.Models;
+using Service;
+using Models;
 
-
-namespace Models
+namespace EvenPace.Controllers
 {
-    public class InscricaoViewModel
+    public class InscricaoController : Controller
     {
-        [Key]
-        [Display(Name = "Código da Inscrição")]
-        public int Id { get; set; }
+        private readonly IInscricaoService _inscricaoService;
+        private readonly IEventosService _eventoService;
+        private readonly IKitService _kitService;
+        private readonly IMapper _mapper;
 
-        [Display(Name = "Status")]
-        public string? Status { get; set; }
+        public InscricaoController(
+            IInscricaoService inscricaoService,
+            IEventosService eventoService,
+            IKitService kitService,
+            IMapper mapper)
+        {
+            _inscricaoService = inscricaoService;
+            _eventoService = eventoService;
+            _kitService = kitService;
+            _mapper = mapper;
+        }
 
-        [Required(ErrorMessage = "A data da inscrição é obrigatória")]
-        [Display(Name = "Data da Inscrição")]
-        [DataType(DataType.Date)]
-        public DateTime DataInscricao { get; set; }
+    
+        [HttpGet]
+        public IActionResult TelaInscricao(uint id)
+        {
+            if (id == 0)
+                return BadRequest("https://localhost:7131/Inscricao/TelaInscricao/1");
 
-        [Required(ErrorMessage = "Selecione a distância")]
-        [Display(Name = "Distância")]
-        public string Distancia { get; set; } = null!;
+            var vm = new TelaInscricaoViewModel
+            {
+                IdEvento = id,
+                Inscricao = new InscricaoViewModel
+                {
 
-        [Required(ErrorMessage = "Selecione o tamanho da camisa")]
-        [Display(Name = "Tamanho da Camisa")]
-        public string TamanhoCamisa { get; set; } = null!;
+                    IdEvento = id
+                }
+            };
 
-        [Display(Name = "Tempo")]
-        public TimeSpan? Tempo { get; set; }
+            PopularTelaInscricao(vm);
+            return View(vm);
+        }
 
-        [Display(Name = "Posição")]
-        public int? Posicao { get; set; }
+        [HttpGet]
+        public IActionResult Tela1(uint id)
+        {
+            if (id == 0)
+                return Content("ID RECEBIDO = 0");
 
-        [Required(ErrorMessage = "Selecione o kit")]
-        [Display(Name = "Kit")]
-        public int IdKit { get; set; }
+            var vm = new TelaInscricaoViewModel
+            {
+                IdEvento = id,
+                Inscricao = new InscricaoViewModel
+                {
+                    IdEvento = id
+                }
+            };
 
-        [Required(ErrorMessage = "Selecione o evento")]
-        [Display(Name = "Evento")]
-        public int IdEvento { get; set; }
+            PopularTelaInscricao(vm);
 
-        [Required(ErrorMessage = "O corredor é obrigatório")]
-        public int IdCorredor { get; set; }
+            return View("Tela1", vm); // 👈 Tela1.cshtml
+        }
 
-        public int? IdAvaliacaoEvento { get; set; }
+      
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult TelaInscricao(TelaInscricaoViewModel vm)
+        {
+            if (vm?.Inscricao == null)
+                throw new Exception("Inscrição veio null");
+
+            if (vm.Inscricao.IdEvento == 0)
+                throw new Exception("IdEvento não veio do formulário");
+
+            var idCorredorClaim = User.FindFirst("IdCorredor");
+            if (idCorredorClaim == null)
+            {
+                TempData["Erro"] = "Faça login para continuar";
+                return RedirectToAction(
+                    "TelaInscricao",
+                    new { id = vm.Inscricao.IdEvento }
+                );
+            }
+
+            var inscricao = new Inscricao
+            {
+                Status = "Pendente",
+                DataInscricao = DateTime.Now,
+                Distancia = vm.Inscricao.Distancia,
+                TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
+                IdEvento = (uint)vm.Inscricao.IdEvento,
+                IdKit = (uint)vm.Inscricao.IdKit,
+                IdCorredor = (uint)int.Parse(idCorredorClaim.Value)
+            };
+
+            _inscricaoService.Create(inscricao);
+
+            TempData["Sucesso"] = "Inscrição realizada com sucesso!";
+
+            return RedirectToAction(
+                "TelaInscricao",
+                new { id = vm.Inscricao.IdEvento }
+            );
+        }
+
+      
+        private void PopularTelaInscricao(TelaInscricaoViewModel vm)
+        {
+            if (vm == null)
+                throw new Exception("ViewModel está null");
+
+            if (vm.IdEvento == 0)
+                throw new Exception("IdEvento não foi informado");
+
+            var evento = _eventoService.Get((int)vm.IdEvento);
+            if (evento == null)
+                throw new Exception($"Evento {vm.IdEvento} não existe no banco");
+
+            var kits = _kitService.GetKitsPorEvento((int)vm.IdEvento);
+
+            vm.NomeEvento = evento.Nome;
+            vm.Local = evento.Cidade;
+            vm.DataEvento = evento.Data;
+            vm.Descricao = evento.Descricao;
+            vm.InfoRetiradaKit = evento.InfoRetiradaKit;
+
+            vm.Percursos = new List<string> { "3km", "5km", "10km" };
+            vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
+        }
     }
 }
- 
