@@ -33,9 +33,10 @@ public partial class Kit
 
     public DateTime DataRetirada { get; set; }
 
-    public string? Imagem { get; set; }
+  //public string? Imagem { get; set; }
 
     public virtual Evento IdEventoNavigation { get; set; } = null!;
 
     public virtual ICollection<Inscricao> Inscricaos { get; set; } = new List<Inscricao>();
 }
+
