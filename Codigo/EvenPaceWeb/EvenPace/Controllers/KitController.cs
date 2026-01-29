@@ -61,7 +61,7 @@ public class KitController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Create(KitViewModel model)
     {
-     
+        // 1. LIMPEZA DE VALIDAÇÕES (Para não bloquear o salvamento)
         ModelState.Remove("ImagemUpload");
         ModelState.Remove("IdEvento");
         ModelState.Remove("UtilizadaP");
@@ -75,43 +75,44 @@ public class KitController : Controller
             {
                 var kit = _mapper.Map<Kit>(model);
 
-                /
+                // --- LÓGICA DE UPLOAD DE IMAGEM (COM FAXINA) ---
                 if (model.ImagemUpload != null)
                 {
-                    
+                    // A. FAXINA: Se já existia uma foto antiga, APAGA ELA do computador
+                    // (O campo model.Imagem contém o nome da foto velha vindo do input hidden)
                     if (model.Imagem != null)
                     {
                         DeletarImagemDoDisco(model.Imagem);
                     }
-                
+                    // B. SALVAR A NOVA
                     string pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
 
-                 
+                    // Cria a pasta se não existir
                     if (!Directory.Exists(pastaDestino)) Directory.CreateDirectory(pastaDestino);
 
-                    
+                    // Gera nome único (UUID) para segurança interna
                     string nomeUnico = Guid.NewGuid().ToString() + "_" + model.ImagemUpload.FileName;
                     string caminhoCompleto = Path.Combine(pastaDestino, nomeUnico);
 
-            
+                    // Salva o arquivo fisicamente
                     using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
                     {
                         model.ImagemUpload.CopyTo(stream);
                     }
 
-                   
-                    //kit.Imagem = nomeUnico;
+                     Atualiza o objeto para salvar o novo nome no banco
+                    kit.Imagem = nomeUnico;
                 }
-                //else
-                //{
-                    // Se NÃO enviou foto nova, mantém a string da foto antiga
-                    //kit.Imagem = model.Imagem;
-                //}
+                else
+                {
+                    Se NÃO enviou foto nova, mantém a string da foto antiga
+                    kit.Imagem = model.Imagem;
+                }
 
-              
+                // --- SALVAR NO BANCO ---
                 if (model.Id > 0)
                 {
-                 
+                    // EDIÇÃO
                     _kitsService.Edit(kit);
                     TempData["MensagemSucesso"] = "Kit atualizado com sucesso! ✏️";
                 }
@@ -122,7 +123,7 @@ public class KitController : Controller
                     TempData["MensagemSucesso"] = "Kit criado com sucesso! ✅";
                 }
 
-             
+                // Redireciona para a lista mantendo o filtro do evento
                 return RedirectToAction("IndexKit", new { idEvento = model.IdEvento });
             }
             catch (Exception ex)
@@ -131,29 +132,29 @@ public class KitController : Controller
             }
         }
 
-       
+        // SE DEU ERRO: Recarrega o nome do evento para a tela não quebrar
         var evento = _eventosService.Get(model.IdEvento);
         ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
 
         return View(model);
     }
 
-    
+    // GET: Tela09_Organizacao_Kits (IndexKit)
     [HttpGet]
     public IActionResult IndexKit(int? idEvento)
     {
-      
+        // 1. DEFINIMOS A ORGANIZAÇÃO ATUAL (Simulando o login)
         int idOrganizacaoLogada = 1;
 
-   
+        // 2. BUSCA EVENTOS *APENAS* DESSA ORGANIZAÇÃO
         var eventosDaOrganizacao = _eventosService.GetAll()
                                     .Where(e => e.IdOrganizacao == idOrganizacaoLogada)
                                     .ToList();
 
-     
+        // 3. SELEÇÃO DO EVENTO (Dinâmica dentro da Organização)
         if (!idEvento.HasValue || idEvento.Value == 0)
         {
-            
+            // Se não veio ID na URL, pegamos o primeiro evento DA LISTA DA ORGANIZAÇÃO
             var eventoPadrao = eventosDaOrganizacao.FirstOrDefault();
 
             if (eventoPadrao != null)
@@ -162,20 +163,22 @@ public class KitController : Controller
             }
             else
             {
-  
+                // Se a organização não tem evento nenhum, não dá pra ver kits.
+                // Redireciona para a Home ou mostra lista vazia.
                 TempData["MensagemErro"] = "Você ainda não possui eventos cadastrados.";
                 return RedirectToAction("Index", "Home");
             }
         }
 
-      
+        // --- DAQUI PRA BAIXO SEGUE O PADRÃO ---
         int idFinal = idEvento.Value;
 
-       
+        // Apenas garante que o nome do evento exibido é o correto
         var eventoAtual = eventosDaOrganizacao.FirstOrDefault(e => e.Id == idFinal);
         ViewBag.NomeCorrida = eventoAtual != null ? eventoAtual.Nome : "Evento";
         ViewBag.IdEventoAtual = idFinal;
 
+        // Filtra os kits desse evento específico
         var allKits = _kitsService.GetAll();
         var kitsDoEvento = allKits.Where(k => k.IdEvento == idFinal).ToList();
 
@@ -192,7 +195,7 @@ public class KitController : Controller
         {
             int idEventoDoKit = (int)kit.IdEvento;
 
-       
+            //APAGA A FOTO ANTES DE APAGAR O REGISTRO ---
             //if (!string.IsNullOrEmpty(kit.Imagem))
             //{
               //  DeletarImagemDoDisco(kit.Imagem);
@@ -209,7 +212,7 @@ public class KitController : Controller
         return RedirectToAction("IndexKit");
     }
 
-    
+    // MÉTODO PRIVADO PARA APAGAR FOTOS DA PASTA WWWROOT
     private void DeletarImagemDoDisco(string nomeImagem)
     {
        
@@ -226,7 +229,8 @@ public class KitController : Controller
             }
             catch (Exception)
             {
-              
+                // Se der erro ao apagar (arquivo em uso, permissão, etc), 
+                // a gente ignora para não travar o sistema, mas poderia logar o erro.
             }
         }
     }
