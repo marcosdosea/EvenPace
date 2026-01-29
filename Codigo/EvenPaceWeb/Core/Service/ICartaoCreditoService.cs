@@ -9,7 +9,7 @@ namespace Core.Service
     public interface ICartaoCreditoService
     {
         void Edit(CartaoCredito cartaoCredito);
-        uint Create(CartaoCredito cartaoCredito);
+        int Create(CartaoCredito cartaoCredito);
         CartaoCredito Get(int id);
         void Delete(int id);
         IEnumerable<CartaoCredito> GetAll();

@@ -6,6 +6,7 @@ using EvenPaceWeb.Models;
 using Service;
 using Models;
 
+//https://localhost:7131/Inscricao/TelaInscricao/1 para rodar 
 namespace EvenPace.Controllers
 {
     public class InscricaoController : Controller
@@ -27,19 +28,18 @@ namespace EvenPace.Controllers
             _mapper = mapper;
         }
 
-
+    
         [HttpGet]
-        public IActionResult TelaInscricao(uint id)
+        public IActionResult TelaInscricao(int id)
         {
             if (id == 0)
-                return BadRequest("https://localhost:7131/Inscricao/TelaInscricao/1");
-
+                return BadRequest("https://localhost:5157/Inscricao/TelaInscricao/1");
+            
             var vm = new TelaInscricaoViewModel
             {
                 IdEvento = id,
                 Inscricao = new InscricaoViewModel
                 {
-
                     IdEvento = id
                 }
             };
@@ -49,7 +49,7 @@ namespace EvenPace.Controllers
         }
 
         [HttpGet]
-        public IActionResult Tela1(uint id)
+        public IActionResult Tela1(int id)
         {
             if (id == 0)
                 return Content("ID RECEBIDO = 0");
@@ -65,9 +65,10 @@ namespace EvenPace.Controllers
 
             PopularTelaInscricao(vm);
 
-            return View("Tela1", vm); 
+            return View("Tela1", vm); // 👈 Tela1.cshtml
         }
 
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult TelaInscricao(TelaInscricaoViewModel vm)
@@ -94,9 +95,9 @@ namespace EvenPace.Controllers
                 DataInscricao = DateTime.Now,
                 Distancia = vm.Inscricao.Distancia,
                 TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
-                IdEvento = (uint)vm.Inscricao.IdEvento,
-                IdKit = (uint)vm.Inscricao.IdKit,
-                IdCorredor = uint.Parse(idCorredorClaim.Value)
+                IdEvento = (int)vm.Inscricao.IdEvento,
+                IdKit = (int)vm.Inscricao.IdKit,
+                IdCorredor = int.Parse(idCorredorClaim.Value)
             };
 
             _inscricaoService.Create(inscricao);
@@ -109,6 +110,7 @@ namespace EvenPace.Controllers
             );
         }
 
+      
         private void PopularTelaInscricao(TelaInscricaoViewModel vm)
         {
             if (vm == null)
@@ -117,7 +119,7 @@ namespace EvenPace.Controllers
             if (vm.IdEvento == 0)
                 throw new Exception("IdEvento não foi informado");
 
-            var evento = _eventoService.Get((int)vm.IdEvento);
+            var evento = _eventoService.Get(vm.IdEvento);
             if (evento == null)
                 throw new Exception($"Evento {vm.IdEvento} não existe no banco");
 
@@ -127,7 +129,7 @@ namespace EvenPace.Controllers
             vm.Local = evento.Cidade;
             vm.DataEvento = evento.Data;
             vm.Descricao = evento.Descricao;
-            vm.InfoRetiradaKit = evento.InfoRetiradaKit;
+           // vm.InfoRetiradaKit = evento.InfoRetiradaKit;
 
             vm.Percursos = new List<string> { "3km", "5km", "10km" };
             vm.Kits = _mapper.Map<List<KitViewModel>>(kits);

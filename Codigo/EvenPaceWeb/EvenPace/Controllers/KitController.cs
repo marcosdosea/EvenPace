@@ -99,13 +99,10 @@ public class KitController : Controller
                     {
                         model.ImagemUpload.CopyTo(stream);
                     }
-
-                     Atualiza o objeto para salvar o novo nome no banco
                     kit.Imagem = nomeUnico;
                 }
                 else
                 {
-                    Se NÃO enviou foto nova, mantém a string da foto antiga
                     kit.Imagem = model.Imagem;
                 }
 

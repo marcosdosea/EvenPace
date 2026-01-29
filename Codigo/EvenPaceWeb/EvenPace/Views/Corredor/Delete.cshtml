@@ -1,0 +1,122 @@
+@model Models.CorredorViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Excluir Conta</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFD700 0%, #FFD700 60%, #111 100%);
+            font-family: Arial, sans-serif;
+        }
+
+        .page {
+            padding: 20px;
+            text-align: center;
+            color: #000;
+        }
+
+        .card-confirm {
+            background: #111;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            color: #FFD700;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #fff;
+            margin: 0 auto 1rem;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .summary-box {
+            background: #000;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .summary-value {
+            font-weight: bold;
+            color: #FFD700;
+        }
+    </style>
+</head>
+
+<body>
+<div class="page">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card-confirm shadow-lg">
+                <h4 class="mb-3">Excluir conta de corredor</h4>
+                <p class="mb-4 text-warning">
+                    Tem certeza que deseja excluir sua conta? Esta ação não poderá ser desfeita.
+                </p>
+
+                <div class="avatar mb-3">
+                    <img src="https://i.pravatar.cc/300" alt="Foto Perfil" />
+                </div>
+
+                <div class="summary-box text-start">
+                    <div class="mb-2">
+                        <span class="summary-label">Nome:</span>
+                        <div class="summary-value">@Model.Nome</div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="summary-label">E-mail:</span>
+                        <div class="summary-value">@Model.Email</div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="summary-label">CPF:</span>
+                        <div class="summary-value">@Model.CPF</div>
+                    </div>
+                </div>
+
+                <form asp-action="Delete" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="d-grid gap-3 mt-4">
+                        <button type="submit" class="btn btn-danger fw-bold">
+                            <i class="bi bi-trash-fill me-2"></i>Excluir definitivamente
+                        </button>
+                        <a asp-action="Get" asp-route-id="@Model.Id" class="btn btn-outline-light fw-bold">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

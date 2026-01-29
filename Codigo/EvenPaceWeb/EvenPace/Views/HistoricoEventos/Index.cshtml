@@ -13,8 +13,8 @@
         @foreach (var item in Model)
         {
                 <div class="card-evento">
-                    <img src="@(string.IsNullOrEmpty(item.Imagem) ? "/img/default-race.png" : item.Imagem)" 
-                         alt="Banner do Evento" class="card-img" />
+                    @* <img src="@(string.IsNullOrEmpty(item.Imagem) ? "/img/default-race.png" : item.Imagem)" 
+                         alt="Banner do Evento" class="card-img" />*@
 
                     <div class="card-content">
                         <h3>@item.Nome</h3>

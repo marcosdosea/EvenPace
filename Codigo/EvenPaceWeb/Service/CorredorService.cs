@@ -8,10 +8,10 @@ using Core.Service;
 
 namespace Service
 {
-    public class EventoService : IEventosService
+    public class CorredorService : ICorredorService
     {
         private readonly EvenPaceContext _context;
-        public EventoService(EvenPaceContext context)
+        public CorredorService(EvenPaceContext context)
         {
             _context = context;
         }
@@ -19,25 +19,43 @@ namespace Service
         /// <summary>
         /// Insere um evento no banco de dados
         /// </summary>
-        /// <param name="eventos"></param>
-        /// <returns>Retorna o valor o id evento</returns>
-        public uint Create(Evento eventos)
+        /// <param name="corredor"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public int Create(Corredor corredor)
         {
-            _context.Add(eventos);
+            _context.Add(corredor);
             _context.SaveChanges();
-            return eventos.Id;
+            return corredor.Id;
         }
 
         /// <summary>
-        /// Edita um evento no banco de dados
+        /// Encontra o Corredor com o id correspondente
         /// </summary>
-        /// <param name="eventos"></param>
-        public void Edit(Evento eventos)
+        /// <param name="id"></param>
+        /// <returns>Retorna um Corredor</returns>
+        public Corredor Get(int id)
         {
-            if (eventos is not null)
+            var lista = _context.Corredors.ToList();
+            Console.WriteLine($"[DEBUG] Total de corredores no contexto: {lista.Count}");
+            if (lista.Count > 0)
             {
-                _context.Eventos.Find(eventos.Id);
-                _context.Update(eventos);
+                Console.WriteLine($"[DEBUG] IDs encontrados: {string.Join(", ", lista.Select(c => c.Id))}");
+            }
+
+            return lista.FirstOrDefault(c => c.Id == id);
+        }
+        
+        /// <summary>
+        /// Pega o corredor com email e senha compativeis
+        /// </summary>
+        /// <param name="corredor"></param>
+        public void Edit(Corredor corredor)
+        {
+            if (corredor != null)
+            {
+                _context.Administradors.Find(corredor.Id);
+                _context.Update(corredor);
                 _context.SaveChanges();
             }
         }
@@ -48,52 +66,39 @@ namespace Service
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            var _evento = _context.Eventos.Find(id);
+            var _corredor = _context.Corredors.Find(id);
 
-            if (_evento is not null)
+            if (_corredor != null)
             {
-                _context.Remove(_evento);
+                _context.Remove(_corredor);
                 _context.SaveChanges();
             }
         }
-
+        
         /// <summary>
-        /// Busca um evento pelo Id
+        /// Pega o corredor com email e senha compativeis
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Retorna um evento</returns>
-        public Evento Get(int id)
+        /// <param name="email"></param>
+        /// <param name="senha"></param>
+        /// <returns>retorna corredor com email e senha compativeis</
+        public Corredor Login(string email, string senha)
         {
-            return _context.Eventos.Find((uint)id)!;
+            return _context.Corredors.FirstOrDefault(e => e.Email == email && e.Senha == senha);
         }
-
+        
+        
         /// <summary>
         /// Pega todos os eventos do banco de dados
         /// </summary>
         /// <returns>Retorna todos os Eventos cadastrados</returns>
-        public IEnumerable<Evento> GetAll()
+        public IEnumerable<Corredor> GetAll()
         {
-            return _context.Eventos.ToList();
+            return _context.Corredors.ToList();
         }
 
-        public IEnumerable<Evento> GetByName(string nome)
+        public IEnumerable<Corredor> GetByName(string nome)
         {
-            return _context.Eventos.Where(e => e.Nome.Contains(nome)).ToList();
+            return _context.Corredors.Where(e => e.Nome.Contains(nome)).ToList();
         }
-
-        public IEnumerable<Kit> GetKitsPorEvento(int idEvento)
-        {
-            
-            return _context.Kits
-                           .Where(k => k.IdEvento == (uint)idEvento)
-                           .ToList();
-        }
-
-        /// <summary>
-        /// Pega eventos pelo nome
-        /// </summary>
-        /// <param name="nome"></param>
-        /// <returns>Retorna todos os Eventos que contein a string</returns>
-
     }
 }

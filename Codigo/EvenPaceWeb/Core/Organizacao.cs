@@ -5,7 +5,7 @@ namespace Core;
 
 public partial class Organizacao
 {
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     public string Cnpj { get; set; } = null!;
 

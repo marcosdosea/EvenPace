@@ -5,7 +5,7 @@ namespace Core;
 
 public partial class Corredor
 {
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     public string Cpf { get; set; } = null!;
 

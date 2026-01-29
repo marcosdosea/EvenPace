@@ -1,0 +1,189 @@
+@model Models.CorredorViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFD700 0%, #FFD700 60%, #111 100%);
+            font-family: Arial, sans-serif;
+        }
+
+        .page {
+            padding: 20px;
+            text-align: center;
+            color: #000;
+        }
+
+        .back {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            font-size: 32px;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #fff;
+            margin: 40px auto 10px;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .title {
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        label {
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        .input-box {
+            background: #212529; /* mesma cor do bg-dark do Bootstrap */
+            border-radius: 14px;
+            padding: 10px;
+            color: #FFD700;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .input-box input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #FFD700;
+            text-align: center;
+            outline: none;
+            font-weight: bold;
+        }
+
+        .btn-save {
+            margin-top: 40px;
+            background: #FFD700;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .input-box {
+            background: #000;
+        }
+
+        /* caso o DisplayFor gere elementos internos com cor padrão */
+        .input-box,
+        .input-box * {
+            color: #FFD700;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="page">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+            <h5 class="title text-center mb-4">Nova foto de Perfil</h5>
+
+            @* TODO: Trocar para que a imagem seja possivel ser alterada *@
+            <div class="avatar mx-auto mb-4">
+                <img src="https://i.pravatar.cc/300" alt="Foto Perfil"/>
+            </div>
+
+            <form asp-action="Get" method="get">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id"/>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Nome
+                    </label>
+                    <div class="input-box">
+                        @Html.DisplayFor(model => model.Nome)
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        E-mail
+                    </label>
+                    <div class="input-box">
+                        @Html.DisplayFor(model => model.Email)
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6 mb-3">
+                        <label class="form-label">
+                            Data de Nascimento
+                        </label>
+                        <div class="input-box">
+                            @Html.DisplayFor(model => model.DataNascimento)
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <label class="form-label">
+                            CPF
+                        </label>
+                        <div class="input-box">
+                            @Html.DisplayFor(model => model.CPF)
+                        </div>
+                    </div>
+                </div>
+                <footer>
+                <div class="mt-4 d-flex flex-column gap-3">
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-warning fw-bold w-100">
+                        Editar
+                    </a>
+                    <a asp-action="Delete"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-outline-danger fw-bold w-100">
+                        Deletar
+                    </a>
+                </div>
+                </footer>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function confirmDelete(id) {
+    if (confirm("Deseja realmente excluir sua conta?")) {
+        window.location.href = `/Corredor/Delete/${id}`;
+    }
+}
+</script>
+
+</body>
+</html>

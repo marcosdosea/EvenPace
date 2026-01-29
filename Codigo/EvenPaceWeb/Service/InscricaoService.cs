@@ -12,7 +12,7 @@ namespace Service
             _context = context;
         }
 
-        public uint Create(Inscricao inscricao)
+        public int Create(Inscricao inscricao)
         {
             _context.Add(inscricao);
             _context.SaveChanges();

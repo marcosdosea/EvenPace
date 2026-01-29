@@ -22,7 +22,7 @@ namespace Service
         /// </summary>
         /// <param name="eventos"></param>
         /// <returns>Retorna o valor o id evento</returns>
-        public uint Create(Evento eventos)
+        public int Create(Evento eventos)
         {
             _context.Add(eventos);
             _context.SaveChanges();
@@ -65,7 +65,7 @@ namespace Service
         /// <returns>Retorna um evento</returns>
         public Evento Get(int id)
         {
-            return _context.Eventos.Find((uint)id)!;
+            return _context.Eventos.Find(id);
         }
 
         /// <summary>

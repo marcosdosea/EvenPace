@@ -55,7 +55,7 @@ namespace EvenPaceWebTests.Service
         public void DeleteTest()
         {
             // Arrange
-            uint idParaDeletar = 2; // ID que foi inserido no Initialize [cite: 2026-01-27]
+            int idParaDeletar = 2; // ID que foi inserido no Initialize [cite: 2026-01-27]
 
             // Act
             cupomService.Delete(idParaDeletar);
@@ -108,7 +108,7 @@ namespace EvenPaceWebTests.Service
             Assert.IsInstanceOfType(listaCupons, typeof(IEnumerable<Cupom>));
             Assert.IsNotNull(listaCupons);
             Assert.AreEqual(3, listaCupons.Count());
-            Assert.AreEqual((uint)1, listaCupons.First().Id);
+            Assert.AreEqual((int)1, listaCupons.First().Id);
             Assert.AreEqual("VERAO10", listaCupons.First().Nome);
         }
 

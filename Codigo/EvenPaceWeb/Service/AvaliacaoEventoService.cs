@@ -24,7 +24,7 @@ namespace Service
         /// <param name="avaliacaoevento"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public uint Create(AvaliacaoEvento avaliacaoevento)
+        public int Create(AvaliacaoEvento avaliacaoevento)
         {
             _context.Add(avaliacaoevento);
             _context.SaveChanges();

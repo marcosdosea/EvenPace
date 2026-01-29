@@ -24,11 +24,11 @@ namespace Service
         /// <param name="administrador"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public uint Create(Administrador administrador)
+        public int Create(Administrador administrador)
         {
             _context.Add(administrador);
             _context.SaveChanges();
-            return(uint) administrador.Id;
+            return(int) administrador.Id;
         }
 
         /// <summary>

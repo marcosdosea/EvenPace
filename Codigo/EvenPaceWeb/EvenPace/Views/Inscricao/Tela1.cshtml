@@ -9,15 +9,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-      
+       
 
         body {
             background: #f5c400;
             margin: 0;
             padding: 20px;
         }
-
-    
+      
         .phone {
             max-width: 900px;
             margin: 30px auto;
@@ -150,7 +149,7 @@
             justify-content: center;
         }
 
-      
+        /* BOTÃO PAGAMENTO */
         .btn-pagamento {
             background: #FFD700;
             border: none;
@@ -166,7 +165,7 @@
             background: #f1c40f;
         }
 
-      
+       
         @@media (max-width: 768px) {
 
             body {
@@ -250,31 +249,33 @@
 
         <h6 class="fw-bold mb-3 text-center">Escolha o percurso</h6>
         <div class="opcoes mb-4">
-            <input type="radio" id="k3" name="Inscricao.Distancia" required>
-            <label for="k3" class="opcao">3km</label>
+            <input type="radio" id="k3" name="Inscricao.Distancia" value="3">
+<label for="k3" class="opcao">3km</label>
 
-            <input type="radio" id="k5" name="Inscricao.Distancia">
-            <label for="k5" class="opcao">5km</label>
+<input type="radio" id="k5" name="Inscricao.Distancia" value="5">
+<label for="k5" class="opcao">5km</label>
 
-            <input type="radio" id="k10" name="Inscricao.Distancia">
-            <label for="k10" class="opcao">10km</label>
+<input type="radio" id="k10" name="Inscricao.Distancia" value="10">
+<label for="k10" class="opcao">10km</label>
+
         </div>
 
      
 
         <h6 class="fw-bold mb-3 text-center">Tamanho da camisa</h6>
         <div class="opcoes">
-            <input type="radio" id="p" name="Inscricao.TamanhoCamisa" required>
-            <label for="p" class="opcao">P</label>
+            <input type="radio" id="p" name="Inscricao.TamanhoCamisa" value="P">
+<label for="p" class="opcao">P</label>
 
-            <input type="radio" id="m" name="Inscricao.TamanhoCamisa">
-            <label for="m" class="opcao">M</label>
+<input type="radio" id="m" name="Inscricao.TamanhoCamisa" value="M">
+<label for="m" class="opcao">M</label>
 
-            <input type="radio" id="g" name="Inscricao.TamanhoCamisa">
-            <label for="g" class="opcao">G</label>
+<input type="radio" id="g" name="Inscricao.TamanhoCamisa" value="G">
+<label for="g" class="opcao">G</label>
 
-            <input type="radio" id="gg" name="Inscricao.TamanhoCamisa">
-            <label for="gg" class="opcao">GG</label>
+<input type="radio" id="gg" name="Inscricao.TamanhoCamisa" value="GG">
+<label for="gg" class="opcao">GG</label>
+
         </div>
 
         <button type="submit" class="btn-pagamento">
