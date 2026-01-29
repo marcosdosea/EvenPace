@@ -23,7 +23,7 @@ public partial class Inscricao
 
     public uint IdEvento { get; set; }
 
-    public uint IdCorredor { get; set; }
+    public int IdCorredor { get; set; }
 
     public uint IdAvaliacaoEvento { get; set; }
 

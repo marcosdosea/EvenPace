@@ -5,7 +5,7 @@ namespace Core;
 
 public partial class Corredor
 {
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     public string Cpf { get; set; } = null!;
 
@@ -16,8 +16,6 @@ public partial class Corredor
     public DateTime DataNascimento { get; set; }
 
     public string Senha { get; set; } = null!;
-
-    public string? Imagem { get; set; }
 
     public virtual CartaoCredito? CartaoCredito { get; set; }
 

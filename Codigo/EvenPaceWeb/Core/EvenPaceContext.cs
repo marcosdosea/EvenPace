@@ -125,7 +125,6 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(45)
                 .HasColumnName("email");
-            entity.Property(e => e.Imagem).HasMaxLength(255);
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
                 .HasColumnName("nome");

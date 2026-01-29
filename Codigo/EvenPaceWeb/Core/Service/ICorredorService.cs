@@ -9,12 +9,11 @@ namespace Core.Service
     public interface ICorredorService
     {
         void Edit(Corredor corredor);
-        uint Create(Corredor corredor);
-        Corredor Get(uint id);
+        int Create(Corredor corredor);
+        Corredor Get(int id);
         Corredor Login(string email, string senha);
         void Delete(int id);
         IEnumerable<Corredor> GetAll();
         IEnumerable<Corredor> GetByName(string nome);
-       // IEnumerable<Evento> GetHistoricoEventos(int idCorredor);
     }
 }

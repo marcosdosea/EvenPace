@@ -33,7 +33,7 @@ public class CorredorController : Controller
       // Get: CorredorController/Login/4
       public ActionResult Get(int id)
       {
-          Corredor corredor = _corredorService.Get((uint)id);
+          Corredor corredor = _corredorService.Get(id);
           CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
           return View(corredorModel);
       }
@@ -58,28 +58,41 @@ public class CorredorController : Controller
       }
 
       // Get: CorredorController/Edit/5
-      public ActionResult Edit(uint id)
+      public ActionResult Edit(int id)
       {
+          Console.WriteLine($"[DEBUG] Edit chamado com Id={id}");
           Corredor corredor = _corredorService.Get(id);
+
+          // se vier null, pelo menos não quebra a view
+          if (corredor == null)
+          {
+              return View(new CorredorViewModel());
+          }
+
+          // se não vier null, mapear o corredor para o ViewModel e retornar a view
           CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+          Console.WriteLine($"[DEBUG] ViewModel Edit - Id={corredorModel.Id}, Nome={corredorModel.Nome}, Email={corredorModel.Email}, CPF={corredorModel.CPF}");
           return View(corredorModel);
       }
       
       // Post: CorredorController/Edit/4
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public ActionResult Edit(int id, CorredorViewModel corredorModel)
+      public ActionResult Edit(CorredorViewModel corredorModel)
       {
           if (ModelState.IsValid)
           {
               var corredor = _mapper.Map<Corredor>(corredorModel);
               _corredorService.Edit(corredor);
+              return RedirectToAction(nameof(Get), new { id = corredorModel.Id });
           }
-          return RedirectToAction(nameof(Index));
+
+          // Se houver erro de validação, volta para a mesma tela com as mensagens
+          return View(corredorModel);
       }
 
       // Get: CorredorController/Delite/5
-      public ActionResult Delete(uint id)
+      public ActionResult Delete(int id)
       {
           Corredor corredor = _corredorService.Get(id);
           CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);

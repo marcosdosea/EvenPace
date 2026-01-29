@@ -63,7 +63,7 @@ namespace EvenPaceWeb
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Corredor}/{action=Get}/{1?}");
+                    pattern: "{controller=Corredor}/{action=Edit}/{id=2}");
             });
         }
     }

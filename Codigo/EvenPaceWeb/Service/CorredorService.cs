@@ -19,7 +19,7 @@ namespace Service
         /// <param name="corredor"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public uint Create(Corredor corredor)
+        public int Create(Corredor corredor)
         {
             _context.Add(corredor);
             _context.SaveChanges();
@@ -31,9 +31,16 @@ namespace Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Retorna um Corredor</returns>
-        public Corredor Get(uint id)
+        public Corredor Get(int id)
         {
-            return  _context.Corredors.FirstOrDefault(c => c.Id == id);
+            var lista = _context.Corredors.ToList();
+            Console.WriteLine($"[DEBUG] Total de corredores no contexto: {lista.Count}");
+            if (lista.Count > 0)
+            {
+                Console.WriteLine($"[DEBUG] IDs encontrados: {string.Join(", ", lista.Select(c => c.Id))}");
+            }
+
+            return lista.FirstOrDefault(c => c.Id == id);
         }
         
         /// <summary>
@@ -70,14 +77,15 @@ namespace Service
         /// <exception cref="NotImplementedException"></exception>
         public void Edit(Corredor corredor)
         {
-            if (corredor is not null)
-            {
-                _context.Administradors.Find(corredor.Id);
-                _context.Update(corredor);
-                _context.SaveChanges();
-            }
+            if (corredor == null && corredor.Id == 0) throw new ServiceException("Corredor Invalido");
+            
+            Console.WriteLine(corredor.Id  + "-a-a--a-a-a-a-a-");
+            
+            _context.Corredors.Update(corredor);
+            _context.SaveChanges();
         }
-
+        
+        
         /// <summary>
         /// Pega todos os corredores do banco de dados
         /// </summary>

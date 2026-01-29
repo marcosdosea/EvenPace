@@ -63,9 +63,12 @@
         }
 
         .input-box {
-            background: #000;
+            background: #212529; /* mesma cor do bg-dark do Bootstrap */
             border-radius: 14px;
             padding: 10px;
+            color: #FFD700;
+            font-weight: bold;
+            text-align: center;
         }
 
         .input-box input {
@@ -91,6 +94,12 @@
             background: #000;
         }
 
+        /* caso o DisplayFor gere elementos internos com cor padrão */
+        .input-box,
+        .input-box * {
+            color: #FFD700;
+        }
+
     </style>
 </head>
 
@@ -98,25 +107,6 @@
 <div class="page">
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-            @*<div class="d-flex justify-content-between align-items-center px-3 pt-3">
-                <a asp-action="Index" class="text-dark fs-3 text-decoration-none">
-                    <i class="bi bi-arrow-left"></i>
-                </a>
-
-                <div>
-                    <a asp-action="Edit"
-                       asp-route-id="@Model.Id"
-                       class="text-dark fs-4 me-3">
-                        <i class="bi bi-pencil-square"></i>
-                    </a>
-
-                    <a href="#"
-                       class="text-dark fs-4"
-                       onclick="confirmDelete(@Model.Id)">
-                        <i class="bi bi-trash"></i>
-                    </a>
-                </div>
-            </div>*@
 
             <h5 class="title text-center mb-4">Nova foto de Perfil</h5>
 
@@ -131,7 +121,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">
-                        Nome <i class="bi bi-pencil-fill ms-2"></i>
+                        Nome
                     </label>
                     <div class="input-box">
                         @Html.DisplayFor(model => model.Nome)
@@ -140,7 +130,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">
-                        E-mail <i class="bi bi-pencil-fill ms-2"></i>
+                        E-mail
                     </label>
                     <div class="input-box">
                         @Html.DisplayFor(model => model.Email)
@@ -150,7 +140,7 @@
                 <div class="row">
                     <div class="col-12 col-md-6 mb-3">
                         <label class="form-label">
-                            Data de Nascimento <i class="bi bi-pencil-fill ms-2"></i>
+                            Data de Nascimento
                         </label>
                         <div class="input-box">
                             @Html.DisplayFor(model => model.DataNascimento)
@@ -159,19 +149,27 @@
 
                     <div class="col-12 col-md-6 mb-3">
                         <label class="form-label">
-                            CPF <i class="bi bi-pencil-fill ms-2"></i>
+                            CPF
                         </label>
                         <div class="input-box">
                             @Html.DisplayFor(model => model.CPF)
                         </div>
                     </div>
                 </div>
-
-                <div class="d-grid mt-4">
-                    <button type="submit" class="btn btn-warning fw-bold">
-                        Concluir
-                    </button>
+                <footer>
+                <div class="mt-4 d-flex flex-column gap-3">
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-warning fw-bold w-100">
+                        Editar
+                    </a>
+                    <a asp-action="Delete"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-outline-danger fw-bold w-100">
+                        Deletar
+                    </a>
                 </div>
+                </footer>
             </form>
         </div>
     </div>
