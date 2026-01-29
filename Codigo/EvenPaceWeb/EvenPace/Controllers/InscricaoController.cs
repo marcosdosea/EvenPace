@@ -6,6 +6,7 @@ using EvenPaceWeb.Models;
 using Service;
 using Models;
 
+//https://localhost:7131/Inscricao/TelaInscricao/1 para rodar 
 namespace EvenPace.Controllers
 {
     public class InscricaoController : Controller
