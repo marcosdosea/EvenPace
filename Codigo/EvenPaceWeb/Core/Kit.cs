@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-namespace Core;
+using Core;
 
 public partial class Kit
 {
@@ -15,30 +11,21 @@ public partial class Kit
 
     public string Descricao { get; set; } = null!;
 
-    //public string? Imagem { get; set; }
-
     public int DisponibilidadeP { get; set; }
-
     public int DisponibilidadeG { get; set; }
-
     public int DisponibilidadeM { get; set; }
 
     public sbyte UtilizadaP { get; set; }
-
     public sbyte UtilizadaG { get; set; }
-
     public sbyte UtilizadaM { get; set; }
 
-    public uint IdEvento { get; set; }
+    [Column("idEvento")]
+    public int IdEvento { get; set; }
 
-    public bool StatusRetiradaKit { get; set; }
-
-    public DateTime DataRetirada { get; set; }
-
-    [ForeignKey("IdEvento")]
+    [ForeignKey(nameof(IdEvento))]
     public virtual Evento IdEventoNavigation { get; set; } = null!;
-    
-
+    public bool StatusRetiradaKit { get; set; }
+    public DateTime DataRetirada { get; set; } 
 
     public virtual ICollection<Inscricao> Inscricaos { get; set; } = new List<Inscricao>();
 }
