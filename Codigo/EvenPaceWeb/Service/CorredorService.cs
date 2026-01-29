@@ -79,8 +79,6 @@ namespace Service
         {
             if (corredor == null && corredor.Id == 0) throw new ServiceException("Corredor Invalido");
             
-            Console.WriteLine(corredor.Id  + "-a-a--a-a-a-a-a-");
-            
             _context.Corredors.Update(corredor);
             _context.SaveChanges();
         }
