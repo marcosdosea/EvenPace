@@ -15,8 +15,6 @@ public partial class Kit
 
     public string Descricao { get; set; } = null!;
 
-    //public string? Imagem { get; set; }
-
     public int DisponibilidadeP { get; set; }
 
     public int DisponibilidadeG { get; set; }
@@ -35,10 +33,10 @@ public partial class Kit
 
     public DateTime DataRetirada { get; set; }
 
-    [ForeignKey("IdEvento")]
-    public virtual Evento IdEventoNavigation { get; set; } = null!;
-    
+  //public string? Imagem { get; set; }
 
+    public virtual Evento IdEventoNavigation { get; set; } = null!;
 
     public virtual ICollection<Inscricao> Inscricaos { get; set; } = new List<Inscricao>();
 }
+
