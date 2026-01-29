@@ -1,264 +1,289 @@
+@model EvenPaceWeb.Models.TelaInscricaoViewModel
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detalhes do Evento</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        /* CSS Geral da Página e Containers */
+      
+
         body {
-            background-color: #f8f9fa; /* Um cinza claro para o fundo */
+            background: #f5c400;
+            margin: 0;
+            padding: 20px;
         }
 
-        .main-content-area {
-            max-width: 900px; /* Largura máxima do conteúdo para não espalhar demais */
-            margin: 30px auto; /* Centraliza o container principal e dá margem vertical */
+    
+        .phone {
+            max-width: 900px;
+            margin: 30px auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
+            display: flex;
+            flex-direction: column;
+            min-height: 90vh;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 14px 18px;
+            font-size: 18px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .app-content {
+            flex: 1;
             padding: 25px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
         }
 
-        /* Estilo para o espaço da Imagem */
         .image-placeholder {
             width: 100%;
-            height: 250px; /* Altura fixa para o placeholder da imagem */
-            background-color: #e9ecef; /* Cor cinza clara para o quadrado */
-            border-radius: 8px;
-            margin-bottom: 25px;
+            height: 250px;
+            background: #e9ecef;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #6c757d;
             font-weight: bold;
+            margin-bottom: 25px;
         }
 
-        /* Estilos para o deslocamento do conteúdo principal (local, data, kit) */
-        .conteudo-deslocado {
-            margin-left: 15%; /* Ajuste essa porcentagem para o seu "quase meio" */
-            max-width: 70%;   /* Limita a largura para o texto não espalhar demais */
+        h2 {
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
         }
 
-        /* Estilos das bolinhas de ícone */
         .evento-container {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .icon-circle {
+            background: #FFD700;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #FFD700; /* Amarelo ouro */
-            border-radius: 50%;
-            min-width: 35px;
-            height: 35px;
-            margin-right: 12px;
-            margin-top: 5px; /* Ajuste para alinhar visualmente com a primeira linha */
+            margin-right: 14px;
             font-size: 18px;
-        }
-
-        .info-column {
-            display: flex;
-            flex-direction: column;
+            flex-shrink: 0;
         }
 
         .label-pequeno {
-            font-size: 0.85rem;
+            font-size: .85rem;
             color: #6c757d;
-            margin-bottom: 0;
-            line-height: 1.2;
         }
 
         .valor-negrito {
             font-weight: bold;
             margin: 0;
-            font-size: 1rem;
+        }
+.opcoes {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 40px; 
+}
+
+
         }
 
-        /* Estilos dos Kits */
-        .kit-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        .opcoes input {
+            display: none;
         }
 
-        .kit-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
+       .opcao {
+    width: 90px;
+    height: 55px;
+    background: #000;
+    color: #f1c40f;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: .2s;
+
+    margin-bottom: 30px; 
+}
+
+
+        .opcao::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 2px solid #aaa;
+    background: #fff;
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 4px;
+}
+
+
+        .opcoes input:checked + .opcao {
+            outline: 3px solid #f1c40f;
         }
 
-        .kit-name {
-            font-size: 1.1rem;
-            flex: 1;
-        }
-
-        .kit-items-right {
-            text-align: right;
-            color: #6c757d;
-            font-size: 0.85rem;
-            max-width: 60%;
-        }
-
-        .kit-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #f8f9fa;
-            padding-top: 10px;
-        }
-
-        .kit-price {
-            font-size: 1.2rem;
-            color: #000; /* Preto para o preço, como você não especificou */
-        }
-
-        .btn-inscricao {
-            background-color: #FFD700 !important; /* Amarelo */
-            border: none;
+        .opcoes input:checked + .opcao::after {
+            content: "✓";
             font-weight: bold;
-            color: #000;
-            padding: 8px 20px;
-            border-radius: 50px; /* Arredondado estilo pílula */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Estilos do Percurso (deslocado) */
-        .percurso-container {
-            margin-left: 15%; /* Mesmo deslocamento do conteúdo principal */
-            margin-top: 60px; /* Espaço para baixo */
-            max-width: 70%;
+      
+        .btn-pagamento {
+            background: #FFD700;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 14px;
+            width: 100%;
+            margin-top: 50px;
         }
 
-        .badge-distance {
-            display: inline-block;
-            background-color: #0d6efd; /* Azul padrão do Bootstrap */
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
+        .btn-pagamento:hover {
+            background: #f1c40f;
+        }
+
+      
+        @@media (max-width: 768px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .phone {
+                margin: 15px;
+                border-radius: 12px;
+            }
+
+            .app-content {
+                padding: 18px;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .evento-container {
+                align-items: center;
+            }
+
+            .opcoes {
+                display: flex;
+    justify-content: center; 
+    gap: 18px;
+    flex-wrap: wrap;
+            }
+
+            .opcao {
+                display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="main-content-area">
 
-        <div class="image-placeholder">
-            [ Placeholder da Imagem - Insira sua tag <img> aqui ]
-            </div>
+<div class="phone">
 
-        <h2 class="display-6 fw-bold text-center text-uppercase mb-5">
-            @* Assumindo que Model.NomeEvento existe *@
-            NOME DO SEU EVENTO AQUI
-        </h2>
+    <div class="header" onclick="history.back()">← Voltar</div>
 
-        <hr class="mb-5"/> <div class="conteudo-deslocado">
-            <div class="evento-container">
-                <div class="icon-circle">📍</div>
-                <div class="info-column">
-                    <span class="label-pequeno">Local:</span>
-                    <p class="valor-negrito">CIDADE / ESTADO, Rua Exemplo, 123</p> @* Substitua por @Model.Local *@
-                </div>
-            </div>
+    <form asp-controller="Inscricao" asp-action="TelaInscricao" method="post" class="app-content">
+            @Html.AntiForgeryToken()
 
-            <div class="evento-container">
-                <div class="icon-circle">📅</div>
-                <div class="info-column">
-                    <span class="label-pequeno">Data do evento:</span>
-                    <p class="valor-negrito">27/01/2026</p> @* Substitua por @Model.DataEvento.ToString("dd/MM/yyyy") *@
-                </div>
-            </div>
+        <input type="hidden" asp-for="Inscricao.IdEvento" />
 
-            <div class="evento-container">
-                <div class="icon-circle">📦</div>
-                <div class="info-column">
-                    <span class="label-pequeno">Retirada de Kit:</span>
-                    <div class="valor-negrito">
-                        <p>A retirada dos kits será no dia 26/01/2026, das 10h às 18h, na Loja de Esportes XYZ.</p>
-                        <p>Documento com foto e comprovante de inscrição são obrigatórios.</p>
-                    </div>
-                </div>
+        <div class="image-placeholder">[ Imagem do Evento ]</div>
+
+        <h2 class="mb-4">Nome do Evento</h2>
+
+        <div class="evento-container">
+            <div class="icon-circle">📍</div>
+            <div>
+                <span class="label-pequeno">Local</span>
+                <p class="valor-negrito">Cidade / Estado</p>
             </div>
         </div>
 
-        <hr class="my-5"/> <div class="percurso-container">
-            <h6 class="fw-bold mb-3">Percurso</h6>
-            <div class="d-flex flex-wrap gap-2">
-                <span class="badge-distance">5K</span>
-                <span class="badge-distance">10K</span>
-                <span class="badge-distance">21K</span>
+        <div class="evento-container">
+            <div class="icon-circle">📅</div>
+            <div>
+                <span class="label-pequeno">Data do evento</span>
+                <p class="valor-negrito">27/01/2026</p>
             </div>
         </div>
 
-        <hr class="my-5"/> <div class="conteudo-deslocado">
-            <strong class="mb-2 d-block">Sobre o Evento</strong>
-            <p class="mb-3 text-break">
-                Este é um evento incrível que visa promover a saúde e o bem-estar através da corrida.
-                Participe de uma experiência única pelas ruas da cidade, com percursos desafiadores
-                e uma estrutura de apoio completa. Traga sua família e amigos para um dia inesquecível de esporte e superação!
-            </p>
+        <div class="evento-container">
+            <div class="icon-circle">📦</div>
+            <div>
+                <span class="label-pequeno">Retirada de Kit</span>
+                <p class="valor-negrito">26/01/2026 • 10h às 18h<br>Loja XYZ</p>
+            </div>
         </div>
 
-        <hr class="my-5"/> <div class="mt-5">
-            <h6 class="fw-bold mb-4">Escolha seu kit</h6>
+        <hr class="my-4">
 
-            @* Loop para cada kit disponível. Substitua pelo seu @foreach (var kit in Model.Kits) *@
-            @for (int i = 0; i < 2; i++) // Exemplo com 2 kits
-            {
-                    <div class="kit-card">
-                        <div class="kit-header">
-                            <div class="kit-name fw-bold">
-                            @if (i == 0)
-                            {
-                                <text>Kit Básico</text>
-                            }
-                            else
-                            {
-                                <text>Kit Premium</text>
-                            }
-                            </div>
-                            <div class="kit-items-right">
-                            @if (i == 0)
-                            {
-                                <text>Camiseta, Número de Peito, Chip de Cronometragem</text>
-                            }
-                            else
-                            {
-                                <text>Camiseta Premium, Medalha Finisher, Chip de Cronometragem, Mochila Exclusiva</text>
-                            }
-                            </div>
-                        </div>
+        <h6 class="fw-bold mb-3 text-center">Escolha o percurso</h6>
+        <div class="opcoes mb-4">
+            <input type="radio" id="k3" name="Inscricao.Distancia" required>
+            <label for="k3" class="opcao">3km</label>
 
-                        <div class="kit-footer">
-                            <div class="kit-price fw-bold">
-                                R$ @((i == 0 ? 89.90 : 149.90).ToString("N2"))
-                            </div>
+            <input type="radio" id="k5" name="Inscricao.Distancia">
+            <label for="k5" class="opcao">5km</label>
 
-                            <form action="seu-endpoint-de-inscricao" method="post">
-                                <input type="hidden" name="IdEvento" value="123" /> @* Substitua por @Model.IdEvento *@
-                                <input type="hidden" name="IdKit" value="@(i == 0 ? "1" : "2")" /> @* Substitua por @kit.Id *@
-
-                                    <a asp-controller="Inscricao" 
-       asp-action="Tela1" 
-       asp-route-id="@Model.IdEvento" 
-       class="btn btn-warning btn-sm rounded-3">
-        Inscrever-se
-    </a>
-                            </form>
-                        </div>
-                    </div>
-            }
+            <input type="radio" id="k10" name="Inscricao.Distancia">
+            <label for="k10" class="opcao">10km</label>
         </div>
 
-    </div>
+     
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <h6 class="fw-bold mb-3 text-center">Tamanho da camisa</h6>
+        <div class="opcoes">
+            <input type="radio" id="p" name="Inscricao.TamanhoCamisa" required>
+            <label for="p" class="opcao">P</label>
+
+            <input type="radio" id="m" name="Inscricao.TamanhoCamisa">
+            <label for="m" class="opcao">M</label>
+
+            <input type="radio" id="g" name="Inscricao.TamanhoCamisa">
+            <label for="g" class="opcao">G</label>
+
+            <input type="radio" id="gg" name="Inscricao.TamanhoCamisa">
+            <label for="gg" class="opcao">GG</label>
+        </div>
+
+        <button type="submit" class="btn-pagamento">
+            Realizar pagamento
+        </button>
+
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
