@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Core;
 using Core.Service;
 using Models;
@@ -100,12 +100,12 @@ public class KitController : Controller
                         model.ImagemUpload.CopyTo(stream);
                     }
 
-                    // Atualiza o objeto para salvar o novo nome no banco
+                     Atualiza o objeto para salvar o novo nome no banco
                     kit.Imagem = nomeUnico;
                 }
                 else
                 {
-                    // Se NÃO enviou foto nova, mantém a string da foto antiga
+                    Se NÃO enviou foto nova, mantém a string da foto antiga
                     kit.Imagem = model.Imagem;
                 }
 
@@ -196,10 +196,10 @@ public class KitController : Controller
             int idEventoDoKit = (int)kit.IdEvento;
 
             //APAGA A FOTO ANTES DE APAGAR O REGISTRO ---
-            if (!string.IsNullOrEmpty(kit.Imagem))
-            {
-                DeletarImagemDoDisco(kit.Imagem);
-            }
+            //if (!string.IsNullOrEmpty(kit.Imagem))
+            //{
+              //  DeletarImagemDoDisco(kit.Imagem);
+            //}
             
 
             _kitsService.Delete(id);

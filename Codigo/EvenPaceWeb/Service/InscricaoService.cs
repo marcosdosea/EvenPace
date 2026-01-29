@@ -1,6 +1,5 @@
 using Core;
 using Core.Service;
-using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -12,7 +11,6 @@ namespace Service
         {
             _context = context;
         }
-
 
         public uint Create(Inscricao inscricao)
         {
@@ -41,7 +39,7 @@ namespace Service
 
         public IEnumerable<Inscricao> GetAll()
         {
-            return _context.Inscricaos.AsNoTracking();
+            return _context.Inscricaos;
         }
     }
 }

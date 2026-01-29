@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +14,6 @@ namespace Core.Service
         void Delete(int id);
         IEnumerable<Evento> GetAll();
         IEnumerable<Evento> GetByName(string nome);
+       
     }
 }

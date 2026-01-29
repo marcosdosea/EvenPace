@@ -1,117 +1,99 @@
-﻿using Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Core;
 using Core.Service;
-using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
-    public class CorredorService : ICorredorService
+    public class EventoService : IEventosService
     {
         private readonly EvenPaceContext _context;
-
-        public CorredorService(EvenPaceContext context)
+        public EventoService(EvenPaceContext context)
         {
             _context = context;
         }
 
         /// <summary>
-        /// Insere um corredor no banco de dados
+        /// Insere um evento no banco de dados
         /// </summary>
-        /// <param name="corredor"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public uint Create(Corredor corredor)
+        /// <param name="eventos"></param>
+        /// <returns>Retorna o valor o id evento</returns>
+        public uint Create(Evento eventos)
         {
-            _context.Add(corredor);
+            _context.Add(eventos);
             _context.SaveChanges();
-            return corredor.Id;
+            return eventos.Id;
         }
 
         /// <summary>
-        /// Encontra o Corredor com o id correspondente
+        /// Edita um evento no banco de dados
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Retorna um Corredor</returns>
-        public Corredor Get(uint id)
+        /// <param name="eventos"></param>
+        public void Edit(Evento eventos)
         {
-            return _context.Corredors.Find(id);
-        }
-        
-        /// <summary>
-        /// Pega o corredor com email e senha compativeis
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="senha"></param>
-        /// <returns>retorna corredor com email e senha compativeis</returns>
-        public Corredor Login(string email, string senha)
-        {
-            return _context.Corredors.FirstOrDefault(e => e.Email == email && e.Senha == senha);
+            if (eventos is not null)
+            {
+                _context.Eventos.Find(eventos.Id);
+                _context.Update(eventos);
+                _context.SaveChanges();
+            }
         }
 
         /// <summary>
-        /// Deleta um corredor do banco de dados
+        /// Deleta um evento do banco de dados
         /// </summary>
         /// <param name="id"></param>
-        /// <exception cref="NotImplementedException"></exception>
         public void Delete(int id)
         {
-            var _corredor = _context.Corredors.Find(id);
+            var _evento = _context.Eventos.Find(id);
 
-            if (_corredor != null)
+            if (_evento is not null)
             {
-                _context.Remove(_corredor);
+                _context.Remove(_evento);
                 _context.SaveChanges();
             }
         }
 
         /// <summary>
-        /// Edita um corredor no banco de dados
+        /// Busca um evento pelo Id
         /// </summary>
-        /// <param name="corredor"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void Edit(Corredor corredor)
+        /// <param name="id"></param>
+        /// <returns>Retorna um evento</returns>
+        public Evento Get(int id)
         {
-            if (corredor is not null)
-            {
-                _context.Administradors.Find(corredor.Id);
-                _context.Update(corredor);
-                _context.SaveChanges();
-            }
+            return _context.Eventos.Find((uint)id)!;
         }
 
         /// <summary>
-        /// Pega todos os corredores do banco de dados
+        /// Pega todos os eventos do banco de dados
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<Corredor> GetAll()
+        /// <returns>Retorna todos os Eventos cadastrados</returns>
+        public IEnumerable<Evento> GetAll()
         {
-            return _context.Corredors.AsNoTracking();
+            return _context.Eventos.ToList();
+        }
+
+        public IEnumerable<Evento> GetByName(string nome)
+        {
+            return _context.Eventos.Where(e => e.Nome.Contains(nome)).ToList();
+        }
+
+        public IEnumerable<Kit> GetKitsPorEvento(int idEvento)
+        {
+            
+            return _context.Kits
+                           .Where(k => k.IdEvento == (uint)idEvento)
+                           .ToList();
         }
 
         /// <summary>
-        /// Pega corredores pelo nome
+        /// Pega eventos pelo nome
         /// </summary>
         /// <param name="nome"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public IEnumerable<Corredor> GetByName(string nome)
-        {
-            return _context.Corredors.Where(c => c.Nome.Contains(nome)).AsNoTracking();
-        }
-        
-        /*
-        /// <summary>
-        /// Retorna o histórico de eventos já participados por um corredor
-        /// </summary>
-        /// <param name="idCorredor"></param>
-        /// <returns>Lista de eventos participados</returns>
-        public IEnumerable<Evento> GetHistoricoEventos(int idCorredor)
-        {
-            return _context.Corredors
-            .Where(i => i.Id == idCorredor)
-            .Include(i => i.Evento)
-            .Select(i => i.Evento)
-            .ToList();
-        }
-        */
+        /// <returns>Retorna todos os Eventos que contein a string</returns>
+
     }
 }
