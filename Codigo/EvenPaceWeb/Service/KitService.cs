@@ -17,7 +17,7 @@ namespace Service
         /// </summary>
         /// <param name="kit"></param>
         /// <returns>Retorna o Id do Kit</returns>
-        public uint Create(Kit kit)
+        public int Create(Kit kit)
         {
             _context.Add(kit);
             _context.SaveChanges();
@@ -54,7 +54,7 @@ namespace Service
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            var _kit = _context.Kits.Find((uint)id);
+            var _kit = _context.Kits.Find((int)id);
 
             if (_kit is not null)
             {
@@ -70,7 +70,7 @@ namespace Service
         /// <returns>Retorna o kit</returns>
         public Kit Get(int id)
         {
-            return _context.Kits.Find((uint)id)!;
+            return _context.Kits.Find((int)id)!;
         }
       
         public IEnumerable<Kit> GetAll()
@@ -85,9 +85,9 @@ namespace Service
 
         public IEnumerable<Kit> GetKitsPorEvento(int idEvento)
         {
-            // Convertemos o idEvento para uint para bater com o tipo da tabela
+            // Convertemos o idEvento para int para bater com o tipo da tabela
             return _context.Kits
-                           .Where(k => k.IdEvento == (uint)idEvento)
+                           .Where(k => k.IdEvento == (int)idEvento)
                            .ToList();
         }
 

@@ -5,7 +5,7 @@ namespace Core;
 
 public partial class CartaoCredito
 {
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     public string Numero { get; set; } = null!;
 

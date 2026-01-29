@@ -39,7 +39,7 @@ namespace Models
 
         [Required(ErrorMessage = "Selecione o evento")]
         [Display(Name = "Evento")]
-        public uint IdEvento { get; set; }
+        public int IdEvento { get; set; }
 
         [Required(ErrorMessage = "O corredor é obrigatório")]
         public int IdCorredor { get; set; }

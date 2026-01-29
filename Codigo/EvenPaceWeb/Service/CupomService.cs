@@ -23,7 +23,7 @@ namespace Service
         /// </summary>
         /// <param name="cupom"></param>
         /// <returns>Retorna o Id do cupom</returns>
-        public uint Create(Cupom cupom)
+        public int Create(Cupom cupom)
         {
             _context.Add(cupom);
             _context.SaveChanges();
@@ -47,7 +47,7 @@ namespace Service
         /// Deleta um cupom do banco de dados
         /// </summary>
         /// <param name="id"></param>
-        public void Delete(uint id)
+        public void Delete(int id)
         {
             var _cupom = _context.Cupoms.Find(id);
 
@@ -63,7 +63,7 @@ namespace Service
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Retorna o cupom</returns>
-        public Cupom Get(uint id)
+        public Cupom Get(int id)
         {
             //return _context.Cupoms.Find(id);
             return _context.Cupoms.FirstOrDefault(cupom => cupom.Id == id)

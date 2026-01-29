@@ -7,7 +7,7 @@ namespace EvenPaceWeb.Models
 {
     public class TelaInscricaoViewModel
     {
-        public uint IdEvento { get; set; }
+        public int IdEvento { get; set; }
 
         public int? IdKit { get; set; }
 

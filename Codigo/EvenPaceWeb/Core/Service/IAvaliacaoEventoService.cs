@@ -9,7 +9,7 @@ namespace Core.Service
     public interface IAvaliacaoEventoService
     {
         void Edit(AvaliacaoEvento avaliacaoEvento);
-        uint Create(AvaliacaoEvento avaliacaoevento);
+        int Create(AvaliacaoEvento avaliacaoevento);
         AvaliacaoEvento Get(int id);
         void Delete(int id);
         IEnumerable<AvaliacaoEvento> GetAll();

@@ -9,7 +9,7 @@ namespace Core.Service
     public interface IEventosService
     {
         void Edit(Evento eventos);
-        uint Create(Evento eventos);
+        int Create(Evento eventos);
         Evento Get(int id);
         void Delete(int id);
         IEnumerable<Evento> GetAll();

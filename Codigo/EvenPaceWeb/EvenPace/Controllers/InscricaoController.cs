@@ -30,7 +30,7 @@ namespace EvenPace.Controllers
 
     
         [HttpGet]
-        public IActionResult TelaInscricao(uint id)
+        public IActionResult TelaInscricao(int id)
         {
             if (id == 0)
                 return BadRequest("https://localhost:7131/Inscricao/TelaInscricao/1");
@@ -40,7 +40,6 @@ namespace EvenPace.Controllers
                 IdEvento = id,
                 Inscricao = new InscricaoViewModel
                 {
-
                     IdEvento = id
                 }
             };
@@ -50,7 +49,7 @@ namespace EvenPace.Controllers
         }
 
         [HttpGet]
-        public IActionResult Tela1(uint id)
+        public IActionResult Tela1(int id)
         {
             if (id == 0)
                 return Content("ID RECEBIDO = 0");
@@ -96,8 +95,8 @@ namespace EvenPace.Controllers
                 DataInscricao = DateTime.Now,
                 Distancia = vm.Inscricao.Distancia,
                 TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
-                IdEvento = (uint)vm.Inscricao.IdEvento,
-                IdKit = (uint)vm.Inscricao.IdKit,
+                IdEvento = (int)vm.Inscricao.IdEvento,
+                IdKit = (int)vm.Inscricao.IdKit,
                 IdCorredor = int.Parse(idCorredorClaim.Value)
             };
 

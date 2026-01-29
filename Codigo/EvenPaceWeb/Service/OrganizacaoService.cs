@@ -18,7 +18,7 @@ public class OrganizacaoService : IOrganizacaoService
         _context.SaveChanges();
     }
 
-    public uint Create(Organizacao organizacao)
+    public int Create(Organizacao organizacao)
     {
         _context.Add(organizacao);
         _context.SaveChanges();

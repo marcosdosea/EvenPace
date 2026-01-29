@@ -10,7 +10,7 @@ public partial class Evento
 {
     [Key]
     [Column("id")] 
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     [Column("data")]
     public DateTime Data { get; set; }
@@ -61,12 +61,10 @@ public partial class Evento
     public string InfoRetiradaKit { get; set; } = null!;
 
     [Column("idOrganizacao")]
-    public uint IdOrganizacao { get; set; }
+    public int IdOrganizacao { get; set; }
 
     [Column("nome")]
     public string Nome { get; set; } = null!;
-    
-    public string? Imagem { get; set; }
     
     // Relacionamentos e Navegação
     public virtual ICollection<Cupom> Cupoms { get; set; } = new List<Cupom>();

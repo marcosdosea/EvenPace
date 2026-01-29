@@ -3,7 +3,7 @@ using Core;
 
 public partial class Kit
 {
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     public decimal Valor { get; set; }
 

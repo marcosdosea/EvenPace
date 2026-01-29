@@ -5,7 +5,7 @@ namespace Core;
 
 public partial class Cupom
 {
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     public string Nome { get; set; } = null!;
 
@@ -21,7 +21,7 @@ public partial class Cupom
 
     public int QuantiadeDisponibilizada { get; set; }
 
-    public uint IdEvento { get; set; }
+    public int IdEvento { get; set; }
 
     public virtual Evento IdEventoNavigation { get; set; } = null!;
 }

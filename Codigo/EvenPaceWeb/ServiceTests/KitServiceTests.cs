@@ -152,7 +152,7 @@ namespace EvenPaceWebTests.Service
 
             // Verifica o primeiro item da lista
             var primeiroKit = listaKits.First();
-            Assert.AreEqual((uint)1, primeiroKit.Id);
+            Assert.AreEqual((int)1, primeiroKit.Id);
             Assert.AreEqual("Kit Básico", primeiroKit.Nome);
         }
     }

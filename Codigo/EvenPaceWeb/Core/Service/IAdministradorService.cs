@@ -9,7 +9,7 @@ namespace Core.Service
     public interface IAdministradorService
     {
         void Edit(Administrador administrador);
-        uint Create(Administrador administrador);
+        int Create(Administrador administrador);
         Administrador Get(int id);
         void Delete(int id);
         IEnumerable<Administrador> GetAll();

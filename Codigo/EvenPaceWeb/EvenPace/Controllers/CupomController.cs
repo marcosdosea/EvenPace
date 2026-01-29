@@ -35,7 +35,7 @@ namespace EvenPaceWeb.Controllers
         /// <returns></returns>
         public ActionResult Details(int id)
         {
-            var cupom = _cupomService.Get((uint)id);
+            var cupom = _cupomService.Get((int)id);
 
             if (cupom == null) return NotFound();
 
@@ -92,7 +92,7 @@ namespace EvenPaceWeb.Controllers
         /// <returns></returns>
         public ActionResult Edit(int id)
         {
-            var cupom = _cupomService.Get((uint)id);
+            var cupom = _cupomService.Get((int)id);
 
             if (cupom == null) return NotFound();
             
@@ -107,7 +107,7 @@ namespace EvenPaceWeb.Controllers
         /// <returns></returns>
         public ActionResult Delete(int id)
         {
-            var cupom = _cupomService.Get((uint)id);
+            var cupom = _cupomService.Get((int)id);
 
             if (cupom == null) return NotFound();
 
@@ -125,7 +125,7 @@ namespace EvenPaceWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, CupomViewModel cupomViewModel)
         {
-            _cupomService.Delete((uint)id);
+            _cupomService.Delete((int)id);
             return RedirectToAction(nameof(Index));
         }
     }

@@ -23,7 +23,7 @@ namespace Service
         /// </summary>
         /// <param name="cartaoCredito"></param>
         /// <returns>Retorna o Id do cartão</returns>
-        public uint Create(CartaoCredito cartaoCredito)
+        public int Create(CartaoCredito cartaoCredito)
         {
             _context.Add(cartaoCredito);
             _context.SaveChanges();
