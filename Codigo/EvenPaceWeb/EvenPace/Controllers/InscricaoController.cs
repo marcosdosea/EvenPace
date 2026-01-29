@@ -34,7 +34,7 @@ namespace EvenPace.Controllers
         {
             if (id == 0)
                 return BadRequest("https://localhost:5157/Inscricao/TelaInscricao/1");
-
+            
             var vm = new TelaInscricaoViewModel
             {
                 IdEvento = id,
