@@ -1,7 +1,11 @@
-﻿using Core;
+using Core;
 using Core.Service;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Service;
 
 namespace EvenPaceWeb
@@ -18,53 +22,45 @@ namespace EvenPaceWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(Startup));
 
-            // Injeção de dependência Services
-            services.AddTransient<IAdministradorService, AdministradorService>();
-            services.AddTransient<IAvaliacaoEventoService, AvaliacaoEventoService>();
-            services.AddTransient<ICartaoCreditoService, CartaoCreditoService>();
-            services.AddTransient<IEventosService, EventoService>();
-            services.AddTransient<ICorredorService, CorredorService>();
-            services.AddTransient<IInscricaoService, InscricaoService>();
-            services.AddTransient<ICupomService, CupomService>();
-            services.AddTransient<IKitService, KitService>();
-            services.AddTransient<IOrganizacaoService, OrganizacaoService>();
 
-            // Injeção de dependência AutoMapper
-            services.AddAutoMapper(typeof(Startup).Assembly);
-
-                        
-            var connectionString = Configuration.GetConnectionString("EvenPaceDatabase");
-            
-            if (string.IsNullOrEmpty(connectionString))
-                throw new InvalidOperationException("Connection string 'EvenPaceDatabase' não encontrada.");
-
+           
             services.AddDbContext<EvenPaceContext>(options =>
-                options.UseMySQL(connectionString));
+                options.UseMySQL(
+                    Configuration.GetConnectionString("EvenPaceDatabase")
+                )
+            );
+
+            
+            services.AddScoped<IInscricaoService, InscricaoService>();
+            services.AddScoped<IEventosService, EventoService>();
+            services.AddScoped<IKitService, KitService>();
+
         }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
+            if (!env.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseRouting();
+
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Cupom}/{action=Index}/{id?}");
+                    pattern: "{controller=Inscricao}/{action=TelaInscricao}/{id?}");
             });
         }
+
     }
 }
