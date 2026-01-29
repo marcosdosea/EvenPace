@@ -26,7 +26,7 @@ public partial class Kit
 
     public DateTime DataRetirada { get; set; }
 
-  //public string? Imagem { get; set; }
+    public string? Imagem { get; set; }
 
     public virtual Evento IdEventoNavigation { get; set; } = null!;
 

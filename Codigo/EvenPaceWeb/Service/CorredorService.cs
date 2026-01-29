@@ -8,10 +8,10 @@ using Core.Service;
 
 namespace Service
 {
-    public class EventoService : IEventosService
+    public class CorredorService : ICorredorService
     {
         private readonly EvenPaceContext _context;
-        public EventoService(EvenPaceContext context)
+        public CorredorService(EvenPaceContext context)
         {
             _context = context;
         }
@@ -24,9 +24,9 @@ namespace Service
         /// <exception cref="NotImplementedException"></exception>
         public int Create(Corredor corredor)
         {
-            _context.Add(eventos);
+            _context.Add(corredor);
             _context.SaveChanges();
-            return eventos.Id;
+            return corredor.Id;
         }
 
         /// <summary>
@@ -49,13 +49,13 @@ namespace Service
         /// <summary>
         /// Pega o corredor com email e senha compativeis
         /// </summary>
-        /// <param name="eventos"></param>
-        public void Edit(Evento eventos)
+        /// <param name="corredor"></param>
+        public void Edit(Corredor corredor)
         {
-            if (eventos is not null)
+            if (corredor != null)
             {
-                _context.Eventos.Find(eventos.Id);
-                _context.Update(eventos);
+                _context.Administradors.Find(corredor.Id);
+                _context.Update(corredor);
                 _context.SaveChanges();
             }
         }
@@ -66,26 +66,24 @@ namespace Service
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            var _evento = _context.Eventos.Find(id);
+            var _corredor = _context.Corredors.Find(id);
 
-            if (_evento is not null)
+            if (_corredor != null)
             {
-                _context.Remove(_evento);
+                _context.Remove(_corredor);
                 _context.SaveChanges();
             }
         }
-
+        
         /// <summary>
-        /// Busca um evento pelo Id
+        /// Pega o corredor com email e senha compativeis
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Retorna um evento</returns>
-        public Evento Get(int id)
+        /// <param name="email"></param>
+        /// <param name="senha"></param>
+        /// <returns>retorna corredor com email e senha compativeis</
+        public Corredor Login(string email, string senha)
         {
-            if (corredor == null && corredor.Id == 0) throw new ServiceException("Corredor Invalido");
-            
-            _context.Corredors.Update(corredor);
-            _context.SaveChanges();
+            return _context.Corredors.FirstOrDefault(e => e.Email == email && e.Senha == senha);
         }
         
         
@@ -93,14 +91,14 @@ namespace Service
         /// Pega todos os eventos do banco de dados
         /// </summary>
         /// <returns>Retorna todos os Eventos cadastrados</returns>
-        public IEnumerable<Evento> GetAll()
+        public IEnumerable<Corredor> GetAll()
         {
-            return _context.Eventos.ToList();
+            return _context.Corredors.ToList();
         }
 
-        public IEnumerable<Evento> GetByName(string nome)
+        public IEnumerable<Corredor> GetByName(string nome)
         {
-            return _context.Eventos.Where(e => e.Nome.Contains(nome)).ToList();
+            return _context.Corredors.Where(e => e.Nome.Contains(nome)).ToList();
         }
     }
 }
