@@ -1,63 +1,26 @@
-@{
-    ViewData["Title"] = "Histórico de Eventos";
-}
+@model IEnumerable<Models.AvaliacaoEventoViewModel>
 
-<article class="historico-container">
-
-    <!-- Cabeçalho -->
-    <header class="historico-header">
-        <a href="javascript:history.back()" class="btn-voltar">
-            &#8592;
-        </a>
-        <h1>Histórico de eventos</h1>
-    </header>
-
-    <!-- Lista de eventos -->
-    <section class="lista-eventos">
-
-        <!-- Card Evento -->
-        <article class="evento-card">
-            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
-
-            <section class="evento-info">
-                <h2>Circuito Sesc de Corridas</h2>
-                <p class="evento-data">Itabaiana · Dia 20/08</p>
-
-                <section class="evento-botoes">
-                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
-                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
-                </section>
-
-                <button class="btn-cancelar">Cancelar Inscrição</button>
-            </section>
-        </article>
-
-        <!-- Card Evento -->
-        <article class="evento-card">
-            <img src="~/img/evento-exemplo.png" alt="Evento" class="evento-imagem">
-
-            <section class="evento-info">
-                <h2>Circuito Sesc de Corridas</h2>
-                <p class="evento-data">Itabaiana · Dia 20/08</p>
-
-                <section class="evento-botoes">
-                    <a href="/HistoricoEventos/Detalhes" class="btn-detalhes">Detalhes</a>
-                    <a href="/HistoricoEventos/Avaliar" class="btn-avaliar">Avaliar Corrida</a>
-                </section>
-
-                <button class="btn-cancelar">Cancelar Inscrição</button>
-            </section>
-        </article>
-
-    </section>
-
-    <!-- Menu inferior -->
-    <nav class="menu-inferior">
-        <a href="/Home/Index">Início</a>
-        <a href="/Conquistas">Conquistas</a>
-        <a href="/Cupons">Cupons</a>
-        <a href="/HistoricoEventos" class="ativo">Histórico</a>
-        <a href="/Perfil">Perfil</a>
-    </nav>
-
-</article>
+<div class="container mt-4">
+    <h2>Avaliações Realizadas</h2>
+    <hr />
+    <div class="row">
+        @foreach (var item in Model)
+        {
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-warning">
+                            @for (int i = 0; i < item.Estrela; i++)
+                            {
+                                <span>★</span>
+                            }
+                            </h5>
+                            <p class="card-text">"@item.Comentario"</p>
+                            <small class="text-muted">ID: @item.Id</small>
+                        </div>
+                    </div>
+                </div>
+        }
+    </div>
+    <a asp-action="Create" class="btn btn-primary">Nova Avaliação</a>
+</div>
