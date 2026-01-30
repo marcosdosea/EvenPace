@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using EvenPaceWeb.Models;
 using Service;
 using Models;
-
 //https://localhost:7131/Inscricao/TelaInscricao/1 para rodar 
 namespace EvenPace.Controllers
 {
@@ -15,26 +14,69 @@ namespace EvenPace.Controllers
         private readonly IEventosService _eventoService;
         private readonly IKitService _kitService;
         private readonly IMapper _mapper;
+        private readonly ICorredorService _corredorService;
+
 
         public InscricaoController(
             IInscricaoService inscricaoService,
             IEventosService eventoService,
             IKitService kitService,
+             ICorredorService corredorService,
             IMapper mapper)
         {
             _inscricaoService = inscricaoService;
             _eventoService = eventoService;
             _kitService = kitService;
+            _corredorService = corredorService;
             _mapper = mapper;
         }
 
     
+       
         [HttpGet]
+        public IActionResult Cancelar(int id)
+        {
+            var inscricao = _inscricaoService.Get(id);
+
+            if (inscricao == null)
+                return NotFound("Inscrição não encontrada");
+
+            Kit? kit = null;
+            if (inscricao.IdKit.HasValue)
+                kit = _kitService.Get(inscricao.IdKit.Value);
+
+            var evento = _eventoService.Get(inscricao.IdEvento);
+
+            if (evento.Data < DateTime.Now)
+            {
+                TempData["Erro"] = "Não é possível cancelar após a data do evento.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var vm = new TelaInscricaoViewModel
+            {
+                NomeEvento = evento.Nome,
+                DataEvento = evento.Data,
+                Local = evento.Cidade,
+                NomeKit = kit?.Nome ?? "Sem kit",
+                Inscricao = new InscricaoViewModel
+                {
+                    Id = (uint)inscricao.Id,
+                    Distancia = inscricao.Distancia,
+                    TamanhoCamisa = inscricao.TamanhoCamisa,
+                    DataInscricao = inscricao.DataInscricao
+                }
+            };
+
+            return View("CancelarInscricao", vm);
+        }
+
+
         public IActionResult TelaInscricao(int id)
         {
             if (id == 0)
                 return BadRequest("https://localhost:5157/Inscricao/TelaInscricao/1");
-            
+
             var vm = new TelaInscricaoViewModel
             {
                 IdEvento = id,
@@ -65,10 +107,38 @@ namespace EvenPace.Controllers
 
             PopularTelaInscricao(vm);
 
-            return View("Tela1", vm); // 👈 Tela1.cshtml
+            return View("Tela1", vm);  
         }
 
-      
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Cancelar(int idInscricao, int idEvento)
+        {
+            var idCorredorClaim = User.FindFirst("IdCorredor");
+            if (idCorredorClaim == null)
+            {
+                TempData["Erro"] = "Faça login para cancelar a inscrição.";
+                return RedirectToAction("TelaInscricao", new { id = idEvento });
+            }
+
+            try
+            {
+                _inscricaoService.Cancelar(
+                    idInscricao,
+                    int.Parse(idCorredorClaim.Value)
+                );
+
+                TempData["Sucesso"] = "Inscrição cancelada com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Erro"] = ex.Message;
+            }
+
+            return RedirectToAction("TelaInscricao", new { id = idEvento });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult TelaInscricao(TelaInscricaoViewModel vm)
