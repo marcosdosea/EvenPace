@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +27,7 @@ public partial class EvenPaceContext : DbContext
 
     public virtual DbSet<Evento> Eventos { get; set; }
 
-    public virtual DbSet<Inscricao> Inscricaos { get; set; }
+    public virtual DbSet<Inscricao> Inscricao { get; set; }
 
     public virtual DbSet<Kit> Kits { get; set; }
 
@@ -179,7 +179,7 @@ public partial class EvenPaceContext : DbContext
                 .HasColumnName("data");
             entity.Property(e => e.Descricao)
                 .HasMaxLength(400)
-                .HasColumnName("descricao");
+                .HasColumnName("discricao");
             entity.Property(e => e.Distancia10).HasColumnName("distancia10");
             entity.Property(e => e.Distancia15).HasColumnName("distancia15");
             entity.Property(e => e.Distancia21).HasColumnName("distancia21");
