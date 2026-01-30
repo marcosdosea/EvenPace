@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(EvenPaceWeb.Mappers.AutoMapperProfile));
+builder.Services.AddScoped<ICorredorService, CorredorService>();
 
 var cs = builder.Configuration.GetConnectionString("EvenPaceDatabase");
 
