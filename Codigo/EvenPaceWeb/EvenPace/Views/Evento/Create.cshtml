@@ -1,0 +1,110 @@
+﻿@model Models.EventoViewModel
+@{
+    ViewData["Title"] = "Criar Novo Evento";
+    Layout = "~/Views/Shared/_LayoutOrganizacaoHome.cshtml";
+}
+<link rel="stylesheet" href="~/css/evento.css" />
+
+<main class="main-container">
+    <header class="page-header">
+        <h1>Criar Novo Evento</h1>
+    </header>
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="form-evento">
+
+        <section class="row-flex">
+            <div class="col-grow">
+                <label asp-for="Nome" class="label-bold">Nome da Corrida</label>
+                <input asp-for="Nome" class="input-gray" placeholder="Ex: Corrida de Verão 2026" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+
+            <div class="col-small">
+                <label asp-for="DataOnly" class="label-bold">Data</label>
+                <input asp-for="DataOnly" type="date" class="input-gray" />
+            </div>
+
+            <div class="col-small">
+                <label asp-for="HoraOnly" class="label-bold">Horário</label>
+                <input asp-for="HoraOnly" type="time" class="input-gray" />
+            </div>
+        </section>
+
+        <fieldset class="grupo-endereco">
+            <legend class="label-bold">Local</legend>
+
+            <div class="row-flex">
+                <div class="col-grow">
+                    <input asp-for="Rua" class="input-gray" placeholder="Rua / Avenida" />
+                </div>
+                <div class="col-medium">
+                    <input asp-for="Bairro" class="input-gray" placeholder="Bairro" />
+                </div>
+            </div>
+
+            <div class="row-flex">
+                <div class="col-grow">
+                    <input asp-for="Cidade" class="input-gray" placeholder="Cidade" />
+                </div>
+                <div class="col-small">
+                    <input asp-for="Estado" class="input-gray" placeholder="UF" maxlength="2" />
+                </div>
+            </div>
+        </fieldset>
+
+        <section class="row-flex">
+            <div class="col-grow">
+                <div class="form-group">
+                    <label class="label-bold">Envio da Regulamentação</label>
+                    <div class="input-file-group">
+                        <input type="text" class="input-gray" placeholder="Selecionar arquivo..." readonly />
+                        <span class="icon-file">⬇️</span>
+                        <input type="file" class="file-invisible" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="InfoRetiradaKit" class="label-bold">Termo de Retirada (Info)</label>
+                    <input asp-for="InfoRetiradaKit" class="input-gray" placeholder="Informações de retirada" />
+                </div>
+            </div>
+
+            <div class="col-grow">
+
+                <div class="form-group">
+                    <label class="label-bold">Distâncias</label>
+                    <div class="distancia-container">
+                        <label class="check-tag"><input asp-for="Distancia3" type="checkbox" /> <span>3km</span></label>
+                        <label class="check-tag"><input asp-for="Distancia5" type="checkbox" /> <span>5km</span></label>
+                        <label class="check-tag"><input asp-for="Distancia10" type="checkbox" /> <span>10km</span></label>
+                        <label class="check-tag"><input asp-for="Distancia21" type="checkbox" /> <span>21km</span></label>
+                        <label class="check-tag"><input asp-for="Distancia42" type="checkbox" /> <span>42km</span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="label-bold">Imagem da Corrida</label>
+                    <div class="input-file-group">
+                        <input type="text" id="fileNameDisplay" class="input-gray" placeholder="Nenhum arquivo" readonly />
+                        <span class="icon-file">🖼️</span>
+                        <input asp-for="ImagemUpload" type="file" class="file-invisible" onchange="document.getElementById('fileNameDisplay').value = this.files[0].name" />
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="row-flex">
+            <div class="col-grow">
+                <label asp-for="Descricao" class="label-bold">Descrição do Evento</label>
+                <textarea asp-for="Descricao" class="input-gray" rows="4"></textarea>
+            </div>
+        </section>
+
+        <footer class="form-actions">
+            <button type="submit" class="btn-gray">Salvar</button>
+            <a asp-action="Index" class="btn-gray">Voltar</a>
+        </footer>
+
+    </form>
+</main>

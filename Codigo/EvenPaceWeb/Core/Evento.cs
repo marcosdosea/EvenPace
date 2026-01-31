@@ -21,7 +21,7 @@ public partial class Evento
     [Column("numeroParticipantes")]
     public int NumeroParticipantes { get; set; }
 
-    [Column("discricao")] 
+    [Column("descricao")] 
     public string Descricao { get; set; } = null!;
     
     [Column("distancia3")]

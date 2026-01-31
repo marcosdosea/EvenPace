@@ -1,16 +1,16 @@
-﻿/* wwwroot/css/kit.css */
+﻿/* ============================================================
+   ARQUIVO: wwwroot/css/kit.css
+   DESCRIÇÃO: Estilo Completo - Kits (Ícone e Botões Ajustados)
+   ============================================================ */
 
-/* =========================================
-   1. CONFIGURAÇÃO GERAL
-   ========================================= */
+/* --- 1. GERAL --- */
 body {
     margin: 0;
     background-color: #fff;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .main-container {
-    font-family: 'Segoe UI', sans-serif;
-    max-width: none;
     width: 100%;
     margin: 0;
 }
@@ -29,64 +29,55 @@ body {
     overflow-y: auto;
 }
 
-/* =========================================
-   2. CABEÇALHO (PAGE HEADER) - PADRONIZADO
-   ========================================= */
+/* --- 2. CABEÇALHO (PADRÃO GÊMEO) --- */
 .page-header {
-    min-height: 120px; /* Altura padrão Desktop */
+    min-height: 120px;
     height: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px; /* Margem interna lateral */
-    margin-bottom: 30px; /* O SEGREDO: Espaço igual para todas as telas abaixo da linha */
-
+    padding: 0 40px;
+    margin-bottom: 30px;
     background-color: #fff;
     border-bottom: 1px solid #000;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 100;
     flex-shrink: 0;
     box-sizing: border-box;
     flex-wrap: wrap;
     gap: 15px;
 }
 
-/* Garante que o título do Create e do Index sejam GÊMEOS */
-.header-titles,
-.header-text {
+.header-titles, .header-text {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-    .header-titles h1,
-    .header-text h1 {
+    .header-titles h1, .header-text h1 {
         font-size: 2rem;
         font-weight: 800;
         margin: 0;
         line-height: 1.1;
         color: #000;
+        text-transform: uppercase;
     }
 
 .subtitle {
     font-size: 1rem;
     color: #666;
     margin: 2px 0 0 0;
+    font-weight: 500;
 }
 
-.icon-marker {
-    color: #FFD700;
-    font-size: 2.5rem;
-}
-
-/* =========================================
-   3. FORMULÁRIOS E INPUTS
-   ========================================= */
+/* --- 3. FORMULÁRIO (CENTRALIZADO) --- */
 .form-kits {
     max-width: 1000px;
-    padding: 0 40px 40px 40px; /* Alinhado com o cabeçalho */
+    margin: 0 auto; /* CENTRALIZA O BLOCO */
+    padding: 0 40px 40px 40px;
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -94,47 +85,65 @@ body {
     margin-bottom: 20px;
 }
 
+/* --- 4. INPUTS PREMIUM --- */
 .label-bold {
     display: block;
     font-weight: 700;
     margin-bottom: 8px;
-    font-size: 0.95rem;
-    color: #444;
+    font-size: 0.9rem;
+    color: #333;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.05em;
 }
 
-/* Inputs Modernos */
 .input-gray {
     width: 100%;
-    background-color: #F4F4F4;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 12px 15px;
+    height: 50px; /* Altura Premium */
+    background-color: #FAFAFA;
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
+    padding: 0 20px;
     font-size: 1rem;
-    color: #333;
-    transition: all 0.3s ease;
+    color: #000;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    outline: none;
     box-sizing: border-box;
 }
 
+    .input-gray:hover {
+        background-color: #fff;
+        border-color: #BDBDBD;
+    }
+
     .input-gray:focus {
-        background-color: #FFFFFF;
-        border: 2px solid #000;
-        outline: none;
-        box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        background-color: #fff;
+        border-color: #000;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        transform: translateY(-2px);
     }
 
     .input-gray::placeholder {
-        color: #999;
-        font-style: italic;
+        color: #aaa;
+        font-weight: 400;
     }
 
-/* Layout Colunas */
+textarea.input-gray {
+    height: auto;
+    min-height: 120px;
+    padding: 15px 20px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* --- GRID DO FORMULÁRIO --- */
 .row-flex {
     display: flex;
     gap: 30px;
-    margin-bottom: 20px;
-    align-items: flex-start;
+    margin-bottom: 25px;
+    /* Alinha pela base para Valor e Imagem ficarem na mesma linha */
+    align-items: flex-end;
+    flex-wrap: wrap;
 }
 
 .col-fixed {
@@ -143,35 +152,45 @@ body {
 
 .col-grow {
     flex: 1;
-    position: relative;
+    min-width: 250px;
 }
 
-/* Upload */
+/* --- UPLOAD (CORRIGIDO E CENTRALIZADO) --- */
 .input-wrapper {
     position: relative;
+    /* Garante que o wrapper tenha a altura do input filho */
+    display: block;
 }
+
+    /* Adiciona espaço à direita no input para o texto não bater no ícone */
+    .input-wrapper .input-gray {
+        padding-right: 45px;
+    }
 
 .icon-upload {
     position: absolute;
     right: 15px;
-    top: 40px;
-    font-size: 1.5rem;
+    /* Centralização vertical perfeita */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4rem;
     pointer-events: none;
+    color: #555;
+    z-index: 5;
 }
 
 .file-hidden {
     position: absolute;
-    top: 32px;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 45px;
+    height: 50px; /* Mesma altura do input visual */
     opacity: 0;
     cursor: pointer;
+    z-index: 10;
 }
 
-/* =========================================
-   4. QUANTIDADES (P M G)
-   ========================================= */
+/* --- 5. QUANTIDADES (P M G) --- */
 .sizes-fieldset {
     border: none;
     padding: 0;
@@ -218,11 +237,10 @@ body {
         outline: none;
     }
 
-/* =========================================
-   5. BOTÕES
-   ========================================= */
+/* --- 6. BOTÕES (MENORES E ALINHADOS À DIREITA) --- */
 .form-actions {
     display: flex;
+    /* Garante alinhamento à direita */
     justify-content: flex-end;
     gap: 20px;
     margin-top: 40px;
@@ -235,9 +253,10 @@ body {
     color: #000;
     font-weight: bold;
     border: none;
-    padding: 12px 40px;
+    /* Padding reduzido para botões menores */
+    padding: 10px 30px;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
@@ -247,18 +266,17 @@ body {
 
     .btn-gray:hover {
         background-color: #777;
+        color: #fff;
     }
 
-/* =========================================
-   6. LISTAGEM (GRID)
-   ========================================= */
+/* --- 7. LISTAGEM (GRID CENTRALIZADA) --- */
 .kits-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 40px 40px 40px; /* Alinhado com o header */
+    margin: 0 auto; /* CENTRALIZA */
+    padding: 0 40px 40px 40px;
     box-sizing: border-box;
 }
 
@@ -270,7 +288,7 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 0 10px 20px rgba(0,0,0,0.03);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s;
 }
 
     .kit-card:hover {
@@ -296,17 +314,11 @@ body {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
-        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         transition: transform 0.3s ease;
     }
 
 .kit-card:hover .kit-card-image img {
     transform: scale(1.05);
-}
-
-.placeholder-img {
-    color: #999;
-    font-weight: bold;
 }
 
 .kit-card-body {
@@ -330,23 +342,6 @@ body {
     font-weight: 600;
     color: #444;
     margin: 5px 0;
-}
-
-.center-badges {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: auto;
-}
-
-.badge-qtd {
-    background-color: #fff;
-    border: 1px solid #000;
-    color: #666;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: bold;
 }
 
 .kit-card-actions {
@@ -385,86 +380,34 @@ body {
             color: #b71c1c;
         }
 
-.empty-state-card {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 40px;
-    border: 2px dashed #ccc;
-    border-radius: 10px;
-    color: #777;
-}
-
-/* =========================================
-   7. ALERTA (TOAST)
-   ========================================= */
-.alert-custom {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #28a745;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    font-weight: bold;
-    z-index: 1000;
-    opacity: 1;
-    transition: opacity 1s, transform 0.5s;
-}
-
-.alert-hide {
-    opacity: 0;
-    transform: translateY(-20px);
-    pointer-events: none;
-}
-
-/* =========================================
-   8. RESPONSIVIDADE (MOBILE/TABLET)
-   ========================================= */
+/* --- 8. RESPONSIVIDADE (MOBILE) --- */
 @media (max-width: 768px) {
-
-    /* --- CABEÇALHO UNIFICADO (INDEX E CREATE IGUAIS) --- */
     .page-header {
-        min-height: 80px; /* Altura compacta para ambos */
-        padding: 10px 20px; /* Margem reduzida idêntica */
-        margin-bottom: 20px; /* Espaço inferior ajustado */
-        /* Mantém na mesma linha */
+        min-height: 80px;
+        padding: 10px 20px;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        flex-wrap: nowrap;
         gap: 15px;
     }
 
-    /* Fontes do título iguais */
-    .header-titles h1,
-    .header-text h1 {
+    .header-titles h1, .header-text h1 {
         font-size: 1.5rem;
         margin: 0;
-        line-height: 1.1;
     }
 
     .subtitle {
         font-size: 0.85rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         max-width: 200px;
-        display: block;
     }
 
-    /* --- BOTÃO "+ CRIAR KIT" (SÓ O ÍCONE) --- */
-    .page-header .btn-gray,
-    .btn-responsive {
+    /* Botão criar kit mobile */
+    .page-header .btn-gray {
         width: 45px;
         height: 45px;
         padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 8px;
-        flex-shrink: 0;
         margin: 0;
     }
 
@@ -475,14 +418,12 @@ body {
     .btn-symbol {
         display: block;
         font-size: 1.8rem;
-        line-height: 1;
     }
 
-    /* --- OUTROS --- */
+    /* Layout Mobile */
     .kits-grid {
         grid-template-columns: 1fr;
         padding: 20px;
-        gap: 20px;
     }
 
     .form-kits {
@@ -492,6 +433,7 @@ body {
     .row-flex {
         flex-direction: column;
         gap: 20px;
+        align-items: stretch; /* No mobile, estica tudo */
     }
 
     .col-fixed, .col-grow, .size-row {
@@ -501,5 +443,10 @@ body {
 
     .form-actions {
         flex-direction: column-reverse;
+    }
+
+    /* No mobile, os botões ficam largura total para facilitar o toque */
+    .btn-gray {
+        width: 100%;
     }
 }

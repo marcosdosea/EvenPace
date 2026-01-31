@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EvenPace</title>
+
+    <link rel="stylesheet" href="~/css/theme.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/kit.css" />
+</head>
+<body>
+    <div class="dashboard-container">
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="~/imagens/logo-amarela-evenpace.jpeg" alt="Logo EvenPace" class="logo-sidebar-top" />
+            </div>
+
+            <nav class="sidebar-menu">
+                <a asp-controller="Home" asp-action="Index"
+                   class="menu-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Evento" || ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
+                    <span class="menu-icon">🏠</span>
+                    <span class="menu-text">Home</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="@Url.Action("Perfil", "Usuario")" style="text-decoration: none; color: inherit;">
+                    <div class="user-avatar">👤</div>
+                </a>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
