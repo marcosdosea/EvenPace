@@ -29,5 +29,10 @@ namespace EvenPaceWeb.Models
         public List<KitViewModel> Kits { get; set; }
 
         public InscricaoViewModel Inscricao { get; set; }
+
+        public string NomeCorredor { get; set; }
+
+        public string NomeKit { get; set; }
+
     }
 }

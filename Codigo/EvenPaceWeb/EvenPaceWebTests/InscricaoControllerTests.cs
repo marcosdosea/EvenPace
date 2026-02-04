@@ -3,11 +3,8 @@ using Core;
 using Core.Service;
 using EvenPace.Controllers;
 using EvenPaceWeb.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Security.Claims;
 using Models;
 
 namespace EvenPaceWebTests
@@ -19,6 +16,7 @@ namespace EvenPaceWebTests
 
         private Mock<IInscricaoService> mockInscricaoService;
         private Mock<IEventosService> mockEventoService;
+        private Mock<ICorredorService>  mockCorredorService;
         private Mock<IKitService> mockKitService;
 
         private IMapper mapper;
@@ -28,6 +26,7 @@ namespace EvenPaceWebTests
         {
             mockInscricaoService = new Mock<IInscricaoService>();
             mockEventoService = new Mock<IEventosService>();
+            mockCorredorService = new Mock<ICorredorService>();
             mockKitService = new Mock<IKitService>();
 
             var config = new MapperConfiguration(cfg =>
@@ -47,6 +46,7 @@ namespace EvenPaceWebTests
                 mockInscricaoService.Object,
                 mockEventoService.Object,
                 mockKitService.Object,
+                mockCorredorService.Object,
                 mapper
             );
         }
