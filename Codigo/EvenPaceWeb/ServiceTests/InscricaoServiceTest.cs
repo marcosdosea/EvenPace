@@ -42,7 +42,7 @@ namespace EvenPaceWebTests.Service
 
             service.Create(inscricao);
 
-            Assert.AreEqual(1, context.Inscricaos.Count());
+            Assert.AreEqual(1, context.Inscricao.Count());
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace EvenPaceWebTests.Service
                 IdKit = 1
             };
 
-            context.Inscricaos.Add(inscricao);
+            context.Inscricao.Add(inscricao);
             context.SaveChanges();
 
             var result = service.Get(1);
@@ -71,7 +71,7 @@ namespace EvenPaceWebTests.Service
         [TestMethod]
         public void GetAll_DeveRetornarListaDeInscricoes()
         {
-            context.Inscricaos.AddRange(
+            context.Inscricao.AddRange(
                 new Inscricao
                 {
                     Id = 1,

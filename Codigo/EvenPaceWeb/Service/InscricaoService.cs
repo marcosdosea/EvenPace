@@ -61,11 +61,7 @@ namespace Service
 
         public Inscricao Get(int id)
         {
-            return _context.Inscricao
-        .Include(i => i.IdCorredorNavigation)
-        .Include(i => i.IdEventoNavigation)
-        .Include(i => i.IdKitNavigation)
-        .FirstOrDefault(i => i.Id == id);
+            return _context.Inscricao.FirstOrDefault(i => i.Id == id);
         }
 
         public IEnumerable<Inscricao> GetAll()

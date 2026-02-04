@@ -22,7 +22,7 @@ namespace EvenPace.Controllers
             IInscricaoService inscricaoService,
             IEventosService eventoService,
             IKitService kitService,
-             ICorredorService corredorService,
+            ICorredorService corredorService,
             IMapper mapper)
         {
             _inscricaoService = inscricaoService;
