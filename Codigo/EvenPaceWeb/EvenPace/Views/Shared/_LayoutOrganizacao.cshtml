@@ -26,7 +26,11 @@
                     <span class="menu-icon">📑</span>
                     <span class="menu-text">Resumo</span>
                 </a>
-                <a href="#" class="menu-item">
+                <a class="menu-item active"
+                    asp-controller="Inscricao"
+                    asp-action="GetAllByEvento"
+                    asp-route-idEvento="@ViewBag.IdEventoAtual">
+                    
                     <span class="menu-icon">🎟️</span>
                     <span class="menu-text">Ingressos</span>
                 </a>

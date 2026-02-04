@@ -32,8 +32,6 @@ namespace Service
             _context.SaveChanges();
         }
 
-
-
         public InscricaoService(EvenPaceContext context)
         {
             _context = context;
@@ -67,6 +65,11 @@ namespace Service
         public IEnumerable<Inscricao> GetAll()
         {
             return _context.Inscricao;
+        }
+
+        public IEnumerable<Inscricao> GetAllByEvento(int idEvento)
+        {
+            return _context.Inscricao.Where(e => e.IdEvento == idEvento);
         }
     }
 }

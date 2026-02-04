@@ -31,8 +31,6 @@ namespace EvenPace.Controllers
             _corredorService = corredorService;
             _mapper = mapper;
         }
-
-    
        
         [HttpGet]
         public IActionResult Cancelar(int id)
@@ -180,7 +178,6 @@ namespace EvenPace.Controllers
                 new { id = vm.Inscricao.IdEvento }
             );
         }
-
       
         private void PopularTelaInscricao(TelaInscricaoViewModel vm)
         {
@@ -204,6 +201,13 @@ namespace EvenPace.Controllers
 
             vm.Percursos = new List<string> { "3km", "5km", "10km" };
             vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
+        }
+
+        public ActionResult GetAllByEvento(int  idEvento)
+        {
+            var inscricao = _inscricaoService.GetAllByEvento(idEvento);
+            var inscricaoViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricao);
+            return View(inscricaoViewModel);
         }
     }
 }

@@ -1,0 +1,82 @@
+/* =========================================
+   INGRESSOS – COMPLEMENTO VISUAL
+   ========================================= */
+
+.ingressos-container {
+    padding: 0 40px 40px 40px;
+}
+
+/* --- Cards de Resumo --- */
+.ingressos-resumo {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.resumo-card {
+    background: #E0E0E0;
+    border-radius: 12px;
+    padding: 15px 25px;
+    font-weight: 700;
+    color: #000;
+    min-width: 260px;
+}
+
+.resumo-card strong {
+    font-size: 1.4rem;
+    margin-left: 10px;
+}
+
+/* --- Área da Tabela --- */
+.ingressos-tabela-wrapper {
+    background: #E5E5E5;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+/* --- DataTables ajustes --- */
+.ingressos-table {
+    width: 100% !important;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.ingressos-table thead th {
+    background: #F2F2F2;
+    font-weight: 800;
+    border-bottom: 2px solid #ccc;
+}
+
+/* Remove bordas feias */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 8px;
+    border: 1px solid #333;
+    padding: 5px 10px;
+}
+
+/* Texto inferior */
+.dataTables_info {
+    margin-top: 10px;
+}
+
+/* --- Botões de Check-in --- */
+.btn-checkin {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-checkin.ok {
+    background: #1B8A2F;
+    color: #fff;
+}
+
+.btn-checkin.no {
+    background: #888;
+    color: #fff;
+}

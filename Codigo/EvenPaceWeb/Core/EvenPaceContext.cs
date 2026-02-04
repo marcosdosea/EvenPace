@@ -179,7 +179,7 @@ public partial class EvenPaceContext : DbContext
                 .HasColumnName("data");
             entity.Property(e => e.Descricao)
                 .HasMaxLength(400)
-                .HasColumnName("discricao");
+                .HasColumnName("descricao");
             entity.Property(e => e.Distancia10).HasColumnName("distancia10");
             entity.Property(e => e.Distancia15).HasColumnName("distancia15");
             entity.Property(e => e.Distancia21).HasColumnName("distancia21");

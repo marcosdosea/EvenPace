@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Core;
 
+public partial class Kit;
 public partial class Kit
 {
     public int Id { get; set; }
