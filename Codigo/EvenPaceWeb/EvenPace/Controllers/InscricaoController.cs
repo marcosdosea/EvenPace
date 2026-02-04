@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using EvenPaceWeb.Models;
 using Service;
 using Models;
+
 //https://localhost:7131/Inscricao/TelaInscricao/1 para rodar 
 namespace EvenPace.Controllers
 {
@@ -107,7 +108,7 @@ namespace EvenPace.Controllers
 
             PopularTelaInscricao(vm);
 
-            return View("Tela1", vm);  
+            return View("Tela1", vm); 
         }
 
 
