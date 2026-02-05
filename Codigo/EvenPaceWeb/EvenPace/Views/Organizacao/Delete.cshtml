@@ -1,0 +1,170 @@
+﻿@model Models.OrganizacaoViewModel
+
+@{
+    ViewData["Title"] = "Perfil - Excluir Conta";
+}
+
+<style>
+    .perfil-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--text-black);
+        padding-bottom: 15px;
+        margin-bottom: 50px;
+    }
+
+    .header-text h1 {
+        font-weight: 800;
+        font-size: 2.5rem;
+        margin: 0;
+        color: var(--text-black);
+    }
+
+    .btn-atualizar {
+        background-color: var(--primary-color);
+        color: var(--text-black);
+        font-weight: bold;
+        border-radius: 12px;
+        padding: 10px 30px;
+        border: 1px solid var(--text-black);
+        box-shadow: 3px 3px 0px rgba(0,0,0,1); 
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+        .btn-atualizar:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 5px 5px 0px rgba(0,0,0,1);
+            color: var(--text-black);
+        }
+
+    .profile-central {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .avatar-circle {
+        width: 180px;
+        height: 180px;
+        background-color: var(--bg-light);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border: 2px solid var(--text-black);
+    }
+
+        .avatar-circle i {
+            font-size: 100px;
+            color: var(--text-grey);
+        }
+
+    .pencil-badge {
+        position: absolute;
+        bottom: 10px;
+        right: 15px;
+        background: var(--bg-white);
+        border-radius: 50%;
+        padding: 8px;
+        border: 1px solid var(--text-black);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s;
+    }
+
+        .pencil-badge:hover {
+            background-color: var(--primary-color);
+            cursor: pointer;
+        }
+
+    .name-badge {
+        background-color: var(--bg-light);
+        padding: 10px 60px;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        border: 1px solid rgba(0,0,0,0.1);
+        color: var(--text-black);
+    }
+
+    .btn-danger-custom {
+        background-color: #ff1a1a;
+        color: var(--bg-white);
+        font-weight: bold;
+        border-radius: 12px;
+        padding: 15px 50px;
+        border: 2px solid var(--text-black);
+        margin-top: 100px;
+        box-shadow: 4px 4px 0px rgba(0,0,0,1);
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+        .btn-danger-custom:hover {
+            background-color: #d10000;
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px rgba(0,0,0,1);
+        }
+</style>
+
+<main class="container py-4">
+    @if (Model != null)
+    {
+        <header class="perfil-header">
+            <div class="header-text">
+                <h1>Perfil</h1>
+                <p class="fw-bold">@Model.Nome</p>
+            </div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-atualizar">Atualizar dados</a>
+        </header>
+
+        <section class="profile-central">
+            <div class="name-badge">
+                @Model.Nome
+            </div>
+
+            <button type="button" class="btn-danger-custom" onclick="confirmarExclusao('@Model.Id', '@Model.Nome')">
+                Solicitar exclusão
+            </button>
+        </section>
+    }
+</main>
+
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow" style="border-radius: 20px;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-4">
+                Tem certeza que deseja excluir a conta da organização <strong id="nomeOrgModal" class="text-danger"></strong>?
+                <p class="small text-muted mt-2 mb-0">Esta ação não pode ser desfeita e passará por análise de regras de negócio.</p>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-light fw-bold px-4" data-bs-dismiss="modal">Cancelar</button>
+                <form id="formExcluir" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger fw-bold px-4">Confirmar Exclusão</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmarExclusao(id, nome) {
+            document.getElementById('nomeOrgModal').textContent = nome;
+            document.getElementById('formExcluir').action = '/Organizacao/Delete/' + id;
+            var modal = new bootstrap.Modal(document.getElementById('modalExcluir'));
+            modal.show();
+        }
+    </script>
+}

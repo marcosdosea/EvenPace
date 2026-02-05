@@ -5,13 +5,15 @@ namespace Core;
 
 public partial class Organizacao
 {
+    public string Nome { get; set; } = null!;
+
     public int Id { get; set; }
 
-    public string Cnpj { get; set; } = null!;
+    public string? Cnpj { get; set; }
 
     public string? Cpf { get; set; }
 
-    public int Telefone { get; set; }
+    public string Telefone { get; set; }
 
     public string Cep { get; set; } = null!;
 

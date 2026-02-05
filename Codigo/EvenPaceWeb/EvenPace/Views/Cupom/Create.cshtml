@@ -118,7 +118,8 @@
 
     <section class="form-container shadow-sm">
         <form asp-action="Create" method="post">
-            <input type="hidden" asp-for="IdEvento" value="1" />
+            @*O id do evento está "1" somente para testes*@
+            <input type="hidden" asp-for="IdEvento" value="1" /> 
 
             <div class="row g-4">
                 <div class="col-12 col-md-6 col-lg-4">

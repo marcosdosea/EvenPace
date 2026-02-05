@@ -25,6 +25,7 @@ namespace Service
         /// <returns>Retorna o Id do cupom</returns>
         public int Create(Cupom cupom)
         {
+            cupom.Id = 0;
             _context.Add(cupom);
             _context.SaveChanges();
             return cupom.Id;
@@ -36,11 +37,8 @@ namespace Service
         /// <param name="cupom"></param>
         public void Edit(Cupom cupom)
         {
-            if (cupom == null && cupom.Id > 0) throw new ServiceException("Cupom inválido");
-
             _context.Update(cupom);
             _context.SaveChanges();
-            
         }
 
         /// <summary>
@@ -49,13 +47,10 @@ namespace Service
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            var _cupom = _context.Cupoms.Find(id);
+            var cupom = _context.Cupoms.Find(id);
 
-            if (_cupom is not null)
-            {
-                _context.Remove(_cupom);
-                _context.SaveChanges();
-            }
+            _context.Remove(cupom);
+            _context.SaveChanges();
         }
 
         /// <summary>
