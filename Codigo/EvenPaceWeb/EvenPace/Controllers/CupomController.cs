@@ -36,12 +36,6 @@ namespace EvenPaceWeb.Controllers
         public ActionResult Details(int id)
         {
             var cupom = _cupomService.Get((int)id);
-
-            if (cupom == null)
-            {
-                return NotFound();
-            }
-
             var cupomViewModel = _mapper.Map<CupomViewModel>(cupom);
             return View(cupomViewModel);
         }

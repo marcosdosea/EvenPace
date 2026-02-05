@@ -32,11 +32,6 @@ namespace EvenPaceWeb.Controllers
         public ActionResult Details(int id)
         {
             var organizacao = _organizacaoService.Get((int)id);
-
-            if (organizacao == null)
-            {
-                return NotFound();
-            }
             var organizacaoViewModel = _mapper.Map<OrganizacaoViewModel>(organizacao);
             return View(organizacaoViewModel);
         }
