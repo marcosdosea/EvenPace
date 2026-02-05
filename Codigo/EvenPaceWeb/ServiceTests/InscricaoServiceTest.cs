@@ -2,7 +2,7 @@ using Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Service;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace EvenPaceWebTests.Service
@@ -93,12 +93,48 @@ namespace EvenPaceWebTests.Service
                     IdKit = 1
                 }
             );
+
             context.SaveChanges();
 
             var result = service.GetAll();
 
             Assert.AreEqual(2, result.Count());
         }
-    }
 
+        [TestMethod]
+        public void Cancelar_DeveAlterarStatusParaCancelada()
+        {
+            var evento = new Evento
+            {
+                Id = 1,
+                Data = DateTime.Now.AddDays(5)
+            };
+
+            var inscricao = new Inscricao
+            {
+                Id = 1,
+                Status = "Confirmada",
+                IdEvento = 1,
+                IdCorredor = 1,
+                IdEventoNavigation = evento
+            };
+
+            context.Eventos.Add(evento);
+            context.Inscricao.Add(inscricao);
+            context.SaveChanges();
+
+            service.Cancelar(1, 1);
+
+            var result = context.Inscricao.First();
+            Assert.AreEqual("Cancelada", result.Status);
+        }
+
+        [TestMethod]
+        public void Cancelar_InscricaoNaoExiste_LancaExcecao()
+        {
+            Assert.ThrowsException<Exception>(() =>
+                service.Cancelar(99, 1)
+            );
+        }
+    }
 }
