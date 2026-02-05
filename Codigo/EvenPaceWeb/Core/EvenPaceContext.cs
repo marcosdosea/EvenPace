@@ -305,7 +305,12 @@ public partial class EvenPaceContext : DbContext
             entity.ToTable("Organizacao");
 
             entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
-
+            
+            entity.Property(e => e.Nome)
+                .HasMaxLength(45)
+                .IsFixedLength()
+                .HasColumnName("nome");
+            
             entity.HasIndex(e => e.AdministradorId, "fk_Organizacao_Admistrador1_idx");
 
             entity.Property(e => e.Id).HasColumnName("id");

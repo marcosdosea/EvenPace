@@ -32,6 +32,7 @@ namespace EvenPaceWebTests
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Kit, KitViewModel>();
+                cfg.CreateMap<Inscricao, InscricaoViewModel>();
             });
 
             mapper = config.CreateMapper();
@@ -41,7 +42,11 @@ namespace EvenPaceWebTests
 
             mockKitService.Setup(s => s.GetKitsPorEvento(1))
                 .Returns(GetKits());
-
+            
+            mockInscricaoService
+                .Setup(s => s.GetAllByEvento(1))
+                .Returns(GetInscricoes());
+            
             controller = new InscricaoController(
                 mockInscricaoService.Object,
                 mockEventoService.Object,
@@ -50,7 +55,6 @@ namespace EvenPaceWebTests
                 mapper
             );
         }
-
         
         [TestMethod]
         public void TelaInscricao_Get_Valido()
@@ -139,6 +143,33 @@ namespace EvenPaceWebTests
                     Status = "Pendente"
                 }
             };
+        }
+        
+        private IEnumerable<Inscricao> GetInscricoes()
+        {
+            return new List<Inscricao>
+            {
+                new Inscricao { Id = 1, Status = "Confirmada", IdEvento = 1 },
+                new Inscricao { Id = 2, Status = "Pendente",   IdEvento = 1 }
+            };
+        }
+        
+        [TestMethod]
+        public void GetAllByEvento_IdValido_RetornaViewComLista()
+        {
+            // Act
+            var result = controller.GetAllByEvento(1);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+
+            var view = (ViewResult)result;
+            Assert.IsNotNull(view.Model);
+
+            var model = view.Model as List<InscricaoViewModel>;
+            Assert.IsNotNull(model);
+            Assert.AreEqual(2, model.Count);
+            Assert.IsTrue(model.All(i => i.IdEvento == 1));
         }
     }
 }

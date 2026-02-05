@@ -9,6 +9,10 @@ public class OrganizacaoViewModel
     [Required(ErrorMessage = "Código da Organização é obrigatorio")]
     public int Id { get; set; }
     
+    [Display(Name = "Nome")]
+    [StringLength(45, ErrorMessage = "O Nome da Orgainzação pode ter no maximo 45 caracteres")]
+    public string? Nome { get; set; }
+    
     [Display(Name = "CNPJ")]
     [Required(ErrorMessage = "Campo Requirido")]
     [StringLength(14, ErrorMessage = "O CNPJ deve conter 14 número")]

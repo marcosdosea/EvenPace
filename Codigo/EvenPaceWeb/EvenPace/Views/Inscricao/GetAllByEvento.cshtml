@@ -45,14 +45,41 @@
                         <td class="text-nowrap">@item.IdCorredorNavigation.Cpf/td>
                         <td class="text-nowrap">@item.IdKitNavigation.Nome</td>
                         <td class="text-nowrap">
-                            @if(item.IdEventoNavigation.Distancia3) <span class="badge bg-success"> 3 Km</span>
-                            @if(item.IdEventoNavigation.Distancia5) <span class="badge bg-success"> 5 Km</span>
-                            @if(item.IdEventoNavigation.Distancia7) <span class="badge bg-success"> 7 Km</span>
-                            @if(item.IdEventoNavigation.Distancia10) <span class="badge bg-success"> 10 Km</span>
-                            @if(item.IdEventoNavigation.Distancia15) <span class="badge bg-success"> 15 Km</span>
-                            @if(item.IdEventoNavigation.Distancia21) <span class="badge bg-success"> 21 Km</span>
-                            @if(item.IdEventoNavigation.Distancia42) <span class="badge bg-success"> 42 Km</span>
-                        </td>
+                            @if (item.IdEventoNavigation.Distancia3)
+                            {
+                                <span class="badge bg-success"> 3 Km</span>
+                            }
+                    
+                            @if (item.IdEventoNavigation.Distancia5)
+                            {
+                                <span class="badge bg-success"> 5 Km</span>
+                            }
+                    
+                            @if (item.IdEventoNavigation.Distancia7)
+                            {
+                                <span class="badge bg-success"> 7 Km</span>
+                            }
+                    
+                            @if (item.IdEventoNavigation.Distancia10)
+                            {
+                                <span class="badge bg-success"> 10 Km</span>
+                            }
+                    
+                            @if (item.IdEventoNavigation.Distancia15)
+                            {
+                                <span class="badge bg-success"> 15 Km</span>
+                            }
+
+                            @if (item.IdEventoNavigation.Distancia21)
+                            {
+                                <span class="badge bg-success"> 21 Km</span>
+                            }
+
+                            @if (item.IdEventoNavigation.Distancia42)
+                            {
+                                <span class="badge bg-success"> 42 Km</span>
+                            }
+                            </td>
                         <td class="text-nowrap">
                             @if(item.IdKitNavigation.UtilizadaP == 1)
                             {
