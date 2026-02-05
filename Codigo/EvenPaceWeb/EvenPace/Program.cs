@@ -10,19 +10,20 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(EvenPaceWeb.Mappers.AutoMapperProfile));
 builder.Services.AddScoped<ICorredorService, CorredorService>();
 
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var cs = builder.Configuration.GetConnectionString("EvenPaceDatabase");
 
 builder.Services.AddDbContext<EvenPaceContext>(options =>
-    options.UseMySql(
-        connectionString,
-        ServerVersion.AutoDetect(connectionString)
-    )
-);
+    options.UseMySQL(cs));
 
 builder.Services.AddScoped<IInscricaoService, InscricaoService>();
 builder.Services.AddScoped<IEventosService, EventoService>();
 builder.Services.AddScoped<IKitService, KitService>();
+builder.Services.AddScoped<ICorredorService, CorredorService>();
+builder.Services.AddScoped<IAdministradorService, AdministradorService>();
+builder.Services.AddScoped<IAvaliacaoEventoService, AvaliacaoEventoService>();
+builder.Services.AddScoped<ICartaoCreditoService, CartaoCreditoService>();
+builder.Services.AddScoped<ICupomService, CupomService>();
+builder.Services.AddScoped<IOrganizacaoService, OrganizacaoService>();
 
 var app = builder.Build();
 
@@ -41,7 +42,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-        //pattern: "{controller=Inscricao}/{action=TelaInscricao}/{id=1}");
-        pattern: "{controller=Inscricao}/{action=Cancelar}/{id?}"
-);
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.Run();
