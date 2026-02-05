@@ -41,8 +41,8 @@ namespace EvenPace.Controllers
                 return NotFound("Inscrição não encontrada");
 
             Kit? kit = null;
-            if (inscricao.IdKit.HasValue)
-                kit = _kitService.Get(inscricao.IdKit.Value);
+            if (inscricao.IdKit != 0)
+                kit = _kitService.Get(inscricao.IdKit);
 
             var evento = _eventoService.Get(inscricao.IdEvento);
 
@@ -60,10 +60,16 @@ namespace EvenPace.Controllers
                 NomeKit = kit?.Nome ?? "Sem kit",
                 Inscricao = new InscricaoViewModel
                 {
-                    Id = (uint)inscricao.Id,
-                    Distancia = inscricao.Distancia,
-                    TamanhoCamisa = inscricao.TamanhoCamisa,
-                    DataInscricao = inscricao.DataInscricao
+                    Id = inscricao.Id,
+                    DataInscricao = inscricao.DataInscricao,
+                    DistanciaPercorida = inscricao.DistanciaPercorida,
+                    Tempo = inscricao.Tempo,
+                    Posicao = inscricao.Posicao,
+                    Status = inscricao.Status,
+                    IdKit = inscricao.IdKit,
+                    IdEvento = inscricao.IdEvento,
+                    IdCorredor = inscricao.IdCorredor,
+                    IdAvaliacaoEvento = inscricao.IdAvaliacaoEvento
                 }
             };
 
@@ -162,11 +168,13 @@ namespace EvenPace.Controllers
             {
                 Status = "Pendente",
                 DataInscricao = DateTime.Now,
-                Distancia = vm.Inscricao.Distancia,
-                TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
-                IdEvento = (int)vm.Inscricao.IdEvento,
-                IdKit = (int)vm.Inscricao.IdKit,
-                IdCorredor = int.Parse(idCorredorClaim.Value)
+                DistanciaPercorida = vm.Inscricao.DistanciaPercorida,
+                Tempo = vm.Inscricao.Tempo,
+                Posicao = vm.Inscricao.Posicao,
+                IdKit = vm.Inscricao.IdKit,
+                IdEvento = vm.Inscricao.IdEvento,
+                IdCorredor = int.Parse(idCorredorClaim.Value),
+                IdAvaliacaoEvento = vm.Inscricao.IdAvaliacaoEvento
             };
 
             _inscricaoService.Create(inscricao);
@@ -196,7 +204,7 @@ namespace EvenPace.Controllers
             vm.NomeEvento = evento.Nome;
             vm.Local = evento.Cidade;
             vm.DataEvento = evento.Data;
-            vm.Descricao = evento.Descricao;
+            vm.Descricao = evento.Discricao;
            // vm.InfoRetiradaKit = evento.InfoRetiradaKit;
 
             vm.Percursos = new List<string> { "3km", "5km", "10km" };

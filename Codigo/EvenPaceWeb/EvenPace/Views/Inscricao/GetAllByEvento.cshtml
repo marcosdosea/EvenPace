@@ -37,7 +37,48 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- seus dados -->
+                @foreach (var item in Model)
+                {
+                    @Html.AntiForgeryToken()
+                    <tr>
+                        <td class="text-nowrap">@item.IdCorredorNavigation.Nome</td>
+                        <td class="text-nowrap">@item.IdCorredorNavigation.Cpf/td>
+                        <td class="text-nowrap">@item.IdKitNavigation.Nome</td>
+                        <td class="text-nowrap">
+                            @if(item.IdEventoNavigation.Distancia3) <span class="badge bg-success"> 3 Km</span>
+                            @if(item.IdEventoNavigation.Distancia5) <span class="badge bg-success"> 5 Km</span>
+                            @if(item.IdEventoNavigation.Distancia7) <span class="badge bg-success"> 7 Km</span>
+                            @if(item.IdEventoNavigation.Distancia10) <span class="badge bg-success"> 10 Km</span>
+                            @if(item.IdEventoNavigation.Distancia15) <span class="badge bg-success"> 15 Km</span>
+                            @if(item.IdEventoNavigation.Distancia21) <span class="badge bg-success"> 21 Km</span>
+                            @if(item.IdEventoNavigation.Distancia42) <span class="badge bg-success"> 42 Km</span>
+                        </td>
+                        <td class="text-nowrap">
+                            @if(item.IdKitNavigation.UtilizadaP == 1)
+                            {
+                                <span class="badge bg-success">P</span>
+                            }
+                            else if(item.IdKitNavigation.UtilizadaG == 1)
+                            {
+                                <span class="badge bg-success">G</span>
+                            }
+                            else if(item.IdKitNavigation.UtilizadaM == 1)
+                            {
+                                <span class="badge bg-success">M</span>
+                            }
+                        </td>
+                        <td class="text-nowrap">
+                            @if (item.IdKitNavigation.StatusRetiradaKit == true)
+                            {
+                                <span class="badge bg-success">Retirado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Não Retirado</span>
+                            }
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </section>

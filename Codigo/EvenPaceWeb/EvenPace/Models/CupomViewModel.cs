@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Core;
 
 namespace Models
 {
@@ -7,16 +8,17 @@ namespace Models
         [Key]
         [Display(Name = "Código do Cupom")]
         [Required(ErrorMessage = "Código do cupom é obrigatório.")]
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "O código/nome do cupom é obrigatório.")]
         [Display(Name = "Código do Cupom")]
+        [StringLength(45, MinimumLength = 3)]
         public string Nome { get; set; } = null!;
 
         [Required(ErrorMessage = "O valor do desconto é obrigatório.")]
-        [Range(1, int.MaxValue, ErrorMessage = "O desconto deve ser maior que zero.")]
+        [Range(1, float.MaxValue, ErrorMessage = "O desconto deve ser maior que zero.")]
         [Display(Name = "Valor do Desconto")]
-        public int Desconto { get; set; }
+        public float Desconto { get; set; }
 
         [Display(Name = "Cupom Ativo")]
         public bool Status { get; set; }
@@ -44,6 +46,8 @@ namespace Models
 
         [Required(ErrorMessage = "O ID do evento é obrigatório.")]
         [Display(Name = "ID do Evento")]
-        public uint IdEvento { get; set; }
+        public int IdEvento { get; set; }
+        
+        public virtual EventoViewModel IdEventoNavigation { get; set; } = null!;
     }
 }

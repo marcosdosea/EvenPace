@@ -16,7 +16,7 @@ public class OrganizacaoViewModel
     
     [Display(Name = "CPF")]
     [Required(ErrorMessage = "Campo Requirido")]
-    [StringLength(11, ErrorMessage = "O CNPJ deve conter 14 número")]
+    [StringLength(11, ErrorMessage = "O CNPJ deve conter 11 número")]
     public string? Cpf { get; set; }
 
     [Required(ErrorMessage = "Telefone é Obrigatorio")]

@@ -9,7 +9,7 @@ public partial class Cupom
 
     public string Nome { get; set; } = null!;
 
-    public int Desconto { get; set; }
+    public float Desconto { get; set; }
 
     public bool Status { get; set; }
 

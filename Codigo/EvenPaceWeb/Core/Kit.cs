@@ -1,7 +1,8 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Core;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class Kit;
+namespace Core;
+
 public partial class Kit
 {
     public int Id { get; set; }
@@ -13,24 +14,26 @@ public partial class Kit
     public string Descricao { get; set; } = null!;
 
     public int DisponibilidadeP { get; set; }
+
     public int DisponibilidadeG { get; set; }
+
     public int DisponibilidadeM { get; set; }
 
     public sbyte UtilizadaP { get; set; }
+
     public sbyte UtilizadaG { get; set; }
+
     public sbyte UtilizadaM { get; set; }
-
-    [Column("idEvento")]
-    public int IdEvento { get; set; }
-
-    public bool StatusRetiradaKit { get; set; }
 
     public DateTime DataRetirada { get; set; }
 
     public string? Imagem { get; set; }
 
+    public bool StatusRetiradaKit { get; set; }
+
+    public int IdEvento { get; set; }
+
     public virtual Evento IdEventoNavigation { get; set; } = null!;
 
     public virtual ICollection<Inscricao> Inscricaos { get; set; } = new List<Inscricao>();
 }
-

@@ -7,7 +7,7 @@ namespace Models
     {
         [Key]
         [Display(Name = "Código do Kit")]
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "O nome do kit é obrigatório")]
         [Display(Name = "Tipo de Kit")]
@@ -16,6 +16,7 @@ namespace Models
 
         [Required(ErrorMessage = "A descrição do kit é obrigatória")]
         [Display(Name = "Descrição")]
+        [StringLength(255, MinimumLength = 3)]
         public string Descricao { get; set; } = null!;
 
         [Required(ErrorMessage = "O valor do kit é obrigatório")]
@@ -63,6 +64,7 @@ namespace Models
         public IFormFile? ImagemUpload { get; set; }
 
         // Propriedade para SALVAR o nome do arquivo no banco (string)
+        [StringLength(255, MinimumLength = 3)]
         public string? Imagem { get; set; }
     }
 }

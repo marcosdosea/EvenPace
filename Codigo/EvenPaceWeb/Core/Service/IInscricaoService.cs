@@ -9,7 +9,6 @@ public interface IInscricaoService
     Inscricao Get(int id);
     void Delete(int id);
     void Cancelar(int idInscricao, int idCorredor);
-
     IEnumerable<Inscricao> GetAll();
     IEnumerable<Inscricao> GetAllByEvento(int idEvento);
 }

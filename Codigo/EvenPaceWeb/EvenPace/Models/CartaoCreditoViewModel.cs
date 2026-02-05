@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Core;
 
 namespace Models
 {
@@ -7,11 +8,7 @@ namespace Models
         [Key]
         [Display(Name = "Código")]
         [Required(ErrorMessage = "O campo Id é obrigatório.")]
-        public uint Id { get; set; }
-
-        [Display(Name = "Corredor")]
-        [Required(ErrorMessage = "O campo IdCorredor é obrigatório.")]
-        public uint IdCorredor { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "O nome é obrigatório.")]
@@ -31,5 +28,11 @@ namespace Models
         [Required(ErrorMessage = "O código de segurança é obrigatório.")]
         [StringLength(3)]
         public string CodigoSeguranca { get; set; } = null!;
+
+        [Display(Name = "Corredor")]
+        [Required(ErrorMessage = "O campo IdCorredor é obrigatório.")]
+        public int IdCorredor { get; set; }
+
+        public virtual CorredorViewModel IdCorredorNavigation { get; set; } = null!;
     }
 }

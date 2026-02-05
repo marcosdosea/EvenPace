@@ -7,7 +7,7 @@ namespace Models
         [Key]
         [Display(Name = "Código")]
         [Required(ErrorMessage = "O campo Id é obrigatório.")]
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Estrela")]
         [Required(ErrorMessage = "A avaliação é obrigatória.")]

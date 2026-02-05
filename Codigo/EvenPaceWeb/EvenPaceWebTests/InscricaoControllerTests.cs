@@ -103,7 +103,7 @@ namespace EvenPaceWebTests
                 Nome = "Corrida Teste",
                 Cidade = "São Paulo",
                 Data = DateTime.Today,
-                Descricao = "Evento de teste"
+                Discricao = "Evento de teste"
             };
         }
 
@@ -128,10 +128,15 @@ namespace EvenPaceWebTests
                 IdEvento = 1,
                 Inscricao = new InscricaoViewModel
                 {
+                    DistanciaPercorida = 5,
+                    Tempo = new TimeSpan(0, 0, 30, 0),
+                    Posicao = 1,
+                    IdKit = 1,
                     IdEvento = 1,
-                    Distancia = "5",
-                    TamanhoCamisa = "M",
-                    IdKit = 1
+                    IdCorredor = 1,
+                    IdAvaliacaoEvento = 1,
+                    DataInscricao = DateTime.Today,
+                    Status = "Pendente"
                 }
             };
         }

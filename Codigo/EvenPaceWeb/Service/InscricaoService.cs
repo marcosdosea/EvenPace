@@ -12,15 +12,15 @@ namespace Service
 
         public void Cancelar(int idInscricao, int idCorredor)
         {
-            var inscricao = _context.Inscricao
-                .Include(i => i.IdEventoNavigation)
+            var inscricao = _context.Inscricaos
+                .Include(i => i.IdKit)
                 .FirstOrDefault(i => i.Id == idInscricao && i.IdCorredor == idCorredor);
 
             if (inscricao == null)
                 throw new Exception("Inscrição não encontrada ou não pertence ao corredor.");
 
             
-            if (inscricao.IdEventoNavigation.Data < DateTime.Now)
+            if (inscricao.DataInscricao < DateTime.Now)
                 throw new Exception("Não é possível cancelar após a data do evento.");
 
             if (inscricao.Status == "Cancelada")
@@ -52,24 +52,29 @@ namespace Service
 
         public void Delete(int id)
         {
-            var _inscricao = _context.Inscricao.Find(id);
+            var _inscricao = _context.Inscricaos.Find(id);
             _context.Remove(_inscricao);
             _context.SaveChanges();            
         }
 
         public Inscricao Get(int id)
         {
-            return _context.Inscricao.FirstOrDefault(i => i.Id == id);
+            return _context.Inscricaos.FirstOrDefault(i => i.Id == id);
         }
 
         public IEnumerable<Inscricao> GetAll()
         {
-            return _context.Inscricao;
+            return _context.Inscricaos;
         }
 
         public IEnumerable<Inscricao> GetAllByEvento(int idEvento)
         {
-            return _context.Inscricao.Where(e => e.IdEvento == idEvento);
+            return _context.Inscricaos
+                .Include(i => i.IdKitNavigation)
+                .Include(i => i.IdCorredorNavigation)
+                .Include(i => i.IdEventoNavigation)
+                .Where(i => i.IdEvento == idEvento)
+                .ToList();
         }
     }
 }

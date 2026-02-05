@@ -7,10 +7,11 @@ namespace Models
         [Key]
         [Display(Name = "Código do Evento")]
         [Required(ErrorMessage = "Código do evento é obrigatório.")]
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "O nome do evento é obrigatório.")]
         [Display(Name = "Nome do Evento")]
+        [StringLength(45, MinimumLength = 3)]
         public string Nome { get; set; } = null!;
 
         [Required(ErrorMessage = "A data é obrigatória.")]
@@ -25,6 +26,7 @@ namespace Models
 
         [Required(ErrorMessage = "A descrição é obrigatória.")]
         [Display(Name = "Descrição")]
+        [StringLength(400, MinimumLength = 3)]
         [DataType(DataType.MultilineText)]
         public string Descricao { get; set; } = null!;
 
@@ -54,12 +56,15 @@ namespace Models
        
 
         [Required(ErrorMessage = "A rua é obrigatória.")]
+        [StringLength(45, MinimumLength = 3)]
         public string Rua { get; set; } = null!;
 
         [Required(ErrorMessage = "O bairro é obrigatório.")]
+        [StringLength(45, MinimumLength = 3)]
         public string Bairro { get; set; } = null!;
 
         [Required(ErrorMessage = "A cidade é obrigatória.")]
+        [StringLength(45, MinimumLength = 3)]
         public string Cidade { get; set; } = null!;
 
         [Required(ErrorMessage = "O estado é obrigatório.")]
@@ -68,12 +73,17 @@ namespace Models
 
         [Display(Name = "Informações de Retirada do Kit")]
         [DataType(DataType.MultilineText)]
+        [StringLength(45, MinimumLength = 3)]
         public string InfoRetiradaKit { get; set; } = null!;
+        
+        [StringLength(255, MinimumLength = 3)]
+        public string? Imagem { get; set; }
 
-      
 
         [Required(ErrorMessage = "Selecione a organização responsável.")]
         [Display(Name = "Organização")]
-        public uint IdOrganizacao { get; set; }
+        public int IdOrganizacao { get; set; }
+        
+        public virtual OrganizacaoViewModel IdOrganizacaoNavigation { get; set; } = null!;
     }
 }

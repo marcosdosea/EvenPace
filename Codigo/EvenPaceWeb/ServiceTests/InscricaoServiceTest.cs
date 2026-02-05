@@ -33,16 +33,18 @@ namespace EvenPaceWebTests.Service
             var inscricao = new Inscricao
             {
                 Status = "Pendente",
-                Distancia = "5km",
-                TamanhoCamisa = "M",
+                DistanciaPercorida = 5,
+                Tempo = new TimeSpan(0, 0, 30, 0),
+                Posicao = 1,
                 IdEvento = 2,
                 IdCorredor = 3,
-                IdKit = 1
+                IdKit = 1,
+                IdAvaliacaoEvento = 1
             };
 
             service.Create(inscricao);
 
-            Assert.AreEqual(1, context.Inscricao.Count());
+            Assert.AreEqual(1, context.Inscricaos.Count());
         }
 
         [TestMethod]
@@ -52,14 +54,16 @@ namespace EvenPaceWebTests.Service
             {
                 Id = 1,
                 Status = "Confirmada",
-                Distancia = "10km",
-                TamanhoCamisa = "G",
+                DistanciaPercorida = 10,
+                Tempo = new TimeSpan(0, 0, 30, 0),
+                Posicao = 1,
                 IdEvento = 1,
                 IdCorredor = 1,
-                IdKit = 1
+                IdKit = 1,
+                IdAvaliacaoEvento = 1
             };
 
-            context.Inscricao.Add(inscricao);
+            context.Inscricaos.Add(inscricao);
             context.SaveChanges();
 
             var result = service.Get(1);
@@ -71,26 +75,30 @@ namespace EvenPaceWebTests.Service
         [TestMethod]
         public void GetAll_DeveRetornarListaDeInscricoes()
         {
-            context.Inscricao.AddRange(
+            context.Inscricaos.AddRange(
                 new Inscricao
                 {
                     Id = 1,
                     Status = "Confirmada",
-                    Distancia = "5km",
-                    TamanhoCamisa = "M",
+                    DistanciaPercorida = 5,
+                    Tempo = new TimeSpan(0, 0, 30, 0),
+                    Posicao = 1,
                     IdEvento = 1,
                     IdCorredor = 1,
-                    IdKit = 1
+                    IdKit = 1,
+                    IdAvaliacaoEvento = 1
                 },
                 new Inscricao
                 {
                     Id = 2,
                     Status = "Pendente",
-                    Distancia = "10km",
-                    TamanhoCamisa = "G",
+                    DistanciaPercorida = 10,
+                    Tempo = new TimeSpan(0, 0, 30, 0),
+                    Posicao = 1,
                     IdEvento = 1,
                     IdCorredor = 2,
-                    IdKit = 1
+                    IdKit = 1,
+                    IdAvaliacaoEvento = 1
                 }
             );
             context.SaveChanges();

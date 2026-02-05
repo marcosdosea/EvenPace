@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Core;
@@ -7,11 +7,11 @@ public partial class Organizacao
 {
     public int Id { get; set; }
 
-    public string Cnpj { get; set; } = null!;
+    public string? Cnpj { get; set; }
 
     public string? Cpf { get; set; }
 
-    public int Telefone { get; set; }
+    public string Telefone { get; set; } = null!;
 
     public string Cep { get; set; } = null!;
 
