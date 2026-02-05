@@ -1,0 +1,237 @@
+﻿@model Models.OrganizacaoViewModel
+
+@{
+    ViewData["Title"] = "Perfil - Atualize seus dados";
+}
+
+<style>
+    
+    main.perfil-page {
+        padding: 20px;
+        background-color: var(--bg-white);
+    }
+
+    header.form-header h1 {
+        font-weight: 800;
+        font-size: 2.2rem;
+        color: var(--text-black);
+        border-bottom: 2px solid var(--text-black);
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+
+    section.form-container {
+        background-color: var(--bg-light); 
+        border-radius: 20px;
+        padding: 40px;
+        border: 1px solid rgba(0,0,0,0.1);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .form-label {
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: block;
+        color: var(--text-black);
+        font-family: var(--font-standard);
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .custom-input {
+        border: 1px solid var(--text-black);
+        border-radius: 8px;
+        padding: 12px 45px 12px 15px;
+        width: 100%;
+        background-color: var(--bg-white);
+        font-weight: 500;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: var(--primary-hover);
+            box-shadow: 0 0 0 3px rgba(254, 234, 0, 0.2);
+        }
+
+    .edit-icon {
+        position: absolute;
+        right: 15px;
+        font-size: 1rem;
+        color: var(--text-grey);
+        pointer-events: none;
+    }
+
+    /* --- BOTÕES --- */
+
+    .btn-save {
+        background-color: var(--primary-color);
+        color: var(--text-black);
+        border: 1px solid var(--text-black);
+        border-radius: 10px;
+        padding: 12px 50px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        box-shadow: 3px 3px 0px var(--text-black); 
+    }
+
+        .btn-save:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 5px 5px 0px var(--text-black);
+        }
+
+        .btn-save:active {
+            transform: translateY(1px);
+            box-shadow: 1px 1px 0px var(--text-black);
+        }
+
+    .btn-back {
+        background-color: var(--bg-white);
+        color: var(--text-black);
+        border: 1px solid var(--text-black);
+        border-radius: 10px;
+        padding: 12px 40px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        transition: all 0.2s ease;
+    }
+
+        .btn-back:hover {
+            background-color: var(--bg-light);
+            color: var(--text-black);
+            text-decoration: none;
+        }
+</style>
+
+<main class="container perfil-page">
+    <header class="form-header mb-4">
+        <h1 class="display-5">Perfil</h1>
+        <p class="text-muted fw-bold">Atualize seus dados</p>
+    </header>
+
+    <section class="form-container shadow-sm">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="StatusSituacao" />
+            <input type="hidden" asp-for="AdmistradorId" />
+            <input type="hidden" asp-for="Senha" />
+
+            <div class="row g-4">
+                <div class="col-12 col-lg-6">
+                    <label asp-for="Nome" class="form-label">Nome Completo</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Nome" class="custom-input" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Nome" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label asp-for="Cnpj" class="form-label">CNPJ/CPF</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Cnpj" class="custom-input" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Cnpj" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label asp-for="Telefone" class="form-label">Telefone</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Telefone" class="custom-input" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Telefone" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-lg-7">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Email" class="custom-input" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-4 col-lg-2">
+                    <label asp-for="Cep" class="form-label">CEP</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Cep" class="custom-input" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Cep" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-8 col-lg-6">
+                    <label asp-for="Rua" class="form-label">Rua/Avenida</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Rua" class="custom-input" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Rua" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <label asp-for="Bairro" class="form-label">Bairro</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Bairro" class="custom-input" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Bairro" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-5">
+                    <label asp-for="Cidade" class="form-label">Cidade</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Cidade" class="custom-input" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Cidade" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-3 col-lg-4">
+                    <label asp-for="Numero" class="form-label">Número</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Numero" class="custom-input" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Numero" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-3 col-lg-3">
+                    <label asp-for="Estado" class="form-label">Estado</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Estado" class="custom-input" maxlength="2" />
+                        <i class="bi bi-pencil edit-icon"></i>
+                    </div>
+                    <span asp-validation-for="Estado" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 d-flex flex-column flex-sm-row justify-content-end gap-3 mt-4">
+                    <a asp-action="Index" class="btn-back text-center order-2 order-sm-1">Voltar</a>
+                    <button type="submit" class="btn-save order-1 order-sm-2">Salvar Alterações</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</main>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

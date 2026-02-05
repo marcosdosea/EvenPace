@@ -6,37 +6,41 @@ using Models;
 using Moq;
 using EvenPaceWeb.Controllers;
 using EvenPaceWeb.Mappers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Mappers;
 
 namespace EvenPaceWebTests
 {
     [TestClass()]
-    public class CupomControllerTests
+    public class OrganizacaoControllerTests
     {
-       
-        private static CupomController controller = null!;
-        private static Mock<ICupomService> mockService = null!;
+        private static OrganizacaoController controller = null!;
+        private static Mock<IOrganizacaoService> mockService = null!;
 
         [TestInitialize]
         public void Initialize()
         {
-            mockService = new Mock<ICupomService>();
+            mockService = new Mock<IOrganizacaoService>();
 
             IMapper mapper = new MapperConfiguration(cfg =>
-                cfg.AddProfile(new CupomProfile())).CreateMapper();
+                cfg.AddProfile(new OrganizacaoProfile())).CreateMapper();
 
             mockService.Setup(service => service.GetAll())
-                .Returns(GetTestCupons());
+                .Returns(GetTestOrganizacoes());
 
             mockService.Setup(service => service.Get(1))
-                .Returns(GetTargetCupom());
+                .Returns(GetTargetOrganizacao());
 
-            mockService.Setup(service => service.Edit(It.IsAny<Cupom>()))
+            mockService.Setup(service => service.Edit(It.IsAny<Organizacao>()))
                 .Verifiable();
 
-            mockService.Setup(service => service.Create(It.IsAny<Cupom>()))
+            mockService.Setup(service => service.Create(It.IsAny<Organizacao>()))
                 .Verifiable();
 
-            controller = new CupomController(mockService.Object, mapper);
+            mockService.Setup(service => service.Delete(It.IsAny<int>()))
+                .Verifiable();
+
+            controller = new OrganizacaoController(mockService.Object, mapper);
         }
 
         [TestMethod()]
@@ -47,9 +51,8 @@ namespace EvenPaceWebTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             ViewResult viewResult = (ViewResult)result;
 
-            // Verificação segura de tipo
-            var lista = viewResult.ViewData.Model as List<CupomViewModel>;
-            Assert.IsNotNull(lista, "A Model não deveria ser nula");
+            var lista = viewResult.ViewData.Model as List<OrganizacaoViewModel>;
+            Assert.IsNotNull(lista);
             Assert.AreEqual(3, lista.Count);
         }
 
@@ -61,18 +64,16 @@ namespace EvenPaceWebTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             ViewResult viewResult = (ViewResult)result;
 
-            // Conversão segura para evitar CS8600/CS8602
-            var model = viewResult.ViewData.Model as CupomViewModel;
-            Assert.IsNotNull(model, "A Model retornada não pode ser nula");
-
-            Assert.AreEqual("PROMO10", model.Nome);
-            Assert.AreEqual(10, model.Desconto);
+            var model = viewResult.ViewData.Model as OrganizacaoViewModel;
+            Assert.IsNotNull(model);
+            Assert.AreEqual("Organizacao A", model.Nome);
+            Assert.AreEqual("11111111000111", model.Cnpj);
         }
 
         [TestMethod()]
         public void Details_IdInexistente_RetornaNotFound()
         {
-            mockService.Setup(s => s.Get(999)).Returns((Cupom?)null);
+            mockService.Setup(s => s.Get(999)).Returns((Organizacao?)null);
 
             var result = controller.Details(999);
 
@@ -90,7 +91,7 @@ namespace EvenPaceWebTests
         [TestMethod()]
         public void CreateTest_Post_Valid()
         {
-            var result = controller.Create(GetNewCupomModel());
+            var result = controller.Create(GetNewOrganizacaoModel());
 
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
             RedirectToActionResult redirect = (RedirectToActionResult)result;
@@ -102,7 +103,7 @@ namespace EvenPaceWebTests
         {
             controller.ModelState.AddModelError("Nome", "Campo requerido");
 
-            var result = controller.Create(GetNewCupomModel());
+            var result = controller.Create(GetNewOrganizacaoModel());
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             Assert.AreEqual(1, controller.ModelState.ErrorCount);
@@ -116,16 +117,15 @@ namespace EvenPaceWebTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             ViewResult viewResult = (ViewResult)result;
 
-            var model = viewResult.ViewData.Model as CupomViewModel;
+            var model = viewResult.ViewData.Model as OrganizacaoViewModel;
             Assert.IsNotNull(model);
-
-            Assert.AreEqual("PROMO10", model.Nome);
+            Assert.AreEqual("Organizacao A", model.Nome);
         }
 
         [TestMethod()]
         public void EditTest_Post_Valid()
         {
-            var result = controller.Edit(GetTargetCupomModel());
+            var result = controller.Edit(GetTargetOrganizacaoModel());
 
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
             RedirectToActionResult redirect = (RedirectToActionResult)result;
@@ -140,44 +140,43 @@ namespace EvenPaceWebTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             ViewResult viewResult = (ViewResult)result;
 
-            var model = viewResult.ViewData.Model as CupomViewModel;
+            var model = viewResult.ViewData.Model as OrganizacaoViewModel;
             Assert.IsNotNull(model);
-
-            Assert.AreEqual("PROMO10", model.Nome);
+            Assert.AreEqual("Organizacao A", model.Nome);
         }
 
         [TestMethod()]
         public void DeleteTest_Post_Valid()
         {
-            var result = controller.Delete(1, GetTargetCupomModel());
+            var result = controller.Delete(1, GetTargetOrganizacaoModel());
 
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
             RedirectToActionResult redirect = (RedirectToActionResult)result;
             Assert.AreEqual("Index", redirect.ActionName);
         }
 
-        private CupomViewModel GetNewCupomModel()
+        private OrganizacaoViewModel GetNewOrganizacaoModel()
         {
-            return new CupomViewModel { Id = 4, Nome = "NOVO2026", Desconto = 5 };
+            return new OrganizacaoViewModel { Id = 4, Nome = "Nova Org 2026", Cnpj = "44444444000144" };
         }
 
-        private static Cupom GetTargetCupom()
+        private static Organizacao GetTargetOrganizacao()
         {
-            return new Cupom { Id = 1, Nome = "PROMO10", Desconto = 10 };
+            return new Organizacao { Id = 1, Nome = "Organizacao A", Cnpj = "11111111000111" };
         }
 
-        private CupomViewModel GetTargetCupomModel()
+        private OrganizacaoViewModel GetTargetOrganizacaoModel()
         {
-            return new CupomViewModel { Id = 1, Nome = "PROMO10", Desconto = 10 };
+            return new OrganizacaoViewModel { Id = 1, Nome = "Organizacao A", Cnpj = "11111111000111" };
         }
 
-        private IEnumerable<Cupom> GetTestCupons()
+        private IEnumerable<Organizacao> GetTestOrganizacoes()
         {
-            return new List<Cupom>
+            return new List<Organizacao>
             {
-                new Cupom { Id = 1, Nome = "PROMO10", Desconto = 10 },
-                new Cupom { Id = 2, Nome = "VERAO20", Desconto = 20 },
-                new Cupom { Id = 3, Nome = "BLACK50", Desconto = 50 }
+                new Organizacao { Id = 1, Nome = "Organizacao A", Cnpj = "11111111000111" },
+                new Organizacao { Id = 2, Nome = "Organizacao B", Cnpj = "22222222000122" },
+                new Organizacao { Id = 3, Nome = "Organizacao C", Cnpj = "33333333000133" }
             };
         }
     }

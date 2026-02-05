@@ -41,6 +41,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Cupom}/{action=index}/{id=3}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

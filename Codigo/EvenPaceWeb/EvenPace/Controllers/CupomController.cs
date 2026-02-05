@@ -37,7 +37,10 @@ namespace EvenPaceWeb.Controllers
         {
             var cupom = _cupomService.Get((int)id);
 
-            if (cupom == null) return NotFound();
+            if (cupom == null)
+            {
+                return NotFound();
+            }
 
             var cupomViewModel = _mapper.Map<CupomViewModel>(cupom);
             return View(cupomViewModel);
@@ -93,8 +96,6 @@ namespace EvenPaceWeb.Controllers
         public ActionResult Edit(int id)
         {
             var cupom = _cupomService.Get((int)id);
-
-            if (cupom == null) return NotFound();
             
             var cupomViewModel = _mapper.Map<CupomViewModel>(cupom);
             return View(cupomViewModel);
@@ -108,8 +109,6 @@ namespace EvenPaceWeb.Controllers
         public ActionResult Delete(int id)
         {
             var cupom = _cupomService.Get((int)id);
-
-            if (cupom == null) return NotFound();
 
             var cupomViewModel = _mapper.Map<CupomViewModel>(cupom);
             return View(cupomViewModel);
