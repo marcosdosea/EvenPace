@@ -4,8 +4,11 @@ using Core.Service;
 using EvenPace.Controllers;
 using EvenPaceWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Models;
+using System;
+using System.Collections.Generic;
 
 namespace EvenPaceWebTests
 {
@@ -16,8 +19,8 @@ namespace EvenPaceWebTests
 
         private Mock<IInscricaoService> mockInscricaoService;
         private Mock<IEventosService> mockEventoService;
-        private Mock<ICorredorService>  mockCorredorService;
         private Mock<IKitService> mockKitService;
+        private Mock<ICorredorService> mockCorredorService;
 
         private IMapper mapper;
 
@@ -26,8 +29,8 @@ namespace EvenPaceWebTests
         {
             mockInscricaoService = new Mock<IInscricaoService>();
             mockEventoService = new Mock<IEventosService>();
-            mockCorredorService = new Mock<ICorredorService>();
             mockKitService = new Mock<IKitService>();
+            mockCorredorService = new Mock<ICorredorService>();
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -51,7 +54,6 @@ namespace EvenPaceWebTests
             );
         }
 
-        
         [TestMethod]
         public void TelaInscricao_Get_Valido()
         {
@@ -75,7 +77,6 @@ namespace EvenPaceWebTests
             Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
         }
 
-        
         [TestMethod]
         public void Tela1_Get_Valido()
         {
@@ -93,6 +94,43 @@ namespace EvenPaceWebTests
             var result = controller.Tela1(0);
 
             Assert.IsInstanceOfType(result, typeof(ContentResult));
+        }
+
+        [TestMethod]
+        public void Cancelar_Get_ComIdValido_RetornaView()
+        {
+            mockInscricaoService.Setup(s => s.Get(1))
+                .Returns(new Inscricao
+                {
+                    Id = 1,
+                    IdEvento = 1,
+                    Distancia = "5km",
+                    DataInscricao = DateTime.Today
+                });
+
+            mockEventoService.Setup(s => s.Get(1))
+                .Returns(new Evento
+                {
+                    Id = 1,
+                    Nome = "Evento Teste",
+                    Cidade = "Cidade",
+                    Data = DateTime.Now.AddDays(10)
+                });
+
+            var result = controller.Cancelar(1);
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public void Cancelar_Get_InscricaoInexistente_RetornaNotFound()
+        {
+            mockInscricaoService.Setup(s => s.Get(1))
+                .Returns((Inscricao)null);
+
+            var result = controller.Cancelar(1);
+
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
         }
 
         private Evento GetEvento()
@@ -117,21 +155,6 @@ namespace EvenPaceWebTests
                     Nome = "Kit Básico",
                     Descricao = "Camiseta",
                     Valor = 99
-                }
-            };
-        }
-
-        private TelaInscricaoViewModel GetTelaInscricaoVM()
-        {
-            return new TelaInscricaoViewModel
-            {
-                IdEvento = 1,
-                Inscricao = new InscricaoViewModel
-                {
-                    IdEvento = 1,
-                    Distancia = "5",
-                    TamanhoCamisa = "M",
-                    IdKit = 1
                 }
             };
         }
