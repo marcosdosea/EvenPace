@@ -193,10 +193,10 @@ public class KitController : Controller
             int idEventoDoKit = (int)kit.IdEvento;
 
             //APAGA A FOTO ANTES DE APAGAR O REGISTRO ---
-            //if (!string.IsNullOrEmpty(kit.Imagem))
-            //{
-              //  DeletarImagemDoDisco(kit.Imagem);
-            //}
+            if (!string.IsNullOrEmpty(kit.Imagem))
+            {
+                DeletarImagemDoDisco(kit.Imagem);
+            }
             
 
             _kitsService.Delete(id);

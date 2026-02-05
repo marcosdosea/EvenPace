@@ -35,7 +35,7 @@ namespace EvenPace.Controllers
     
        
         [HttpGet]
-        public IActionResult Cancelar(int id)
+        public IActionResult Delete(int id)
         {
             var inscricao = _inscricaoService.Get(id);
 
@@ -69,11 +69,11 @@ namespace EvenPace.Controllers
                 }
             };
 
-            return View("CancelarInscricao", vm);
+            return View("Delete", vm);
         }
 
 
-        public IActionResult TelaInscricao(int id)
+        public IActionResult Index(int id)
         {
             if (id == 0)
                 return BadRequest("https://localhost:5157/Inscricao/TelaInscricao/1");
@@ -92,7 +92,7 @@ namespace EvenPace.Controllers
         }
 
         [HttpGet]
-        public IActionResult Tela1(int id)
+        public IActionResult Create(int id)
         {
             if (id == 0)
                 return Content("ID RECEBIDO = 0");
@@ -108,19 +108,19 @@ namespace EvenPace.Controllers
 
             PopularTelaInscricao(vm);
 
-            return View("Tela1", vm); 
+            return View("Create", vm); 
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Cancelar(int idInscricao, int idEvento)
+        public IActionResult Delete(int idInscricao, int idEvento)
         {
             var idCorredorClaim = User.FindFirst("IdCorredor");
             if (idCorredorClaim == null)
             {
                 TempData["Erro"] = "Faça login para cancelar a inscrição.";
-                return RedirectToAction("TelaInscricao", new { id = idEvento });
+                return RedirectToAction("Index", new { id = idEvento });
             }
 
             try
@@ -137,12 +137,12 @@ namespace EvenPace.Controllers
                 TempData["Erro"] = ex.Message;
             }
 
-            return RedirectToAction("TelaInscricao", new { id = idEvento });
+            return RedirectToAction("Index", new { id = idEvento });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult TelaInscricao(TelaInscricaoViewModel vm)
+        public IActionResult Index(TelaInscricaoViewModel vm)
         {
             if (vm?.Inscricao == null)
                 throw new Exception("Inscrição veio null");
@@ -155,7 +155,7 @@ namespace EvenPace.Controllers
             {
                 TempData["Erro"] = "Faça login para continuar";
                 return RedirectToAction(
-                    "TelaInscricao",
+                    "Index",
                     new { id = vm.Inscricao.IdEvento }
                 );
             }
@@ -176,7 +176,7 @@ namespace EvenPace.Controllers
             TempData["Sucesso"] = "Inscrição realizada com sucesso!";
 
             return RedirectToAction(
-                "TelaInscricao",
+                "Index",
                 new { id = vm.Inscricao.IdEvento }
             );
         }
@@ -200,7 +200,8 @@ namespace EvenPace.Controllers
             vm.Local = evento.Cidade;
             vm.DataEvento = evento.Data;
             vm.Descricao = evento.Descricao;
-           // vm.InfoRetiradaKit = evento.InfoRetiradaKit;
+            vm.ImagemEvento = evento.Imagem;
+            // vm.InfoRetiradaKit = evento.InfoRetiradaKit;
 
             vm.Percursos = new List<string> { "3km", "5km", "10km" };
             vm.Kits = _mapper.Map<List<KitViewModel>>(kits);

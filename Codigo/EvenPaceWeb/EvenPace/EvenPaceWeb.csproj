@@ -7,6 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Views\Inscricao\Create.cshtml.cs" />
+      <Compile Remove="Views\Inscricao\Delete.cshtml.cs" />
+      <Compile Remove="Views\Inscricao\Index.cshtml.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Views\Inscricao\CancelarInscricao.cshtml" />
+      <Content Remove="Views\Inscricao\Tela1.cshtml" />
+      <Content Remove="Views\Inscricao\TelaInscricao.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="AutoMapper" Version="14.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.22" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
@@ -19,15 +31,12 @@
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
       <PackageReference Include="Moq" Version="4.20.72" />
+      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Core\Core.csproj" />
       <ProjectReference Include="..\Service\Service.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Views\Inscricao\" />
     </ItemGroup>
 
 </Project>
