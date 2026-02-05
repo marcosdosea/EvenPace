@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -75,6 +75,8 @@ public partial class EvenPaceContext : DbContext
             entity.ToTable("CartaoCredito");
 
             entity.HasIndex(e => e.IdCorredor, "fk_CartaoCredito_Corredor1_idx");
+
+            entity.HasIndex(e => e.IdCorredor, "idCorredor_UNIQUE").IsUnique();
 
             entity.HasIndex(e => e.Numero, "numero_UNIQUE").IsUnique();
 
@@ -305,16 +307,15 @@ public partial class EvenPaceContext : DbContext
             entity.ToTable("Organizacao");
 
             entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
-            
-            entity.Property(e => e.Nome)
-                .HasMaxLength(45)
-                .IsFixedLength()
-                .HasColumnName("nome");
-            
+
             entity.HasIndex(e => e.AdministradorId, "fk_Organizacao_Admistrador1_idx");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AdministradorId).HasColumnName("Administrador_id");
+            entity.Property(e => e.Nome)
+                .HasMaxLength(70)
+                .IsFixedLength()
+                .HasColumnName("nome");
             entity.Property(e => e.Bairro)
                 .HasMaxLength(45)
                 .HasColumnName("bairro");
@@ -339,7 +340,9 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Estado)
                 .HasMaxLength(45)
                 .HasColumnName("estado");
-            entity.Property(e => e.Numero).HasColumnName("numero");
+            entity.Property(e => e.Numero)
+            .HasMaxLength(14)
+            .HasColumnName("numero");
             entity.Property(e => e.Rua)
                 .HasMaxLength(45)
                 .HasColumnName("rua");

@@ -121,7 +121,7 @@ public class KitController : Controller
                 }
 
                 // Redireciona para a lista mantendo o filtro do evento
-                return RedirectToAction("IndexKit", new { idEvento = model.IdEvento });
+                return RedirectToAction("Index", new { idEvento = model.IdEvento });
             }
             catch (Exception ex)
             {
@@ -138,7 +138,7 @@ public class KitController : Controller
 
     // GET: Tela09_Organizacao_Kits (IndexKit)
     [HttpGet]
-    public IActionResult IndexKit(int? idEvento)
+    public IActionResult Index(int? idEvento)
     {
         // 1. DEFINIMOS A ORGANIZAÇÃO ATUAL (Simulando o login)
         int idOrganizacaoLogada = 1;
@@ -203,10 +203,10 @@ public class KitController : Controller
 
             TempData["MensagemSucesso"] = "Kit excluído com sucesso! 🗑️";
 
-            return RedirectToAction("IndexKit", new { idEvento = idEventoDoKit });
+            return RedirectToAction("Index", new { idEvento = idEventoDoKit });
         }
 
-        return RedirectToAction("IndexKit");
+        return RedirectToAction("Index");
     }
 
     // MÉTODO PRIVADO PARA APAGAR FOTOS DA PASTA WWWROOT

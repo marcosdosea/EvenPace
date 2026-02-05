@@ -1,0 +1,192 @@
+﻿@model Models.OrganizacaoViewModel
+
+@{
+    ViewData["Title"] = "Cadastre-se";
+}
+
+<style>
+    main.cadastro-page {
+        padding: 20px;
+        background-color: var(--bg-white);
+    }
+
+    header.form-header h1 {
+        font-weight: 800;
+        font-size: 2.2rem;
+        color: var(--text-black);
+        border-bottom: 2px solid var(--text-black);
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+
+    section.form-container {
+        background-color: var(--bg-light);
+        border-radius: 20px;
+        padding: 40px;
+        border: 2px solid var(--text-black);
+        box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
+    }
+
+    .form-label {
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: block;
+        color: var(--text-black);
+    }
+
+    .custom-input {
+        border: 2px solid var(--text-black);
+        border-radius: 8px;
+        padding: 12px 15px;
+        width: 100%;
+        background-color: var(--bg-white);
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+        .custom-input:focus {
+            outline: none;
+            background-color: #fffde7; 
+            border-color: var(--primary-hover);
+            box-shadow: 4px 4px 0px var(--text-black);
+        }
+
+    .btn-save {
+        background-color: var(--primary-color);
+        color: var(--text-black);
+        border: 2px solid var(--text-black);
+        border-radius: 10px;
+        padding: 12px 50px;
+        font-weight: 800;
+        text-transform: uppercase;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        box-shadow: 4px 4px 0px var(--text-black);
+    }
+
+        .btn-save:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px var(--text-black);
+        }
+
+        .btn-save:active {
+            transform: translateY(2px);
+            box-shadow: 2px 2px 0px var(--text-black);
+        }
+
+    .btn-back {
+        background-color: var(--bg-white);
+        color: var(--text-black);
+        border: 2px solid var(--text-black);
+        border-radius: 10px;
+        padding: 12px 40px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        transition: all 0.2s ease;
+        box-shadow: 4px 4px 0px var(--text-black);
+    }
+
+        .btn-back:hover {
+            background-color: var(--bg-light);
+            color: var(--text-black);
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px var(--text-black);
+            text-decoration: none;
+        }
+</style>
+
+<main class="container cadastro-page">
+    <header class="form-header mb-4">
+        <h1 class="display-5">Cadastre-se</h1>
+        <p class="text-muted small">Preencha os dados da organização</p>
+    </header>
+
+    <section class="form-container shadow-sm">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="row g-4">
+                <div class="col-12 col-lg-6">
+                    <label asp-for="Nome" class="form-label">Nome Completo</label>
+                    <input asp-for="Nome" class="custom-input" />
+                    <span asp-validation-for="Nome" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label asp-for="Cnpj" class="form-label">CNPJ/CPF</label>
+                    <input asp-for="Cnpj" class="custom-input" />
+                    <span asp-validation-for="Cnpj" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label asp-for="Telefone" class="form-label">Telefone</label>
+                    <input asp-for="Telefone" type="text" class="custom-input" />
+                    <span asp-validation-for="Telefone" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-lg-7">
+                    <label asp-for="Email" class="form-label">E-mail</label>
+                    <input asp-for="Email" type="email" class="custom-input" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-lg-5">
+                    <label asp-for="Senha" class="form-label">Senha</label>
+                    <input asp-for="Senha" type="password" class="custom-input" />
+                    <span asp-validation-for="Senha" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-4 col-lg-2">
+                    <label asp-for="Cep" class="form-label">CEP</label>
+                    <input asp-for="Cep" class="custom-input" />
+                    <span asp-validation-for="Cep" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-8 col-lg-6">
+                    <label asp-for="Rua" class="form-label">Rua/Avenida</label>
+                    <input asp-for="Rua" class="custom-input" />
+                    <span asp-validation-for="Rua" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <label asp-for="Bairro" class="form-label">Bairro</label>
+                    <input asp-for="Bairro" class="custom-input" />
+                    <span asp-validation-for="Bairro" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-5">
+                    <label asp-for="Cidade" class="form-label">Cidade</label>
+                    <input asp-for="Cidade" class="custom-input" />
+                    <span asp-validation-for="Cidade" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-3 col-lg-4">
+                    <label asp-for="Numero" class="form-label">Número</label>
+                    <input asp-for="Numero" type="number" class="custom-input" />
+                    <span asp-validation-for="Numero" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-3 col-lg-3">
+                    <label asp-for="Estado" class="form-label">Estado</label>
+                    <input asp-for="Estado" class="custom-input" placeholder="SE" maxlength="2" />
+                    <span asp-validation-for="Estado" class="text-danger small"></span>
+                </div>
+
+                <input type="hidden" asp-for="StatusSituacao" value="true" />
+
+                <div class="col-12 d-flex flex-column flex-sm-row justify-content-end gap-3 mt-4">
+                    <a asp-action="Index" class="btn-back text-center order-2 order-sm-1">Voltar</a>
+                    <button type="submit" class="btn-save order-1 order-sm-2">Cadastrar Organização</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</main>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -32,6 +32,11 @@ namespace EvenPaceWeb.Controllers
         public ActionResult Details(int id)
         {
             var organizacao = _organizacaoService.Get((int)id);
+
+            if (organizacao == null)
+            {
+                return NotFound();
+            }
             var organizacaoViewModel = _mapper.Map<OrganizacaoViewModel>(organizacao);
             return View(organizacaoViewModel);
         }
@@ -51,6 +56,7 @@ namespace EvenPaceWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OrganizacaoViewModel organizacaoViewModel)
         {
+
             if (ModelState.IsValid)
             {
                 var organizacao = _mapper.Map<Core.Organizacao>(organizacaoViewModel);
@@ -77,10 +83,15 @@ namespace EvenPaceWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(OrganizacaoViewModel organizacaoViewModel)
         {
+            organizacaoViewModel.Id = 3;// Temporário até não criar o login
+
+            ModelState.Remove("Senha");
+
             if (ModelState.IsValid)
             {
                 var organizacao = _mapper.Map<Core.Organizacao>(organizacaoViewModel);
                 _organizacaoService.Edit(organizacao);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(organizacaoViewModel);
