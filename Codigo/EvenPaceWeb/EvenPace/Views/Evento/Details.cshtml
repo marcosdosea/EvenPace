@@ -1,0 +1,47 @@
+﻿@model Models.EventoViewModel
+
+@{
+    ViewData["Title"] = "Resumo do Evento";
+    Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+    /* ADICIONEI ESTA LINHA ABAIXO PARA VOLTAR A FORMATAÇÃO */
+    <link rel="stylesheet" href="~/css/evento.css" />
+}
+
+<main class="main-container">
+
+    <header class="page-header header-responsive" style="margin-bottom: 30px;">
+        <div class="header-title-group">
+            <div class="header-text">
+                <h1>Resumo</h1>
+                <p class="subtitle">@Model.Nome</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="kits-grid">
+        <div class="kit-card" style="padding: 25px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <span style="font-size: 2rem; margin-bottom: 10px;">📅</span>
+            <h3 style="margin: 0; font-size: 1.1rem; color: #666;">Data</h3>
+            <p style="font-size: 1.4rem; font-weight: bold; margin: 5px 0 0 0; color: #333;">
+                @Model.Data.ToString("dd/MM/yyyy")
+            </p>
+        </div>
+
+        <div class="kit-card" style="padding: 25px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <span style="font-size: 2rem; margin-bottom: 10px;">👥</span>
+            <h3 style="margin: 0; font-size: 1.1rem; color: #666;">Participantes</h3>
+            <p style="font-size: 1.4rem; font-weight: bold; margin: 5px 0 0 0; color: #333;">
+                @Model.NumeroParticipantes
+            </p>
+        </div>
+
+        <div class="kit-card" style="padding: 25px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <span style="font-size: 2rem; margin-bottom: 10px;">📍</span>
+            <h3 style="margin: 0; font-size: 1.1rem; color: #666;">Local</h3>
+            <p style="font-size: 1.4rem; font-weight: bold; margin: 5px 0 0 0; color: #333;">
+                @Model.Cidade - @Model.Estado
+            </p>
+        </div>
+    </section>
+
+</main>

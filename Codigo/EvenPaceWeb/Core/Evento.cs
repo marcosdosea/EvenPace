@@ -21,7 +21,7 @@ public partial class Evento
     [Column("numeroParticipantes")]
     public int NumeroParticipantes { get; set; }
 
-    [Column("discricao")] 
+    [Column("descricao")] 
     public string Descricao { get; set; } = null!;
     
     [Column("distancia3")]
@@ -66,7 +66,7 @@ public partial class Evento
     [Column("nome")]
     public string Nome { get; set; } = null!;
     
-   
+    // Relacionamentos e Navegação
     public virtual ICollection<Cupom> Cupoms { get; set; } = new List<Cupom>();
 
     [ForeignKey("IdOrganizacao")]

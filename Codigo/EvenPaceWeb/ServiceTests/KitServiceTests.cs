@@ -108,23 +108,27 @@ namespace EvenPaceWebTests.Service
         }
 
         [TestMethod()]
-        public void EditTest()
-        {
-            // Act 
-            var kit = kitService.Get(3); // Pega o "Kit VIP"
-            kit.Nome = "Kit VIP Editado";
-            kit.Valor = 200.00m;
-            kit.DisponibilidadeG = 0; // Testando alteração de quantidade
+public void EditTest()
+{
+    // Act 
+    var kit = kitService.Get(3);
+    kit.Nome = "Kit VIP Editado";
+    kit.Valor = 200.00m;
+    kit.DisponibilidadeG = 0;
 
-            kitService.Edit(kit);
+    kitService.Edit(kit);
 
-            // Assert
-            var kitEditado = kitService.Get(3);
-            Assert.IsNotNull(kitEditado);
-            Assert.AreEqual("Kit VIP Editado", kitEditado.Nome);
-            Assert.AreEqual(200.00m, kitEditado.Valor);
-            Assert.AreEqual(0, kitEditado.DisponibilidadeG);
-        }
+    // --- DICA: Força o contexto a esquecer a entidade para garantir que o Get busque do banco atualizado ---
+    // (Isso depende de como seu contexto é exposto, se não tiver acesso fácil, seu teste atual serve)
+    context.Entry(kit).State = EntityState.Detached; 
+
+    // Assert
+    var kitEditado = kitService.Get(3);
+    Assert.IsNotNull(kitEditado);
+    Assert.AreEqual("Kit VIP Editado", kitEditado.Nome);
+    Assert.AreEqual(200.00m, kitEditado.Valor);
+    Assert.AreEqual(0, kitEditado.DisponibilidadeG);
+}
 
         [TestMethod()]
         public void GetTest()

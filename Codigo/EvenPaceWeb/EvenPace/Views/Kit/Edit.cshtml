@@ -1,6 +1,6 @@
 ﻿@model Models.KitViewModel
 @{
-    ViewData["Title"] = "Criar Kit";
+    ViewData["Title"] = "Editar Kit";
     Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
     <link rel="stylesheet" href="~/css/kit.css" />
 }
@@ -18,7 +18,7 @@
         </div>
     </header>
 
-    <form asp-action="Create" method="post" enctype="multipart/form-data" class="form-kits">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-kits">
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="Imagem" />
         <input type="hidden" asp-for="IdEvento" />
