@@ -166,6 +166,46 @@ namespace EvenPaceWebTests
                     DataInscricao = DateTime.Today
                 }
             };
+        } 
+        private IEnumerable<Inscricao> GetInscricoes()
+        {
+            return new List<Inscricao>
+            {
+                new Inscricao
+                {
+                    Id = 1,
+                    IdEvento = 1,
+                    Distancia = "5",
+                    TamanhoCamisa = "M",
+                    IdKit = 1
+                },
+                new Inscricao
+                {
+                    Id = 2,
+                    IdEvento = 1,
+                    Distancia = "10",
+                    TamanhoCamisa = "G",
+                    IdKit = 1
+                }
+            };
+        }
+        
+        [TestMethod]
+        public void GetAllByEvento_IdValido_RetornaViewComLista()
+        {
+            // Act
+            var result = controller.GetAllByEvento(1);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+
+            var view = (ViewResult)result;
+            Assert.IsNotNull(view.Model);
+
+            var model = view.Model as List<InscricaoViewModel>;
+            Assert.IsNotNull(model);
+            Assert.AreEqual(2, model.Count);
+            Assert.IsTrue(model.All(i => i.IdEvento == 1));
         }
 
         

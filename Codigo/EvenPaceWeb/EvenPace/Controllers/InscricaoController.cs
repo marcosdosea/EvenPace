@@ -187,5 +187,12 @@ namespace EvenPace.Controllers
             vm.Percursos = new List<string> { "3km", "5km", "10km" };
             vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
         }
+
+        public ActionResult GetAllByEvento(int  idEvento)
+        {
+            var inscricao = _inscricaoService.GetAllByEvento(idEvento);
+            var inscricaoViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricao);
+            return View(inscricaoViewModel);
+        }
     }
 }

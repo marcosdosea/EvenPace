@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 
@@ -45,6 +47,18 @@ namespace Models
         public int IdCorredor { get; set; }
 
         public int? IdAvaliacaoEvento { get; set; }
+        
+        [ForeignKey("IdAvaliacaoEvento")]
+        public virtual AvaliacaoEvento IdAvaliacaoEventoNavigation { get; set; } = null!;
+
+        [ForeignKey("IdCorredor")]
+        public virtual Corredor IdCorredorNavigation { get; set; } = null!;
+
+        [ForeignKey("IdEvento")]
+        public virtual Evento IdEventoNavigation { get; set; } = null!;
+
+        [ForeignKey("IdKit")]
+        public virtual Kit IdKitNavigation { get; set; } = null!;
     }
 }
  
