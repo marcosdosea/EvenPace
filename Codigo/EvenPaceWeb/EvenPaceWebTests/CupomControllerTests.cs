@@ -69,6 +69,7 @@ namespace EvenPaceWebTests
             Assert.AreEqual(10, model.Desconto);
         }
 
+        
         [TestMethod()]
         public void CreateTest_Get_Valido()
         {

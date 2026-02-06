@@ -2,14 +2,13 @@
 @{
     ViewData["Title"] = "Criar Kit";
     Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+    <link rel="stylesheet" href="~/css/kit.css" />
 }
-<link rel="stylesheet" href="~/css/kit.css" />
 
 <main class="main-container">
     @if (!ViewData.ModelState.IsValid)
     {
-        <div asp-validation-summary="All" class="alert alert-danger" style="background: #f8d7da; color: #721c24; padding: 10px; border: 1px solid #f5c6cb; margin-bottom: 20px;">
-        </div>
+        <div asp-validation-summary="All" class="alert alert-danger" style="margin-bottom: 20px;"></div>
     }
 
     <header class="page-header">
@@ -24,36 +23,38 @@
         <input type="hidden" asp-for="Imagem" />
         <input type="hidden" asp-for="IdEvento" />
 
-        <p class="form-block">
+        <div class="form-block">
             <label asp-for="Nome" class="label-bold">Nome</label>
             <input asp-for="Nome" class="input-gray" placeholder="Ex: Kit Premium" />
-            <span asp-validation-for="Nome" style="color:red;"></span>
-        </p>
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
 
-        <section class="row-flex">
-            <p class="col-fixed">
+        <div class="row-flex">
+            <div class="col-fixed">
                 <label asp-for="Valor" class="label-bold">Valor</label>
                 <input asp-for="Valor" class="input-gray" placeholder="R$ 0,00" />
-                <span asp-validation-for="Valor" style="color:red;"></span>
-            </p>
+                <span asp-validation-for="Valor" class="text-danger"></span>
+            </div>
 
-            <p class="col-grow input-wrapper">
+            <div class="col-grow">
                 <label class="label-bold">Imagem</label>
-                <input type="text" class="input-gray" placeholder="Nenhum arquivo" readonly />
-                <span class="icon-upload" aria-hidden="true">⬆️</span>
-                <input type="file" name="imagemUpload" class="file-hidden" />
-            </p>
-        </section>
+                <div class="input-wrapper">
+                    <input type="text" class="input-gray" placeholder="Nenhum arquivo" readonly />
+                    <span class="icon-upload" aria-hidden="true">⬆️</span>
+                    <input type="file" name="imagemUpload" class="file-hidden" />
+                </div>
+            </div>
+        </div>
 
-        <section class="row-flex">
-            <p class="col-grow desc-area">
+        <div class="row-flex">
+            <div class="col-grow desc-area">
                 <label asp-for="Descricao" class="label-bold">Descrição</label>
                 <textarea asp-for="Descricao" class="input-gray" rows="8"></textarea>
-                <span asp-validation-for="Descricao" style="color:red;"></span>
-            </p>
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
 
-            <fieldset class="col-grow sizes-fieldset">
-                <legend class="legend-title">Disponibilidade de camisetas</legend>
+            <div class="col-grow sizes-fieldset" style="border: 1px solid #eee; padding: 20px; border-radius: 8px;">
+                <legend class="legend-title">Disponibilidade</legend>
 
                 <div class="header-sizes">
                     <strong>Tamanho</strong>
@@ -62,56 +63,26 @@
 
                 <label class="size-row">
                     <span>P</span>
-                    <input asp-for="DisponibilidadeP" type="number" min="0" class="input-qtd" onchange="if(this.value < 0) this.value = 0;" />
+                    <input asp-for="DisponibilidadeP" type="number" min="0" class="input-qtd" />
                 </label>
 
                 <label class="size-row">
                     <span>M</span>
-                    <input asp-for="DisponibilidadeM" type="number" min="0" class="input-qtd" onchange="if(this.value < 0) this.value = 0;" />
+                    <input asp-for="DisponibilidadeM" type="number" min="0" class="input-qtd" />
                 </label>
 
                 <label class="size-row">
                     <span>G</span>
-                    <input asp-for="DisponibilidadeG" type="number" min="0" class="input-qtd" onchange="if(this.value < 0) this.value = 0;" />
+                    <input asp-for="DisponibilidadeG" type="number" min="0" class="input-qtd" />
                 </label>
+            </div>
+        </div>
 
-            </fieldset>
-        </section>
-
-        <footer class="form-actions">
+        <div class="form-actions">
             <button type="submit" class="btn-gray">Salvar</button>
             <a asp-action="IndexKit" asp-route-idEvento="@Model.IdEvento" class="btn-gray">Voltar</a>
-        </footer>
+        </div>
 
     </form>
 </main>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var hiddenInput = document.getElementById("Imagem");
-        var visualInput = document.querySelector(".input-wrapper input[type='text']");
-
-        if (hiddenInput && visualInput && hiddenInput.value) {
-            var nomeCompleto = hiddenInput.value;
-
-            // Lógica para limpar o nome da imagem (remover o UUID)
-            if (nomeCompleto.includes('_')) {
-                var nomeLimpo = nomeCompleto.substring(nomeCompleto.indexOf('_') + 1);
-                visualInput.value = nomeLimpo;
-            } else {
-                visualInput.value = nomeCompleto;
-            }
-        }
-    });
-
-    // Atualiza o input visual quando o usuário seleciona um arquivo
-    var fileInput = document.querySelector('.file-hidden');
-    if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-            if (e.target.files[0]) {
-                var nome = e.target.files[0].name;
-                document.querySelector(".input-wrapper input[type='text']").value = nome;
-            }
-        });
-    }
-</script>
+<script src="~/js/kit.js"></script>

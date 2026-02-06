@@ -11,4 +11,5 @@ public interface IInscricaoService
     void Cancelar(int idInscricao, int idCorredor);
 
     IEnumerable<Inscricao> GetAll();
+    IEnumerable<Inscricao> GetAllByEvento(int idEvento);
 }

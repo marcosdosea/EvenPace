@@ -4,8 +4,11 @@ using Core.Service;
 using EvenPace.Controllers;
 using EvenPaceWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Models;
+using System;
+using System.Collections.Generic;
 
 namespace EvenPaceWebTests
 {
@@ -16,8 +19,8 @@ namespace EvenPaceWebTests
 
         private Mock<IInscricaoService> mockInscricaoService;
         private Mock<IEventosService> mockEventoService;
-        private Mock<ICorredorService>  mockCorredorService;
         private Mock<IKitService> mockKitService;
+        private Mock<ICorredorService> mockCorredorService;
 
         private IMapper mapper;
 
@@ -26,12 +29,13 @@ namespace EvenPaceWebTests
         {
             mockInscricaoService = new Mock<IInscricaoService>();
             mockEventoService = new Mock<IEventosService>();
-            mockCorredorService = new Mock<ICorredorService>();
             mockKitService = new Mock<IKitService>();
+            mockCorredorService = new Mock<ICorredorService>();
 
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Kit, KitViewModel>();
+                cfg.CreateMap<Inscricao, InscricaoViewModel>();
             });
 
             mapper = config.CreateMapper();
@@ -49,13 +53,16 @@ namespace EvenPaceWebTests
                 mockCorredorService.Object,
                 mapper
             );
+            
+            mockInscricaoService
+                .Setup(s => s.Get(It.IsAny<int>()))
+                .Returns((int id) => GetInscricoes().FirstOrDefault(i => i.Id == id));
         }
 
-        
         [TestMethod]
         public void TelaInscricao_Get_Valido()
         {
-            var result = controller.TelaInscricao(1);
+            var result = controller.Index(1);
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
 
@@ -68,31 +75,51 @@ namespace EvenPaceWebTests
         }
 
         [TestMethod]
-        public void TelaInscricao_Get_IdZero_RetornaBadRequest()
-        {
-            var result = controller.TelaInscricao(0);
-
-            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
-        }
-
-        
-        [TestMethod]
         public void Tela1_Get_Valido()
         {
-            var result = controller.Tela1(1);
+            var result = controller.Index(1);
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
 
             var view = (ViewResult)result;
-            Assert.AreEqual("Tela1", view.ViewName);
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+        
+        [TestMethod]
+        public void Cancelar_Get_ComIdValido_RetornaView()
+        {
+            mockInscricaoService.Setup(s => s.Get(1))
+                .Returns(new Inscricao
+                {
+                    Id = 1,
+                    IdEvento = 1,
+                    Distancia = "5km",
+                    DataInscricao = DateTime.Today
+                });
+
+            mockEventoService.Setup(s => s.Get(1))
+                .Returns(new Evento
+                {
+                    Id = 1,
+                    Nome = "Evento Teste",
+                    Cidade = "Cidade",
+                    Data = DateTime.Now.AddDays(10)
+                });
+
+            var result = controller.Delete(1);
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
 
         [TestMethod]
-        public void Tela1_Get_IdZero_RetornaContent()
+        public void Cancelar_Get_InscricaoInexistente_RetornaNotFound()
         {
-            var result = controller.Tela1(0);
+            mockInscricaoService.Setup(s => s.Get(1))
+                .Returns((Inscricao)null);
 
-            Assert.IsInstanceOfType(result, typeof(ContentResult));
+            var result = controller.Delete(1);
+
+            Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
         }
 
         private Evento GetEvento()
@@ -120,20 +147,67 @@ namespace EvenPaceWebTests
                 }
             };
         }
-
-        private TelaInscricaoViewModel GetTelaInscricaoVM()
+        private IEnumerable<Inscricao> GetInscricoes()
         {
-            return new TelaInscricaoViewModel
+            return new List<Inscricao>
             {
-                IdEvento = 1,
-                Inscricao = new InscricaoViewModel
+                new Inscricao
                 {
+                    Id = 1,
+                    IdEvento = 1,
+                    Distancia = "5km",
+                    DataInscricao = DateTime.Today
+                },
+                new Inscricao
+                {
+                    Id = 2,
+                    IdEvento = 1,
+                    Distancia = "10km",
+                    DataInscricao = DateTime.Today
+                }
+            };
+        } 
+        private IEnumerable<Inscricao> GetInscricoes()
+        {
+            return new List<Inscricao>
+            {
+                new Inscricao
+                {
+                    Id = 1,
                     IdEvento = 1,
                     Distancia = "5",
                     TamanhoCamisa = "M",
                     IdKit = 1
+                },
+                new Inscricao
+                {
+                    Id = 2,
+                    IdEvento = 1,
+                    Distancia = "10",
+                    TamanhoCamisa = "G",
+                    IdKit = 1
                 }
             };
         }
+        
+        [TestMethod]
+        public void GetAllByEvento_IdValido_RetornaViewComLista()
+        {
+            // Act
+            var result = controller.GetAllByEvento(1);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+
+            var view = (ViewResult)result;
+            Assert.IsNotNull(view.Model);
+
+            var model = view.Model as List<InscricaoViewModel>;
+            Assert.IsNotNull(model);
+            Assert.AreEqual(2, model.Count);
+            Assert.IsTrue(model.All(i => i.IdEvento == 1));
+        }
+
+        
     }
 }

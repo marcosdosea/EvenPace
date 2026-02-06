@@ -1,0 +1,558 @@
+﻿/* ============================================================
+   ARQUIVO: wwwroot/css/evento.css
+   DESCRIÇÃO: Estilo Eventos (Com Estilos de Erro Adicionados)
+   ============================================================ */
+
+/* --- 1. GERAL --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 200px;
+    background-color: #fff;
+    border-right: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    z-index: 100;
+    transition: width 0.3s ease;
+}
+
+.content-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    position: relative;
+    background-color: #f8f9fa;
+    width: 100%;
+}
+
+.main-container {
+    width: 100%;
+    margin: 0;
+    padding-bottom: 60px;
+}
+
+/* --- 2. CABEÇALHO --- */
+.page-header {
+    background-color: #fff;
+    height: 120px;
+    padding: 0 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #000;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.header-titles h1, .header-text h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0;
+    color: #333;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 3px;
+    font-weight: 500;
+}
+
+/* --- 3. FORMULÁRIO --- */
+.form-evento {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-card-bg {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.form-block {
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.row-flex {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 25px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.col-grow {
+    flex: 1;
+    min-width: 250px;
+}
+
+.col-fixed {
+    width: 150px;
+    flex-shrink: 0;
+}
+
+.label-bold {
+    display: block;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #444;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.input-gray {
+    width: 100%;
+    height: 50px;
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0 15px;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.2s;
+    box-sizing: border-box;
+}
+
+    .input-gray:focus {
+        background-color: #fff;
+        border-color: #000;
+    }
+
+textarea.input-gray {
+    height: auto;
+    min-height: 120px;
+    padding: 15px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Upload e Checkboxes */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+    .input-wrapper .input-gray {
+        padding-right: 45px;
+        cursor: pointer;
+    }
+
+.icon-upload {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    pointer-events: none;
+}
+
+.file-hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.distancia-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.check-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 20px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+
+    .check-tag:hover {
+        background: #e0e0e0;
+    }
+
+    .check-tag input {
+        display: none;
+    }
+
+    .check-tag:has(input:checked) {
+        background: #333;
+        color: #ffeb3b;
+        border-color: #000;
+    }
+
+        .check-tag:has(input:checked) span::after {
+            content: " ✓";
+            margin-left: 5px;
+        }
+
+/* --- 4. GRID DE CARDS --- */
+.kits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.kit-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: transform 0.2s;
+}
+
+    .kit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border-color: #bbb;
+    }
+
+.kit-card-image {
+    height: 180px;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+    .kit-card-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+.placeholder-img {
+    color: #999;
+    font-weight: 600;
+}
+
+.kit-card-body {
+    padding: 25px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.kit-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 5px;
+}
+
+.kit-price {
+    font-size: 1rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.kit-card-actions {
+    display: flex;
+    border-top: 1px solid #eee;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 15px 0;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+    .btn-action.open {
+        background: #fff;
+        color: #333;
+        border-right: 1px solid #eee;
+    }
+
+        .btn-action.open:hover {
+            background: #f0f0f0;
+        }
+
+    .btn-action.edit {
+        background: #fff;
+        color: #0056b3;
+        border-right: 1px solid #eee;
+    }
+
+        .btn-action.edit:hover {
+            background: #e3f2fd;
+        }
+
+    .btn-action.delete {
+        background: #fff;
+        color: #d32f2f;
+    }
+
+        .btn-action.delete:hover {
+            background: #ffebee;
+        }
+
+/* --- 5. BOTÕES GERAIS --- */
+.form-actions {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.btn-green, .btn-gray {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    min-width: 120px;
+    padding: 0 20px;
+    margin: 0;
+    border-radius: 8px;
+    border: none;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s;
+    box-sizing: border-box;
+    line-height: 1;
+}
+
+.btn-green {
+    background: #28a745;
+    color: #fff;
+    gap: 8px;
+}
+
+    .btn-green:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+.btn-gray {
+    background: #888;
+    color: #fff;
+}
+
+    .btn-gray:hover {
+        background: #666;
+        color: #fff;
+    }
+
+/* --- 6. EXTRAS & ALERTAS DE ERRO --- */
+/* Alerta Sucesso */
+.alert-custom {
+    position: fixed;
+    top: 140px;
+    right: 20px;
+    z-index: 1000;
+    background: #d4edda;
+    color: #155724;
+    padding: 15px 25px;
+    border-radius: 8px;
+    border-left: 5px solid #28a745;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: opacity 0.5s;
+}
+
+.alert-hide {
+    opacity: 0;
+}
+
+/* ALERTA DE ERRO (NOVO) */
+.alert-danger {
+    background-color: #f8d7da; /* Fundo vermelho claro */
+    color: #721c24; /* Texto vermelho escuro */
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #f5c6cb;
+    margin-bottom: 25px; /* Espaço abaixo do alerta */
+    font-weight: 500;
+}
+
+/* Texto de Erro embaixo do Input */
+.text-danger {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: block;
+    font-weight: 600;
+}
+
+.menu-item.active {
+    background-color: rgba(254, 234, 0, 0.15) !important;
+    border-left: 4px solid #FEEA00 !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+}
+
+/* --- 7. RESPONSIVIDADE --- */
+@media (max-width: 900px) {
+    .kits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        height: 100vh;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+    }
+
+    .menu-text, .subtitle {
+        display: none;
+    }
+
+    .sidebar-header {
+        justify-content: center;
+        padding: 0;
+        height: 80px;
+    }
+
+    .logo-sidebar-top {
+        width: 35px;
+        margin-bottom: 0;
+    }
+
+    .menu-item {
+        justify-content: center;
+        padding: 15px 0;
+    }
+
+        .menu-item .menu-icon {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+    /* Footer Visível no Mobile */
+    .sidebar-footer {
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+        width: 100%;
+        margin-top: auto;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .btn-responsive {
+        width: 45px !important;
+        height: 45px !important;
+        min-width: 45px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+    }
+
+        .btn-responsive .btn-text {
+            display: none;
+        }
+
+        .btn-responsive .btn-symbol {
+            display: block !important;
+            line-height: 1;
+            margin-top: -4px;
+        }
+
+    .page-header {
+        height: 80px;
+        padding: 0 20px;
+        width: 100%;
+    }
+
+        .page-header h1 {
+            font-size: 1.4rem;
+        }
+
+    .kits-grid {
+        grid-template-columns: 1fr;
+        margin: 20px auto;
+        padding: 0 20px;
+    }
+
+    .form-evento {
+        margin: 20px auto;
+        padding: 0 20px;
+    }
+
+    .form-card-bg {
+        padding: 25px;
+    }
+
+    .row-flex {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .col-fixed, .col-grow {
+        width: 100%;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .btn-gray, .btn-green {
+        width: 100%;
+        height: 50px;
+    }
+}

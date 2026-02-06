@@ -25,9 +25,12 @@ namespace Core
         public int IdEvento { get; set; }
         public int IdCorredor { get; set; }
 
-        public AvaliacaoEvento? IdAvaliacaoEventoNavigation { get; set; }
-        public Evento IdEventoNavigation { get; set; } = null!;
-        public Corredor IdCorredorNavigation { get; set; } = null!;
-        public Kit? IdKitNavigation { get; set; }
+        public virtual AvaliacaoEvento IdAvaliacaoEventoNavigation { get; set; } = null!;
+
+        public virtual Corredor IdCorredorNavigation { get; set; } = null!;
+
+        public virtual Evento IdEventoNavigation { get; set; } = null!;
+
+        public virtual Kit IdKitNavigation { get; set; } = null!;
     }
 }

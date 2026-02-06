@@ -68,5 +68,15 @@ namespace Service
         {
             return _context.Inscricao;
         }
+        
+        public IEnumerable<Inscricao> GetAllByEvento(int idEvento)
+        {
+            return _context.Inscricao
+                .Include(i => i.IdKitNavigation)
+                .Include(i => i.IdCorredorNavigation)
+                .Include(i => i.IdEventoNavigation)
+                .Where(i => i.IdEvento == idEvento)
+                .ToList();
+        }
     }
 }
