@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Models.KitViewModel>
+
+@{
+    ViewData["Title"] = "Meus Kits";
+    Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+    <link rel="stylesheet" href="~/css/kit.css" />
+}
+
+<main class="main-container">
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert-custom">
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    <header class="page-header header-responsive" style="margin-bottom: 30px;">
+        <div class="header-title-group">
+            <div class="header-text">
+                <h1>Kits</h1>
+                <p class="subtitle">@ViewBag.NomeCorrida</p>
+            </div>
+        </div>
+
+        <a asp-action="Create"
+           asp-route-idEvento="@ViewBag.IdEventoAtual"
+           class="btn-green btn-responsive">
+            <span class="btn-symbol">+</span>
+            <span class="btn-text">Criar Kit</span>
+        </a>
+    </header>
+
+    <section class="kits-grid">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var kit in Model)
+            {
+                <div class="kit-card">
+                    <div class="kit-card-image">
+                        @if (!string.IsNullOrEmpty(kit.Imagem))
+                        {
+                            <img src="~/imagens/@kit.Imagem" alt="Foto do Kit" />
+                        }
+                        else
+                        {
+                            <div class="placeholder-img">📷 Sem Foto</div>
+                        }
+                    </div>
+
+                    <div class="kit-card-body">
+                        <h3 class="kit-title">@kit.Nome</h3>
+                        <p class="kit-price">R$ @kit.Valor.ToString("N2")</p>
+
+                        <div class="badge-group center-badges">
+                            <span class="badge-qtd">P: @kit.DisponibilidadeP</span>
+                            <span class="badge-qtd">M: @kit.DisponibilidadeM</span>
+                            <span class="badge-qtd">G: @kit.DisponibilidadeG</span>
+                        </div>
+                    </div>
+
+                    <div class="kit-card-actions">
+                        <a asp-action="Edit"
+                           asp-route-id="@kit.Id"
+                           class="btn-action edit">
+                            ✏️ Editar
+                        </a>
+
+                        <a asp-action="Delete" asp-route-id="@kit.Id" class="btn-action delete"
+                           onclick="return confirm('Tem certeza que deseja apagar o kit @kit.Nome?');">
+                            🗑️ Excluir
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state-card" style="grid-column: 1 / -1; text-align: center; padding: 40px; border: 2px dashed #ccc;">
+                <p>Nenhum kit encontrado.</p>
+                <a asp-action="Create"
+                   asp-route-idEvento="@ViewBag.IdEventoAtual"
+                   style="text-decoration: underline; color: #28a745; font-weight: bold;">
+                    Clique aqui para criar o primeiro
+                </a>
+            </div>
+        }
+    </section>
+</main>
+<script src="~/js/kit.js"></script>

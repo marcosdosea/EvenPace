@@ -3,233 +3,267 @@ using Core;
 using Core.Service;
 using Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 
-namespace EvenPace.Controllers;
-
-public class KitController : Controller
+namespace EvenPace.Controllers
 {
-    private IKitService _kitsService;
-    private IMapper _mapper;
-    private IEventosService _eventosService;
-
-    public KitController(IKitService kits, IMapper mapper, IEventosService eventosService)
+    public class KitController : Controller
     {
-        _kitsService = kits;
-        _mapper = mapper;
-        _eventosService = eventosService;
-    }
+        private readonly IKitService _kitsService;
+        private readonly IMapper _mapper;
+        private readonly IEventosService _eventosService;
 
-    // GET: Abre a Tela 17 (Create) para o usuário preencher
-    [HttpGet]
-    public IActionResult Create(int? id, int? idEvento)
-    {
-        KitViewModel viewModel = new KitViewModel();
-
-        // CENÁRIO 1: EDIÇÃO (Clicou no Lápis)
-        if (id.HasValue && id.Value > 0)
+        public KitController(IKitService kits, IMapper mapper, IEventosService eventosService)
         {
-            var kit = _kitsService.Get(id.Value);
-            if (kit != null)
+            _kitsService = kits;
+            _mapper = mapper;
+            _eventosService = eventosService;
+        }
+
+        // ==========================================================
+        // 1. INDEX (Listagem dos Kits de um Evento)
+        // ==========================================================
+        [HttpGet]
+        public IActionResult IndexKit(int? idEvento)
+        {
+            // 1. Organização Fixa (Simulação de Login)
+            int idOrganizacaoLogada = 1;
+
+            // 2. Busca eventos dessa organização para validar ou pegar o padrão
+            var eventosDaOrganizacao = _eventosService.GetAll()
+                                                       .Where(e => e.IdOrganizacao == idOrganizacaoLogada)
+                                                       .ToList();
+
+            // 3. Define qual evento exibir
+            if (!idEvento.HasValue || idEvento.Value == 0)
             {
-                // Mapeia os dados do Banco para a Tela (Nome, Valor, Preço...)
-                viewModel = _mapper.Map<KitViewModel>(kit);
-                ViewBag.TituloPagina = "Editar Kit";
+                var eventoPadrao = eventosDaOrganizacao.FirstOrDefault();
+
+                if (eventoPadrao != null)
+                {
+                    idEvento = eventoPadrao.Id;
+                }
+                else
+                {
+                    TempData["MensagemErro"] = "Você ainda não possui eventos cadastrados.";
+                    return RedirectToAction("Index", "Home");
+                }
             }
+
+            int idFinal = idEvento.Value;
+
+            // Preenche ViewBag para a View saber qual evento estamos vendo
+            var eventoAtual = eventosDaOrganizacao.FirstOrDefault(e => e.Id == idFinal);
+            ViewBag.NomeCorrida = eventoAtual != null ? eventoAtual.Nome : "Evento";
+            ViewBag.IdEventoAtual = idFinal;
+
+            // Filtra os kits do evento específico
+            var allKits = _kitsService.GetAll();
+            var kitsDoEvento = allKits.Where(k => k.IdEvento == idFinal).ToList();
+
+            var listaViewModel = _mapper.Map<List<KitViewModel>>(kitsDoEvento);
+            return View(listaViewModel);
         }
-        // CENÁRIO 2: NOVO (Clicou no + Criar)
-        else if (idEvento.HasValue)
+
+        // ==========================================================
+        // 2. CREATE (Criar - GET)
+        // ==========================================================
+        [HttpGet]
+        public IActionResult Create(int? idEvento)
         {
-            viewModel.IdEvento = idEvento.Value;
+            var viewModel = new KitViewModel();
+
+            // Define o evento pai (se não vier, assume 1 por segurança)
+            viewModel.IdEvento = idEvento ?? 1;
+
+            // Dados para a View
             ViewBag.TituloPagina = "Novo Kit";
+            var evento = _eventosService.Get(viewModel.IdEvento);
+            ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
+
+            return View(viewModel);
         }
-        else
+
+        // ==========================================================
+        // 3. CREATE (Criar - POST)
+        // ==========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(KitViewModel model)
         {
-            // Segurança: Pega o evento 1 se não vier nada
-            viewModel.IdEvento = 1;
-        }
+            RemoverValidacoesNaoObrigatorias();
 
-        // Busca o nome da corrida para exibir no topo
-        var evento = _eventosService.Get(viewModel.IdEvento);
-        ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
-
-        return View(viewModel);
-    }
-
-    // POST: Recebe os dados do formulário quando clica em Salvar
-    // POST: KitController/Tela17_Organizacao_CriarKit (Create)
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Create(KitViewModel model)
-    {
-        // 1. LIMPEZA DE VALIDAÇÕES (Para não bloquear o salvamento)
-        ModelState.Remove("ImagemUpload");
-        ModelState.Remove("IdEvento");
-        ModelState.Remove("UtilizadaP");
-        ModelState.Remove("UtilizadaM");
-        ModelState.Remove("UtilizadaG");
-        ModelState.Remove("StatusRetiradaKit");
-
-        if (ModelState.IsValid)
-        {
-            try
+            if (ModelState.IsValid)
             {
-                var kit = _mapper.Map<Kit>(model);
-
-                // --- LÓGICA DE UPLOAD DE IMAGEM (COM FAXINA) ---
-                if (model.ImagemUpload != null)
+                try
                 {
-                    // A. FAXINA: Se já existia uma foto antiga, APAGA ELA do computador
-                    // (O campo model.Imagem contém o nome da foto velha vindo do input hidden)
-                    if (model.Imagem != null)
+                    var kit = _mapper.Map<Kit>(model);
+
+                    // Upload de Imagem
+                    if (model.ImagemUpload != null)
                     {
-                        DeletarImagemDoDisco(model.Imagem);
+                        kit.Imagem = SalvarImagemNoDisco(model.ImagemUpload);
                     }
-                    // B. SALVAR A NOVA
-                    string pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
 
-                    // Cria a pasta se não existir
-                    if (!Directory.Exists(pastaDestino)) Directory.CreateDirectory(pastaDestino);
-
-                    // Gera nome único (UUID) para segurança interna
-                    string nomeUnico = Guid.NewGuid().ToString() + "_" + model.ImagemUpload.FileName;
-                    string caminhoCompleto = Path.Combine(pastaDestino, nomeUnico);
-
-                    // Salva o arquivo fisicamente
-                    using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
-                    {
-                        model.ImagemUpload.CopyTo(stream);
-                    }
-                    kit.Imagem = nomeUnico;
-                }
-                else
-                {
-                    kit.Imagem = model.Imagem;
-                }
-
-                // --- SALVAR NO BANCO ---
-                if (model.Id > 0)
-                {
-                    // EDIÇÃO
-                    _kitsService.Edit(kit);
-                    TempData["MensagemSucesso"] = "Kit atualizado com sucesso! ✏️";
-                }
-                else
-                {
-                    // CRIAÇÃO
                     _kitsService.Create(kit);
                     TempData["MensagemSucesso"] = "Kit criado com sucesso! ✅";
+
+                    return RedirectToAction("IndexKit", new { idEvento = model.IdEvento });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Erro ao criar: " + ex.Message);
+                }
+            }
+
+            // Se falhar, recarrega dados da view
+            ViewBag.TituloPagina = "Novo Kit";
+            var evento = _eventosService.Get(model.IdEvento);
+            ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
+
+            return View(model);
+        }
+
+        // ==========================================================
+        // 4. EDIT (Editar - GET)
+        // ==========================================================
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var kit = _kitsService.Get(id);
+            if (kit == null) return RedirectToAction("IndexKit");
+
+            var viewModel = _mapper.Map<KitViewModel>(kit);
+
+            // Dados para a View
+            ViewBag.TituloPagina = "Editar Kit";
+            var evento = _eventosService.Get(kit.IdEvento);
+            ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
+
+            return View(viewModel);
+        }
+
+        // ==========================================================
+        // 5. EDIT (Editar - POST)
+        // ==========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, KitViewModel model)
+        {
+            if (id != model.Id) return NotFound();
+
+            RemoverValidacoesNaoObrigatorias();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var kit = _mapper.Map<Kit>(model);
+
+                    // Lógica de Imagem no Edit
+                    if (model.ImagemUpload != null)
+                    {
+                        // Se tem nova imagem, deleta a antiga e salva a nova
+                        if (!string.IsNullOrEmpty(model.Imagem))
+                            DeletarImagemDoDisco(model.Imagem);
+
+                        kit.Imagem = SalvarImagemNoDisco(model.ImagemUpload);
+                    }
+                    else
+                    {
+                        // Mantém a imagem antiga
+                        kit.Imagem = model.Imagem;
+                    }
+
+                    _kitsService.Edit(kit);
+                    TempData["MensagemSucesso"] = "Kit atualizado com sucesso! ✏️";
+
+                    return RedirectToAction("IndexKit", new { idEvento = model.IdEvento });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Erro ao editar: " + ex.Message);
+                }
+            }
+
+            ViewBag.TituloPagina = "Editar Kit";
+            var evento = _eventosService.Get(model.IdEvento);
+            ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
+
+            return View(model);
+        }
+
+        // ==========================================================
+        // 6. DELETE (Excluir)
+        // ==========================================================
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var kit = _kitsService.Get(id);
+
+            if (kit != null)
+            {
+                int idEventoDoKit = kit.IdEvento;
+
+                // Apagar a imagem física do disco se existir
+                if (!string.IsNullOrEmpty(kit.Imagem))
+                {
+                    DeletarImagemDoDisco(kit.Imagem);
                 }
 
-                // Redireciona para a lista mantendo o filtro do evento
-                return RedirectToAction("Index", new { idEvento = model.IdEvento });
+                _kitsService.Delete(id);
+                TempData["MensagemSucesso"] = "Kit excluído com sucesso! 🗑️";
+
+                return RedirectToAction("IndexKit", new { idEvento = idEventoDoKit });
             }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "Erro ao salvar: " + ex.Message);
-            }
+
+            return RedirectToAction("IndexKit"); // Fallback sem ID
         }
 
-        // SE DEU ERRO: Recarrega o nome do evento para a tela não quebrar
-        var evento = _eventosService.Get(model.IdEvento);
-        ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
+        // ==========================================================
+        // MÉTODOS AUXILIARES (Privados)
+        // ==========================================================
 
-        return View(model);
-    }
-
-    // GET: Tela09_Organizacao_Kits (IndexKit)
-    [HttpGet]
-    public IActionResult Index(int? idEvento)
-    {
-        // 1. DEFINIMOS A ORGANIZAÇÃO ATUAL (Simulando o login)
-        int idOrganizacaoLogada = 1;
-
-        // 2. BUSCA EVENTOS *APENAS* DESSA ORGANIZAÇÃO
-        var eventosDaOrganizacao = _eventosService.GetAll()
-                                    .Where(e => e.IdOrganizacao == idOrganizacaoLogada)
-                                    .ToList();
-
-        // 3. SELEÇÃO DO EVENTO (Dinâmica dentro da Organização)
-        if (!idEvento.HasValue || idEvento.Value == 0)
+        private void RemoverValidacoesNaoObrigatorias()
         {
-            // Se não veio ID na URL, pegamos o primeiro evento DA LISTA DA ORGANIZAÇÃO
-            var eventoPadrao = eventosDaOrganizacao.FirstOrDefault();
-
-            if (eventoPadrao != null)
-            {
-                idEvento = (int)eventoPadrao.Id;
-            }
-            else
-            {
-                // Se a organização não tem evento nenhum, não dá pra ver kits.
-                // Redireciona para a Home ou mostra lista vazia.
-                TempData["MensagemErro"] = "Você ainda não possui eventos cadastrados.";
-                return RedirectToAction("Index", "Home");
-            }
+            ModelState.Remove("ImagemUpload");
+            ModelState.Remove("IdEvento");
+            ModelState.Remove("UtilizadaP");
+            ModelState.Remove("UtilizadaM");
+            ModelState.Remove("UtilizadaG");
+            ModelState.Remove("StatusRetiradaKit");
         }
 
-        // --- DAQUI PRA BAIXO SEGUE O PADRÃO ---
-        int idFinal = idEvento.Value;
-
-        // Apenas garante que o nome do evento exibido é o correto
-        var eventoAtual = eventosDaOrganizacao.FirstOrDefault(e => e.Id == idFinal);
-        ViewBag.NomeCorrida = eventoAtual != null ? eventoAtual.Nome : "Evento";
-        ViewBag.IdEventoAtual = idFinal;
-
-        // Filtra os kits desse evento específico
-        var allKits = _kitsService.GetAll();
-        var kitsDoEvento = allKits.Where(k => k.IdEvento == idFinal).ToList();
-
-        var listaViewModel = _mapper.Map<List<KitViewModel>>(kitsDoEvento);
-        return View(listaViewModel);
-    }
-
-    [HttpGet]
-    public IActionResult Excluir(int id)
-    {
-        var kit = _kitsService.Get(id);
-
-        if (kit != null)
+        private string SalvarImagemNoDisco(Microsoft.AspNetCore.Http.IFormFile imagemUpload)
         {
-            int idEventoDoKit = (int)kit.IdEvento;
+            string pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
+            if (!Directory.Exists(pastaDestino)) Directory.CreateDirectory(pastaDestino);
 
-            //APAGA A FOTO ANTES DE APAGAR O REGISTRO ---
-            if (!string.IsNullOrEmpty(kit.Imagem))
+            string nomeUnico = Guid.NewGuid().ToString() + "_" + imagemUpload.FileName;
+            string caminhoCompleto = Path.Combine(pastaDestino, nomeUnico);
+
+            using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
             {
-                DeletarImagemDoDisco(kit.Imagem);
+                imagemUpload.CopyTo(stream);
             }
-            
 
-            _kitsService.Delete(id);
-
-            TempData["MensagemSucesso"] = "Kit excluído com sucesso! 🗑️";
-
-            return RedirectToAction("Index", new { idEvento = idEventoDoKit });
+            return nomeUnico;
         }
 
-        return RedirectToAction("Index");
-    }
-
-    // MÉTODO PRIVADO PARA APAGAR FOTOS DA PASTA WWWROOT
-    private void DeletarImagemDoDisco(string nomeImagem)
-    {
-       
-        if (string.IsNullOrEmpty(nomeImagem)) return;
-
-        
-        string caminhoCompleto = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", nomeImagem);
-
-        if (System.IO.File.Exists(caminhoCompleto))
+        private void DeletarImagemDoDisco(string nomeImagem)
         {
             try
             {
-                System.IO.File.Delete(caminhoCompleto);
+                string caminhoCompleto = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", nomeImagem);
+                if (System.IO.File.Exists(caminhoCompleto))
+                {
+                    System.IO.File.Delete(caminhoCompleto);
+                }
             }
-            catch (Exception)
-            {
-                // Se der erro ao apagar (arquivo em uso, permissão, etc), 
-                // a gente ignora para não travar o sistema, mas poderia logar o erro.
-            }
+            catch { /* Ignora erro de arquivo travado/inexistente */ }
         }
     }
-
 }

@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="~/css/theme.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/kit.css" />
+    
 </head>
 <body>
     <div class="dashboard-container">
@@ -18,36 +18,40 @@
             </div>
 
             <nav class="sidebar-menu">
-                <a href="#" class="menu-item">
+
+                <a asp-controller="Evento" asp-action="Index" class="menu-item">
                     <span class="menu-icon">🏠</span>
                     <span class="menu-text">Home</span>
                 </a>
-                <a href="#" class="menu-item">
+
+                <a asp-controller="Evento" asp-action="Details" asp-route-id="@ViewBag.IdEventoAtual"
+                   class="menu-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Resumo" ? "active" : "")">
                     <span class="menu-icon">📑</span>
                     <span class="menu-text">Resumo</span>
                 </a>
-                <a href="#" class="menu-item">
+
+                <a asp-controller="Ingresso" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual" class="menu-item">
                     <span class="menu-icon">🎟️</span>
                     <span class="menu-text">Ingressos</span>
                 </a>
-                <a href="#" class="menu-item">
+
+                <a asp-controller="Cupom" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual" class="menu-item">
                     <span class="menu-icon">🏷️</span>
                     <span class="menu-text">Cupons</span>
                 </a>
-                <a href="#" class="menu-item">
+
+                <a asp-controller="Evento" asp-action="Create" asp-route-id="@ViewBag.IdEventoAtual" class="menu-item">
                     <span class="menu-icon">📄</span>
                     <span class="menu-text">Informações</span>
                 </a>
-                <a href="#" class="menu-item">
+
+                <a asp-controller="Financeiro" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual" class="menu-item">
                     <span class="menu-icon">💰</span>
                     <span class="menu-text">Financeiro</span>
                 </a>
 
-                <a class="menu-item active"
-                   asp-controller="Kit"
-                   asp-action="IndexKit"
-                   asp-route-idEvento="@ViewBag.IdEventoAtual">
-
+                <a asp-controller="Kit" asp-action="IndexKit" asp-route-idEvento="@ViewBag.IdEventoAtual"
+                   class="menu-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Kit" ? "active" : "")">
                     <span class="menu-icon">✔️</span>
                     <span class="menu-text">Kits</span>
                 </a>
