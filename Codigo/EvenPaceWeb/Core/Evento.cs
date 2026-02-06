@@ -66,7 +66,7 @@ public partial class Evento
     [Column("nome")]
     public string Nome { get; set; } = null!;
     
-    // Relacionamentos e Navegação
+   
     public virtual ICollection<Cupom> Cupoms { get; set; } = new List<Cupom>();
 
     [ForeignKey("IdOrganizacao")]
