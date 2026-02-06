@@ -7,19 +7,32 @@
 
     <link rel="stylesheet" href="~/css/theme.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/kit.css" />
+    
 </head>
 <body>
     <div class="dashboard-container">
 
         <aside class="sidebar">
+
             <div class="sidebar-header">
-                <img src="~/imagens/logo-amarela-evenpace.jpeg" alt="Logo EvenPace" class="logo-sidebar-top" />
+                <a asp-controller="Evento" asp-action="Index">
+                    <img src="~/imagens/logo-amarela-evenpace.jpeg" alt="Logo EvenPace" class="logo-sidebar-top" />
+                </a>
             </div>
 
             <nav class="sidebar-menu">
-                <a asp-controller="Home" asp-action="Index"
-                   class="menu-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Evento" || ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
+                @{
+                    // Lógica para verificar se o botão deve ficar ativo (amarelo)
+                    var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
+                    var action = ViewContext.RouteData.Values["Action"]?.ToString();
+
+                    // Verifica se está no EventoController e na ação Index
+                    bool isHomeActive = string.Equals(controller, "Evento", StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(action, "Index", StringComparison.OrdinalIgnoreCase);
+                }
+
+                <a asp-controller="Evento" asp-action="Index"
+                   class="menu-item @(isHomeActive ? "active" : "")">
                     <span class="menu-icon">🏠</span>
                     <span class="menu-text">Home</span>
                 </a>

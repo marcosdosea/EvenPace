@@ -1,81 +1,111 @@
 ﻿/* ============================================================
    ARQUIVO: wwwroot/css/evento.css
-   DESCRIÇÃO: Estilo Completo - Eventos (Premium & Centralizado)
+   DESCRIÇÃO: Estilo Eventos (Com Estilos de Erro Adicionados)
    ============================================================ */
 
 /* --- 1. GERAL --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #fff;
     margin: 0;
     padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
 }
 
-*, *::before, *::after {
-    box-sizing: border-box;
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 200px;
+    background-color: #fff;
+    border-right: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    z-index: 100;
+    transition: width 0.3s ease;
+}
+
+.content-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    position: relative;
+    background-color: #f8f9fa;
+    width: 100%;
 }
 
 .main-container {
     width: 100%;
     margin: 0;
-    display: flex;
-    flex-direction: column;
+    padding-bottom: 60px;
 }
 
-/* --- 2. CABEÇALHO (PADRÃO) --- */
+/* --- 2. CABEÇALHO --- */
 .page-header {
-    min-height: 120px;
-    height: auto;
+    background-color: #fff;
+    height: 120px;
+    padding: 0 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px;
-    margin-bottom: 30px;
-    background-color: #fff;
     border-bottom: 1px solid #000;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 90;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
-.header-titles {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.page-header h1 {
-    font-size: 2rem;
+.header-titles h1, .header-text h1 {
+    font-size: 1.8rem;
     font-weight: 800;
     margin: 0;
-    line-height: 1.1;
-    color: #000;
+    color: #333;
     text-transform: uppercase;
 }
 
 .subtitle {
     font-size: 1rem;
     color: #666;
-    margin: 2px 0 0 0;
+    margin-top: 3px;
     font-weight: 500;
 }
 
-/* --- 3. FORMULÁRIO (CENTRALIZADO) --- */
+/* --- 3. FORMULÁRIO --- */
 .form-evento {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
     width: 100%;
-    max-width: 1000px; /* Largura máxima controlada */
-    margin: 0 auto; /* CENTRALIZA NA TELA */
-    padding: 0 40px 50px 40px;
+    box-sizing: border-box;
 }
 
-/* Grid Flexbox */
+.form-card-bg {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.form-block {
+    margin-bottom: 25px;
+    width: 100%;
+}
+
 .row-flex {
     display: flex;
-    gap: 30px;
+    gap: 25px;
     margin-bottom: 25px;
     align-items: flex-end;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .col-grow {
@@ -83,97 +113,81 @@ body {
     min-width: 250px;
 }
 
-.col-medium {
-    width: 35%;
-    min-width: 200px;
+.col-fixed {
+    width: 150px;
+    flex-shrink: 0;
 }
 
-.col-small {
-    width: 180px;
-    min-width: 150px;
-}
-
-/* --- 4. INPUTS PREMIUM --- */
 .label-bold {
     display: block;
     font-weight: 700;
+    font-size: 0.85rem;
+    color: #444;
     margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: #333;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
 .input-gray {
     width: 100%;
-    height: 50px; /* Mais alto para clique fácil */
-    background-color: #FAFAFA;
-    border: 1px solid #E0E0E0;
-    border-radius: 10px;
-    padding: 0 20px;
+    height: 50px;
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0 15px;
     font-size: 1rem;
-    color: #000;
-    font-weight: 500;
-    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     outline: none;
+    transition: 0.2s;
+    box-sizing: border-box;
 }
-
-    .input-gray:hover {
-        background-color: #fff;
-        border-color: #BDBDBD;
-    }
 
     .input-gray:focus {
         background-color: #fff;
         border-color: #000;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.08); /* Sombra suave */
-        transform: translateY(-2px); /* Efeito flutuante */
-    }
-
-    .input-gray::placeholder {
-        color: #aaa;
-        font-weight: 400;
     }
 
 textarea.input-gray {
     height: auto;
     min-height: 120px;
-    padding: 15px 20px;
+    padding: 15px;
     resize: vertical;
     line-height: 1.5;
 }
 
-.text-danger {
-    color: #d32f2f;
-    font-size: 0.85rem;
-    margin-top: 5px;
-    display: block;
-    font-weight: 600;
+/* Upload e Checkboxes */
+.input-wrapper {
+    position: relative;
+    width: 100%;
 }
 
-/* --- 5. FIELDSET (ENDEREÇO) --- */
-fieldset.grupo-endereco {
-    border: none;
-    padding: 0;
-    margin: 0 0 10px 0;
-}
-
-    fieldset.grupo-endereco legend {
-        padding: 0;
-        margin-bottom: 15px;
-        width: 100%;
+    .input-wrapper .input-gray {
+        padding-right: 45px;
+        cursor: pointer;
     }
 
-.form-group {
-    margin-bottom: 25px;
+.icon-upload {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    pointer-events: none;
 }
 
-/* --- 6. DISTÂNCIAS (BOTÕES/TAGS) --- */
+.file-hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
 .distancia-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    padding: 5px 0;
+    gap: 10px;
+    margin-top: 5px;
 }
 
 .check-tag {
@@ -182,131 +196,363 @@ fieldset.grupo-endereco {
     justify-content: center;
     height: 40px;
     padding: 0 20px;
-    background-color: #FAFAFA;
-    border: 1px solid #E0E0E0;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
     border-radius: 20px;
-    font-size: 0.9rem;
+    cursor: pointer;
     font-weight: 600;
     color: #555;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    user-select: none;
+    font-size: 0.9rem;
+    transition: 0.2s;
 }
 
     .check-tag:hover {
-        background-color: #F0F0F0;
-        border-color: #bbb;
-    }
-
-    .check-tag:has(input:checked) {
-        background-color: #000;
-        color: #FEEA00;
-        border-color: #000;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        transform: scale(1.05);
+        background: #e0e0e0;
     }
 
     .check-tag input {
         display: none;
     }
 
-    .check-tag:has(input:checked) span::after {
-        content: " ✓";
-        margin-left: 5px;
+    .check-tag:has(input:checked) {
+        background: #333;
+        color: #ffeb3b;
+        border-color: #000;
     }
 
-/* --- 7. UPLOAD CUSTOMIZADO --- */
-.input-file-group {
-    position: relative;
+        .check-tag:has(input:checked) span::after {
+            content: " ✓";
+            margin-left: 5px;
+        }
+
+/* --- 4. GRID DE CARDS --- */
+.kits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.kit-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: transform 0.2s;
+}
+
+    .kit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border-color: #bbb;
+    }
+
+.kit-card-image {
+    height: 180px;
+    background: #f9f9f9;
     display: flex;
     align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.icon-file {
-    position: absolute;
-    right: 15px;
-    font-size: 1.2rem;
-    pointer-events: none;
-    color: #555;
+    .kit-card-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+.placeholder-img {
+    color: #999;
+    font-weight: 600;
 }
 
-.file-invisible {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    cursor: pointer;
-    z-index: 10;
+.kit-card-body {
+    padding: 25px;
+    text-align: center;
+    flex-grow: 1;
 }
 
-/* --- 8. RODAPÉ (AÇÕES) --- */
-.form-actions {
+.kit-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 5px;
+}
+
+.kit-price {
+    font-size: 1rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.kit-card-actions {
     display: flex;
-    justify-content: flex-end;
-    gap: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 15px 0;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+    .btn-action.open {
+        background: #fff;
+        color: #333;
+        border-right: 1px solid #eee;
+    }
+
+        .btn-action.open:hover {
+            background: #f0f0f0;
+        }
+
+    .btn-action.edit {
+        background: #fff;
+        color: #0056b3;
+        border-right: 1px solid #eee;
+    }
+
+        .btn-action.edit:hover {
+            background: #e3f2fd;
+        }
+
+    .btn-action.delete {
+        background: #fff;
+        color: #d32f2f;
+    }
+
+        .btn-action.delete:hover {
+            background: #ffebee;
+        }
+
+/* --- 5. BOTÕES GERAIS --- */
+.form-actions {
     margin-top: 40px;
     padding-top: 20px;
-    border-top: 2px solid #000;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
 }
 
-.btn-gray {
-    background-color: #999;
-    color: #000;
-    font-weight: bold;
-    border: none;
-    padding: 12px 40px;
+.btn-green, .btn-gray {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    min-width: 120px;
+    padding: 0 20px;
+    margin: 0;
     border-radius: 8px;
+    border: none;
+    font-weight: 700;
     font-size: 1rem;
-    cursor: pointer;
     text-decoration: none;
-    text-align: center;
-    transition: background 0.3s;
+    cursor: pointer;
+    transition: 0.2s;
+    box-sizing: border-box;
+    line-height: 1;
 }
 
-    .btn-gray:hover {
-        background-color: #777;
+.btn-green {
+    background: #28a745;
+    color: #fff;
+    gap: 8px;
+}
+
+    .btn-green:hover {
+        background: #218838;
+        transform: translateY(-2px);
         color: #fff;
     }
 
-/* --- 9. RESPONSIVIDADE --- */
-@media (max-width: 768px) {
-    .page-header {
-        min-height: 80px;
-        padding: 10px 20px;
-        flex-direction: row;
-        align-items: center;
+.btn-gray {
+    background: #888;
+    color: #fff;
+}
+
+    .btn-gray:hover {
+        background: #666;
+        color: #fff;
     }
 
-        .page-header h1 {
+/* --- 6. EXTRAS & ALERTAS DE ERRO --- */
+/* Alerta Sucesso */
+.alert-custom {
+    position: fixed;
+    top: 140px;
+    right: 20px;
+    z-index: 1000;
+    background: #d4edda;
+    color: #155724;
+    padding: 15px 25px;
+    border-radius: 8px;
+    border-left: 5px solid #28a745;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: opacity 0.5s;
+}
+
+.alert-hide {
+    opacity: 0;
+}
+
+/* ALERTA DE ERRO (NOVO) */
+.alert-danger {
+    background-color: #f8d7da; /* Fundo vermelho claro */
+    color: #721c24; /* Texto vermelho escuro */
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #f5c6cb;
+    margin-bottom: 25px; /* Espaço abaixo do alerta */
+    font-weight: 500;
+}
+
+/* Texto de Erro embaixo do Input */
+.text-danger {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: block;
+    font-weight: 600;
+}
+
+.menu-item.active {
+    background-color: rgba(254, 234, 0, 0.15) !important;
+    border-left: 4px solid #FEEA00 !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+}
+
+/* --- 7. RESPONSIVIDADE --- */
+@media (max-width: 900px) {
+    .kits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        height: 100vh;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+    }
+
+    .menu-text, .subtitle {
+        display: none;
+    }
+
+    .sidebar-header {
+        justify-content: center;
+        padding: 0;
+        height: 80px;
+    }
+
+    .logo-sidebar-top {
+        width: 35px;
+        margin-bottom: 0;
+    }
+
+    .menu-item {
+        justify-content: center;
+        padding: 15px 0;
+    }
+
+        .menu-item .menu-icon {
+            margin: 0;
             font-size: 1.5rem;
         }
 
-    .subtitle {
-        font-size: 0.85rem;
+    /* Footer Visível no Mobile */
+    .sidebar-footer {
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+        width: 100%;
+        margin-top: auto;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .btn-responsive {
+        width: 45px !important;
+        height: 45px !important;
+        min-width: 45px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+    }
+
+        .btn-responsive .btn-text {
+            display: none;
+        }
+
+        .btn-responsive .btn-symbol {
+            display: block !important;
+            line-height: 1;
+            margin-top: -4px;
+        }
+
+    .page-header {
+        height: 80px;
+        padding: 0 20px;
+        width: 100%;
+    }
+
+        .page-header h1 {
+            font-size: 1.4rem;
+        }
+
+    .kits-grid {
+        grid-template-columns: 1fr;
+        margin: 20px auto;
+        padding: 0 20px;
     }
 
     .form-evento {
-        padding: 0 20px 40px 20px;
+        margin: 20px auto;
+        padding: 0 20px;
+    }
+
+    .form-card-bg {
+        padding: 25px;
     }
 
     .row-flex {
         flex-direction: column;
-        gap: 15px;
-        align-items: stretch;
+        gap: 20px;
     }
 
-    .col-small, .col-medium, .col-grow {
+    .col-fixed, .col-grow {
         width: 100%;
-        min-width: 0;
     }
 
     .form-actions {
         flex-direction: column-reverse;
     }
 
-    .btn-gray {
+    .btn-gray, .btn-green {
         width: 100%;
+        height: 50px;
     }
 }

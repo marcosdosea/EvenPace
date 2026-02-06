@@ -1,54 +1,80 @@
-﻿using AutoMapper;
-using Core;
+﻿using Microsoft.AspNetCore.Mvc;
 using Core.Service;
+using Core;
 using Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using System.IO;
 
-namespace EvenPaceWeb.Controllers
+namespace EvenPace.Controllers
 {
     public class EventoController : Controller
     {
-        private readonly IEventosService _eventoService;
+        private readonly IEventosService _service;
+        private readonly IKitService _kitService;
         private readonly IMapper _mapper;
-        public EventoController(IEventosService eventoService, IMapper mapper)
+
+        public EventoController(IEventosService service, IKitService kitService, IMapper mapper)
         {
-            _eventoService = eventoService;
+            _service = service;
+            _kitService = kitService;
             _mapper = mapper;
         }
-        // GET: EventoController
-        public ActionResult Index()
+
+        // ==========================================================
+        // 1. INDEX (Listagem)
+        // ==========================================================
+        public IActionResult Index()
         {
-            var eventos = _eventoService.GetAll();
-            var eventoViewModels = _mapper.Map<List<EventoViewModel>>(eventos);
-            return View(eventoViewModels);
+            int idOrganizacao = 1; // Simulação de login
+
+            var listaEntidades = _service.GetAll()
+                                         .Where(e => e.IdOrganizacao == idOrganizacao)
+                                         .OrderByDescending(e => e.Data)
+                                         .ToList();
+
+            var listaViewModel = _mapper.Map<List<EventoViewModel>>(listaEntidades);
+
+            return View(listaViewModel);
         }
 
-        // GET: EventoController/Details/5
-        public ActionResult Details(int id)
+        // ==========================================================
+        // 2. DETAILS (Antigo Resumo)
+        // ==========================================================
+        public IActionResult Details(int id)
         {
-            var evento = _eventoService.Get(id);
-            var eventoViewModel = _mapper.Map<EventoViewModel>(evento);
-            return View(eventoViewModel);
-        }
+            var entidade = _service.Get(id);
+            if (entidade == null) return RedirectToAction("Index");
 
-        // GET: EventoController/Create
-        public ActionResult Create()
-        {
-            var viewModel = new EventoViewModel();
+            var viewModel = _mapper.Map<EventoViewModel>(entidade);
 
-            // SIMULAÇÃO DE LOGIN: Define a organização fixa como 1
-            viewModel.IdOrganizacao = 1;
+            ViewBag.IdEventoAtual = viewModel.Id;
+            ViewBag.NomeCorrida = viewModel.Nome;
 
+            // Lembre-se de renomear a View "Resumo.cshtml" para "Details.cshtml"
             return View(viewModel);
         }
 
-        // POST: EventoController/Create
+        // ==========================================================
+        // 3. CREATE (Criar - GET)
+        // ==========================================================
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewBag.TituloPagina = "Novo Evento";
+            return View(new EventoViewModel());
+        }
+
+        // ==========================================================
+        // 4. CREATE (Criar - POST)
+        // ==========================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(EventoViewModel model)
         {
-            // Remove validações de campos que não vêm preenchidos diretamente do form
+            // Remove validações que não são obrigatórias na criação se necessário
             ModelState.Remove("Imagem");
             ModelState.Remove("Data");
 
@@ -56,92 +82,173 @@ namespace EvenPaceWeb.Controllers
             {
                 try
                 {
-                    // 1. MAPEAMENTO AUTOMÁTICO (ViewModel -> Entidade)
                     var evento = _mapper.Map<Evento>(model);
 
-                    // 2. LOGICA DE DATA E HORA
-                    // Junta o DatePicker e o TimePicker em um único DateTime para o banco
+                    // Lógica de Data + Hora
                     if (model.DataOnly.HasValue && model.HoraOnly.HasValue)
                     {
                         evento.Data = model.DataOnly.Value.Add(model.HoraOnly.Value);
                     }
 
-                    // 3. UPLOAD DE IMAGEM
+                    // Upload de Imagem
                     if (model.ImagemUpload != null)
                     {
-                        string pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
-                        if (!Directory.Exists(pastaDestino)) Directory.CreateDirectory(pastaDestino);
-
-                        // Gera nome único para não substituir fotos com mesmo nome
-                        string nomeArquivo = Guid.NewGuid().ToString() + "_" + model.ImagemUpload.FileName;
-                        string caminhoCompleto = Path.Combine(pastaDestino, nomeArquivo);
-
-                        using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
-                        {
-                            model.ImagemUpload.CopyTo(stream);
-                        }
-
-                        evento.Imagem = nomeArquivo;
+                        evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload);
                     }
 
-                    // 4. SALVAR NO BANCO
-                    _eventoService.Create(evento);
+                    // Define organização padrão
+                    if (evento.IdOrganizacao == 0) evento.IdOrganizacao = 1;
 
+                    _service.Create(evento);
                     TempData["MensagemSucesso"] = "Evento criado com sucesso! 🏃‍♂️";
 
-                    // Redireciona para a lista de eventos (Index) ou volta para a Home
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Erro ao salvar: " + ex.Message);
+                    ModelState.AddModelError("", "Erro: " + ex.Message);
                 }
             }
 
-            // Se der erro, retorna a tela com os dados preenchidos
+            ViewBag.TituloPagina = "Novo Evento";
             return View(model);
         }
-    
 
-
-        // GET: EventoController/Edit/5
-        public ActionResult Edit(int id)
+        // ==========================================================
+        // 5. EDIT (Editar - GET)
+        // ==========================================================
+        [HttpGet]
+        public IActionResult Edit(int id)
         {
-            var evento = _eventoService.Get(id);
-            var eventoViewModel = _mapper.Map<EventoViewModel>(evento);
-            return View(eventoViewModel);
+            var entidade = _service.Get(id);
+            if (entidade == null) return RedirectToAction("Index");
+
+            var viewModel = _mapper.Map<EventoViewModel>(entidade);
+            viewModel.DataOnly = entidade.Data.Date;
+            viewModel.HoraOnly = entidade.Data.TimeOfDay;
+
+            ViewBag.TituloPagina = "Editar Evento";
+            return View(viewModel);
         }
 
-        // POST: EventoController/Edit/5
+        // ==========================================================
+        // 6. EDIT (Editar - POST)
+        // ==========================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EventoViewModel eventoViewModel)
+        public IActionResult Edit(int id, EventoViewModel model)
         {
+            if (id != model.Id) return NotFound();
+
+            ModelState.Remove("Imagem");
+            ModelState.Remove("Data");
+
             if (ModelState.IsValid)
             {
-                var evento = _mapper.Map<Core.Evento>(eventoViewModel);
-                _eventoService.Edit(evento);
+                try
+                {
+                    var evento = _mapper.Map<Evento>(model);
+
+                    // Lógica de Data + Hora
+                    if (model.DataOnly.HasValue && model.HoraOnly.HasValue)
+                    {
+                        evento.Data = model.DataOnly.Value.Add(model.HoraOnly.Value);
+                    }
+
+                    // Lógica de Imagem no Edit:
+                    // 1. Se tem upload novo: Salva a nova e deleta a antiga.
+                    // 2. Se não tem upload: Mantém a string da imagem antiga (que vem no model.Imagem via hidden input).
+                    if (model.ImagemUpload != null)
+                    {
+                        if (!string.IsNullOrEmpty(model.Imagem))
+                            DeletarImagemDoDisco(model.Imagem);
+
+                        evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload);
+                    }
+                    else
+                    {
+                        evento.Imagem = model.Imagem;
+                    }
+
+                    _service.Edit(evento);
+                    TempData["MensagemSucesso"] = "Evento atualizado com sucesso! ✏️";
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Erro: " + ex.Message);
+                }
             }
-            return RedirectToAction(nameof(Index));
 
+            ViewBag.TituloPagina = "Editar Evento";
+            return View(model);
         }
 
-        // GET: EventoController/Delete/5
-        public ActionResult Delete(int id)
+        // ==========================================================
+        // 7. DELETE (Excluir)
+        // ==========================================================
+        [HttpGet]
+        public IActionResult Delete(int id)
         {
-            var evento = _eventoService.Get(id);
-            var eventoViewModel = _mapper.Map<EventoViewModel>(evento);
-            return View(eventoViewModel);
+            var evento = _service.Get(id);
+
+            if (evento != null)
+            {
+                // Apaga Kits vinculados
+                var kitsDoEvento = _kitService.GetAll().Where(k => k.IdEvento == id).ToList();
+                foreach (var kit in kitsDoEvento)
+                {
+                    if (!string.IsNullOrEmpty(kit.Imagem)) DeletarImagemDoDisco(kit.Imagem);
+                    _kitService.Delete(kit.Id);
+                }
+
+                // Apaga Imagem do Evento
+                if (!string.IsNullOrEmpty(evento.Imagem))
+                {
+                    DeletarImagemDoDisco(evento.Imagem);
+                }
+
+                // Apaga o Evento do Banco
+                _service.Delete(id);
+
+                TempData["MensagemSucesso"] = "Evento excluído com sucesso! 🗑️";
+            }
+
+            return RedirectToAction("Index");
         }
 
-        // POST: EventoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            _eventoService.Delete((int)id);
-            return RedirectToAction(nameof(Index));
+        // ==========================================================
+        // MÉTODOS AUXILIARES (Privados)
+        // ==========================================================
 
+        private string SalvarImagemNoDisco(Microsoft.AspNetCore.Http.IFormFile imagemUpload)
+        {
+            string pasta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
+            if (!Directory.Exists(pasta)) Directory.CreateDirectory(pasta);
+
+            string nomeUnico = Guid.NewGuid().ToString() + "_" + imagemUpload.FileName;
+            string caminhoCompleto = Path.Combine(pasta, nomeUnico);
+
+            using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
+            {
+                imagemUpload.CopyTo(stream);
+            }
+
+            return nomeUnico;
+        }
+
+        private void DeletarImagemDoDisco(string nomeImagem)
+        {
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", nomeImagem);
+                if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
+            }
+            catch
+            {
+                // Logar erro se necessário, mas não parar a execução
+            }
         }
     }
 }

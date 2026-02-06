@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Meus Kits";
     Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+    <link rel="stylesheet" href="~/css/kit.css" />
 }
 
 <main class="main-container">
@@ -16,8 +17,6 @@
 
     <header class="page-header header-responsive" style="margin-bottom: 30px;">
         <div class="header-title-group">
-
-
             <div class="header-text">
                 <h1>Kits</h1>
                 <p class="subtitle">@ViewBag.NomeCorrida</p>
@@ -26,10 +25,8 @@
 
         <a asp-action="Create"
            asp-route-idEvento="@ViewBag.IdEventoAtual"
-           class="btn-gray btn-responsive">
-
+           class="btn-green btn-responsive">
             <span class="btn-symbol">+</span>
-
             <span class="btn-text">Criar Kit</span>
         </a>
     </header>
@@ -63,13 +60,13 @@
                     </div>
 
                     <div class="kit-card-actions">
-                        <a asp-action="Create"
+                        <a asp-action="Edit"
                            asp-route-id="@kit.Id"
                            class="btn-action edit">
                             ✏️ Editar
                         </a>
 
-                        <a asp-action="Excluir" asp-route-id="@kit.Id" class="btn-action delete"
+                        <a asp-action="Delete" asp-route-id="@kit.Id" class="btn-action delete"
                            onclick="return confirm('Tem certeza que deseja apagar o kit @kit.Nome?');">
                             🗑️ Excluir
                         </a>
@@ -83,29 +80,11 @@
                 <p>Nenhum kit encontrado.</p>
                 <a asp-action="Create"
                    asp-route-idEvento="@ViewBag.IdEventoAtual"
-                   style="text-decoration: underline; color: #000; font-weight: bold;">
+                   style="text-decoration: underline; color: #28a745; font-weight: bold;">
                     Clique aqui para criar o primeiro
                 </a>
             </div>
         }
     </section>
 </main>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Procura a mensagem de sucesso
-        var alerta = document.querySelector(".alert-custom");
-
-        if (alerta) {
-            // Espera 3 segundos (3000ms) antes de começar a sumir
-            setTimeout(function() {
-                // Adiciona a classe que deixa transparente (CSS)
-                alerta.classList.add("alert-hide");
-
-                // Espera mais 1 segundo (tempo da animação) para remover do HTML
-                setTimeout(function() {
-                    alerta.remove();
-                }, 1000);
-            }, 3000);
-        }
-    });
-</script>
+<script src="~/js/kit.js"></script>

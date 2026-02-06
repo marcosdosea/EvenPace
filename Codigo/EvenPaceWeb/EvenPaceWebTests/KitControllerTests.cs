@@ -3,9 +3,11 @@ using Core;
 using Core.Service;
 using EvenPace.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures; 
 using Microsoft.AspNetCore.Http;
 using Models;
 using Moq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,10 +16,11 @@ namespace EvenPaceWebTests
     [TestClass()]
     public class KitControllerTests
     {
-        private static KitController controller;
-        private static Mock<IKitService> mockKitService;
-        private static Mock<IEventosService> mockEventosService;
-        private static Mock<IMapper> mockMapper; // USANDO MOCK AO INVÉS DE CONFIG REAL
+        // Variáveis de instância (não static) para isolamento dos testes
+        private KitController controller = null!;
+        private Mock<IKitService> mockKitService=  null!;
+        private Mock<IEventosService> mockEventosService = null!;
+        private Mock<IMapper> mockMapper = null!;
 
         [TestInitialize]
         public void Initialize()
@@ -29,17 +32,17 @@ namespace EvenPaceWebTests
 
             // 2. Configura o Mock do Mapper (Simula o funcionamento do AutoMapper)
 
-            // Quando pedir para transformar Kit -> KitViewModel
+            // De Entity -> ViewModel
             mockMapper.Setup(m => m.Map<KitViewModel>(It.IsAny<Kit>()))
                 .Returns((Kit source) => new KitViewModel
                 {
-                    Id = (uint)source.Id,
+                    Id = (uint)source.Id, 
                     Nome = source.Nome,
                     Valor = source.Valor,
                     IdEvento = source.IdEvento
                 });
 
-            // Quando pedir para transformar KitViewModel -> Kit
+            // De ViewModel -> Entity
             mockMapper.Setup(m => m.Map<Kit>(It.IsAny<KitViewModel>()))
                 .Returns((KitViewModel source) => new Kit
                 {
@@ -49,11 +52,11 @@ namespace EvenPaceWebTests
                     IdEvento = source.IdEvento
                 });
 
-            // Quando pedir uma LISTA (List<Kit> -> List<KitViewModel>)
+            // De List<Entity> -> List<ViewModel>
             mockMapper.Setup(m => m.Map<List<KitViewModel>>(It.IsAny<List<Kit>>()))
                 .Returns((List<Kit> source) => source.Select(k => new KitViewModel
                 {
-                    Id =(uint)k.Id,
+                    Id = (uint)k.Id,
                     Nome = k.Nome,
                     Valor = k.Valor,
                     IdEvento = k.IdEvento
@@ -66,7 +69,7 @@ namespace EvenPaceWebTests
             mockKitService.Setup(service => service.Get(1))
                 .Returns(GetTargetKit());
 
-            // 4. Setup do EventosService
+            // 4. Setup do EventosService (Necessário para o IndexKit funcionar)
             mockEventosService.Setup(s => s.Get(It.IsAny<int>()))
                 .Returns(new Evento { Id = 1, Nome = "Corrida de Teste", IdOrganizacao = 1 });
 
@@ -76,31 +79,41 @@ namespace EvenPaceWebTests
             // 5. Instancia o Controller
             controller = new KitController(mockKitService.Object, mockMapper.Object, mockEventosService.Object);
 
-            controller.TempData = new Microsoft.AspNetCore.Mvc.ViewFeatures.TempDataDictionary(
-                new DefaultHttpContext(), Mock.Of<Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider>());
+            // Configura o TempData (essencial para evitar NullReferenceException ao usar TempData["Mensagem"])
+            controller.TempData = new TempDataDictionary(
+                new DefaultHttpContext(),
+                Mock.Of<ITempDataProvider>()
+            );
         }
 
         [TestMethod()]
         public void IndexKit_ComIdEvento_RetornaViewComLista()
         {
+            // Act
             var result = controller.IndexKit(1);
 
+            // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             ViewResult viewResult = (ViewResult)result;
-            Assert.IsInstanceOfType(viewResult.ViewData.Model, typeof(List<KitViewModel>));
 
-            List<KitViewModel>? lista = (List<KitViewModel>)viewResult.ViewData.Model;
+            Assert.IsInstanceOfType(viewResult.ViewData.Model, typeof(List<KitViewModel>));
+            List<KitViewModel>? lista = (List<KitViewModel>?)viewResult.ViewData.Model;
+
+            Assert.IsNotNull(lista);
             Assert.AreEqual(3, lista.Count);
         }
 
         [TestMethod()]
         public void Create_Post_Valido_RedirecionaParaIndexKit()
         {
+            // Arrange
             var novoKit = GetNewKitModel();
-            novoKit.ImagemUpload = null;
+            novoKit.ImagemUpload = null; // Simula envio sem imagem
 
+            // Act
             var result = controller.Create(novoKit);
 
+            // Assert
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
             RedirectToActionResult redirect = (RedirectToActionResult)result;
 
@@ -111,16 +124,18 @@ namespace EvenPaceWebTests
         [TestMethod()]
         public void Excluir_IdExistente_RedirecionaParaIndexKit()
         {
-            var result = controller.Excluir(1);
+            // Act
+            var result = controller.Delete(1);
 
-            mockKitService.Verify(s => s.Delete(1), Times.Once);
+            // Assert
+            mockKitService.Verify(s => s.Delete(1), Times.Once); // Verifica se o serviço foi chamado
 
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
             RedirectToActionResult redirect = (RedirectToActionResult)result;
             Assert.AreEqual("IndexKit", redirect.ActionName);
         }
 
-        // --- MÉTODOS AUXILIARES ---
+        // --- MÉTODOS AUXILIARES (Massa de Dados) ---
         private KitViewModel GetNewKitModel()
         {
             return new KitViewModel { Id = 0, Nome = "Kit Teste", Valor = 200, IdEvento = 1, Descricao = "Desc" };
@@ -128,7 +143,6 @@ namespace EvenPaceWebTests
 
         private static Kit GetTargetKit()
         {
-            // REMOVIDO O IdOrganizacao QUE CAUSAVA ERRO
             return new Kit { Id = 1, Nome = "Kit Gold", Valor = 150, IdEvento = 1, Descricao = "Existente" };
         }
 

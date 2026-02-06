@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Models.EventoViewModel>
+
+@{
+    ViewData["Title"] = "Meus Eventos";
+    Layout = "~/Views/Shared/_LayoutOrganizacaoHome.cshtml";
+    <link rel="stylesheet" href="~/css/evento.css" />
+}
+
+<main class="main-container">
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert-custom">@TempData["MensagemSucesso"]</div>
+    }
+
+    <header class="page-header header-responsive">
+        <div class="header-text">
+            <h1>Meus Eventos</h1>
+            <p class="subtitle">Escolha um evento para gerenciar</p>
+        </div>
+
+        <a asp-action="Create" class="btn-green btn-responsive">
+            <span class="btn-symbol" style="display:none;">+</span>
+            <span class="btn-text">+ Novo Evento</span>
+        </a>
+    </header>
+
+    <section class="kits-grid">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="kit-card">
+                    <div class="kit-card-image">
+                        @if (!string.IsNullOrEmpty(item.Imagem))
+                        {
+                            <img src="~/imagens/@item.Imagem" alt="Foto do Evento" />
+                        }
+                        else
+                        {
+                            <div class="placeholder-img">📷 Sem Foto</div>
+                        }
+                    </div>
+
+                    <div class="kit-card-body">
+                        <h3 class="kit-title">@item.Nome</h3>
+                        <p class="kit-price">@item.Data.ToString("dd/MM/yyyy")</p>
+                        <span style="font-size: 0.9rem; color: #888;">@item.Cidade - @item.Estado</span>
+                    </div>
+
+                    <div class="kit-card-actions">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn-action open" title="Abrir">📂 Abrir</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action edit" title="Editar">✏️ Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action delete" title="Excluir" onclick="return confirm('Apagar este evento?');">🗑️ Excluir</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state-card" style="grid-column: 1 / -1; text-align: center; padding: 40px; border: 2px dashed #ccc; border-radius: 10px; color: #666;">
+                <p>Nenhum evento encontrado.</p>
+                <a asp-action="Create" style="font-weight: bold; color: #28a745; text-decoration: underline;">Criar meu primeiro evento</a>
+            </div>
+        }
+    </section>
+</main>
+<script src="~/js/evento.js"></script>
