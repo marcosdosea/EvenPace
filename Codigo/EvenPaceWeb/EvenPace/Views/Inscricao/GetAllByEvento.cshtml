@@ -1,0 +1,137 @@
+@model List<Models.InscricaoViewModel>
+
+@{
+    ViewData["Title"] = "Listagem de Ingressos";
+    Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+}
+<link rel="stylesheet" href="~/css/kit.css" />
+<link rel="stylesheet" href="~/css/Ingresso.css" />
+
+<main class="main-container">
+    
+    <header class="page-header">
+        <div class="header-titles">
+            <h1>Insgresos</h1>
+            <p class="subtitle">@ViewBag.NomeCorrida</p>
+        </div>
+    </header>
+
+    <div class="ingressos-container">
+
+        <section class="ingressos-resumo">
+            <div class="resumo-card aprovado">Ingressos Aprovados: <strong>100</strong></div>
+            <div class="resumo-card cancelado">Ingressos Cancelados: <strong>10</strong></div>
+            <div class="resumo-card pendente">Ingressos Pendentes: <strong>100</strong></div>
+        </section>
+
+        <section class="ingressos-tabela-wrapper">
+            <table id="tabelaIngressos" class="display ingressos-table">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Kit</th>
+                    <th>Distância</th>
+                    <th>Camisa</th>
+                    <th>Check-in</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    @Html.AntiForgeryToken()
+                    <tr>
+                        <td class="text-nowrap">@item.IdCorredorNavigation.Nome</td>
+                        <td class="text-nowrap">@item.IdCorredorNavigation.Cpf/td>
+                        <td class="text-nowrap">@item.IdKitNavigation.Nome</td>
+                        <td class="text-nowrap">
+                            @if (item.IdEventoNavigation.Distancia3)
+                            {
+                                <span class="badge bg-success"> 3 Km</span>
+                            }
+                    
+                            @if (item.IdEventoNavigation.Distancia5)
+                            {
+                                <span class="badge bg-success"> 5 Km</span>
+                            }
+                    
+                            @if (item.IdEventoNavigation.Distancia7)
+                            {
+                                <span class="badge bg-success"> 7 Km</span>
+                            }
+                    
+                            @if (item.IdEventoNavigation.Distancia10)
+                            {
+                                <span class="badge bg-success"> 10 Km</span>
+                            }
+                    
+                            @if (item.IdEventoNavigation.Distancia15)
+                            {
+                                <span class="badge bg-success"> 15 Km</span>
+                            }
+
+                            @if (item.IdEventoNavigation.Distancia21)
+                            {
+                                <span class="badge bg-success"> 21 Km</span>
+                            }
+
+                            @if (item.IdEventoNavigation.Distancia42)
+                            {
+                                <span class="badge bg-success"> 42 Km</span>
+                            }
+                            </td>
+                        <td class="text-nowrap">
+                            @if(item.IdKitNavigation.UtilizadaP == 1)
+                            {
+                                <span class="badge bg-success">P</span>
+                            }
+                            else if(item.IdKitNavigation.UtilizadaG == 1)
+                            {
+                                <span class="badge bg-success">G</span>
+                            }
+                            else if(item.IdKitNavigation.UtilizadaM == 1)
+                            {
+                                <span class="badge bg-success">M</span>
+                            }
+                        </td>
+                        <td class="text-nowrap">
+                            @if (item.IdKitNavigation.StatusRetiradaKit == true)
+                            {
+                                <span class="badge bg-success">Retirado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Não Retirado</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+</main>
+@section Scripts {
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabelaIngressos').DataTable({
+                language: {
+                    search: "Pesquisar:",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ ingressos",
+                    paginate: {
+                        previous: "Anterior",
+                        next: "Próximo"
+                    }
+                },
+                pageLength: 10,
+                ordering: true
+            });
+        });
+    </script>
+}
