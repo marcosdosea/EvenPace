@@ -11,12 +11,13 @@ namespace EvenPaceWeb.Controllers
     {
         private readonly IEventosService _eventoService;
         private readonly IMapper _mapper;
+
         public EventoController(IEventosService eventoService, IMapper mapper)
         {
             _eventoService = eventoService;
             _mapper = mapper;
         }
-        // GET: EventoController
+
         public ActionResult Index()
         {
             var eventos = _eventoService.GetAll();
@@ -24,7 +25,6 @@ namespace EvenPaceWeb.Controllers
             return View(eventoViewModels);
         }
 
-        // GET: EventoController/Details/5
         public ActionResult Details(int id)
         {
             var evento = _eventoService.Get(id);
@@ -32,26 +32,46 @@ namespace EvenPaceWeb.Controllers
             return View(eventoViewModel);
         }
 
-        // GET: EventoController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: EventoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(EventoViewModel eventoViewModel)
+        public async Task<ActionResult> Create(EventoViewModel eventoViewModel)
         {
             if (ModelState.IsValid)
             {
-                var evento = _mapper.Map<Core.Evento>(eventoViewModel);
+                if (eventoViewModel.ImagemUpload != null)
+                {
+                    string pasta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
+
+                    if (!Directory.Exists(pasta))
+                        Directory.CreateDirectory(pasta);
+
+                    string nomeArquivo = Guid.NewGuid().ToString() +
+                                         Path.GetExtension(eventoViewModel.ImagemUpload.FileName);
+
+                    string caminho = Path.Combine(pasta, nomeArquivo);
+
+                    using (var stream = new FileStream(caminho, FileMode.Create))
+                    {
+                        await eventoViewModel.ImagemUpload.CopyToAsync(stream);
+                    }
+
+                    eventoViewModel.Imagem = nomeArquivo;
+                }
+
+                var evento = _mapper.Map<Evento>(eventoViewModel);
                 _eventoService.Create(evento);
+
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+
+            return View(eventoViewModel);
         }
 
-        // GET: EventoController/Edit/5
         public ActionResult Edit(int id)
         {
             var evento = _eventoService.Get(id);
@@ -59,21 +79,41 @@ namespace EvenPaceWeb.Controllers
             return View(eventoViewModel);
         }
 
-        // POST: EventoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EventoViewModel eventoViewModel)
+        public async Task<ActionResult> Edit(EventoViewModel eventoViewModel)
         {
             if (ModelState.IsValid)
             {
-                var evento = _mapper.Map<Core.Evento>(eventoViewModel);
-                _eventoService.Edit(evento);
-            }
-            return RedirectToAction(nameof(Index));
+                if (eventoViewModel.ImagemUpload != null)
+                {
+                    string pasta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
 
+                    if (!Directory.Exists(pasta))
+                        Directory.CreateDirectory(pasta);
+
+                    string nomeArquivo = Guid.NewGuid().ToString() +
+                                         Path.GetExtension(eventoViewModel.ImagemUpload.FileName);
+
+                    string caminho = Path.Combine(pasta, nomeArquivo);
+
+                    using (var stream = new FileStream(caminho, FileMode.Create))
+                    {
+                        await eventoViewModel.ImagemUpload.CopyToAsync(stream);
+                    }
+
+                    eventoViewModel.Imagem = nomeArquivo;
+                }
+
+                var evento = _mapper.Map<Evento>(eventoViewModel);
+                _eventoService.Edit(evento);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(eventoViewModel);
         }
 
-        // GET: EventoController/Delete/5
         public ActionResult Delete(int id)
         {
             var evento = _eventoService.Get(id);
@@ -81,14 +121,12 @@ namespace EvenPaceWeb.Controllers
             return View(eventoViewModel);
         }
 
-        // POST: EventoController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            _eventoService.Delete((int)id);
+            _eventoService.Delete(id);
             return RedirectToAction(nameof(Index));
-
         }
     }
 }

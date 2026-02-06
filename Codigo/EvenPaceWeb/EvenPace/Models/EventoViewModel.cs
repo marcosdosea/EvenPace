@@ -70,7 +70,9 @@ namespace Models
         [DataType(DataType.MultilineText)]
         public string InfoRetiradaKit { get; set; } = null!;
 
-      
+        public string? Imagem { get; set; }
+        public IFormFile? ImagemUpload { get; set; }
+
 
         [Required(ErrorMessage = "Selecione a organização responsável.")]
         [Display(Name = "Organização")]
