@@ -42,7 +42,7 @@ namespace EvenPaceWebTests.Service
 
             service.Create(inscricao);
 
-            Assert.AreEqual(1, context.Inscricaos.Count());
+            Assert.AreEqual(1, context.Inscricao.Count());
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace EvenPaceWebTests.Service
                 IdKit = 1
             };
 
-            context.Inscricaos.Add(inscricao);
+            context.Inscricao.Add(inscricao);
             context.SaveChanges();
 
             var result = service.Get(1);
@@ -71,7 +71,7 @@ namespace EvenPaceWebTests.Service
         [TestMethod]
         public void GetAll_DeveRetornarListaDeInscricoes()
         {
-            context.Inscricaos.AddRange(
+            context.Inscricao.AddRange(
                 new Inscricao
                 {
                     Id = 1,
@@ -107,25 +107,36 @@ namespace EvenPaceWebTests.Service
             var evento = new Evento
             {
                 Id = 1,
+                Nome = "Evento Teste",
+                Descricao = "Descrição teste",
+                Cidade = "São Paulo",
+                Estado = "SP",
+                Bairro = "Centro",
+                Rua = "Rua A",
+                InfoRetiradaKit = "Retirada no local",
                 Data = DateTime.Now.AddDays(5)
             };
+
 
             var inscricao = new Inscricao
             {
                 Id = 1,
                 Status = "Confirmada",
+                Distancia = "5km",
+                TamanhoCamisa = "M",
                 IdEvento = 1,
                 IdCorredor = 1,
+                IdKit = 1,
                 IdEventoNavigation = evento
             };
 
             context.Eventos.Add(evento);
-            context.Inscricaos.Add(inscricao);
+            context.Inscricao.Add(inscricao);
             context.SaveChanges();
 
             service.Cancelar(1, 1);
 
-            var result = context.Inscricaos.First();
+            var result = context.Inscricao.First();
             Assert.AreEqual("Cancelada", result.Status);
         }
 

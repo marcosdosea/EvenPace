@@ -75,9 +75,6 @@ namespace EvenPace.Controllers
 
         public IActionResult Index(int id)
         {
-            if (id == 0)
-                return BadRequest("https://localhost:5157/Inscricao/TelaInscricao/1");
-
             var vm = new TelaInscricaoViewModel
             {
                 IdEvento = id,
@@ -94,9 +91,6 @@ namespace EvenPace.Controllers
         [HttpGet]
         public IActionResult Create(int id)
         {
-            if (id == 0)
-                return Content("ID RECEBIDO = 0");
-
             var vm = new TelaInscricaoViewModel
             {
                 IdEvento = id,
@@ -144,12 +138,6 @@ namespace EvenPace.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(TelaInscricaoViewModel vm)
         {
-            if (vm?.Inscricao == null)
-                throw new Exception("Inscrição veio null");
-
-            if (vm.Inscricao.IdEvento == 0)
-                throw new Exception("IdEvento não veio do formulário");
-
             var idCorredorClaim = User.FindFirst("IdCorredor");
             if (idCorredorClaim == null)
             {
@@ -180,16 +168,9 @@ namespace EvenPace.Controllers
                 new { id = vm.Inscricao.IdEvento }
             );
         }
-
-      
+        
         private void PopularTelaInscricao(TelaInscricaoViewModel vm)
         {
-            if (vm == null)
-                throw new Exception("ViewModel está null");
-
-            if (vm.IdEvento == 0)
-                throw new Exception("IdEvento não foi informado");
-
             var evento = _eventoService.Get(vm.IdEvento);
             if (evento == null)
                 throw new Exception($"Evento {vm.IdEvento} não existe no banco");

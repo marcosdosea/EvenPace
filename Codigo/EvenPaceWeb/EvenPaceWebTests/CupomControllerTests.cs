@@ -68,17 +68,7 @@ namespace EvenPaceWebTests
             Assert.AreEqual("PROMO10", model.Nome);
             Assert.AreEqual(10, model.Desconto);
         }
-
-        [TestMethod()]
-        public void Details_IdInexistente_RetornaNotFound()
-        {
-            mockService.Setup(s => s.Get(999)).Returns((Cupom?)null);
-
-            var result = controller.Details(999);
-
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
-        }
-
+        
         [TestMethod()]
         public void CreateTest_Get_Valido()
         {

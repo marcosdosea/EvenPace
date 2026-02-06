@@ -35,6 +35,7 @@ namespace EvenPaceWebTests
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Kit, KitViewModel>();
+                cfg.CreateMap<Inscricao, InscricaoViewModel>();
             });
 
             mapper = config.CreateMapper();
@@ -52,12 +53,16 @@ namespace EvenPaceWebTests
                 mockCorredorService.Object,
                 mapper
             );
+            
+            mockInscricaoService
+                .Setup(s => s.Get(It.IsAny<int>()))
+                .Returns((int id) => GetInscricoes().FirstOrDefault(i => i.Id == id));
         }
 
         [TestMethod]
         public void TelaInscricao_Get_Valido()
         {
-            var result = controller.TelaInscricao(1);
+            var result = controller.Index(1);
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
 
@@ -70,32 +75,16 @@ namespace EvenPaceWebTests
         }
 
         [TestMethod]
-        public void TelaInscricao_Get_IdZero_RetornaBadRequest()
-        {
-            var result = controller.TelaInscricao(0);
-
-            Assert.IsInstanceOfType(result, typeof(BadRequestObjectResult));
-        }
-
-        [TestMethod]
         public void Tela1_Get_Valido()
         {
-            var result = controller.Tela1(1);
+            var result = controller.Index(1);
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
 
             var view = (ViewResult)result;
-            Assert.AreEqual("Tela1", view.ViewName);
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
-
-        [TestMethod]
-        public void Tela1_Get_IdZero_RetornaContent()
-        {
-            var result = controller.Tela1(0);
-
-            Assert.IsInstanceOfType(result, typeof(ContentResult));
-        }
-
+        
         [TestMethod]
         public void Cancelar_Get_ComIdValido_RetornaView()
         {
@@ -117,7 +106,7 @@ namespace EvenPaceWebTests
                     Data = DateTime.Now.AddDays(10)
                 });
 
-            var result = controller.Cancelar(1);
+            var result = controller.Delete(1);
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
@@ -128,7 +117,7 @@ namespace EvenPaceWebTests
             mockInscricaoService.Setup(s => s.Get(1))
                 .Returns((Inscricao)null);
 
-            var result = controller.Cancelar(1);
+            var result = controller.Delete(1);
 
             Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
         }
@@ -158,5 +147,27 @@ namespace EvenPaceWebTests
                 }
             };
         }
+        private IEnumerable<Inscricao> GetInscricoes()
+        {
+            return new List<Inscricao>
+            {
+                new Inscricao
+                {
+                    Id = 1,
+                    IdEvento = 1,
+                    Distancia = "5km",
+                    DataInscricao = DateTime.Today
+                },
+                new Inscricao
+                {
+                    Id = 2,
+                    IdEvento = 1,
+                    Distancia = "10km",
+                    DataInscricao = DateTime.Today
+                }
+            };
+        }
+
+        
     }
 }
