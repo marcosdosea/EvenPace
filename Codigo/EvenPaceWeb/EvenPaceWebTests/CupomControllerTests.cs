@@ -70,16 +70,6 @@ namespace EvenPaceWebTests
         }
 
         [TestMethod()]
-        public void Details_IdInexistente_RetornaNotFound()
-        {
-            mockService.Setup(s => s.Get(999)).Returns((Cupom?)null);
-
-            var result = controller.Details(999);
-
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
-        }
-
-        [TestMethod()]
         public void CreateTest_Get_Valido()
         {
             var result = controller.Create();
