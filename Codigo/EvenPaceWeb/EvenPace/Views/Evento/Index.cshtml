@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Models.EventoViewModel>
+@model IEnumerable<Models.EventoViewModel>
 
 @{
     ViewData["Title"] = "Meus Eventos";
@@ -52,6 +52,15 @@
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn-action open" title="Abrir">📂 Abrir</a>
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action edit" title="Editar">✏️ Editar</a>
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action delete" title="Excluir" onclick="return confirm('Apagar este evento?');">🗑️ Excluir</a>
+                 <a asp-controller="Inscricao"
+           asp-action="Index"
+           asp-route-id="1"
+           class="btn-action"
+           style="background:#ffc107;">
+           🏃 Inscrever
+        </a>
+
+
                     </div>
                 </div>
             }

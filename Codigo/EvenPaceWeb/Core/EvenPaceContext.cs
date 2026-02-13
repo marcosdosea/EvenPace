@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
@@ -260,7 +261,7 @@ public partial class EvenPaceContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Inscricao_Evento1");
 
-            entity.HasOne(d => d.IdKitNavigation).WithMany(p => p.Inscricaos)
+            entity.HasOne(d => d.IdKitNavigation).WithMany(p => p.Inscricao)
                 .HasForeignKey(d => d.IdKit)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Inscricao_Kit1");

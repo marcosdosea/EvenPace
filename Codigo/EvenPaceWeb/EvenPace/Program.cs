@@ -10,10 +10,17 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(EvenPaceWeb.Mappers.AutoMapperProfile));
 builder.Services.AddScoped<ICorredorService, CorredorService>();
 
-var cs = builder.Configuration.GetConnectionString("EvenPaceDatabase");
+// var cs = builder.Configuration.GetConnectionString("EvenPaceDatabase");
+//builder.Services.AddDbContext<EvenPaceContext>(options =>options.UseMySQL(cs));
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<EvenPaceContext>(options =>
-    options.UseMySQL(cs));
+    options.UseMySql(
+        connectionString,
+        ServerVersion.AutoDetect(connectionString)
+    )
+);
 
 builder.Services.AddScoped<IInscricaoService, InscricaoService>();
 builder.Services.AddScoped<IEventosService, EventoService>();
