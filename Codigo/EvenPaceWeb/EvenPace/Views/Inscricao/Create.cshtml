@@ -1,4 +1,4 @@
-﻿@model EvenPaceWeb.Models.TelaInscricaoViewModel
+@model EvenPaceWeb.Models.TelaInscricaoViewModel
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -171,13 +171,16 @@
 
             @if (!string.IsNullOrEmpty(Model.ImagemEvento))
             {
-                <img src="~/@Model.ImagemEvento"
-                     class="img-fluid mb-4"
-                     style="width:100%; height:250px; object-fit:cover; border-radius:14px;" />
+            <img src="@Url.Content($"~/imagens/{Model.ImagemEvento}")"
+                 class="img-fluid mb-4"
+                 style="width:100%; height:220px; object-fit:cover; border-radius:14px;" />
             }
+
             else
             {
-                <div class="image-placeholder">Sem imagem do evento</div>
+            <div class="image-placeholder">
+                Sem imagem do evento
+            </div>
             }
 
         <h2 class="mb-4">@Model.NomeEvento</h2>
