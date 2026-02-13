@@ -1,4 +1,4 @@
-﻿@model EvenPaceWeb.Models.TelaInscricaoViewModel
+@model EvenPaceWeb.Models.TelaInscricaoViewModel
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -141,16 +141,18 @@
 
             @if (!string.IsNullOrEmpty(Model.ImagemEvento))
             {
-        <img src="~/@Model.ImagemEvento"
+        <img src="@Url.Content($"~/imagens/{Model.ImagemEvento}")"
              class="img-fluid mb-4"
              style="width:100%; height:220px; object-fit:cover; border-radius:14px;" />
             }
+
             else
             {
         <div class="image-placeholder">
             Sem imagem do evento
         </div>
             }
+
 
 
         <h2 class="fw-bold text-center mt-2 mb-4">@Model.NomeEvento</h2>
@@ -178,39 +180,44 @@
         <div class="percurso-opcoes">
                 @foreach (var percurso in Model.Percursos)
                 {
-                    <span class="badge-distance">@percurso</span>
+                        <span class="badge-distance">@percurso</span>
                 }
         </div>
 
             @if (!string.IsNullOrEmpty(Model.InfoRetiradaKit))
             {
-                <h6 class="fw-bold">Informações de retirada de kits</h6>
-                <p>@Html.Raw(Model.InfoRetiradaKit.Replace("\n", "<br />"))</p>
+                    <h6 class="fw-bold">Informações de retirada de kits</h6>
+                    <p>@Html.Raw(Model.InfoRetiradaKit.Replace("\n", "<br />"))</p>
             }
 
             @foreach (var kit in Model.Kits)
             {
-                <div class="kit-card">
+                    <div class="kit-card">
 
                     @if (!string.IsNullOrEmpty(kit.Imagem))
                     {
-                            <img src="~/@kit.Imagem"
-                                 style="width:90px; height:90px; object-fit:cover; border-radius:10px;" />
+            <img src="@Url.Content($"~/imagens/{kit.Imagem}")"
+                 width="90"
+                 height="90"
+                 style="object-fit:cover; border-radius:10px;" />
                     }
 
-                    <div>
-                        <div class="fw-bold">@kit.Nome</div>
-                        <small>@kit.Descricao</small><br />
-                        <span class="fw-bold">R$ @kit.Valor.ToString("N2")</span>
-                    </div>
 
-                    <a asp-controller="Inscricao"
-                       asp-action="Create"
-                       asp-route-id="@Model.IdEvento"
-                       class="btn btn-warning btn-lg rounded-pill px-4">
-                        Inscrever-se
-                    </a>
-                </div>
+
+
+                        <div>
+                            <div class="fw-bold">@kit.Nome</div>
+                            <small>@kit.Descricao</small><br />
+                            <span class="fw-bold">R$ @kit.Valor.ToString("N2")</span>
+                        </div>
+
+                        <a asp-controller="Inscricao"
+                           asp-action="Create"
+                           asp-route-id="@Model.IdEvento"
+                           class="btn btn-warning btn-lg rounded-pill px-4">
+                            Inscrever-se
+                        </a>
+                    </div>
             }
 
     </div>
