@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Core.Service;
 using Core;
 using Models;
@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.IO;
+using EvenPaceWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EvenPace.Controllers
 {
@@ -15,13 +17,20 @@ namespace EvenPace.Controllers
         private readonly IEventosService _service;
         private readonly IKitService _kitService;
         private readonly IMapper _mapper;
+        private readonly EvenPaceContext _context;
 
-        public EventoController(IEventosService service, IKitService kitService, IMapper mapper)
+        public EventoController(
+            IEventosService service,
+            IKitService kitService,
+            IMapper mapper,
+            EvenPaceContext context)
         {
             _service = service;
             _kitService = kitService;
             _mapper = mapper;
+            _context = context;
         }
+   
 
         // ==========================================================
         // 1. INDEX (Listagem)
@@ -53,7 +62,7 @@ namespace EvenPace.Controllers
             ViewBag.IdEventoAtual = viewModel.Id;
             ViewBag.NomeCorrida = viewModel.Nome;
 
-            // Lembre-se de renomear a View "Resumo.cshtml" para "Details.cshtml"
+           
             return View(viewModel);
         }
 
@@ -185,6 +194,9 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
+
+
+
         // ==========================================================
         // 7. DELETE (Excluir)
         // ==========================================================
@@ -237,6 +249,38 @@ namespace EvenPace.Controllers
 
             return nomeUnico;
         }
+
+        [HttpGet]
+        public IActionResult IndexUsuario(string search)
+        {
+            var eventos = _context.Eventos.AsQueryable();
+
+           
+            if (!string.IsNullOrEmpty(search))
+            {
+                eventos = eventos.Where(e =>
+                    e.Nome.Contains(search) ||
+                    e.Cidade.Contains(search) ||
+                    e.Estado.Contains(search));
+            }
+
+            var model = eventos
+                .Select(e => new TelaListaEventosViewModel
+                {
+                    Id = e.Id,
+                    Nome = e.Nome,
+                    Data = e.Data,
+                    Cidade = e.Cidade,
+                    Estado = e.Estado,
+                    Imagem = e.Imagem
+                })
+                .ToList();
+
+            return View(model);
+        }
+
+
+
 
         private void DeletarImagemDoDisco(string nomeImagem)
         {
