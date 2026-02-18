@@ -53,7 +53,7 @@ namespace EvenPaceWebTests
                 mockCorredorService.Object,
                 mapper
             );
-            
+
             mockInscricaoService
                 .Setup(s => s.Get(It.IsAny<int>()))
                 .Returns((int id) => GetInscricoes().FirstOrDefault(i => i.Id == id));
@@ -84,7 +84,7 @@ namespace EvenPaceWebTests
             var view = (ViewResult)result;
             Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
-        
+
         [TestMethod]
         public void Cancelar_Get_ComIdValido_RetornaView()
         {
@@ -147,26 +147,7 @@ namespace EvenPaceWebTests
                 }
             };
         }
-        private IEnumerable<Inscricao> GetInscricoes()
-        {
-            return new List<Inscricao>
-            {
-                new Inscricao
-                {
-                    Id = 1,
-                    IdEvento = 1,
-                    Distancia = "5km",
-                    DataInscricao = DateTime.Today
-                },
-                new Inscricao
-                {
-                    Id = 2,
-                    IdEvento = 1,
-                    Distancia = "10km",
-                    DataInscricao = DateTime.Today
-                }
-            };
-        } 
+
         private IEnumerable<Inscricao> GetInscricoes()
         {
             return new List<Inscricao>
@@ -189,7 +170,7 @@ namespace EvenPaceWebTests
                 }
             };
         }
-        
+
         [TestMethod]
         public void GetAllByEvento_IdValido_RetornaViewComLista()
         {
@@ -208,6 +189,6 @@ namespace EvenPaceWebTests
             Assert.IsTrue(model.All(i => i.IdEvento == 1));
         }
 
-        
+
     }
 }

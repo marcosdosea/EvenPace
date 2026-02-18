@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core;
 
-[Table("evento")] 
+[Table("evento")]
 public partial class Evento
 {
     [Key]
-    [Column("id")] 
+    [Column("id")]
     public int Id { get; set; }
 
     [Column("data")]
@@ -21,9 +21,9 @@ public partial class Evento
     [Column("numeroParticipantes")]
     public int NumeroParticipantes { get; set; }
 
-    [Column("descricao")] 
+    [Column("descricao")]
     public string Descricao { get; set; } = null!;
-    
+
     [Column("distancia3")]
     public bool Distancia3 { get; set; }
 
@@ -65,7 +65,7 @@ public partial class Evento
 
     [Column("nome")]
     public string Nome { get; set; } = null!;
-    
+
     // Relacionamentos e Navegação
     public virtual ICollection<Cupom> Cupoms { get; set; } = new List<Cupom>();
 

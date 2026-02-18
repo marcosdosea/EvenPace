@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core;
 
@@ -16,6 +17,9 @@ public partial class Corredor
     public DateTime DataNascimento { get; set; }
 
     public string Senha { get; set; } = null!;
+
+    [Column("imagem")]
+    public string? Imagem { get; set; }
 
     public virtual CartaoCredito? CartaoCredito { get; set; }
 
