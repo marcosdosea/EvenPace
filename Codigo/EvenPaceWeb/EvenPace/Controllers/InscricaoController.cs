@@ -6,7 +6,6 @@ using EvenPaceWeb.Models;
 using Service;
 using Models;
 
-//https://localhost:7131/Inscricao/TelaInscricao/1 para rodar 
 namespace EvenPace.Controllers
 {
     public class InscricaoController : Controller
@@ -54,7 +53,7 @@ namespace EvenPace.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var vm = new TelaInscricaoViewModel
+            var vm = new InscricaoViewModel
             {
                 NomeEvento = evento.Nome,
                 DataEvento = evento.Data,
@@ -75,7 +74,7 @@ namespace EvenPace.Controllers
 
         public IActionResult Index(int id)
         {
-            var vm = new TelaInscricaoViewModel
+            var vm = new InscricaoViewModel
             {
                 IdEvento = id,
                 Inscricao = new InscricaoViewModel
@@ -84,14 +83,14 @@ namespace EvenPace.Controllers
                 }
             };
 
-            PopularTelaInscricao(vm);
+            ConfigurarInscricao(vm);
             return View(vm);
         }
 
         [HttpGet]
         public IActionResult Create(int id)
         {
-            var vm = new TelaInscricaoViewModel
+            var vm = new InscricaoViewModel
             {
                 IdEvento = id,
                 Inscricao = new InscricaoViewModel
@@ -100,7 +99,7 @@ namespace EvenPace.Controllers
                 }
             };
 
-            PopularTelaInscricao(vm);
+            ConfigurarInscricao(vm);
 
             return View("Create", vm); 
         }
@@ -136,7 +135,7 @@ namespace EvenPace.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(TelaInscricaoViewModel vm)
+        public IActionResult Index(InscricaoViewModel vm)
         {
             var idCorredorClaim = User.FindFirst("IdCorredor");
             if (idCorredorClaim == null)
@@ -169,7 +168,7 @@ namespace EvenPace.Controllers
             );
         }
         
-        private void PopularTelaInscricao(TelaInscricaoViewModel vm)
+        private void ConfigurarInscricao(InscricaoViewModel vm)
         {
             var evento = _eventoService.Get(vm.IdEvento);
             if (evento == null)
@@ -182,7 +181,7 @@ namespace EvenPace.Controllers
             vm.DataEvento = evento.Data;
             vm.Descricao = evento.Descricao;
             vm.ImagemEvento = evento.Imagem;
-            // vm.InfoRetiradaKit = evento.InfoRetiradaKit;
+            vm.InfoRetiradaKit = evento.InfoRetiradaKit;
 
             vm.Percursos = new List<string> { "3km", "5km", "10km" };
             vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
