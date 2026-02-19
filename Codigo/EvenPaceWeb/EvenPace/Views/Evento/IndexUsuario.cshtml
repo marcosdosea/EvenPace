@@ -1,286 +1,178 @@
 @model IEnumerable<Models.EventoViewModel>
 
+@{
+    Layout = null;
+}
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8" />
-    <title>Eventos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8" />
+<title>Eventos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-
- <style>
-    body {
-        background: #f5c400;
-        margin: 0;
-        padding: 20px;
-    }
-
-
-.phone {
-    width: 360px;              
-    max-width: 100%;           
-    height: 640px;            
-    margin: 20px auto;
-    background-color: #fff;
-    border-radius: 30px;      
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+<style>
+body {
+    background: #f5c400;
+}
+.app-card {
+    background: #fff;
+    border-radius: 1rem;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    font-size: 16px;
-    border: 1px solid #ccc;  
+    height: 85vh;
     position: relative;
 }
-
-  html, body {
-    height: 100%;
+.header {
+    padding: 18px;
+    border-bottom: 1px solid #eee;
 }
-
+.search-wrapper {
+    display: flex;
+}
+.search-input {
+    flex: 1;
+    border: 1px solid #000;
+    border-right: none;
+    border-radius: 25px 0 0 25px;
+    padding: 10px;
+}
+.search-btn {
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 0 25px 25px 0;
+    padding: 10px 16px;
+}
+.filter-box {
+    margin-top: 8px;
+}
 .app-content {
     flex: 1;
     overflow-y: auto;
-    padding: 10px;
+    padding: 12px;
 }
-
-
-    .header {
-        padding: 18px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .search-wrapper {
-        display: flex;
-        align-items: center;
-    }
-
-    .search-input {
-        flex: 1;
-        border: 1px solid #000;
-        border-right: none;
-        border-radius: 25px 0 0 25px;
-        padding: 10px 14px;
-        outline: none;
-    }
-
-    .search-btn {
-        background: #000;
-        color: #fff;
-        border: 1px solid #000;
-        border-radius: 0 25px 25px 0;
-        padding: 10px 16px;
-        cursor: pointer;
-    }
-
-    .filter-box {
-        margin-top: 10px;
-        font-size: .9rem;
-        cursor: pointer;
-    }
-
-
-    .events-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
-    }
-
-    .event-card {
-        border-radius: 14px;
-        overflow: hidden;
-        border: 1px solid #eee;
-        background: #fff;
-    }
-
-    .event-card img {
-        width: 100%;
-        height: 220px;
-        object-fit: cover;
-        background: #eef1f4;
-    }
-
-    .event-body {
-        padding: 14px;
-    }
-
-    .event-title {
-        font-weight: bold;
-        font-size: 1rem;
-        margin-bottom: 6px;
-    }
-
-    .event-info {
-        font-size: .9rem;
-        color: #6c757d;
-    }
-
-    .bottom-nav {
-        height: 70px;
-        border-top: 1px solid #ddd;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        font-size: 12px;
-        background: #fff;
-          flex-shrink: 0;
-    }
-
-    .bottom-nav div {
-        text-align: center;
-        cursor: pointer;
-    }
-
-    .bottom-nav div:hover {
-        color: #f5c400;
-    }
-
-
-/*.event-card {
-      width: 1px;
-    border-radius: 14px;
-    overflow: hidden;
-    border: 1px solid #eee;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 360px;       /* mantém todos os cards alinhados */
-}
-*/
-
-
-* {
-    box-sizing: border-box;
-}
-
-
 .events-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); 
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding: 10px;
 }
-
-.events-grid > a {
-    display: block; 
-    text-decoration: none;
-    color: inherit;
-}
-
 .event-card {
-    width: 100%; 
     border-radius: 14px;
     overflow: hidden;
     border: 1px solid #eee;
     background: #fff;
     display: flex;
     flex-direction: column;
-    min-height: 380px; 
 }
-
 .event-card img {
     width: 100%;
-    height: 150px; 
+    height: 150px;
     object-fit: cover;
 }
-
+.event-body {
+    padding: 10px;
+}
+.event-title {
+    font-weight: bold;
+}
+.event-info {
+    font-size: .9rem;
+    color: #6c757d;
+}
 .btn-inscrever {
     display: block;
-    width: 80%;             
-    margin: 10px auto 0 auto;
-    padding: 6px 0;           
+    width: 80%;
+    margin: 10px auto 0;
+    padding: 6px 0;
     background: #000;
     color: #fff;
     text-align: center;
     border-radius: 999px;
     font-weight: 600;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
 }
-
-.btn-inscrever:hover {
-    background: #f5c400;
-    color: #000;
+.bottom-nav {
+    height: 70px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 12px;
+    background: #fff;
+    flex-shrink: 0;
 }
-
-        @@media (max-width: 340px) {
-    .events-grid {
-        grid-template-columns: 1fr;
-    }
-
-
-    }
 </style>
-
 </head>
 
 <body>
 
-<div class="phone">
+<section class="vh-100 d-flex align-items-center">
 
-        <div class="header">
-    <form method="get" asp-action="IndexUsuario">
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+<div class="app-card shadow-lg">
+
+<div class="header">
+<form method="get" asp-action="IndexUsuario">
     <div class="search-wrapper">
         <input type="text"
                name="search"
                class="search-input"
                placeholder="Pesquisar"
                value="@Context.Request.Query["search"]" />
-
         <button type="submit" class="search-btn">🔍</button>
     </div>
 </form>
+<div class="filter-box">🔽 Filtro</div>
+</div>
 
-
-        <div class="filter-box">
-            🔽 Filtro
-        </div>
-    </div>
-
-
-    <div class="app-content">
-        <div class="events-grid">
-                @foreach (var evento in Model)
-                {
-        <a asp-controller="Inscricao" 
-           asp-action="Index" 
-           asp-route-id="@evento.Id" 
-           style="text-decoration:none; color:inherit; display: block;">
-
-            <div class="event-card">
-                <img src="@Url.Content("~/imagens/" + evento.Imagem)" />
-
-                <div class="event-body">
-                    <div class="event-title">@evento.Nome</div>
-                    <div class="event-info">
-                        📍 @evento.Cidade - @evento.Estado <br />
-                        📅 @evento.Data.ToString("dd/MM/yyyy")
+<div class="app-content">
+    <div class="events-grid">
+                                @foreach (var evento in Model)
+                                {
+                <a asp-controller="Inscricao"
+                   asp-action="Index"
+                   asp-route-id="@evento.Id"
+                   style="text-decoration:none; color:inherit;">
+                    <div class="event-card">
+                        <img src="@Url.Content("~/imagens/" + evento.Imagem)" />
+                        <div class="event-body">
+                            <div class="event-title">@evento.Nome</div>
+                            <div class="event-info">
+                                📍 @evento.Cidade - @evento.Estado <br />
+                                📅 @evento.Data.ToString("dd/MM/yyyy")
+                            </div>
+                            <div class="btn-inscrever">
+                                Inscrever-se
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="btn-inscrever">
-                        Inscrever-se
-                    </div>
-                </div>
-            </div>
-        </a>
-                }
-        </div>
+                </a>
+                                }
     </div>
+</div>
 
-    <div class="bottom-nav">
-        <a asp-controller="Evento" asp-action="IndexUsuario" style="text-decoration: none; color: inherit;">
-    <div>🏠<br />Início</div>
-</a>
-
-        <div>🏆<br />Conquistas</div>
-        <div>🎟️<br />Cupons</div>
-        <div>🕓<br />Histórico</div>
-        <div>👤<br />Perfil</div>
-    </div>
+<div class="bottom-nav">
+    <a asp-controller="Evento" asp-action="IndexUsuario" style="text-decoration:none; color:inherit;">
+        🏠<br />Início
+    </a>
+    <div>🏆<br />Conquistas</div>
+    <div>🎟️<br />Cupons</div>
+    <div>🕓<br />Histórico</div>
+    <div>👤<br />Perfil</div>
+</div>
 
 </div>
+
+</div>
+</div>
+</div>
+
+</section>
 
 </body>
 </html>
