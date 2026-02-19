@@ -1,16 +1,22 @@
 @model EvenPaceWeb.Models.TelaInscricaoViewModel
+
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Cancelar Inscrição</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
 
 <style>
 body {
     background: #f5c400;
 }
+
 .app-card {
     background: #fff;
     border-radius: 1rem;
@@ -19,22 +25,27 @@ body {
     flex-direction: column;
     height: 85vh;
     position: relative;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15); /* mesma sombra da tela 1 */
 }
+
 .header {
     padding: 18px;
     border-bottom: 1px solid #eee;
     cursor: pointer;
 }
+
 .app-content {
     flex: 1;
     overflow-y: auto;
     padding: 16px;
 }
+
 h2 {
-    font-weight: 700;
+    font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
 }
+
 .card-box {
     background: #fff;
     border-radius: 12px;
@@ -42,52 +53,47 @@ h2 {
     box-shadow: 0 2px 8px rgba(0,0,0,.08);
     margin-bottom: 16px;
 }
+
 .card-box.top {
     border-top: 6px solid #FFD700;
 }
+
 .label-pequeno {
     font-size: .85rem;
     color: #6c757d;
 }
+
 .valor-negrito {
     font-weight: bold;
     margin: 0;
 }
+
 .alerta {
     background: #fff3cd;
     border-radius: 12px;
     padding: 16px;
     font-size: .95rem;
 }
+
 .alerta ul {
     padding-left: 18px;
     margin: 8px 0 0;
 }
-.botoes {
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-}
-.btn-voltar {
-    flex: 1;
-    border: 2px solid #000;
-    background: #fff;
-    color: #000;
-    border-radius: 30px;
-    font-weight: bold;
-    padding: 12px;
-}
+
 .btn-cancelar {
-    flex: 1;
+    width: 100%;
     background: #FFD700;
     border: none;
     border-radius: 30px;
     font-weight: bold;
     padding: 12px;
+    margin-top: 20px;
 }
+
 .btn-cancelar:hover {
     background: #f1c40f;
 }
+
 .bottom-nav {
     height: 70px;
     border-top: 1px solid #ddd;
@@ -96,7 +102,9 @@ h2 {
     align-items: center;
     font-size: 12px;
     background: #fff;
+    flex-shrink: 0;
 }
+
         @@media (max-width: 768px) {
     .app-card {
         height: 100vh;
@@ -150,9 +158,9 @@ h2 {
         </ul>
     </div>
 
-    <div class="botoes">
-        <button type="submit" class="btn-cancelar">🗑️ Cancelar inscrição</button>
-    </div>
+    <button type="submit" class="btn-cancelar">
+        🗑️ Cancelar inscrição
+    </button>
 
 </form>
 
@@ -165,11 +173,11 @@ h2 {
 </div>
 
 </div>
+
 </div>
 </div>
 </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
