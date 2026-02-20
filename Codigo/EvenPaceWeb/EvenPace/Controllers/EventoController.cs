@@ -265,9 +265,9 @@ namespace EvenPace.Controllers
             }
 
             var model = eventos
-                .Select(e => new TelaListaEventosViewModel
+                .Select(e => new EventoViewModel
                 {
-                    Id = e.Id,
+                    Id = (uint)e.Id,
                     Nome = e.Nome,
                     Data = e.Data,
                     Cidade = e.Cidade,
