@@ -231,6 +231,19 @@ h2 {
                                 }
     </div>
 
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+        <div class="mb-3">
+            <label>Nome</label>
+            <input asp-for="Inscricao.Nome" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label>Email</label>
+            <input asp-for="Inscricao.Email" class="form-control" required />
+        </div>
+                            }
+
     <button type="submit" class="btn-pagamento">Realizar pagamento</button>
 </form>
 
