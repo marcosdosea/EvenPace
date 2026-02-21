@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Core;
 using Core.Service;
 using EvenPace.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -71,8 +72,13 @@ namespace EvenPaceWebTests
             mockKitService.Setup(s => s.GetAll())
                 .Returns(new List<Kit>()); // Retorna lista vazia para simplificar o delete
 
-            // 4. Instancia o Controller
-            controller = new EventoController(mockEventosService.Object, mockKitService.Object, mockMapper.Object);
+            // 4. Contexto in-memory para o controller (exigido pelo construtor)
+            var options = new DbContextOptionsBuilder<EvenPaceContext>()
+                .UseInMemoryDatabase("EventoControllerTests_" + Guid.NewGuid().ToString())
+                .Options;
+            var context = new EvenPaceContext(options);
+
+            controller = new EventoController(mockEventosService.Object, mockKitService.Object, mockMapper.Object, context);
 
             // Configura TempData
             controller.TempData = new TempDataDictionary(

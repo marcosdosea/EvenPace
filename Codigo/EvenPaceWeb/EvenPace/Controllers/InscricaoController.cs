@@ -1,9 +1,9 @@
 using AutoMapper;
 using Core;
 using Core.Service;
+using Core.Service.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using EvenPaceWeb.Models;
-using Service;
 using Models;
 
 namespace EvenPace.Controllers
@@ -11,97 +11,59 @@ namespace EvenPace.Controllers
     public class InscricaoController : Controller
     {
         private readonly IInscricaoService _inscricaoService;
-        private readonly IEventosService _eventoService;
-        private readonly IKitService _kitService;
         private readonly IMapper _mapper;
-        private readonly ICorredorService _corredorService;
 
-
-        public InscricaoController(
-            IInscricaoService inscricaoService,
-            IEventosService eventoService,
-            IKitService kitService,
-            ICorredorService corredorService,
-            IMapper mapper)
+        public InscricaoController(IInscricaoService inscricaoService, IMapper mapper)
         {
             _inscricaoService = inscricaoService;
-            _eventoService = eventoService;
-            _kitService = kitService;
-            _corredorService = corredorService;
             _mapper = mapper;
         }
 
-    
-       
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var inscricao = _inscricaoService.Get(id);
+            var result = _inscricaoService.GetDadosTelaDelete(id);
 
-            if (inscricao == null)
-                return NotFound("Inscrição não encontrada");
-
-            Kit? kit = null;
-            if (inscricao.IdKit.HasValue)
-                kit = _kitService.Get(inscricao.IdKit.Value);
-
-            var evento = _eventoService.Get(inscricao.IdEvento);
-
-            if (evento.Data < DateTime.Now)
+            if (!result.Success)
             {
+                if (result.ErrorType == "NotFound")
+                    return NotFound("Inscrição não encontrada");
                 TempData["Erro"] = "Não é possível cancelar após a data do evento.";
                 return RedirectToAction("Index", "Home");
             }
-
-            var vm = new InscricaoViewModel
+            
+            var dadosTelaDelete = result.Data!;
+            var telaInscricaoViewModel = new TelaInscricaoViewModel
             {
-                NomeEvento = evento.Nome,
-                DataEvento = evento.Data,
-                Local = evento.Cidade,
-                NomeKit = kit?.Nome ?? "Sem kit",
+                NomeEvento = dadosTelaDelete.NomeEvento,
+                DataEvento = dadosTelaDelete.DataEvento,
+                Local = dadosTelaDelete.Local,
+                NomeKit = dadosTelaDelete.NomeKit,
                 Inscricao = new InscricaoViewModel
                 {
-                    Id = (uint)inscricao.Id,
-                    Distancia = inscricao.Distancia,
-                    TamanhoCamisa = inscricao.TamanhoCamisa,
-                    DataInscricao = inscricao.DataInscricao
+                    Id = (uint)dadosTelaDelete.IdInscricao,
+                    Distancia = dadosTelaDelete.Distancia,
+                    TamanhoCamisa = dadosTelaDelete.TamanhoCamisa,
+                    DataInscricao = dadosTelaDelete.DataInscricao
                 }
             };
 
-            return View("Delete", vm);
+            return View("Delete", telaInscricaoViewModel);
         }
-
 
         public IActionResult Index(int id)
         {
-            var vm = new InscricaoViewModel
-            {
-                IdEvento = id,
-                Inscricao = new InscricaoViewModel
-                {
-                    IdEvento = id
-                }
-            };
-
-            ConfigurarInscricao(vm);
+            var dto = _inscricaoService.GetDadosTelaInscricao(id);
+            var vm = MontarTelaInscricaoViewModel(dto, id);
             return View(vm);
         }
 
         [HttpGet]
         public IActionResult Create(int id)
         {
-            var vm = new InscricaoViewModel
-            {
-                IdEvento = id,
-                Inscricao = new InscricaoViewModel
-                {
-                    IdEvento = id
-                }
-            };
-
-            ConfigurarInscricao(vm);
-
-            return View("Create", vm); 
+            var dto = _inscricaoService.GetDadosTelaInscricao(id);
+            var vm = MontarTelaInscricaoViewModel(dto, id);
+            return View("Create", vm);
         }
 
 
@@ -135,16 +97,13 @@ namespace EvenPace.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(InscricaoViewModel vm)
+        public IActionResult Index(TelaInscricaoViewModel vm)
         {
             var idCorredorClaim = User.FindFirst("IdCorredor");
             if (idCorredorClaim == null)
             {
                 TempData["Erro"] = "Faça login para continuar";
-                return RedirectToAction(
-                    "Index",
-                    new { id = vm.Inscricao.IdEvento }
-                );
+                return RedirectToAction("Index", new { id = vm.Inscricao.IdEvento });
             }
 
             var inscricao = new Inscricao
@@ -161,33 +120,26 @@ namespace EvenPace.Controllers
             _inscricaoService.Create(inscricao);
 
             TempData["Sucesso"] = "Inscrição realizada com sucesso!";
-
-            return RedirectToAction(
-                "Index",
-                new { id = vm.Inscricao.IdEvento }
-            );
+            return RedirectToAction("Index", new { id = vm.Inscricao.IdEvento });
         }
-        
-        private void ConfigurarInscricao(InscricaoViewModel vm)
+
+        private TelaInscricaoViewModel MontarTelaInscricaoViewModel(DadosTelaInscricaoDto dto, int idEvento)
         {
-            var evento = _eventoService.Get(vm.IdEvento);
-            if (evento == null)
-                throw new Exception($"Evento {vm.IdEvento} não existe no banco");
-
-            var kits = _kitService.GetKitsPorEvento((int)vm.IdEvento);
-
-            vm.NomeEvento = evento.Nome;
-            vm.Local = evento.Cidade;
-            vm.DataEvento = evento.Data;
-            vm.Descricao = evento.Descricao;
-            vm.ImagemEvento = evento.Imagem;
-            vm.InfoRetiradaKit = evento.InfoRetiradaKit;
-
-            vm.Percursos = new List<string> { "3km", "5km", "10km" };
-            vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
+            return new TelaInscricaoViewModel
+            {
+                IdEvento = idEvento,
+                NomeEvento = dto.NomeEvento,
+                Local = dto.Local,
+                DataEvento = dto.DataEvento,
+                Descricao = dto.Descricao,
+                ImagemEvento = dto.ImagemEvento,
+                Percursos = new List<string> { "3km", "5km", "10km" },
+                Kits = _mapper.Map<List<KitViewModel>>(dto.Kits),
+                Inscricao = new InscricaoViewModel { IdEvento = idEvento }
+            };
         }
 
-        public ActionResult GetAllByEvento(int  idEvento)
+        public ActionResult GetAllByEvento(int idEvento)
         {
             var inscricao = _inscricaoService.GetAllByEvento(idEvento);
             var inscricaoViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricao);
