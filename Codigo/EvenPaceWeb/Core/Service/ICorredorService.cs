@@ -15,5 +15,6 @@ namespace Core.Service
         void Delete(int id);
         IEnumerable<Corredor> GetAll();
         IEnumerable<Corredor> GetByName(string nome);
+        Corredor? GetByEmail(string email);
     }
 }
