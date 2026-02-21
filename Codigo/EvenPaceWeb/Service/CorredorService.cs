@@ -29,6 +29,12 @@ namespace Service
             return corredor.Id;
         }
 
+         public Corredor? GetByEmail(string email)
+ {
+     return _context.Corredors
+         .FirstOrDefault(c => c.Email == email);
+ }
+
         /// <summary>
         /// Encontra o Corredor com o id correspondente
         /// </summary>
