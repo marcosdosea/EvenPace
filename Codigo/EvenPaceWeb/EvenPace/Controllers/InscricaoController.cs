@@ -32,24 +32,23 @@ namespace EvenPace.Controllers
                 return RedirectToAction("Index", "Home");
             }
             
-            // TODO: Colocar um nome mais significativo na variavel 
-            var d = result.Data!;
-            var vm = new TelaInscricaoViewModel
+            var dadosTelaDelete = result.Data!;
+            var telaInscricaoViewModel = new TelaInscricaoViewModel
             {
-                NomeEvento = d.NomeEvento,
-                DataEvento = d.DataEvento,
-                Local = d.Local,
-                NomeKit = d.NomeKit,
+                NomeEvento = dadosTelaDelete.NomeEvento,
+                DataEvento = dadosTelaDelete.DataEvento,
+                Local = dadosTelaDelete.Local,
+                NomeKit = dadosTelaDelete.NomeKit,
                 Inscricao = new InscricaoViewModel
                 {
-                    Id = (uint)d.IdInscricao,
-                    Distancia = d.Distancia,
-                    TamanhoCamisa = d.TamanhoCamisa,
-                    DataInscricao = d.DataInscricao
+                    Id = (uint)dadosTelaDelete.IdInscricao,
+                    Distancia = dadosTelaDelete.Distancia,
+                    TamanhoCamisa = dadosTelaDelete.TamanhoCamisa,
+                    DataInscricao = dadosTelaDelete.DataInscricao
                 }
             };
 
-            return View("Delete", vm);
+            return View("Delete", telaInscricaoViewModel);
         }
 
         public IActionResult Index(int id)
