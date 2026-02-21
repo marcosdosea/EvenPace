@@ -148,7 +148,6 @@ CREATE TABLE `Kit` (
   `utilizadaG` tinyint NOT NULL,
   `utilizadaM` tinyint NOT NULL,
   `idEvento` int unsigned NOT NULL,
-  `statusRetiradaKit` tinyint(1) NOT NULL,
   `dataRetirada` datetime NOT NULL,
   `Imagem` longtext,
   PRIMARY KEY (`id`),
@@ -258,14 +257,14 @@ INSERT INTO `Cupom` (`nome`, `desconto`, `status`, `dataInicio`, `dataTermino`, 
 ('NATAL30', 30, 1, '2025-11-01', '2025-12-24', 0, 70, 7);
 
 -- Kit (7 - um por evento)
-INSERT INTO `Kit` (`valor`, `nome`, `descricao`, `disponibilidadeP`, `disponibilidadeG`, `disponibilidadeM`, `utilizadaP`, `utilizadaG`, `utilizadaM`, `idEvento`, `statusRetiradaKit`, `dataRetirada`, `Imagem`) VALUES
-(49.90, 'Kit Básico Beira Mar', 'Camiseta', 50, 50, 50, 0, 0, 0, 1, 0, '2025-05-31 14:00:00', NULL),
-(79.90, 'Kit Ibirapuera', 'Camiseta + Medalha', 30, 30, 30, 0, 0, 0, 2, 0, '2025-07-14 14:00:00', NULL),
-(129.90, 'Kit Maratona', 'Camiseta + Medalha + Mochila', 20, 20, 20, 0, 0, 0, 3, 0, '2025-08-19 14:00:00', NULL),
-(39.90, 'Kit Kids', 'Camiseta infantil', 40, 40, 40, 0, 0, 0, 4, 0, '2025-09-09 14:00:00', NULL),
-(59.90, 'Kit Maceió', 'Camiseta + Boné', 35, 35, 35, 0, 0, 0, 5, 0, '2025-10-04 14:00:00', NULL),
-(89.90, 'Kit Meia Recife', 'Camiseta + Medalha', 25, 25, 25, 0, 0, 0, 6, 0, '2025-11-11 14:00:00', NULL),
-(69.90, 'Kit Natal', 'Camiseta temática', 45, 45, 45, 0, 0, 0, 7, 0, '2025-12-24 14:00:00', NULL);
+INSERT INTO `Kit` (`valor`, `nome`, `descricao`, `disponibilidadeP`, `disponibilidadeG`, `disponibilidadeM`, `utilizadaP`, `utilizadaG`, `utilizadaM`, `idEvento`, `dataRetirada`, `Imagem`) VALUES
+(49.90, 'Kit Básico Beira Mar', 'Camiseta', 50, 50, 50, 0, 0, 0, 1, '2025-05-31 14:00:00', NULL),
+(79.90, 'Kit Ibirapuera', 'Camiseta + Medalha', 30, 30, 30, 0, 0, 0, 2, '2025-07-14 14:00:00', NULL),
+(129.90, 'Kit Maratona', 'Camiseta + Medalha + Mochila', 20, 20, 20, 0, 0, 0, 3, '2025-08-19 14:00:00', NULL),
+(39.90, 'Kit Kids', 'Camiseta infantil', 40, 40, 40, 0, 0, 0, 4, '2025-09-09 14:00:00', NULL),
+(59.90, 'Kit Maceió', 'Camiseta + Boné', 35, 35, 35, 0, 0, 0, 5, '2025-10-04 14:00:00', NULL),
+(89.90, 'Kit Meia Recife', 'Camiseta + Medalha', 25, 25, 25, 0, 0, 0, 6, '2025-11-11 14:00:00', NULL),
+(69.90, 'Kit Natal', 'Camiseta temática', 45, 45, 45, 0, 0, 0, 7, '2025-12-24 14:00:00', NULL);
 
 -- Inscricao (7 - evento, corredor, kit e avaliacao opcionais)
 INSERT INTO `Inscricao` (`status`, `dataInscricao`, `distancia`, `tamanhoCamisa`, `tempo`, `posicao`, `idKit`, `idEvento`, `idCorredor`, `idAvaliacaoEvento`) VALUES
