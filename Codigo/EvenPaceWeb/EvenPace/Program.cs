@@ -10,8 +10,6 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(EvenPaceWeb.Mappers.AutoMapperProfile));
 builder.Services.AddScoped<ICorredorService, CorredorService>();
 
-
-
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<EvenPaceContext>(options =>

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Core;
 using Core.Service;
+using Core.Service.Dtos;
 using EvenPace.Controllers;
 using EvenPaceWeb.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Moq;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EvenPaceWebTests
 {
@@ -16,21 +18,13 @@ namespace EvenPaceWebTests
     public class InscricaoControllerTests
     {
         private InscricaoController controller;
-
         private Mock<IInscricaoService> mockInscricaoService;
-        private Mock<IEventosService> mockEventoService;
-        private Mock<IKitService> mockKitService;
-        private Mock<ICorredorService> mockCorredorService;
-
         private IMapper mapper;
 
         [TestInitialize]
         public void Initialize()
         {
             mockInscricaoService = new Mock<IInscricaoService>();
-            mockEventoService = new Mock<IEventosService>();
-            mockKitService = new Mock<IKitService>();
-            mockCorredorService = new Mock<ICorredorService>();
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -40,23 +34,23 @@ namespace EvenPaceWebTests
 
             mapper = config.CreateMapper();
 
-            mockEventoService.Setup(s => s.Get(1))
-                .Returns(GetEvento());
+            controller = new InscricaoController(mockInscricaoService.Object, mapper);
 
-            mockKitService.Setup(s => s.GetKitsPorEvento(1))
-                .Returns(GetKits());
-
-            controller = new InscricaoController(
-                mockInscricaoService.Object,
-                mockEventoService.Object,
-                mockKitService.Object,
-                mockCorredorService.Object,
-                mapper
-            );
-            
             mockInscricaoService
-                .Setup(s => s.Get(It.IsAny<int>()))
-                .Returns((int id) => GetInscricoes().FirstOrDefault(i => i.Id == id));
+                .Setup(s => s.GetDadosTelaInscricao(1))
+                .Returns(new DadosTelaInscricaoDto
+                {
+                    IdEvento = 1,
+                    NomeEvento = "Corrida Teste",
+                    Local = "São Paulo",
+                    DataEvento = DateTime.Today,
+                    Descricao = "Evento de teste",
+                    Kits = GetKits()
+                });
+
+            mockInscricaoService
+                .Setup(s => s.GetAllByEvento(1))
+                .Returns(GetInscricoes());
         }
 
         [TestMethod]
@@ -84,26 +78,26 @@ namespace EvenPaceWebTests
             var view = (ViewResult)result;
             Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
-        
+
         [TestMethod]
         public void Cancelar_Get_ComIdValido_RetornaView()
         {
-            mockInscricaoService.Setup(s => s.Get(1))
-                .Returns(new Inscricao
+            mockInscricaoService
+                .Setup(s => s.GetDadosTelaDelete(1))
+                .Returns(new GetDadosTelaDeleteResult
                 {
-                    Id = 1,
-                    IdEvento = 1,
-                    Distancia = "5km",
-                    DataInscricao = DateTime.Today
-                });
-
-            mockEventoService.Setup(s => s.Get(1))
-                .Returns(new Evento
-                {
-                    Id = 1,
-                    Nome = "Evento Teste",
-                    Cidade = "Cidade",
-                    Data = DateTime.Now.AddDays(10)
+                    Success = true,
+                    Data = new DadosTelaDeleteDto
+                    {
+                        NomeEvento = "Evento Teste",
+                        DataEvento = DateTime.Now.AddDays(10),
+                        Local = "Cidade",
+                        NomeKit = "Sem kit",
+                        IdInscricao = 1,
+                        Distancia = "5km",
+                        TamanhoCamisa = "M",
+                        DataInscricao = DateTime.Today
+                    }
                 });
 
             var result = controller.Delete(1);
@@ -114,27 +108,32 @@ namespace EvenPaceWebTests
         [TestMethod]
         public void Cancelar_Get_InscricaoInexistente_RetornaNotFound()
         {
-            mockInscricaoService.Setup(s => s.Get(1))
-                .Returns((Inscricao)null);
+            mockInscricaoService
+                .Setup(s => s.GetDadosTelaDelete(1))
+                .Returns(new GetDadosTelaDeleteResult { Success = false, ErrorType = "NotFound" });
 
             var result = controller.Delete(1);
 
             Assert.IsInstanceOfType(result, typeof(NotFoundObjectResult));
         }
 
-        private Evento GetEvento()
+        [TestMethod]
+        public void GetAllByEvento_IdValido_RetornaViewComLista()
         {
-            return new Evento
-            {
-                Id = 1,
-                Nome = "Corrida Teste",
-                Cidade = "São Paulo",
-                Data = DateTime.Today,
-                Descricao = "Evento de teste"
-            };
+            var result = controller.GetAllByEvento(1);
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+
+            var view = (ViewResult)result;
+            Assert.IsNotNull(view.Model);
+
+            var model = view.Model as List<InscricaoViewModel>;
+            Assert.IsNotNull(model);
+            Assert.AreEqual(2, model.Count);
+            Assert.IsTrue(model.All(i => i.IdEvento == 1));
         }
 
-        private IEnumerable<Kit> GetKits()
+        private static IEnumerable<Kit> GetKits()
         {
             return new List<Kit>
             {
@@ -147,27 +146,8 @@ namespace EvenPaceWebTests
                 }
             };
         }
-        private IEnumerable<Inscricao> GetInscricoes()
-        {
-            return new List<Inscricao>
-            {
-                new Inscricao
-                {
-                    Id = 1,
-                    IdEvento = 1,
-                    Distancia = "5km",
-                    DataInscricao = DateTime.Today
-                },
-                new Inscricao
-                {
-                    Id = 2,
-                    IdEvento = 1,
-                    Distancia = "10km",
-                    DataInscricao = DateTime.Today
-                }
-            };
-        } 
-        private IEnumerable<Inscricao> GetInscricoes()
+
+        private static IEnumerable<Inscricao> GetInscricoes()
         {
             return new List<Inscricao>
             {
@@ -189,25 +169,5 @@ namespace EvenPaceWebTests
                 }
             };
         }
-        
-        [TestMethod]
-        public void GetAllByEvento_IdValido_RetornaViewComLista()
-        {
-            // Act
-            var result = controller.GetAllByEvento(1);
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(ViewResult));
-
-            var view = (ViewResult)result;
-            Assert.IsNotNull(view.Model);
-
-            var model = view.Model as List<InscricaoViewModel>;
-            Assert.IsNotNull(model);
-            Assert.AreEqual(2, model.Count);
-            Assert.IsTrue(model.All(i => i.IdEvento == 1));
-        }
-
-        
     }
 }

@@ -1,6 +1,8 @@
 using Core;
+using Core.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Service;
 using System;
 using System.Linq;
@@ -24,7 +26,9 @@ namespace EvenPaceWebTests.Service
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-            service = new InscricaoService(context);
+            var mockEventoService = new Mock<IEventosService>();
+            var mockKitService = new Mock<IKitService>();
+            service = new InscricaoService(context, mockEventoService.Object, mockKitService.Object);
         }
 
         [TestMethod]
