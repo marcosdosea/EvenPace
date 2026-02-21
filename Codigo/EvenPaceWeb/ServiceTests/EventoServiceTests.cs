@@ -35,9 +35,23 @@ namespace EvenPaceWebTests.Service
                     Id = 1,
                     Nome = "Corrida de Verão",
                     IdOrganizacao = 1,
+                    NumeroParticipantes = 100,
+                    Descricao = "Corrida no verão",
                     Data = DateTime.Now.AddDays(10),
-                    Imagem = "verao.jpg",
-                    Descricao = "Corrida na praia"
+                    
+                    Distancia3 = true,
+                    Distancia5 = true,
+                    Distancia7 = false,
+                    Distancia10 = false,
+                    Distancia15 = false,
+                    Distancia21 = false,
+                    Distancia42 = false,
+
+                    Rua = "Rua A",
+                    Bairro = "Centro",
+                    Cidade = "Aracaju",
+                    Estado = "SE",
+                    InfoRetiradaKit = "No local",
                 },
                 new Evento
                 {
@@ -45,16 +59,45 @@ namespace EvenPaceWebTests.Service
                     Nome = "Maratona Noturna",
                     IdOrganizacao = 1,
                     Data = DateTime.Now.AddDays(20),
-                    Imagem = "noite.jpg",
-                    Descricao = "Corrida urbana"
+                    Descricao = "Descrição padrão",
+                    NumeroParticipantes = 100,
+
+                    Distancia3 = true,
+                    Distancia5 = true,
+                    Distancia7 = false,
+                    Distancia10 = false,
+                    Distancia15 = false,
+                    Distancia21 = false,
+                    Distancia42 = false,
+
+                    Rua = "Rua A",
+                    Bairro = "Centro",
+                    Cidade = "Aracaju",
+                    Estado = "SE",
+                    InfoRetiradaKit = "No local",
                 },
                 new Evento
                 {
                     Id = 3,
                     Nome = "Evento Beneficente",
-                    IdOrganizacao = 2, // Outra organização
-                    Data = DateTime.Now.AddDays(30),
-                    Imagem = "beneficente.jpg"
+                    IdOrganizacao = 2,
+                    Data = DateTime.Now.AddDays(10),
+                    Descricao = "Descrição padrão",
+                    NumeroParticipantes = 100,
+
+                    Distancia3 = true,
+                    Distancia5 = true,
+                    Distancia7 = false,
+                    Distancia10 = false,
+                    Distancia15 = false,
+                    Distancia21 = false,
+                    Distancia42 = false,
+
+                    Rua = "Rua A",
+                    Bairro = "Centro",
+                    Cidade = "Aracaju",
+                    Estado = "SE",
+                    InfoRetiradaKit = "No local",
                 }
             };
 
@@ -75,7 +118,22 @@ namespace EvenPaceWebTests.Service
                 Nome = "Novo Evento Teste",
                 IdOrganizacao = 1,
                 Data = DateTime.Now.AddMonths(1),
-                Descricao = "Teste de criação"
+                Descricao = "Teste de criação",
+                NumeroParticipantes = 100,
+
+                Distancia3 = false,
+                Distancia5 = true,
+                Distancia7 = false,
+                Distancia10 = false,
+                Distancia15 = false,
+                Distancia21 = false,
+                Distancia42 = false,
+
+                Rua = "Rua texte",
+                Bairro = "Bairro de Texte",
+                Cidade = "Cidade de Teste",
+                Estado = "SE",
+                InfoRetiradaKit = "No local",
             };
 
             eventosService.Create(novoEvento);
