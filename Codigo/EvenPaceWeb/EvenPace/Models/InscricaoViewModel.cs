@@ -13,6 +13,9 @@ namespace Models
         [Display(Name = "Código da Inscrição")]
         public uint Id { get; set; }
 
+        public string? Nome { get; set; }
+        public string? Email { get; set; }
+
         [Display(Name = "Status")]
         public string? Status { get; set; }
 
