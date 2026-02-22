@@ -61,7 +61,6 @@ namespace Models
 
         public IFormFile? ImagemUpload { get; set; }
 
-        // Propriedade para SALVAR o nome do arquivo no banco (string)
         public string? Imagem { get; set; }
     }
 }

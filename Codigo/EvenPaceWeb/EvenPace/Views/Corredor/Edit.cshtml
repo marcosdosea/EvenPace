@@ -99,7 +99,6 @@
 
             <h5 class="title text-center mb-4">Foto de Perfil</h5>
 
-            @* TODO: Trocar para que a imagem seja possivel ser alterada *@
             <div class="avatar mx-auto mb-4">
                 <img src="https://i.pravatar.cc/300" alt="Foto Perfil"/>
             </div>
@@ -107,7 +106,6 @@
             <form asp-action="Edit" method="post">
                 @Html.AntiForgeryToken()
                 <input type="hidden" asp-for="Id"/>
-                @* Mantém a senha atual caso o usuário não queira alterá-la *@
                 <input type="hidden" asp-for="Senha" />
 
                 <div class="mb-3">

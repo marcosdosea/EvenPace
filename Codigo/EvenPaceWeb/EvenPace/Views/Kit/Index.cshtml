@@ -92,16 +92,13 @@
 </main>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Procura a mensagem de sucesso
+       
         var alerta = document.querySelector(".alert-custom");
 
         if (alerta) {
-            // Espera 3 segundos (3000ms) antes de começar a sumir
             setTimeout(function() {
-                // Adiciona a classe que deixa transparente (CSS)
                 alerta.classList.add("alert-hide");
 
-                // Espera mais 1 segundo (tempo da animação) para remover do HTML
                 setTimeout(function() {
                     alerta.remove();
                 }, 1000);
