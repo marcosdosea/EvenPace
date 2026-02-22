@@ -18,16 +18,14 @@ namespace EvenPaceWebTests.Service
         [TestInitialize]
         public void Initialize()
         {
-            // 1. Configura o Banco em Memória
             var builder = new DbContextOptionsBuilder<EvenPaceContext>();
-            builder.UseInMemoryDatabase("EvenPace_Eventos"); // Nome único para este teste
+            builder.UseInMemoryDatabase("EvenPace_Eventos"); 
             var options = builder.Options;
 
             context = new EvenPaceContext(options);
-            context.Database.EnsureDeleted(); // Começa limpo
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-            // 2. Prepara dados fictícios (Seed)
             var eventos = new List<Evento>
             {
                 new Evento
@@ -104,14 +102,12 @@ namespace EvenPaceWebTests.Service
             context.AddRange(eventos);
             context.SaveChanges();
 
-            // 3. Instancia o Service
             eventosService = new EventoService(context);
         }
 
         [TestMethod()]
         public void CreateTest()
         {
-            // Act
             var novoEvento = new Evento
             {
                 Id = 4,
@@ -138,8 +134,7 @@ namespace EvenPaceWebTests.Service
 
             eventosService.Create(novoEvento);
 
-            // Assert
-            Assert.AreEqual(4, eventosService.GetAll().Count()); // Eram 3, agora 4
+            Assert.AreEqual(4, eventosService.GetAll().Count()); 
 
             var recuperado = eventosService.Get(4);
             Assert.IsNotNull(recuperado);
@@ -149,29 +144,23 @@ namespace EvenPaceWebTests.Service
         [TestMethod()]
         public void DeleteTest()
         {
-            // Arrange
             int idParaDeletar = 1;
 
-            // Act
             eventosService.Delete(idParaDeletar);
 
-            // Assert
-            Assert.AreEqual(2, eventosService.GetAll().Count()); // Caiu de 3 para 2
+            Assert.AreEqual(2, eventosService.GetAll().Count()); 
             Assert.IsNull(eventosService.Get(idParaDeletar));
         }
 
         [TestMethod()]
         public void EditTest()
         {
-            // Arrange
-            var evento = eventosService.Get(2); // "Maratona Noturna"
+            var evento = eventosService.Get(2); 
             evento.Nome = "Maratona Editada";
             evento.Descricao = "Nova descrição";
 
-            // Act
             eventosService.Edit(evento);
 
-            // Assert
             var eventoEditado = eventosService.Get(2);
             Assert.IsNotNull(eventoEditado);
             Assert.AreEqual("Maratona Editada", eventoEditado.Nome);
@@ -181,10 +170,8 @@ namespace EvenPaceWebTests.Service
         [TestMethod()]
         public void GetTest()
         {
-            // Act
             var evento = eventosService.Get(3);
 
-            // Assert
             Assert.IsNotNull(evento);
             Assert.AreEqual("Evento Beneficente", evento.Nome);
             Assert.AreEqual(2, evento.IdOrganizacao);
@@ -193,10 +180,8 @@ namespace EvenPaceWebTests.Service
         [TestMethod()]
         public void GetAllTest()
         {
-            // Act
             var lista = eventosService.GetAll();
 
-            // Assert
             Assert.IsNotNull(lista);
             Assert.AreEqual(3, lista.Count());
 
