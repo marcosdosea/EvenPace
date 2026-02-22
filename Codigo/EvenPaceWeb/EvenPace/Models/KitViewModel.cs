@@ -59,7 +59,6 @@ namespace Models
         [DataType(DataType.Date)]
         public DateTime? DataRetirada { get; set; }
 
-        // Propriedade para RECEBER o arquivo do formulário
         public IFormFile? ImagemUpload { get; set; }
 
         // Propriedade para SALVAR o nome do arquivo no banco (string)
