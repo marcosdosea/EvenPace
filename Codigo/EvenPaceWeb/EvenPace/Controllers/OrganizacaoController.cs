@@ -16,9 +16,6 @@ namespace EvenPaceWeb.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Lista todas as organizações
-        /// </summary>
         public ActionResult Index()
         {
             var organizacoes = _organizacaoService.GetAll();
@@ -26,9 +23,6 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModels);
         }
 
-        /// <summary>
-        /// Detalhes de uma organização pelo id
-        /// </summary>
         public ActionResult Details(int id)
         {
             var organizacao = _organizacaoService.Get((int)id);
@@ -36,22 +30,15 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModel);
         }
 
-        /// <summary>
-        /// Exibe formulário de criação
-        /// </summary>
         public ActionResult Create()
         {
             return View();
         }
 
-        /// <summary>
-        /// Cria uma nova organização
-        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(OrganizacaoViewModel organizacaoViewModel)
         {
-
             if (ModelState.IsValid)
             {
                 var organizacao = _mapper.Map<Core.Organizacao>(organizacaoViewModel);
@@ -61,9 +48,6 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModel);
         }
 
-        /// <summary>
-        /// Exibe formulário de edição
-        /// </summary>
         public ActionResult Edit(int id)
         {
             var organizacao = _organizacaoService.Get((int)id);
@@ -71,14 +55,11 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModel);
         }
 
-        /// <summary>
-        /// Edita uma organização
-        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(OrganizacaoViewModel organizacaoViewModel)
         {
-            organizacaoViewModel.Id = 3;// Temporário até não criar o login
+            organizacaoViewModel.Id = 3;
 
             ModelState.Remove("Senha");
 
@@ -92,9 +73,6 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModel);
         }
 
-        /// <summary>
-        /// Exibe confirmação de exclusão
-        /// </summary>
         public ActionResult Delete(int id)
         {
             var organizacao = _organizacaoService.Get((int)id);
@@ -102,9 +80,6 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModel);
         }
 
-        /// <summary>
-        /// Exclui uma organização
-        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, OrganizacaoViewModel organizacaoViewModel)
