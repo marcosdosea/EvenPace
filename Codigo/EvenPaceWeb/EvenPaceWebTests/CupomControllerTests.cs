@@ -47,7 +47,6 @@ namespace EvenPaceWebTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             ViewResult viewResult = (ViewResult)result;
 
-            // Verificação segura de tipo
             var lista = viewResult.ViewData.Model as List<CupomViewModel>;
             Assert.IsNotNull(lista, "A Model não deveria ser nula");
             Assert.AreEqual(3, lista.Count);
@@ -61,7 +60,6 @@ namespace EvenPaceWebTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             ViewResult viewResult = (ViewResult)result;
 
-            // Conversão segura para evitar CS8600/CS8602
             var model = viewResult.ViewData.Model as CupomViewModel;
             Assert.IsNotNull(model, "A Model retornada não pode ser nula");
 

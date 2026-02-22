@@ -6,7 +6,6 @@ using Models;
 using Moq;
 using EvenPaceWeb.Controllers;
 using EvenPaceWeb.Mappers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mappers;
 
 namespace EvenPaceWebTests

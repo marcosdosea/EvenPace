@@ -2,7 +2,6 @@ using AutoMapper;
 using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
 using Moq;
 using EvenPace.Controllers;
