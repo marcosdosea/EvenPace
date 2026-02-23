@@ -1,56 +1,116 @@
-/*using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Core;
+using Core.Service;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Service.Tests
+namespace EvenPaceWebTests.Service
 {
     [TestClass()]
-    public class AvaliacaoEventoServiceTests
+    public class AvaliacaoEventoServiceTest
     {
-        [TestMethod()]
-        public void AvaliacaoEventoServiceTest()
+        private EvenPaceContext context;
+        private IAvaliacaoEventoService avaliacaoService;
+
+        [TestInitialize]
+        public void Initialize()
         {
-            Assert.Fail();
+            var builder = new DbContextOptionsBuilder<EvenPaceContext>();
+            builder.UseInMemoryDatabase("EvenPaceAvaliacaoTest");
+
+            context = new EvenPaceContext(builder.Options);
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
+            // Evento que já ocorreu
+            var evento = new Evento
+            {
+                Id = 1,
+                Nome = "Corrida 5K",
+                Data = DateTime.Now.AddDays(-2)
+            };
+
+            // Inscrição válida
+            var inscricao = new Inscricao
+            {
+                Id = 1,
+                IdEvento = 1,
+                IdCorredor = 1
+            };
+
+            context.Add(evento);
+            context.Add(inscricao);
+            context.SaveChanges();
+
+            avaliacaoService = new AvaliacaoEventoService(context);
         }
 
         [TestMethod()]
-        public void CreateTest()
+        public void CreateTest_Valido()
         {
-            Assert.Fail();
+            var avaliacao = new AvaliacaoEvento
+            {
+                Id = 1,
+                Estrela = 5,
+                Comentario = "Excelente corrida!"
+            };
+
+            avaliacaoService.Create(avaliacao);
+
+            Assert.AreEqual(1, context.AvaliacaoEventos.Count());
         }
 
         [TestMethod()]
-        public void DeleteTest()
+        [ExpectedException(typeof(Exception))]
+        public void CreateTest_EventoNaoOcorreu_DeveLancarExcecao()
         {
-            Assert.Fail();
+            var eventoFuturo = new Evento
+            {
+                Id = 2,
+                Nome = "Corrida 10K",
+                Data = DateTime.Now.AddDays(5)
+            };
+
+            context.Add(eventoFuturo);
+            context.SaveChanges();
+
+            var avaliacao = new AvaliacaoEvento
+            {
+                Id = 2,
+                Estrela = 4,
+                Comentario = "Boa"
+            };
+
+            avaliacaoService.Create(avaliacao);
         }
 
         [TestMethod()]
-        public void EditTest()
+        [ExpectedException(typeof(Exception))]
+        public void CreateTest_InscricaoInexistente_DeveLancarExcecao()
         {
-            Assert.Fail();
+            var avaliacao = new AvaliacaoEvento
+            {
+                Id = 3,
+                Estrela = 3,
+                Comentario = "Ok"
+            };
+
+            avaliacaoService.Create(avaliacao);
         }
 
         [TestMethod()]
-        public void GetTest()
+        [ExpectedException(typeof(Exception))]
+        public void CreateTest_AvaliacaoDuplicada_DeveLancarExcecao()
         {
-            Assert.Fail();
-        }
+            var avaliacao = new AvaliacaoEvento
+            {
+                Id = 4,
+                Estrela = 5,
+                Comentario = "Muito boa"
+            };
 
-        [TestMethod()]
-        public void GetAllTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void GetByNameTest()
-        {
-            Assert.Fail();
+            avaliacaoService.Create(avaliacao);
+            avaliacaoService.Create(avaliacao); // segunda tentativa
         }
     }
-}*/
+}
