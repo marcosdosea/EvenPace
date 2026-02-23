@@ -19,7 +19,6 @@ public class InscricaoController : ControllerBase
         _mapper = mapper;
     }
 
-    // GET: api/Inscricao
     [HttpGet]
     public ActionResult Get()
     {
@@ -27,7 +26,6 @@ public class InscricaoController : ControllerBase
         return Ok(inscricoes);
     }
 
-    // GET: api/Inscricao/5
     [HttpGet("{id}")]
     public ActionResult Get(int id)
     {
@@ -39,7 +37,6 @@ public class InscricaoController : ControllerBase
         return Ok(inscricao);
     }
 
-    // POST: api/Inscricao
     [HttpPost]
     public ActionResult Post([FromBody] InscricaoViewModel model)
     {
@@ -50,7 +47,6 @@ public class InscricaoController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = idGerado }, inscricao);
     }
 
-    // PUT: api/Inscricao/5
     [HttpPut("{id}")]
     public ActionResult Put(int id, [FromBody] InscricaoViewModel model)
     {
@@ -76,7 +72,6 @@ public class InscricaoController : ControllerBase
         return Ok(inscricao);
     }
 
-    // DELETE: api/Inscricao/5
     [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
@@ -84,11 +79,4 @@ public class InscricaoController : ControllerBase
         return Ok();
     }
 
-    // GET: api/Inscricao/dados-tela/3
-    [HttpGet("Inscricoes-por-Evento/{idEvento}")]
-    public ActionResult GetByEvento(int idEvento)
-    {
-        var inscricoes = _inscricaoService.GetAllByEvento(idEvento);
-        return Ok(inscricoes);
-    }
 }
