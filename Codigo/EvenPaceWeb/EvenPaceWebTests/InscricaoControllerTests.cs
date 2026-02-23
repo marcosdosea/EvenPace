@@ -3,7 +3,6 @@ using Core;
 using Core.Service;
 using Core.Service.Dtos;
 using EvenPace.Controllers;
-using EvenPaceWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Models;
@@ -16,12 +15,18 @@ namespace EvenPaceWebTests
     {
         private InscricaoController controller;
         private Mock<IInscricaoService> mockInscricaoService;
+        private Mock<IEventosService> mockEventoService;
+        private Mock<IKitService> mockKitService;
+        private Mock<ICorredorService> mockCorredorService;
         private IMapper mapper;
-
+        
         [TestInitialize]
         public void Initialize()
         {
             mockInscricaoService = new Mock<IInscricaoService>();
+            mockEventoService = new Mock<IEventosService>();
+            mockKitService = new Mock<IKitService>();
+            mockCorredorService = new Mock<ICorredorService>();
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -31,7 +36,13 @@ namespace EvenPaceWebTests
 
             mapper = config.CreateMapper();
 
-            controller = new InscricaoController(mockInscricaoService.Object, mapper);
+            controller = new InscricaoController(
+                mockInscricaoService.Object,
+                mockEventoService.Object,
+                mockKitService.Object,
+                mockCorredorService.Object,
+                mapper
+            );
 
             mockInscricaoService
                 .Setup(s => s.GetDadosTelaInscricao(1))
@@ -58,9 +69,9 @@ namespace EvenPaceWebTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
 
             var view = (ViewResult)result;
-            Assert.IsInstanceOfType(view.Model, typeof(TelaInscricaoViewModel));
+            Assert.IsInstanceOfType(view.Model, typeof(InscricaoViewModel));
 
-            var vm = (TelaInscricaoViewModel)view.Model;
+            var vm = (InscricaoViewModel)view.Model;
             Assert.AreEqual(1, vm.IdEvento);
             Assert.AreEqual("Corrida Teste", vm.NomeEvento);
         }

@@ -13,5 +13,6 @@ namespace Core.Service
         CartaoCredito Get(int id);
         void Delete(int id);
         IEnumerable<CartaoCredito> GetAll();
+        
     }
 }

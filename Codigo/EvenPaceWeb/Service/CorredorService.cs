@@ -41,7 +41,13 @@ namespace Service
 
             return lista.FirstOrDefault(c => c.Id == id);
         }
-        
+
+        public IEnumerable<Corredor> GetByCpf(string cpf)
+        {
+            var corredor = _context.Corredors.Where(i => i.Cpf == cpf);
+            return corredor;
+        }
+
         /// <summary>
         /// Pega o corredor com email e senha compativeis
         /// </summary>
