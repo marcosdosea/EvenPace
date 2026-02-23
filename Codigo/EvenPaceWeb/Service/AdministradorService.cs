@@ -17,8 +17,8 @@ namespace Service
         /// <summary>
         /// Insere um administrador no banco de dados
         /// </summary>
-        /// <param name="administrador"></param>
-        /// <returns></returns>
+        /// <param name="administrador">As diretrizes e campos do gestor estruturados em entidade pronta a assinar a validação ORM.</param>
+        /// <returns>A chave primária estipulada e adotada pela base nas dependências de rastreabilidade geradas.</returns>
         /// <exception cref="NotImplementedException"></exception>
         public int Create(Administrador administrador)
         {
@@ -30,7 +30,7 @@ namespace Service
         /// <summary>
         /// Deleta um administrador do banco de dados
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Identificador unificado pertencente à entidade alvo do expurgo.</param>
         /// <exception cref="NotImplementedException"></exception>
         public void Delete(int id)
         {
@@ -46,7 +46,7 @@ namespace Service
         /// <summary>
         /// Edita um administrador no banco de dados
         /// </summary>
-        /// <param name="administrador"></param>
+        /// <param name="administrador">A configuração completa e repopulada contendo a sobreposição ao registro obsoleto atrelado.</param>
         public void Edit(Administrador administrador)
         {
             if (administrador is not null)
@@ -60,8 +60,8 @@ namespace Service
         /// <summary>
         /// Busca um administrador pelo Id
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Índice pontual providenciado a interceptar informações isoladas e requeridas a respeito desta submissão de perfil particular.</param>
+        /// <returns>Delega de volta a entidade formatada correspondente ou vazio na sua recusa em listagem.</returns>
         /// <exception cref="NotImplementedException"></exception>
         public Administrador Get(int id)
         {
@@ -71,7 +71,7 @@ namespace Service
         /// <summary>
         /// Pega todos os administradores do banco de dados
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Pacote extensivo contendo as contas gestoras mantidas no núcleo.</returns>
         /// <exception cref="NotImplementedException"></exception>
         public IEnumerable<Administrador> GetAll()
         {
@@ -81,8 +81,8 @@ namespace Service
         /// <summary>
         /// Pega administradores pelo nome
         /// </summary>
-        /// <param name="nome"></param>
-        /// <returns></returns>
+        /// <param name="nome">Expressão referenciadora alocada para estipular o critério condicional estrito de devolução do conteúdo no filtro contido.</param>
+        /// <returns>Repassa apenas subconjunto iterativo acoplado aos perfis que concordem estritamente na validação embutida baseada na condição designada de conter a palavra nas cadeias do núcleo referencial logado operante (AsNoTracking).</returns>
         public IEnumerable<Administrador> GetByName(string nome)
         {
             return _context.Administradors.Where(a => a.Nome.Contains(nome)).AsNoTracking();

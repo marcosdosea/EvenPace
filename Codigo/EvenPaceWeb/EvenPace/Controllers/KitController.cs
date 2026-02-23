@@ -18,6 +18,11 @@ namespace EvenPace.Controllers
             _eventosService = eventosService;
         }
 
+        /// <summary>
+        /// Realiza a filtragem dos conjuntos de kits subordinados a um evento selecionado, garantindo o gerenciamento focado para o organizador.
+        /// </summary>
+        /// <param name="idEvento">Referência temporal do evento a ser analisado (se nulo, busca o primeiro existente do organizador).</param>
+        /// <returns>Página consolidada contendo os kits mapeados na exibição.</returns>
         [HttpGet]
         public IActionResult IndexKit(int? idEvento)
         {
@@ -55,6 +60,11 @@ namespace EvenPace.Controllers
             return View(listaViewModel);
         }
 
+        /// <summary>
+        /// Prepara a inicialização da tela voltada para o projeto e cadastro físico/descritivo de um novo kit.
+        /// </summary>
+        /// <param name="idEvento">Id atrelativo ao evento que deterá o kit.</param>
+        /// <returns>Modelo limpo acoplado à formatação estrutural da View.</returns>
         [HttpGet]
         public IActionResult Create(int? idEvento)
         {
@@ -69,6 +79,11 @@ namespace EvenPace.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Registra e hospeda de fato a inserção de um kit, integrando seu processamento de envio e salvamento em disco de mídias ligadas à entidade.
+        /// </summary>
+        /// <param name="model">Conjunto final submetido pelas ferramentas do formulário, contendo valores em espécie e anexos.</param>
+        /// <returns>Recarrega a listagem geral informando a inclusão bem-sucedida, ou reexibe os parâmetros defeituosos solicitando intervenção de preenchimento.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(KitViewModel model)
@@ -104,6 +119,11 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Resgata as premissas atuais e dados já registrados do kit requisitado visando a repopulação de campos para fins de consertos ou ajustes na precificação/composição.
+        /// </summary>
+        /// <param name="id">Chave de acesso primário apontando para o kit desejado.</param>
+        /// <returns>Retorna a interface visual acoplada ao repositório de dados encontrado.</returns>
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -119,6 +139,12 @@ namespace EvenPace.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Realiza a sobrescrita dos atributos modificados de um kit, procedendo com a exclusão preventiva da mídia anterior no sistema de arquivos local perante o envio de novas submissões visuais.
+        /// </summary>
+        /// <param name="id">Chave que homologa o item do banco sendo editado na sessão vigente.</param>
+        /// <param name="model">Variável agrupadora de modificações do kit enviadas na requisição POST.</param>
+        /// <returns>Executa a transição limpa para a home page e painel principal do organizador ou resgata a visualização da tela se corrompida durante as etapas lógicas de negócio.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, KitViewModel model)
@@ -163,6 +189,11 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Executa a exclusão de todos os registros persistentes associados ao kit parametrizado, higienizando simultaneamente as mídias da pasta raiz em disco.
+        /// </summary>
+        /// <param name="id">A identidade atrelativa ao modelo no arquivo virtual do bando de dados principal.</param>
+        /// <returns>Promove o reenquadramento automatizado para o painel de listagem em sequência bem-sucedida da exclusão.</returns>
         [HttpGet]
         public IActionResult Delete(int id)
         {
