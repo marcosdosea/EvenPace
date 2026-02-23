@@ -54,6 +54,9 @@ namespace Models
         [ForeignKey("IdAvaliacaoEvento")]
         public virtual AvaliacaoEvento IdAvaliacaoEventoNavigation { get; set; } = null!;
 
+        [Display(Name = "Kit Retirado")]
+        public bool StatusRetiradaKit { get; set; }
+
         [ForeignKey("IdCorredor")]
         public virtual Corredor IdCorredorNavigation { get; set; } = null!;
 
