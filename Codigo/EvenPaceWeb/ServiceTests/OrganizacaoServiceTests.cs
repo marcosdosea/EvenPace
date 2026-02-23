@@ -26,20 +26,14 @@ namespace Service.Tests
                 new Organizacao {
                     Id = 1, Nome = "Organizacao Alfa", Cnpj = "11111111000111",
                     Bairro = "Centro", Cep = "49500000", Cidade = "Itabaiana",
-                    Email = "alfa@email.com", Estado = "SE", Rua = "Rua A",
-                    Senha = "123", Telefone = "79999999991"
                 },
                 new Organizacao {
                     Id = 2, Nome = "Organizacao Beta", Cnpj = "22222222000122",
                     Bairro = "Centro", Cep = "49500000", Cidade = "Itabaiana",
-                    Email = "beta@email.com", Estado = "SE", Rua = "Rua B",
-                    Senha = "123", Telefone = "79999999992"
                 },
                 new Organizacao {
                     Id = 3, Nome = "Organizacao Gama", Cnpj = "33333333000133",
                     Bairro = "Centro", Cep = "49500000", Cidade = "Itabaiana",
-                    Email = "gama@email.com", Estado = "SE", Rua = "Rua C",
-                    Senha = "123", Telefone = "79999999993"
                 }
             };
 
@@ -59,10 +53,8 @@ namespace Service.Tests
                 Bairro = "Centro",
                 Cep = "49500000",
                 Cidade = "Itabaiana",
-                Email = "nova@email.com",
                 Estado = "SE",
                 Rua = "Rua D",
-                Senha = "123",
                 Telefone = "79999999994"
             };
 

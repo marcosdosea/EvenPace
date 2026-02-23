@@ -30,8 +30,6 @@ namespace EvenPace.Controllers
             _mapper = mapper;
         }
 
-
-
         [HttpGet]
         public IActionResult Delete(int id)
         {
