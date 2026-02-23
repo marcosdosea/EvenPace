@@ -64,13 +64,22 @@ public class InscricaoController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult Put(int id, [FromBody] InscricaoViewModel model)
     {
-        var inscricaoExistente = _inscricaoService.Get(id);
+        var inscricao = _inscricaoService.Get(id);
 
-        if (inscricaoExistente == null)
+        if (inscricao == null)
             return NotFound();
 
-        var inscricao = _mapper.Map<Inscricao>(model);
-        inscricao.Id = id;
+        inscricao.Status = model.Status;
+        inscricao.Distancia = model.Distancia;
+        inscricao.TamanhoCamisa = model.TamanhoCamisa;
+        inscricao.DataInscricao = model.DataInscricao;
+        inscricao.IdEvento = model.IdEvento;
+        inscricao.IdCorredor = model.IdCorredor;
+        inscricao.IdKit = model.IdKit;
+        inscricao.StatusRetiradaKit = model.StatusRetiradaKit;
+        inscricao.Tempo = model.Tempo;
+        inscricao.Posicao = model.Posicao;
+        inscricao.IdAvaliacaoEvento = model.IdAvaliacaoEvento;
 
         _inscricaoService.Edit(inscricao);
 
