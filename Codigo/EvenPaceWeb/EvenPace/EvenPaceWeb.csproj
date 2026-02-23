@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Models\TelaInscricaoViewModel.cs" />
       <Compile Remove="Views\Inscricao\Create.cshtml.cs" />
       <Compile Remove="Views\Inscricao\Delete.cshtml.cs" />
       <Compile Remove="Views\Inscricao\Index.cshtml.cs" />
