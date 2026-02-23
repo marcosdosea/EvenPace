@@ -86,7 +86,7 @@ namespace Service
         /// </summary>
         /// <param name="id">Id da inscrição requisitada.</param>
         /// <returns>Entidade localizada de Inscrição.</returns>
-        public Inscricao Get(int id)
+        public Inscricao? Get(int id)
         {
             return _context.Inscricao.FirstOrDefault(i => i.Id == id);
         }

@@ -2,7 +2,6 @@ using AutoMapper;
 using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
-//using EvenPaceWeb.Models;
 using Service;
 using Models;
 

@@ -7,7 +7,7 @@ public interface IInscricaoService
 {
     void Edit(Inscricao inscricao);
     int Create(Inscricao inscricao);
-    Inscricao Get(int id);
+    Inscricao? Get(int id);
     void Delete(int id);
     void Cancelar(int idInscricao, int idCorredor);
 
@@ -21,4 +21,6 @@ public interface IInscricaoService
     GetDadosTelaDeleteResult GetDadosTelaDelete(int idInscricao);
 
     public void ConfirmarRetiradaKit(int idInscricao);
+
+  
 }
