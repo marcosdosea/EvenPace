@@ -62,16 +62,19 @@ public class InscricaoController : ControllerBase
 
     // PUT: api/Inscricao/5
     [HttpPut("{id}")]
-    public ActionResult Put(int id, [FromBody] InscricaoViewModel inscricaoViewModel)
+    public ActionResult Put(int id, [FromBody] InscricaoViewModel model)
     {
-        var inscricao = _mapper.Map<Inscricao>(inscricaoViewModel);
+        var inscricaoExistente = _inscricaoService.Get(id);
 
-        if (inscricao == null)
+        if (inscricaoExistente == null)
             return NotFound();
+
+        var inscricao = _mapper.Map<Inscricao>(model);
+        inscricao.Id = id;
 
         _inscricaoService.Edit(inscricao);
 
-        return Ok();
+        return Ok(inscricao);
     }
 
     // DELETE: api/Inscricao/5
