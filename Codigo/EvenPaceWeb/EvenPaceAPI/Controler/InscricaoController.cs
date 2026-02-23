@@ -41,9 +41,9 @@ public class InscricaoController : ControllerBase
 
     // POST: api/Inscricao
     [HttpPost]
-    public ActionResult Post([FromBody] InscricaoViewModel inscricaoViewModel)
+    public ActionResult Post([FromBody] InscricaoViewModel model)
     {
-        var inscricao = _mapper.Map<Inscricao>(inscricaoViewModel);
+        var inscricao = _mapper.Map<Inscricao>(model);
 
         var idGerado = _inscricaoService.Create(inscricao);
 
@@ -80,12 +80,15 @@ public class InscricaoController : ControllerBase
     [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
-        var inscricao = _inscricaoService.Get(id);
-
-        if (inscricao == null)
-            return NotFound();
-
         _inscricaoService.Delete(id);
-        return NoContent();
+        return Ok();
+    }
+
+    // GET: api/Inscricao/dados-tela/3
+    [HttpGet("dados-tela/{idEvento}")]
+    public ActionResult GetDadosTela(int idEvento)
+    {
+        var dados = _inscricaoService.GetDadosTelaInscricao(idEvento);
+        return Ok(dados);
     }
 }
