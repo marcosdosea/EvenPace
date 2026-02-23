@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvenPaceWebTests", "EvenPac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTests", "ServiceTests\ServiceTests.csproj", "{04C40DCB-C092-48AD-9ADA-D30265C70998}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvenPaceAPI", "EvenPaceAPI\EvenPaceAPI.csproj", "{38FAEF8C-3E04-49F7-A438-023FE7F664BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{04C40DCB-C092-48AD-9ADA-D30265C70998}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C40DCB-C092-48AD-9ADA-D30265C70998}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04C40DCB-C092-48AD-9ADA-D30265C70998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38FAEF8C-3E04-49F7-A438-023FE7F664BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38FAEF8C-3E04-49F7-A438-023FE7F664BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38FAEF8C-3E04-49F7-A438-023FE7F664BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38FAEF8C-3E04-49F7-A438-023FE7F664BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
