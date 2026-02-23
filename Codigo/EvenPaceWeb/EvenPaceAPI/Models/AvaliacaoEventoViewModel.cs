@@ -11,7 +11,7 @@ namespace Models
         public int InscricaoId { get; set; }
 
         [Required]
-        [Range(1, 5, ErrorMessage = "A nota deve ser entre 1 e 5.")]
+        [Range(1, 5, ErrorMessage = "A avaliação deve ser entre 1 e 5.")]
         public int Estrela { get; set; }
 
         [StringLength(300)]
