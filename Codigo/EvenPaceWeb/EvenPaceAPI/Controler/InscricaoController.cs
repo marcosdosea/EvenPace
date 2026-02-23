@@ -86,9 +86,9 @@ public class InscricaoController : ControllerBase
 
     // GET: api/Inscricao/dados-tela/3
     [HttpGet("Inscricoes-por-Evento/{idEvento}")]
-    public ActionResult GetDadosTela(int idEvento)
+    public ActionResult GetByEvento(int idEvento)
     {
-        var dados = _inscricaoService.GetDadosTelaInscricao(idEvento);
-        return Ok(dados);
+        var inscricoes = _inscricaoService.GetAllByEvento(idEvento);
+        return Ok(inscricoes);
     }
 }
