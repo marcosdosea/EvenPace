@@ -1,6 +1,8 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Core;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 namespace Models
@@ -10,6 +12,9 @@ namespace Models
         [Key]
         [Display(Name = "Código da Inscrição")]
         public uint Id { get; set; }
+
+        public string? Nome { get; set; }
+        public string? Email { get; set; }
 
         [Display(Name = "Status")]
         public string? Status { get; set; }
@@ -46,9 +51,6 @@ namespace Models
 
         public int? IdAvaliacaoEvento { get; set; }
 
-        [Display(Name = "Kit Retirado")]
-        public bool StatusRetiradaKit { get; set; }
-
         [ForeignKey("IdAvaliacaoEvento")]
         public virtual AvaliacaoEvento IdAvaliacaoEventoNavigation { get; set; } = null!;
 
@@ -61,28 +63,28 @@ namespace Models
         [ForeignKey("IdKit")]
         public virtual Kit IdKitNavigation { get; set; } = null!;
 
-        public string NomeEvento { get; set; } = null!;
+        public string NomeEvento { get; set; }
 
-        public string ImagemEvento { get; set; } = null!;
- 
-        public string Local { get; set; } = null!;
+        public string ImagemEvento { get; set; }
+
+        public string Local { get; set; }
 
         public DateTime DataEvento { get; set; }
 
-        public string Descricao { get; set; } = null!;
+        public string Descricao { get; set; }
 
         [Display(Name = "Informações de Retirada do Kit")]
         public string InfoRetiradaKit { get; set; } = null!;
 
-        public List<string> Percursos { get; set; } = null!;
+        public List<string> Percursos { get; set; }
 
-        public List<KitViewModel> Kits { get; set; } = null!;
+        public List<KitViewModel> Kits { get; set; }
 
-        public InscricaoViewModel Inscricao { get; set; } = null!;
+        public InscricaoViewModel Inscricao { get; set; }
 
-        public string NomeCorredor { get; set; } = null!;
+        public string NomeCorredor { get; set; }
 
-        public string NomeKit { get; set; } = null!;
+        public string NomeKit { get; set; }
     }
 }
- 
+
