@@ -5,21 +5,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EvenPace.Controllers;
 
-public class CartaoCreditoControler : Controller
+public class CartaoCreditoController : Controller
 {
     private ICartaoCreditoService _cartaoCredito;
     private IMapper _mapper;
 
-    public CartaoCreditoControler(ICartaoCreditoService cartaoCredito, IMapper mapper)
+    public CartaoCreditoController(ICartaoCreditoService cartaoCredito, IMapper mapper)
     {
         _cartaoCredito = cartaoCredito;
         _mapper = mapper;
     }
 
     /// <summary>
-    /// Fornece o resumo e listagem gerencial pertinente a todos os métodos de transação vinculados a cartões armazenados para processamento de faturas de inscrição.
+    /// Fornece o resumo e listagem gerencial pertinente a todos os mï¿½todos de transaï¿½ï¿½o vinculados a cartï¿½es armazenados para processamento de faturas de inscriï¿½ï¿½o.
     /// </summary>
-    /// <returns>Catálogo relacional iterativo dos cartões ativos no sistema.</returns>
+    /// <returns>Catï¿½logo relacional iterativo dos cartï¿½es ativos no sistema.</returns>
     public ActionResult Index()
     {
         var cartaoCredito = _cartaoCredito.GetAll();
@@ -28,9 +28,9 @@ public class CartaoCreditoControler : Controller
     }
 
     /// <summary>
-    /// Executa a exibição concentrada e sigilosa de um instrumento de cobrança estipulado pela correspondente ID submetida.
+    /// Executa a exibiï¿½ï¿½o concentrada e sigilosa de um instrumento de cobranï¿½a estipulado pela correspondente ID submetida.
     /// </summary>
-    /// <param name="id">Chave atrelativa ao cartão no banco de validação de pagamentos.</param>
+    /// <param name="id">Chave atrelativa ao cartï¿½o no banco de validaï¿½ï¿½o de pagamentos.</param>
     /// <returns>A janela particular exibindo as partes descritivas requeridas contidas.</returns>
     public ActionResult Details(int id)
     {
@@ -40,36 +40,40 @@ public class CartaoCreditoControler : Controller
     }
 
     /// <summary>
-    /// Elabora a página receptora focada no arquivamento seguro dos números e componentes operantes essenciais à aceitação de um método financeiro inovador do cliente no momento da aprovação.
+    /// Elabora a pï¿½gina receptora focada no arquivamento seguro dos nï¿½meros e componentes operantes essenciais ï¿½ aceitaï¿½ï¿½o de um mï¿½todo financeiro inovador do cliente no momento da aprovaï¿½ï¿½o.
     /// </summary>
-    /// <returns>Modelo visual em branco propício ao cadastro contendo inputs requeridos do cartão.</returns>
+    /// <returns>Modelo visual em branco propï¿½cio ao cadastro contendo inputs requeridos do cartï¿½o.</returns>
     public ActionResult Create()
     {
         return View();
     }
 
     /// <summary>
-    /// Efetiva as inclusões procedimentais dos registros captados no preenchimento convertendo a visualização temporal em dado de pagamento atrelado e persistente no banco ativo de transações de corredor ou gestor.
+    /// Efetiva as inclusï¿½es procedimentais dos registros captados no preenchimento convertendo a visualizaï¿½ï¿½o temporal em dado de pagamento atrelado e persistente no banco ativo de transaï¿½ï¿½es de corredor ou gestor.
     /// </summary>
-    /// <param name="cartaoCreditoViewModel">Classe agrupando as métricas e chaves providenciadas pelo comprador.</param>
-    /// <returns>Promove o regresso instantâneo da visualização para os índices consolidados de cartões cadastrados.</returns>
+    /// <param name="cartaoCreditoViewModel">Classe agrupando as mï¿½tricas e chaves providenciadas pelo comprador.</param>
+    /// <returns>Promove o regresso instantï¿½neo da visualizaï¿½ï¿½o para os ï¿½ndices consolidados de cartï¿½es cadastrados.</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Create(CartaoCreditoViewModel cartaoCreditoViewModel)
     {
-        if (ModelState.IsValid)
-        {
-            var cartaoCredito = _mapper.Map<Core.CartaoCredito>(cartaoCreditoViewModel);
-            _cartaoCredito.Create(cartaoCredito);
-        }
-        return RedirectToAction(nameof(Index));
+        var idCorredorClaim = User.FindFirst("IdCorredor");
+        
+        if (!ModelState.IsValid)
+            return View(cartaoCreditoViewModel);
+
+        var cartaoCredito = _mapper.Map<Core.CartaoCredito>(cartaoCreditoViewModel);
+        cartaoCredito.IdCorredor = int.Parse(idCorredorClaim.Value);
+        _cartaoCredito.Create(cartaoCredito);
+
+        return RedirectToAction("Index", "Home");
     }
 
     /// <summary>
-    /// Dispõe e invoca a tela formatada resgatando os blocos de informações gravados anteriormente voltados a aceitar reparos, aditivos limitadores ou troca de validade para viabilizar as transações contínuas de um cartão.
+    /// Dispï¿½e e invoca a tela formatada resgatando os blocos de informaï¿½ï¿½es gravados anteriormente voltados a aceitar reparos, aditivos limitadores ou troca de validade para viabilizar as transaï¿½ï¿½es contï¿½nuas de um cartï¿½o.
     /// </summary>
-    /// <param name="id">Identificador base fornecido atrelado à ferramenta de cobrança requerida.</param>
-    /// <returns>Ambiente gráfico dotado de preenchimento antecedente para edição assertiva.</returns>
+    /// <param name="id">Identificador base fornecido atrelado ï¿½ ferramenta de cobranï¿½a requerida.</param>
+    /// <returns>Ambiente grï¿½fico dotado de preenchimento antecedente para ediï¿½ï¿½o assertiva.</returns>
     public ActionResult Edit(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
@@ -78,11 +82,11 @@ public class CartaoCreditoControler : Controller
     }
 
     /// <summary>
-    /// Procede com a alocação e gravação integral das informações consertadas ou substituídas provenientes de formulário não-estrito, efetivando novas regras a um cartão específico atuante sem destruir relações anteriores.
+    /// Procede com a alocaï¿½ï¿½o e gravaï¿½ï¿½o integral das informaï¿½ï¿½es consertadas ou substituï¿½das provenientes de formulï¿½rio nï¿½o-estrito, efetivando novas regras a um cartï¿½o especï¿½fico atuante sem destruir relaï¿½ï¿½es anteriores.
     /// </summary>
-    /// <param name="id">Chave referencial designada temporalmente com o propósito atrelativo no ato da identificação processual.</param>
-    /// <param name="collection">Pacote abstrato de dados de coleção HTTP formulário aglomerando propriedades atreladas enviadas na edição.</param>
-    /// <returns>Sinaliza sucesso reescrevendo a janela central principal com retorno automático.</returns>
+    /// <param name="id">Chave referencial designada temporalmente com o propï¿½sito atrelativo no ato da identificaï¿½ï¿½o processual.</param>
+    /// <param name="collection">Pacote abstrato de dados de coleï¿½ï¿½o HTTP formulï¿½rio aglomerando propriedades atreladas enviadas na ediï¿½ï¿½o.</param>
+    /// <returns>Sinaliza sucesso reescrevendo a janela central principal com retorno automï¿½tico.</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Edit(int id, IFormCollection collection)
@@ -96,10 +100,10 @@ public class CartaoCreditoControler : Controller
     }
 
     /// <summary>
-    /// Constrói o obstáculo protetivo em interface exibindo métricas do cartão com o intuito focado em questionar o autor sobre as consequências envolvidas numa eminente exclusão das chaves em repouso.
+    /// Constrï¿½i o obstï¿½culo protetivo em interface exibindo mï¿½tricas do cartï¿½o com o intuito focado em questionar o autor sobre as consequï¿½ncias envolvidas numa eminente exclusï¿½o das chaves em repouso.
     /// </summary>
-    /// <param name="id">Código identificador exclusivo do recurso transacional focado.</param>
-    /// <returns>Disponibiliza vista descritiva requerendo aval confirmatório in-loco.</returns>
+    /// <param name="id">Cï¿½digo identificador exclusivo do recurso transacional focado.</param>
+    /// <returns>Disponibiliza vista descritiva requerendo aval confirmatï¿½rio in-loco.</returns>
     public ActionResult Delete(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
@@ -108,11 +112,11 @@ public class CartaoCreditoControler : Controller
     }
 
     /// <summary>
-    /// Aborta e expulsa de maneira incontornável e decisiva as relações preexistentes referentes a esta metodologia de pagamento alocada nos arquivos centrais das transações correntes da aplicação relacional via ORM em vigor.
+    /// Aborta e expulsa de maneira incontornï¿½vel e decisiva as relaï¿½ï¿½es preexistentes referentes a esta metodologia de pagamento alocada nos arquivos centrais das transaï¿½ï¿½es correntes da aplicaï¿½ï¿½o relacional via ORM em vigor.
     /// </summary>
-    /// <param name="id">A indexação que valida de ponta a ponta as propriedades exclusivas do cartão no sistema.</param>
-    /// <param name="cartaoCreditoViewModel">Instrumento referenciador gerado pelas submissões do formulário no ambiente view.</param>
-    /// <returns>Realocações automáticas com trânsito repassado ao quadro resumo da classe manipuladora limpa.</returns>
+    /// <param name="id">A indexaï¿½ï¿½o que valida de ponta a ponta as propriedades exclusivas do cartï¿½o no sistema.</param>
+    /// <param name="cartaoCreditoViewModel">Instrumento referenciador gerado pelas submissï¿½es do formulï¿½rio no ambiente view.</param>
+    /// <returns>Realocaï¿½ï¿½es automï¿½ticas com trï¿½nsito repassado ao quadro resumo da classe manipuladora limpa.</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Delete(int id, CartaoCreditoViewModel cartaoCreditoViewModel)
