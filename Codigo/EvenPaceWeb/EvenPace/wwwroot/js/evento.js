@@ -1,6 +1,5 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
 
-    // 1. Lógica do Alerta (Toast)
     var alerta = document.querySelector(".alert-custom");
     if (alerta) {
         setTimeout(function () {
@@ -11,8 +10,7 @@
         }, 3000);
     }
 
-    // 2. Upload de Imagem (Display do nome)
-    var fileInput = document.getElementById("ImagemUpload"); // Certifique-se que o ID no HTML é este ou use a classe
+    var fileInput = document.getElementById("ImagemUpload"); 
     var fileInputClass = document.querySelector(".file-hidden");
     var fileNameDisplay = document.getElementById("fileNameDisplay");
 
