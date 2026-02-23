@@ -149,6 +149,6 @@ public class CorredorController : Controller
     public ActionResult Delete(int id, CorredorViewModel corredorModel)
     {
         _corredorService.Delete(id);
-        return RedirectToAction(nameof(Index)); // Certifique-se de que a Action "Index" existe caso use este redirecionamento
+        return RedirectToAction(nameof(Index));
     }
 }
