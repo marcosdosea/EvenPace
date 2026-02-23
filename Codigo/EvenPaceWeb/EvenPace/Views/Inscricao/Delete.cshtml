@@ -1,183 +1,183 @@
 @model Models.InscricaoViewModel
 
 @{
-    Layout = null;
+	Layout = null;
 }
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="utf-8" />
-<title>Cancelar Inscrição</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<meta charset="utf-8" />
+	<title>Cancelar Inscrição</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<style>
-body {
-    background: #f5c400;
-}
+	<style>
+		body {
+			background: #f5c400;
+		}
 
-.app-card {
-    background: #fff;
-    border-radius: 1rem;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    height: 85vh;
-    position: relative;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15); 
-}
+		.app-card {
+			background: #fff;
+			border-radius: 1rem;
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			height: 85vh;
+			position: relative;
+			box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+		}
 
-.header {
-    padding: 18px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
-}
+		.header {
+			padding: 18px;
+			border-bottom: 1px solid #eee;
+			cursor: pointer;
+		}
 
-.app-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-}
+		.app-content {
+			flex: 1;
+			overflow-y: auto;
+			padding: 16px;
+		}
 
-h2 {
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-}
+		h2 {
+			font-weight: bold;
+			text-align: center;
+			margin-bottom: 20px;
+		}
 
-.card-box {
-    background: #fff;
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    margin-bottom: 16px;
-}
+		.card-box {
+			background: #fff;
+			border-radius: 12px;
+			padding: 16px;
+			box-shadow: 0 2px 8px rgba(0,0,0,.08);
+			margin-bottom: 16px;
+		}
 
-.card-box.top {
-    border-top: 6px solid #FFD700;
-}
+			.card-box.top {
+				border-top: 6px solid #FFD700;
+			}
 
-.label-pequeno {
-    font-size: .85rem;
-    color: #6c757d;
-}
+		.label-pequeno {
+			font-size: .85rem;
+			color: #6c757d;
+		}
 
-.valor-negrito {
-    font-weight: bold;
-    margin: 0;
-}
+		.valor-negrito {
+			font-weight: bold;
+			margin: 0;
+		}
 
-.alerta {
-    background: #fff3cd;
-    border-radius: 12px;
-    padding: 16px;
-    font-size: .95rem;
-}
+		.alerta {
+			background: #fff3cd;
+			border-radius: 12px;
+			padding: 16px;
+			font-size: .95rem;
+		}
 
-.alerta ul {
-    padding-left: 18px;
-    margin: 8px 0 0;
-}
+			.alerta ul {
+				padding-left: 18px;
+				margin: 8px 0 0;
+			}
 
-.btn-cancelar {
-    width: 100%;
-    background: #FFD700;
-    border: none;
-    border-radius: 30px;
-    font-weight: bold;
-    padding: 12px;
-    margin-top: 20px;
-}
+		.btn-cancelar {
+			width: 100%;
+			background: #FFD700;
+			border: none;
+			border-radius: 30px;
+			font-weight: bold;
+			padding: 12px;
+			margin-top: 20px;
+		}
 
-.btn-cancelar:hover {
-    background: #f1c40f;
-}
+			.btn-cancelar:hover {
+				background: #f1c40f;
+			}
 
-.bottom-nav {
-    height: 70px;
-    border-top: 1px solid #ddd;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    font-size: 12px;
-    background: #fff;
-    flex-shrink: 0;
-}
+		.bottom-nav {
+			height: 70px;
+			border-top: 1px solid #ddd;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			font-size: 12px;
+			background: #fff;
+			flex-shrink: 0;
+		}
 
-        @@media (max-width: 768px) {
-    .app-card {
-        height: 100vh;
-        border-radius: 0;
-    }
-}
-</style>
+		@@media (max-width: 768px) {
+			.app-card {
+				height: 100vh;
+				border-radius: 0;
+			}
+		}
+	</style>
 </head>
 
 <body>
 
-<section class="vh-100 d-flex align-items-center">
-<div class="container">
-<div class="row justify-content-center">
-<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+	<section class="vh-100 d-flex align-items-center">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-md-8 col-lg-6 col-xl-5">
 
-<div class="app-card">
+					<div class="app-card">
 
-<div class="header" onclick="history.back()">← Voltar</div>
+						<div class="header" onclick="history.back()">← Voltar</div>
 
-<form asp-controller="Inscricao" asp-action="Cancelar" method="post" class="app-content">
-                            @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="Inscricao.Id" />
-    <input type="hidden" asp-for="Inscricao.IdEvento" />
+						<form asp-controller="Inscricao" asp-action="Cancelar" method="post" class="app-content">
+							@Html.AntiForgeryToken()
+							<input type="hidden" asp-for="Inscricao.Id" />
+							<input type="hidden" asp-for="Inscricao.IdEvento" />
 
-    <h2>Cancelar inscrição ⚠️</h2>
+							<h2>Cancelar inscrição ⚠️</h2>
 
-    <div class="card-box top">
-        <p class="valor-negrito">@Model.NomeEvento</p>
-        <span class="label-pequeno">Evento</span>
-        <hr />
-        <p class="mb-1"><strong>📅 Data:</strong> @Model.DataEvento.ToString("dd/MM/yyyy")</p>
-        <p class="mb-1"><strong>📍 Local:</strong> @Model.Local</p>
-        <p class="mb-0"><strong>🏃 Distância:</strong> @Model.Inscricao.Distancia</p>
-    </div>
+							<div class="card-box top">
+								<p class="valor-negrito">@Model.NomeEvento</p>
+								<span class="label-pequeno">Evento</span>
+								<hr />
+								<p class="mb-1"><strong>📅 Data:</strong> @Model.DataEvento.ToString("dd/MM/yyyy")</p>
+								<p class="mb-1"><strong>📍 Local:</strong> @Model.Local</p>
+								<p class="mb-0"><strong>🏃 Distância:</strong> @Model.Inscricao.Distancia</p>
+							</div>
 
-    <div class="card-box">
-        <p class="valor-negrito">Sua inscrição</p>
-        <span class="label-pequeno">Detalhes</span>
-        <hr />
-        <p class="mb-1"><strong>Corredor:</strong> @Model.NomeCorredor</p>
-        <p class="mb-1"><strong>Data da inscrição:</strong> @Model.Inscricao.DataInscricao.ToString("dd/MM/yyyy")</p>
-        <p class="mb-0"><strong>Kit escolhido:</strong> @Model.NomeKit</p>
-    </div>
+							<div class="card-box">
+								<p class="valor-negrito">Sua inscrição</p>
+								<span class="label-pequeno">Detalhes</span>
+								<hr />
+								<p class="mb-1"><strong>Corredor:</strong> @Model.NomeCorredor</p>
+								<p class="mb-1"><strong>Data da inscrição:</strong> @Model.Inscricao.DataInscricao.ToString("dd/MM/yyyy")</p>
+								<p class="mb-0"><strong>Kit escolhido:</strong> @Model.NomeKit</p>
+							</div>
 
-    <div class="alerta">
-        <strong>⚠️ Ao cancelar sua inscrição:</strong>
-        <ul>
-            <li>Você perderá a vaga na corrida</li>
-            <li>Esta ação não poderá ser desfeita</li>
-        </ul>
-    </div>
+							<div class="alerta">
+								<strong>⚠️ Ao cancelar sua inscrição:</strong>
+								<ul>
+									<li>Você perderá a vaga na corrida</li>
+									<li>Esta ação não poderá ser desfeita</li>
+								</ul>
+							</div>
 
-    <button type="submit" class="btn-cancelar">
-        🗑️ Cancelar inscrição
-    </button>
+							<button type="submit" class="btn-cancelar">
+								🗑️ Cancelar inscrição
+							</button>
 
-</form>
+						</form>
 
-<div class="bottom-nav">
-    <a asp-controller="Evento" asp-action="IndexUsuario" style="text-decoration:none; color:inherit;">🏠<br />Início</a>
-    <div>🏆<br />Conquistas</div>
-    <div>🎟️<br />Cupons</div>
-    <div>🕓<br />Histórico</div>
-    <div>👤<br />Perfil</div>
-</div>
+						<div class="bottom-nav">
+							<a asp-controller="Evento" asp-action="IndexUsuario" style="text-decoration:none; color:inherit;">🏠<br />Início</a>
+							<div>🏆<br />Conquistas</div>
+							<div>🎟️<br />Cupons</div>
+							<div>🕓<br />Histórico</div>
+							<div>👤<br />Perfil</div>
+						</div>
 
-</div>
+					</div>
 
-</div>
-</div>
-</div>
-</section>
+				</div>
+			</div>
+		</div>
+	</section>
 
 </body>
 </html>

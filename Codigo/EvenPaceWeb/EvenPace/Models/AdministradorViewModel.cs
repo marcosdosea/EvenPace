@@ -14,12 +14,5 @@ namespace Models
         [StringLength(100)]
         public string Nome { get; set; } = null!;
 
-        [Display(Name = "Email")]
-        [Required(ErrorMessage = "O e-mail é obrigatório.")]
-        public string Email { get; set; } = null!;
-
-        [Display(Name = "Senha")]
-        [Required(ErrorMessage = "A senha é obrigatória.")]
-        public string Senha { get; set; } = null!;
     }
 }

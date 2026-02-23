@@ -42,18 +42,10 @@ public partial class EvenPaceContext : DbContext
 
             entity.ToTable("Administrador");
 
-            entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
-
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Email)
-                .HasMaxLength(45)
-                .HasColumnName("email");
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
                 .HasColumnName("nome");
-            entity.Property(e => e.Senha)
-                .HasMaxLength(45)
-                .HasColumnName("senha");
         });
 
         modelBuilder.Entity<AvaliacaoEvento>(entity =>
@@ -109,8 +101,6 @@ public partial class EvenPaceContext : DbContext
 
             entity.HasIndex(e => e.Cpf, "cpf_UNIQUE").IsUnique();
 
-            entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
-
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Cpf)
                 .HasMaxLength(11)
@@ -119,15 +109,9 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.DataNascimento)
                 .HasColumnType("date")
                 .HasColumnName("dataNascimento");
-            entity.Property(e => e.Email)
-                .HasMaxLength(45)
-                .HasColumnName("email");
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
                 .HasColumnName("nome");
-            entity.Property(e => e.Senha)
-                .HasMaxLength(45)
-                .HasColumnName("senha");
         });
 
         modelBuilder.Entity<Cupom>(entity =>
@@ -312,8 +296,6 @@ public partial class EvenPaceContext : DbContext
 
             entity.HasIndex(e => e.Cnpj, "cnpj_UNIQUE").IsUnique();
 
-            entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
-
             entity.HasIndex(e => e.AdministradorId, "fk_Organizacao_Admistrador1_idx");
 
             entity.Property(e => e.Id).HasColumnName("id");
@@ -340,9 +322,6 @@ public partial class EvenPaceContext : DbContext
                 .HasMaxLength(11)
                 .IsFixedLength()
                 .HasColumnName("cpf");
-            entity.Property(e => e.Email)
-                .HasMaxLength(45)
-                .HasColumnName("email");
             entity.Property(e => e.Estado)
                 .HasMaxLength(45)
                 .HasColumnName("estado");
@@ -352,9 +331,6 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Rua)
                 .HasMaxLength(45)
                 .HasColumnName("rua");
-            entity.Property(e => e.Senha)
-                .HasMaxLength(45)
-                .HasColumnName("senha");
             entity.Property(e => e.StatusSituacao).HasColumnName("statusSituacao");
             entity.Property(e => e.Telefone).HasColumnName("telefone");
 

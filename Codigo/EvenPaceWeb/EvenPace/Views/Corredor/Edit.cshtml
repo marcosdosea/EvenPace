@@ -106,7 +106,6 @@
             <form asp-action="Edit" method="post">
                 @Html.AntiForgeryToken()
                 <input type="hidden" asp-for="Id"/>
-                <input type="hidden" asp-for="Senha" />
 
                 <div class="mb-3">
                     <label class="form-label" asp-for="Nome">
@@ -114,14 +113,6 @@
                     </label>
                     <input asp-for="Nome"  class="form-control bg-dark text-warning border-0 text-center"/>
                     <span asp-validation-for="Nome" class="text-danger"></span>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label" asp-for="Email">
-                        E-mail <i class="bi bi-pencil-fill ms-2"></i>
-                    </label>
-                    <input asp-for="Email" type="email" class="form-control bg-dark text-warning border-0 text-center"/>
-                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="row">
