@@ -1,9 +1,9 @@
 using AutoMapper;
 using Core;
 using Core.Service;
-using Core.Service.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using EvenPaceWeb.Models;
+//using EvenPaceWeb.Models;
+using Service;
 using Models;
 
 namespace EvenPace.Controllers
@@ -11,82 +11,100 @@ namespace EvenPace.Controllers
     public class InscricaoController : Controller
     {
         private readonly IInscricaoService _inscricaoService;
+        private readonly IEventosService _eventoService;
+        private readonly IKitService _kitService;
         private readonly IMapper _mapper;
+        private readonly ICorredorService _corredorService;
 
-        public InscricaoController(IInscricaoService inscricaoService, IMapper mapper)
+
+        public InscricaoController(
+            IInscricaoService inscricaoService,
+            IEventosService eventoService,
+            IKitService kitService,
+            ICorredorService corredorService,
+            IMapper mapper)
         {
             _inscricaoService = inscricaoService;
+            _eventoService = eventoService;
+            _kitService = kitService;
+            _corredorService = corredorService;
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Verifica as condições e exibe a interface de confirmação para o cancelamento de uma inscrição específica.
-        /// </summary>
-        /// <param name="id">O identificador numérico da inscrição.</param>
-        /// <returns>A view de exclusão caso permitida; do contrário, redireciona exibindo avisos de erro temporal ou inexistência.</returns>
+
+
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var result = _inscricaoService.GetDadosTelaDelete(id);
+            var inscricao = _inscricaoService.Get(id);
 
-            if (!result.Success)
+            if (inscricao == null)
+                return NotFound("Inscrição não encontrada");
+
+            Kit? kit = null;
+            if (inscricao.IdKit.HasValue)
+                kit = _kitService.Get(inscricao.IdKit.Value);
+
+            var evento = _eventoService.Get(inscricao.IdEvento);
+
+            if (evento.Data < DateTime.Now)
             {
-                if (result.ErrorType == "NotFound")
-                    return NotFound("Inscrição não encontrada");
                 TempData["Erro"] = "Não é possível cancelar após a data do evento.";
                 return RedirectToAction("Index", "Home");
             }
 
-            var dadosTelaDelete = result.Data!;
-            var telaInscricaoViewModel = new TelaInscricaoViewModel
+            var vm = new InscricaoViewModel
             {
-                NomeEvento = dadosTelaDelete.NomeEvento,
-                DataEvento = dadosTelaDelete.DataEvento,
-                Local = dadosTelaDelete.Local,
-                NomeKit = dadosTelaDelete.NomeKit,
+                NomeEvento = evento.Nome,
+                DataEvento = evento.Data,
+                Local = evento.Cidade,
+                NomeKit = kit?.Nome ?? "Sem kit",
                 Inscricao = new InscricaoViewModel
                 {
-                    Id = (uint)dadosTelaDelete.IdInscricao,
-                    Distancia = dadosTelaDelete.Distancia,
-                    TamanhoCamisa = dadosTelaDelete.TamanhoCamisa,
-                    DataInscricao = dadosTelaDelete.DataInscricao
+                    Id = (uint)inscricao.Id,
+                    Distancia = inscricao.Distancia,
+                    TamanhoCamisa = inscricao.TamanhoCamisa,
+                    DataInscricao = inscricao.DataInscricao
                 }
             };
 
-            return View("Delete", telaInscricaoViewModel);
+            return View("Delete", vm);
         }
 
-        /// <summary>
-        /// Acessa a página central (hub) de detalhes de inscrição de um evento.
-        /// </summary>
-        /// <param name="id">O código exclusivo do evento alvo da inscrição.</param>
-        /// <returns>View de índice contendo as informações consolidadas para inscrição.</returns>
+
         public IActionResult Index(int id)
         {
-            var dto = _inscricaoService.GetDadosTelaInscricao(id);
-            var vm = MontarTelaInscricaoViewModel(dto, id);
+            var vm = new InscricaoViewModel
+            {
+                IdEvento = id,
+                Inscricao = new InscricaoViewModel
+                {
+                    IdEvento = id
+                }
+            };
+
+            ConfigurarInscricao(vm);
             return View(vm);
         }
 
-        /// <summary>
-        /// Exibe o formulário inicial destinado ao registro da participação no evento.
-        /// </summary>
-        /// <param name="id">O identificador do evento.</param>
-        /// <returns>A view de criação de inscrição.</returns>
         [HttpGet]
         public IActionResult Create(int id)
         {
-            var dto = _inscricaoService.GetDadosTelaInscricao(id);
-            var vm = MontarTelaInscricaoViewModel(dto, id);
+            var vm = new InscricaoViewModel
+            {
+                IdEvento = id,
+                Inscricao = new InscricaoViewModel
+                {
+                    IdEvento = id
+                }
+            };
+
+            ConfigurarInscricao(vm);
+
             return View("Create", vm);
         }
 
-        /// <summary>
-        /// Efetiva o cancelamento lógico da inscrição após o envio e validação das credenciais do usuário e prazo do evento.
-        /// </summary>
-        /// <param name="idInscricao">O identificador único do registro de inscrição que será inativado.</param>
-        /// <param name="idEvento">O identificador do evento atrelado à inscrição.</param>
-        /// <returns>Redireciona para o índice do evento mantendo o alerta de sucesso ou erro do processo.</returns>
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int idInscricao, int idEvento)
@@ -115,20 +133,46 @@ namespace EvenPace.Controllers
             return RedirectToAction("Index", new { id = idEvento });
         }
 
-        /// <summary>
-        /// Confirma a geração da inscrição com base nas escolhas de formulário (distância, blusa, kit) vinculadas ao usuário logado.
-        /// </summary>
-        /// <param name="vm">ViewModel englobando todos os dados selecionados na tela de inscrição do evento.</param>
-        /// <returns>Retorna à indexação do evento com mensagens indicativas das ações.</returns>
+        public IActionResult salve()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(TelaInscricaoViewModel vm)
+        public IActionResult Index(InscricaoViewModel vm)
         {
+            return Content("POST EXECUTOU");
             var idCorredorClaim = User.FindFirst("IdCorredor");
-            if (idCorredorClaim == null)
+
+            int idCorredor;
+
+            if (idCorredorClaim != null)
             {
-                TempData["Erro"] = "Faça login para continuar";
-                return RedirectToAction("Index", new { id = vm.Inscricao.IdEvento });
+                idCorredor = int.Parse(idCorredorClaim.Value);
+            }
+            else
+            {
+                // Verificar se já existe corredor com esse email
+                var corredorExistente = _corredorService.GetByEmail(vm.Inscricao.Email);
+
+                if (corredorExistente != null)
+                {
+                    idCorredor = corredorExistente.Id;
+                }
+                else
+                {
+                    var novoCorredor = new Corredor
+                    {
+                        Nome = vm.Inscricao.Nome,
+                        Email = vm.Inscricao.Email,
+                        Senha = "temporaria", // ou gerar hash depois
+                        Cpf = "00000000000",
+                        DataNascimento = DateTime.Now
+                    };
+
+                    idCorredor = _corredorService.Create(novoCorredor);
+                }
             }
 
             var inscricao = new Inscricao
@@ -138,77 +182,41 @@ namespace EvenPace.Controllers
                 Distancia = vm.Inscricao.Distancia,
                 TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
                 IdEvento = (int)vm.Inscricao.IdEvento,
-                IdKit = (int)vm.Inscricao.IdKit,
-                IdCorredor = int.Parse(idCorredorClaim.Value)
+                IdKit = vm.Inscricao.IdKit,
+                IdCorredor = idCorredor
             };
 
             _inscricaoService.Create(inscricao);
 
-            TempData["Sucesso"] = "Inscrição realizada com sucesso!";
-            return RedirectToAction("Index", new { id = vm.Inscricao.IdEvento });
+            TempData["Sucesso"] = "Inscrição criada com sucesso!";
+
+            return RedirectToAction("salve");
         }
 
-        private TelaInscricaoViewModel MontarTelaInscricaoViewModel(DadosTelaInscricaoDto dto, int idEvento)
+        private void ConfigurarInscricao(InscricaoViewModel vm)
         {
-            return new TelaInscricaoViewModel
-            {
-                IdEvento = idEvento,
-                NomeEvento = dto.NomeEvento,
-                Local = dto.Local,
-                DataEvento = dto.DataEvento,
-                Descricao = dto.Descricao,
-                ImagemEvento = dto.ImagemEvento,
-                Percursos = new List<string> { "3km", "5km", "10km" },
-                Kits = _mapper.Map<List<KitViewModel>>(dto.Kits),
-                Inscricao = new InscricaoViewModel { IdEvento = idEvento }
-            };
+            var evento = _eventoService.Get(vm.IdEvento);
+            if (evento == null)
+                throw new Exception($"Evento {vm.IdEvento} não existe no banco");
+
+            var kits = _kitService.GetKitsPorEvento((int)vm.IdEvento);
+
+            vm.NomeEvento = evento.Nome;
+            vm.Local = evento.Cidade;
+            vm.DataEvento = evento.Data;
+            vm.Descricao = evento.Descricao;
+            vm.ImagemEvento = evento.Imagem;
+            vm.InfoRetiradaKit = evento.InfoRetiradaKit;
+
+            vm.Percursos = new List<string> { "3km", "5km", "10km" };
+            vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
         }
 
-        /// <summary>
-        /// Gera uma listagem contendo todos os participantes regularmente inscritos em um determinado evento.
-        /// </summary>
-        /// <param name="idEvento">O identificador do evento.</param>
-        /// <returns>A view com a lista de modelos de inscritos.</returns>
         public ActionResult GetAllByEvento(int idEvento)
         {
             var inscricao = _inscricaoService.GetAllByEvento(idEvento);
             var inscricaoViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricao);
             return View(inscricaoViewModel);
-        }
-
-        /// <summary>
-        /// Apresenta o painel de suporte que possibilita aos organizadores monitorar e efetuar o checkout de kits de um evento.
-        /// </summary>
-        /// <param name="idEvento">O evento relacionado à entrega em andamento.</param>
-        /// <returns>View contendo o painel de retiradas do evento.</returns>
-        [HttpGet]
-        public IActionResult Retirada(int idEvento)
-        {
-            var inscricoes = _inscricaoService.GetAllByEvento(idEvento);
-
-            var inscricoesViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricoes);
-
-            return View("RetiradaKit", inscricoesViewModel);
-        }
-
-        /// <summary>
-        /// Altera o status da inscrição confirmando que o participante fez a coleta do kit adquirido.
-        /// </summary>
-        /// <param name="idInscricao">Identificador único do ingresso/inscrição no sistema.</param>
-        /// <param name="idEvento">Identificador do evento pertencente para efeitos de redirecionamento posterior.</param>
-        /// <returns>Retorna Ok() em caso de requisição assíncrona, ou redireciona a interface novamente para o painel de entrega.</returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ConfirmarRetirada(int idInscricao, int idEvento)
-        {
-            _inscricaoService.ConfirmarRetiradaKit(idInscricao);
-
-            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            {
-                return Ok();
-            }
-
-            return RedirectToAction("Retirada", new { idEvento = idEvento });
         }
     }
 }
