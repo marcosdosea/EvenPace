@@ -15,8 +15,8 @@ namespace Service
         /// <summary>
         /// Insere um evento no banco de dados
         /// </summary>
-        /// <param name="corredor"></param>
-        /// <returns></returns>
+        /// <param name="corredor">A entidade contendo as informações do novo corredor a ser cadastrado.</param>
+        /// <returns>Retorna o Id numérico gerado pelo banco para a nova entidade.</returns>
         /// <exception cref="NotImplementedException"></exception>
         public int Create(Corredor corredor)
         {
@@ -24,7 +24,11 @@ namespace Service
             _context.SaveChanges();
             return corredor.Id;
         }
-
+        /// <summary>
+        /// Localiza o cadastro de um corredor baseando-se no endereço de e-mail registrado.
+        /// </summary>
+        /// <param name="email">E-mail único de registro do usuário procurado.</param>
+        /// <returns>Retorna a entidade do corredor correspondente ou valor nulo se inexistente.</returns>
         public Corredor? GetByEmail(string email)
         {
             return _context.Corredors
@@ -34,7 +38,7 @@ namespace Service
         /// <summary>
         /// Encontra o Corredor com o id correspondente
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Chave primária do corredor requisitado.</param>
         /// <returns>Retorna um Corredor</returns>
         public Corredor Get(int id)
         {
@@ -47,11 +51,11 @@ namespace Service
 
             return lista.FirstOrDefault(c => c.Id == id);
         }
-        
+
         /// <summary>
         /// Pega o corredor com email e senha compativeis
         /// </summary>
-        /// <param name="corredor"></param>
+        /// <param name="corredor">A entidade já instanciada com os dados e chaves prontas para substituição.</param>
         public void Edit(Corredor corredor)
         {
             if (corredor != null)
@@ -65,7 +69,7 @@ namespace Service
         /// <summary>
         /// Deleta um evento do banco de dados
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">O identificador exato atrelado ao registro do corredor no banco de dados.</param>
         public void Delete(int id)
         {
             var _corredor = _context.Corredors.Find(id);
