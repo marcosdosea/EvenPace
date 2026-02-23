@@ -2,6 +2,7 @@
 using Core.Service;
 using AutoMapper;
 using Models;
+using System.Threading.Tasks;
 
 namespace EvenPaceWeb.Controllers
 {
@@ -9,11 +10,46 @@ namespace EvenPaceWeb.Controllers
     {
         private readonly IAdministradorService _administradorService;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public AdministradorController(IAdministradorService administradorService, IMapper mapper)
+        public AdministradorController(
+            IAdministradorService administradorService,
+            IMapper mapper,
+            IAuthService authService)
         {
             _administradorService = administradorService;
             _mapper = mapper;
+            _authService = authService;
+        }
+
+        /// <summary>
+        /// Fornece o ecrã de acesso seguro e restrito dedicado aos moderadores e administradores da plataforma.
+        /// </summary>
+        /// <returns>View de submissão de credenciais administrativas.</returns>
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Efetua a verificação das credenciais de nível administrativo utilizando o serviço abstrato.
+        /// </summary>
+        /// <param name="email">E-mail corporativo do administrador.</param>
+        /// <param name="senha">Senha de alto privilégio.</param>
+        /// <returns>Garante acesso ao painel de moderação (lista de organizações) ou recusa o acesso de volta ao formulário.</returns>
+        [HttpPost]
+        public async Task<IActionResult> Login(string email, string senha)
+        {
+            var isAutenticado = await _authService.LoginAsync(email, senha);
+
+            if (isAutenticado)
+            {
+                return RedirectToAction("Index", "Organizacao");
+            }
+
+            ModelState.AddModelError("", "Acesso de administrador negado. Verifique as suas credenciais.");
+            return View();
         }
 
         /// <summary>

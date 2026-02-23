@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Moq;
 using EvenPace.Controllers;
-using EvenPaceWeb.Areas.Identity.Data;
 using Mappers;
-using Microsoft.AspNetCore.Identity;
+using System;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EvenPaceWebTests
 {
@@ -16,37 +17,17 @@ namespace EvenPaceWebTests
     {
         private static CorredorController controller;
         private static Mock<ICorredorService> mockService;
-        private Mock<UserManager<UsuarioIdentity>> mockUserManager;
-        private Mock<SignInManager<UsuarioIdentity>> mockSignInManager;
+
+        private static Mock<IAuthService> mockAuthService;
 
         [TestInitialize]
         public void Initialize()
         {
             mockService = new Mock<ICorredorService>();
-            
+            mockAuthService = new Mock<IAuthService>();
+
             IMapper mapper = new MapperConfiguration(cfg =>
                 cfg.AddProfile(new CorredorProfile())).CreateMapper();
-
-            var userStoreMock = new Mock<IUserStore<UsuarioIdentity>>();
-            mockUserManager = new Mock<UserManager<UsuarioIdentity>>(
-                userStoreMock.Object,
-                null, null, null, null, null, null, null, null
-            );
-            
-            mockSignInManager = new Mock<SignInManager<UsuarioIdentity>>(
-                mockUserManager.Object,
-                new Mock<Microsoft.AspNetCore.Http.IHttpContextAccessor>().Object,
-                new Mock<IUserClaimsPrincipalFactory<UsuarioIdentity>>().Object,
-                null, null, null, null
-            );
-            
-            mockSignInManager
-                .Setup(s => s.PasswordSignInAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    false,
-                    false))
-                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
 
             mockService.Setup(service => service.Get(1))
                 .Returns(GetTargetCorredor());
@@ -63,14 +44,43 @@ namespace EvenPaceWebTests
 
             mockService.Setup(service => service.Delete(It.IsAny<int>()))
                 .Verifiable();
-            
+
             controller = new CorredorController(
                 mockService.Object,
                 mapper,
-                mockUserManager.Object,
-                mockSignInManager.Object
+                mockAuthService.Object 
             );
         }
+
+
+        [TestMethod()]
+        public async Task Login_ComCredenciaisValidas_RedirecionaParaEventos()
+        {
+            mockAuthService.Setup(s => s.LoginAsync(It.IsAny<string>(), It.IsAny<string>()))
+                            .ReturnsAsync(true);
+
+            var result = await controller.Login("corredor@email.com", "SenhaValida123!");
+
+            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+            var redirectResult = (RedirectToActionResult)result;
+            Assert.AreEqual("IndexUsuario", redirectResult.ActionName);
+            Assert.AreEqual("Evento", redirectResult.ControllerName);
+        }
+
+        [TestMethod()]
+        public async Task Login_ComCredenciaisInvalidas_RetornaAvisoNoModelState()
+        {
+            
+            mockAuthService.Setup(s => s.LoginAsync(It.IsAny<string>(), It.IsAny<string>()))
+                            .ReturnsAsync(false);
+
+            var result = await controller.Login("errado@email.com", "SenhaInvalida");
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            Assert.IsFalse(controller.ModelState.IsValid);
+            Assert.IsTrue(controller.ModelState.ContainsKey(""));
+        }
+
 
         [TestMethod()]
         public void GetTest_Valido()

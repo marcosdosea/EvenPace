@@ -2,7 +2,6 @@ using AutoMapper;
 using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
-//using EvenPaceWeb.Models;
 using Service;
 using Models;
 
@@ -153,7 +152,6 @@ namespace EvenPace.Controllers
             }
             else
             {
-                // Verificar se já existe corredor com esse email
                 var corredorExistente = _corredorService.GetByEmail(vm.Inscricao.Email);
 
                 if (corredorExistente != null)
@@ -166,7 +164,7 @@ namespace EvenPace.Controllers
                     {
                         Nome = vm.Inscricao.Nome,
                         Email = vm.Inscricao.Email,
-                        Senha = "temporaria", // ou gerar hash depois
+                        Senha = "temporaria", 
                         Cpf = "00000000000",
                         DataNascimento = DateTime.Now
                     };

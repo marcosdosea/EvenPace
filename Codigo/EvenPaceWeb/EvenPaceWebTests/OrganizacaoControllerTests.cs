@@ -7,6 +7,9 @@ using Moq;
 using EvenPaceWeb.Controllers;
 using EvenPaceWeb.Mappers;
 using Mappers;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EvenPaceWebTests
 {
@@ -16,10 +19,13 @@ namespace EvenPaceWebTests
         private static OrganizacaoController controller = null!;
         private static Mock<IOrganizacaoService> mockService = null!;
 
+        private static Mock<IAuthService> mockAuthService = null!;
+
         [TestInitialize]
         public void Initialize()
         {
             mockService = new Mock<IOrganizacaoService>();
+            mockAuthService = new Mock<IAuthService>(); 
 
             IMapper mapper = new MapperConfiguration(cfg =>
                 cfg.AddProfile(new OrganizacaoProfile())).CreateMapper();
@@ -39,7 +45,46 @@ namespace EvenPaceWebTests
             mockService.Setup(service => service.Delete(It.IsAny<int>()))
                 .Verifiable();
 
-            controller = new OrganizacaoController(mockService.Object, mapper);
+            controller = new OrganizacaoController(
+                mockService.Object,
+                mapper,
+                mockAuthService.Object
+            );
+        }
+
+        [TestMethod()]
+        public void LoginTest_Get_Valido()
+        {
+            var result = controller.Login();
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod()]
+        public async Task Login_ComCredenciaisValidas_RedirecionaParaEventos()
+        {
+            mockAuthService.Setup(s => s.LoginAsync(It.IsAny<string>(), It.IsAny<string>()))
+                           .ReturnsAsync(true);
+
+            var result = await controller.Login("org@email.com", "SenhaValida123");
+
+            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+            var redirectResult = (RedirectToActionResult)result;
+            Assert.AreEqual("Index", redirectResult.ActionName);
+            Assert.AreEqual("Evento", redirectResult.ControllerName);
+        }
+
+        [TestMethod()]
+        public async Task Login_ComCredenciaisInvalidas_RetornaViewComErro()
+        {
+            mockAuthService.Setup(s => s.LoginAsync(It.IsAny<string>(), It.IsAny<string>()))
+                           .ReturnsAsync(false);
+
+            var result = await controller.Login("invalido@email.com", "SenhaErrada");
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            Assert.IsFalse(controller.ModelState.IsValid);
+            Assert.IsTrue(controller.ModelState.ContainsKey("")); 
         }
 
         [TestMethod()]

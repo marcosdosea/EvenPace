@@ -17,6 +17,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(EvenPaceWeb.Mappers.AutoMapperProfile));
 builder.Services.AddScoped<ICorredorService, CorredorService>();
+builder.Services.AddScoped<IAuthService, EvenPace.Service.AuthService>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
