@@ -2,7 +2,6 @@ using AutoMapper;
 using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
-//using EvenPaceWeb.Models;
 using Service;
 using Models;
 
@@ -136,61 +135,6 @@ namespace EvenPace.Controllers
         public IActionResult salve()
         {
             return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Index(InscricaoViewModel vm)
-        {
-            return Content("POST EXECUTOU");
-            var idCorredorClaim = User.FindFirst("IdCorredor");
-
-            int idCorredor;
-
-            if (idCorredorClaim != null)
-            {
-                idCorredor = int.Parse(idCorredorClaim.Value);
-            }
-            else
-            {
-                // Verificar se já existe corredor com esse email
-                var corredorExistente = _corredorService.GetByEmail(vm.Inscricao.Email);
-
-                if (corredorExistente != null)
-                {
-                    idCorredor = corredorExistente.Id;
-                }
-                else
-                {
-                    var novoCorredor = new Corredor
-                    {
-                        Nome = vm.Inscricao.Nome,
-                        Email = vm.Inscricao.Email,
-                        Senha = "temporaria", // ou gerar hash depois
-                        Cpf = "00000000000",
-                        DataNascimento = DateTime.Now
-                    };
-
-                    idCorredor = _corredorService.Create(novoCorredor);
-                }
-            }
-
-            var inscricao = new Inscricao
-            {
-                Status = "Pendente",
-                DataInscricao = DateTime.Now,
-                Distancia = vm.Inscricao.Distancia,
-                TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
-                IdEvento = (int)vm.Inscricao.IdEvento,
-                IdKit = vm.Inscricao.IdKit,
-                IdCorredor = idCorredor
-            };
-
-            _inscricaoService.Create(inscricao);
-
-            TempData["Sucesso"] = "Inscrição criada com sucesso!";
-
-            return RedirectToAction("salve");
         }
 
         private void ConfigurarInscricao(InscricaoViewModel vm)
