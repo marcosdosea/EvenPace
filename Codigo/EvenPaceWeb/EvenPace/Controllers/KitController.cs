@@ -193,7 +193,6 @@ namespace EvenPace.Controllers
             ModelState.Remove("UtilizadaP");
             ModelState.Remove("UtilizadaM");
             ModelState.Remove("UtilizadaG");
-            ModelState.Remove("StatusRetiradaKit");
         }
 
         private string SalvarImagemNoDisco(Microsoft.AspNetCore.Http.IFormFile imagemUpload)

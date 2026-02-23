@@ -228,6 +228,7 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.DataInscricao)
                 .HasColumnType("date")
                 .HasColumnName("dataInscricao");
+            entity.Property(e => e.StatusRetiradaKit).HasColumnName("statusRetiradaKit");
             entity.Property(e => e.Distancia)
                 .HasMaxLength(45)
                 .HasColumnName("distancia");
@@ -290,7 +291,6 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
                 .HasColumnName("nome");
-            entity.Property(e => e.StatusRetiradaKit).HasColumnName("statusRetiradaKit");
             entity.Property(e => e.UtilizadaG).HasColumnName("utilizadaG");
             entity.Property(e => e.UtilizadaM).HasColumnName("utilizadaM");
             entity.Property(e => e.UtilizadaP).HasColumnName("utilizadaP");

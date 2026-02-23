@@ -134,5 +134,22 @@ namespace Service
                 }
             };
         }
+
+        /// <summary>
+        /// Confirma a retirada do kit para a inscrição.
+        /// Marca o campo StatusRetiradaKit como true.
+        /// </summary>
+        /// <param name="idInscricao"></param>
+        public void ConfirmarRetiradaKit(int idInscricao)
+        {
+            var inscricao = _context.Inscricao.Find(idInscricao);
+
+            if (inscricao != null)
+            {
+                inscricao.StatusRetiradaKit = true;
+
+                _context.SaveChanges();
+            }
+        }
     }
 }
