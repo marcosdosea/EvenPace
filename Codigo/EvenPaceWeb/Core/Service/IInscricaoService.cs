@@ -19,4 +19,6 @@ public interface IInscricaoService
 
     /// <summary>Obtém dados para a tela de cancelamento. Retorna Success=false com ErrorType quando inscrição não existe ou evento já passou.</summary>
     GetDadosTelaDeleteResult GetDadosTelaDelete(int idInscricao);
+
+    public void ConfirmarRetiradaKit(int idInscricao);
 }

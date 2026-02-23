@@ -145,5 +145,29 @@ namespace EvenPace.Controllers
             var inscricaoViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricao);
             return View(inscricaoViewModel);
         }
+
+        [HttpGet]
+        public IActionResult Retirada(int idEvento)
+        {
+            var inscricoes = _inscricaoService.GetAllByEvento(idEvento);
+
+            var inscricoesViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricoes);
+
+            return View("RetiradaKit",inscricoesViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmarRetirada(int idInscricao, int idEvento)
+        {
+            _inscricaoService.ConfirmarRetiradaKit(idInscricao);
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Ok();
+            }
+
+            return RedirectToAction("Retirada", new { idEvento = idEvento });
+        }
     }
 }

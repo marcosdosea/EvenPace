@@ -51,10 +51,6 @@ namespace Models
         [Display(Name = "Evento")]
         public int IdEvento { get; set; }
 
-        [Required]
-        [Display(Name = "Status da Retirada do Kit")]
-        public bool StatusRetiradaKit { get; set; }
-
         [Display(Name = "Data da Retirada")]
         [DataType(DataType.Date)]
         public DateTime? DataRetirada { get; set; }

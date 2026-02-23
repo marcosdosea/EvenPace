@@ -47,7 +47,10 @@ namespace Models
         public int IdCorredor { get; set; }
 
         public int? IdAvaliacaoEvento { get; set; }
-        
+
+        [Display(Name = "Kit Retirado")]
+        public bool StatusRetiradaKit { get; set; }
+
         [ForeignKey("IdAvaliacaoEvento")]
         public virtual AvaliacaoEvento IdAvaliacaoEventoNavigation { get; set; } = null!;
 

@@ -36,9 +36,6 @@ public partial class Kit
     [Column("idevento")]
     public int IdEvento { get; set; }
 
-    [Column("statusretiradakit")]
-    public bool StatusRetiradaKit { get; set; }
-
     [Column("dataretirada")]
     public DateTime DataRetirada { get; set; }
 

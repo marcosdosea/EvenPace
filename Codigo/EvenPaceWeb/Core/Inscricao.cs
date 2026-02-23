@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core
 {
@@ -14,6 +15,8 @@ namespace Core
         public string Distancia { get; set; } = null!;
 
         public string TamanhoCamisa { get; set; } = null!;
+
+        public bool StatusRetiradaKit { get; set; }
 
         public TimeSpan? Tempo { get; set; }
         public int? Posicao { get; set; }
