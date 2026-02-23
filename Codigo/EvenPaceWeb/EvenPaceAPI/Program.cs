@@ -13,6 +13,7 @@ public class Program
         builder.Services.AddControllers();
 
         builder.Services.AddTransient<ICorredorService, CorredorService>();
+        builder.Services.AddTransient<IAvaliacaoEventoService, AvaliacaoEventoService>();
         
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
