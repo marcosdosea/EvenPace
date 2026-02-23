@@ -1,5 +1,4 @@
-﻿/* EvenPace/wwwroot/css/theme.css */
-
+﻿
 :root {
     --primary-color: #FEEA00;
     --primary-hover: #DFAA18;
@@ -24,7 +23,6 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
 }
 
-/* --- LOGO ANIMADO --- */
 .logo-sidebar-top {
     width: 50px;
     height: auto;
@@ -34,7 +32,6 @@ h1, h2, h3, h4, h5, h6 {
     transition: width 0.3s ease, margin 0.3s ease;
 }
 
-/* --- BARRA LATERAL --- */
 .sidebar {
     width: 200px;
     height: 100vh;
@@ -62,7 +59,6 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
 }
 
-/* --- RODAPÉ DA BARRA (PERFIL) --- */
 .sidebar-footer {
     margin-top: auto;
     padding: 30px 20px;
@@ -85,11 +81,10 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
 }
 
-    .user-avatar:hover {
-        background-color: #ccc;
-    }
+.user-avatar:hover {
+    background-color: #ccc;
+}
 
-/* --- ITENS DO MENU (GERAL) --- */
 .menu-item {
     padding: 15px 25px;
     width: 100%;
@@ -109,52 +104,47 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 1;
 }
 
-    .menu-item:hover {
-        background-color: #fff;
-        transform: translateY(-3px) translateX(5px);
-        box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
-        z-index: 2;
-        border-radius: 4px;
-    }
+.menu-item:hover {
+    background-color: #fff;
+    transform: translateY(-3px) translateX(5px);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    border-radius: 4px;
+}
 
-    .menu-item:active {
-        background-color: #fffde7;
-        transform: translateX(8px);
-        border-left: 5px solid #FEEA00;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
-    }
+.menu-item:active {
+    background-color: #fffde7;
+    transform: translateX(8px);
+    border-left: 5px solid #FEEA00;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+}
 
-    /* --- ITEM ATIVO (SELECIONADO - DESKTOP) --- */
-    .menu-item.active {
-        background-color: #fffde7;
-        color: #000;
-        border-left: 5px solid #FEEA00;
-        font-weight: 800;
-        transition: all 0.2s ease;
-        position: relative;
-        z-index: 1;
-    }
+.menu-item.active {
+    background-color: #fffde7;
+    color: #000;
+    border-left: 5px solid #FEEA00;
+    font-weight: 800;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
 
-        /* Hover no item ativo (Pulo 3D + Destaque) */
-        .menu-item.active:hover {
-            background-color: #FFF59D;
-            transform: translateY(-3px) translateX(5px);
-            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-            z-index: 2;
-            border-left: 5px solid #FFD600;
-        }
+.menu-item.active:hover {
+    background-color: #FFF59D;
+    transform: translateY(-3px) translateX(5px);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 2;
+    border-left: 5px solid #FFD600;
+}
 
-/* --- RESPONSIVIDADE (CELULAR) --- */
 @media (max-width: 768px) {
 
-    /* 1. Logo Pequeno */
     .logo-sidebar-top {
         width: 35px;
         margin-bottom: 15px;
     }
 
-    /* 2. Barra Lateral Fina */
     .sidebar {
         width: 70px;
         transition: width 0.3s ease;
@@ -166,7 +156,6 @@ h1, h2, h3, h4, h5, h6 {
         padding: 0;
     }
 
-    /* 3. Rodapé Compacto */
     .sidebar-footer {
         padding: 20px 0;
     }
@@ -177,7 +166,6 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 1.5rem;
     }
 
-    /* 4. Ícones Centralizados */
     .menu-item {
         justify-content: center;
         padding: 15px 0;
@@ -188,7 +176,6 @@ h1, h2, h3, h4, h5, h6 {
         margin-right: 0;
     }
 
-    /* 5. Tooltip (Etiqueta) */
     .menu-text {
         display: none;
         position: absolute;
@@ -205,43 +192,38 @@ h1, h2, h3, h4, h5, h6 {
         z-index: 999;
     }
 
-        .menu-text::before {
-            content: "";
-            position: absolute;
-            left: -6px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-width: 6px 6px 6px 0;
-            border-style: solid;
-            border-color: transparent #000 transparent transparent;
-        }
+    .menu-text::before {
+        content: "";
+        position: absolute;
+        left: -6px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 6px 6px 6px 0;
+        border-style: solid;
+        border-color: transparent #000 transparent transparent;
+    }
 
-    /* Mostra Tooltip no Hover (Item Normal) */
     .menu-item:hover .menu-text {
         display: block;
         animation: fadeIn 0.2s ease;
     }
 
-    /* --- AJUSTES DO ITEM ATIVO NO CELULAR --- */
     .menu-item.active {
         background-color: #fffde7;
-        /* Borda fina compensada com padding para centralizar */
         border-left: 4px solid #FEEA00;
         padding-left: 0;
         padding-right: 4px;
     }
 
-        /* Remove o "pulo" no celular para não desalinhar */
-        .menu-item.active:hover {
-            transform: none;
-            box-shadow: none;
-            background-color: #FFF59D;
-        }
+    .menu-item.active:hover {
+        transform: none;
+        box-shadow: none;
+        background-color: #FFF59D;
+    }
 
-            /* Garante que o Tooltip apareça também no item ativo */
-            .menu-item.active:hover .menu-text {
-                display: block;
-            }
+    .menu-item.active:hover .menu-text {
+        display: block;
+    }
 }
 
 @keyframes fadeIn {
