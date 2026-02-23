@@ -1,6 +1,10 @@
 ﻿using Core;
 using Core.Service;
 using Microsoft.EntityFrameworkCore;
+using Service;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Service.Tests
 {
@@ -26,20 +30,17 @@ namespace Service.Tests
                 new Organizacao {
                     Id = 1, Nome = "Organizacao Alfa", Cnpj = "11111111000111",
                     Bairro = "Centro", Cep = "49500000", Cidade = "Itabaiana",
-                    Email = "alfa@email.com", Estado = "SE", Rua = "Rua A",
-                    Senha = "123", Telefone = "79999999991"
+                    Estado = "SE", Rua = "Rua A", Telefone = "79999999991"
                 },
                 new Organizacao {
                     Id = 2, Nome = "Organizacao Beta", Cnpj = "22222222000122",
                     Bairro = "Centro", Cep = "49500000", Cidade = "Itabaiana",
-                    Email = "beta@email.com", Estado = "SE", Rua = "Rua B",
-                    Senha = "123", Telefone = "79999999992"
+                    Estado = "SE", Rua = "Rua B", Telefone = "79999999992"
                 },
                 new Organizacao {
                     Id = 3, Nome = "Organizacao Gama", Cnpj = "33333333000133",
                     Bairro = "Centro", Cep = "49500000", Cidade = "Itabaiana",
-                    Email = "gama@email.com", Estado = "SE", Rua = "Rua C",
-                    Senha = "123", Telefone = "79999999993"
+                    Estado = "SE", Rua = "Rua C", Telefone = "79999999993"
                 }
             };
 
@@ -59,10 +60,8 @@ namespace Service.Tests
                 Bairro = "Centro",
                 Cep = "49500000",
                 Cidade = "Itabaiana",
-                Email = "nova@email.com",
                 Estado = "SE",
                 Rua = "Rua D",
-                Senha = "123",
                 Telefone = "79999999994"
             };
 
