@@ -24,6 +24,7 @@ public class Program
         builder.Services.AddTransient<IInscricaoService, InscricaoService>();
         builder.Services.AddTransient<IEventosService, EventoService>();
         builder.Services.AddTransient<IKitService, KitService>();
+        builder.Services.AddTransient<IAvaliacaoEventoService, AvaliacaoEventoService>();
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
