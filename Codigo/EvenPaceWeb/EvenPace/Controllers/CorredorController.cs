@@ -50,6 +50,23 @@ public class CorredorController : Controller
         ModelState.AddModelError("", "Login inválido");
         return View();
     }
+
+    public async Task<IActionResult> GetByEmail()
+    {
+        var usuario = await _userManager.GetUserAsync(User);
+
+        if (usuario == null)
+            return RedirectToAction("Login");
+
+        var corredor = _corredorService.GetByEmail(usuario.Email);
+
+        if (corredor == null)
+            return RedirectToAction("Create"); // ou alguma tela de completar cadastro
+
+        var model = _mapper.Map<CorredorViewModel>(corredor);
+
+        return View("Get", model);
+    }
     
     public ActionResult Get(int id)
     {
