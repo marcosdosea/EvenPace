@@ -11,7 +11,6 @@ namespace Core.Service
         void Edit(Corredor corredor);
         int Create(Corredor corredor);
         Corredor Get(int id);
-        Corredor Login(string email, string senha);
         void Delete(int id);
         IEnumerable<Corredor> GetAll();
         IEnumerable<Corredor> GetByName(string nome);

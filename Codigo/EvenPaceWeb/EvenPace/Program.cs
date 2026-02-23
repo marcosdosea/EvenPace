@@ -1,13 +1,17 @@
+using Castle.Core.Smtp;
 using Core;
 using Core.Service;
 using Microsoft.EntityFrameworkCore;
 using Service;
 using EvenPaceWeb.Areas.Identity.Data;
+using EvenPaceWeb.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program));
@@ -30,8 +34,6 @@ builder.Services.AddDbContext<IdentityContext>(options =>
             builder.Configuration.GetConnectionString("IdentityDatabase")
         )
     ));
-
-builder.Services.AddDefaultIdentity<UsuarioIdentity>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityContext>();
 
 builder.Services.AddScoped<IInscricaoService, InscricaoService>();
 builder.Services.AddScoped<IEventosService, EventoService>();
@@ -61,7 +63,7 @@ builder.Services.AddDefaultIdentity<UsuarioIdentity>(options =>
         // Default User settings
         options.User.AllowedUserNameCharacters =
             "abcdefgkijklmnopkrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-        options.User.RequireUniqueEmail = false;
+        options.User.RequireUniqueEmail = true;
 
         // Default Lockout settings
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -77,10 +79,19 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = "EvenPace";
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-    options.LoginPath = "/Identity/Account/Login";
+    options.LoginPath = "/Corredor/Login";
     // ReturnUrlParameter requires
     options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
     options.SlidingExpiration = true;
+});
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 
 var app = builder.Build();
@@ -99,6 +110,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 
