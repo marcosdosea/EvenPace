@@ -1,6 +1,5 @@
 using Core;
 using Core.Service;
-using Microsoft.EntityFrameworkCore;
 
 namespace Service;
 

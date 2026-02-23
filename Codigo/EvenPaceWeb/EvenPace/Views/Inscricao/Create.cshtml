@@ -1,114 +1,85 @@
-@model EvenPaceWeb.Models.TelaInscricaoViewModel
+@model Models.InscricaoViewModel
+
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@Model.NomeEvento</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>@Model.NomeEvento</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        body {
-            background: #f5c400;
-            margin: 0;
-            padding: 20px;
-        }
-
-        /*.phone {
-            max-width: 900px;
-            margin: 30px auto;
-            background: #fff;
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,.08);
-            display: flex;
-            flex-direction: column;
-            min-height: 90vh;
-            overflow: hidden;
-        }*/
-
-
-        .phone {
-    width: 360px;              
-    max-width: 100%;          
-    height: 640px;             
-    margin: 20px auto;
-    background-color: #fff;
-    border-radius: 30px;       
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+<style>
+body {
+    background: #f5c400;
+}
+.app-card {
+    background: #fff;
+    border-radius: 1rem;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    font-size: 16px;
-
-
-    border: 1px solid #ccc;   
+    height: 85vh;
     position: relative;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
 }
-
-
-        .header {
-            padding: 14px 18px;
-            font-size: 18px;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-        }
-
-        .app-content {
-            flex: 1;
-            padding: 25px;
-            overflow-y: auto;
-        }
-
-        .image-placeholder {
-            width: 100%;
-            height: 250px;
-            background: #e9ecef;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6c757d;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        h2 {
-            font-weight: 700;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .evento-container {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 18px;
-        }
-
-        .icon-circle {
-            background: #FFD700;
-            border-radius: 50%;
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 14px;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .label-pequeno {
-            font-size: .85rem;
-            color: #6c757d;
-        }
-
-        .valor-negrito {
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .opcoes {
+.header {
+    padding: 18px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+.app-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+}
+.image-placeholder {
+    width: 100%;
+    height: 220px;
+    background: #e9ecef;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+h2 {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+}
+.evento-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+.icon-circle {
+    background: #FFD700;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.label-pequeno {
+    font-size: .85rem;
+    color: #6c757d;
+}
+.valor-negrito {
+    font-weight: bold;
+    margin: 0;
+}
+.opcoes {
             display: flex;
             gap: 18px;
             flex-wrap: wrap;
@@ -162,92 +133,120 @@
             justify-content: center;
         }
 
-        .btn-pagamento {
-            background: #FFD700;
-            border: none;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 18px;
-            padding: 14px;
-            width: 100%;
-            margin-top: 50px;
-        }
-
-        .btn-pagamento:hover {
-            background: #f1c40f;
-        }
-    </style>
+.btn-pagamento {
+    background: #FFD700;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 12px;
+    width: 100%;
+    margin-top: 24px;
+}
+.btn-pagamento:hover {
+    background: #f1c40f;
+}
+.bottom-nav {
+    height: 70px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 12px;
+    background: #fff;
+}
+ @@media (max-width: 768px) {
+    .app-card {
+        height: 100vh;
+        border-radius: 0;
+    }
+}
+}
+</style>
 </head>
 
 <body>
-<div class="phone">
 
-    <div class="header" onclick="history.back()">← Voltar</div>
+<section class="vh-100 d-flex align-items-center">
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-12 col-md-8 col-lg-6 col-xl-5">
 
-    <form asp-controller="Inscricao" asp-action="Index" method="post" class="app-content">
-            @Html.AntiForgeryToken()
+<div class="app-card">
 
-        <input type="hidden" asp-for="Inscricao.IdEvento" />
+<div class="header" onclick="history.back()">← Voltar</div>
 
-            @if (!string.IsNullOrEmpty(Model.ImagemEvento))
-            {
+<form asp-controller="Inscricao" asp-action="Index" method="post" class="app-content">
+                            @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Inscricao.IdEvento" />
+
+                            @if (!string.IsNullOrEmpty(Model.ImagemEvento))
+                            {
             <img src="@Url.Content($"~/imagens/{Model.ImagemEvento}")"
-                 class="img-fluid mb-4"
+                 class="img-fluid mb-3"
                  style="width:100%; height:220px; object-fit:cover; border-radius:14px;" />
-            }
+                            }
+                            else
+                            {
+            <div class="image-placeholder">Sem imagem do evento</div>
+                            }
 
-            else
-            {
-            <div class="image-placeholder">
-                Sem imagem do evento
-            </div>
-            }
+    <h2>@Model.NomeEvento</h2>
 
-        <h2 class="mb-4">@Model.NomeEvento</h2>
-
-        <div class="evento-container">
-            <div class="icon-circle">📍</div>
-            <div>
-                <span class="label-pequeno">Local</span>
-                <p class="valor-negrito">@Model.Local</p>
-            </div>
+    <div class="evento-container">
+        <div class="icon-circle">📍</div>
+        <div>
+            <span class="label-pequeno">Local</span>
+            <p class="valor-negrito">@Model.Local</p>
         </div>
+    </div>
 
-        <div class="evento-container">
-            <div class="icon-circle">📅</div>
-            <div>
-                <span class="label-pequeno">Data do evento</span>
-                <p class="valor-negrito">@Model.DataEvento.ToString("dd/MM/yyyy")</p>
-            </div>
+    <div class="evento-container">
+        <div class="icon-circle">📅</div>
+        <div>
+            <span class="label-pequeno">Data do evento</span>
+            <p class="valor-negrito">@Model.DataEvento.ToString("dd/MM/yyyy")</p>
         </div>
+    </div>
 
-        <h5 class="text-center mt-4 mb-3">Escolha a distância</h5>
-        <div class="opcoes">
-                @foreach (var percurso in Model.Percursos)
-                {
-                    <label>
-                        <input type="radio" asp-for="Inscricao.Distancia" value="@percurso" />
-                        <div class="opcao">@percurso</div>
-                    </label>
-                }
-        </div>
+    <h5 class="text-center mb-3">Escolha a distância</h5>
+    <div class="opcoes">
+                                @foreach (var percurso in Model.Percursos)
+                                {
+                <label>
+                    <input type="radio" asp-for="Inscricao.Distancia" value="@percurso" />
+                    <div class="opcao">@percurso</div>
+                </label>
+                                }
+    </div>
 
+    <h5 class="text-center mb-3">Tamanho da camisa</h5>
+    <div class="opcoes">
+                                @foreach (var tamanho in new[] { "P", "M", "G", "GG" })
+                                {
+                <label>
+                    <input type="radio" asp-for="Inscricao.TamanhoCamisa" value="@tamanho" />
+                    <div class="opcao">@tamanho</div>
+                </label>
+                                }
+    </div>
 
-        <h5 class="text-center mb-3">Tamanho da camisa</h5>
-        <div class="opcoes">
-                @foreach (var tamanho in new[] { "P", "M", "G", "GG" })
-                {
-                    <label>
-                        <input type="radio" asp-for="Inscricao.TamanhoCamisa" value="@tamanho" />
-                        <div class="opcao">@tamanho</div>
-                    </label>
-                }
-        </div>
+    <button type="submit" class="btn-pagamento">Realizar pagamento</button>
+</form>
 
-        <button type="submit" class="btn-pagamento">
-            Realizar pagamento
-        </button>
-    </form>
+<div class="bottom-nav">
+    <a asp-controller="Evento" asp-action="IndexUsuario" style="text-decoration:none; color:inherit;">🏠<br />Início</a>
+    <div>🏆<br />Conquistas</div>
+    <div>🎟️<br />Cupons</div>
+    <div>🕓<br />Histórico</div>
+    <div>👤<br />Perfil</div>
 </div>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+
 </body>
 </html>

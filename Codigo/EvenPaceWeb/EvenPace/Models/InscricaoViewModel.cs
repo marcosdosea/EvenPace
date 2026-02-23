@@ -1,8 +1,6 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Core;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 namespace Models
@@ -62,6 +60,29 @@ namespace Models
 
         [ForeignKey("IdKit")]
         public virtual Kit IdKitNavigation { get; set; } = null!;
+
+        public string NomeEvento { get; set; } = null!;
+
+        public string ImagemEvento { get; set; } = null!;
+ 
+        public string Local { get; set; } = null!;
+
+        public DateTime DataEvento { get; set; }
+
+        public string Descricao { get; set; } = null!;
+
+        [Display(Name = "Informações de Retirada do Kit")]
+        public string InfoRetiradaKit { get; set; } = null!;
+
+        public List<string> Percursos { get; set; } = null!;
+
+        public List<KitViewModel> Kits { get; set; } = null!;
+
+        public InscricaoViewModel Inscricao { get; set; } = null!;
+
+        public string NomeCorredor { get; set; } = null!;
+
+        public string NomeKit { get; set; } = null!;
     }
 }
  

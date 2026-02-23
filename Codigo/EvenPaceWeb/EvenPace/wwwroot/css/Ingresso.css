@@ -1,12 +1,9 @@
-/* =========================================
-   INGRESSOS – COMPLEMENTO VISUAL
-   ========================================= */
+
 
 .ingressos-container {
     padding: 0 40px 40px 40px;
 }
 
-/* --- Cards de Resumo --- */
 .ingressos-resumo {
     display: flex;
     gap: 20px;
@@ -27,14 +24,12 @@
     margin-left: 10px;
 }
 
-/* --- Área da Tabela --- */
 .ingressos-tabela-wrapper {
     background: #E5E5E5;
     border-radius: 16px;
     padding: 20px;
 }
 
-/* --- DataTables ajustes --- */
 .ingressos-table {
     width: 100% !important;
     background: #fff;
@@ -48,7 +43,6 @@
     border-bottom: 2px solid #ccc;
 }
 
-/* Remove bordas feias */
 .dataTables_wrapper .dataTables_filter input,
 .dataTables_wrapper .dataTables_length select {
     border-radius: 8px;
@@ -56,12 +50,10 @@
     padding: 5px 10px;
 }
 
-/* Texto inferior */
 .dataTables_info {
     margin-top: 10px;
 }
 
-/* --- Botões de Check-in --- */
 .btn-checkin {
     padding: 5px 10px;
     border-radius: 6px;

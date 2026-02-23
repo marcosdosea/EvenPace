@@ -1,11 +1,8 @@
 using Core;
 using Core.Service;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Service;
-using System;
-using System.Linq;
 
 namespace EvenPaceWebTests.Service
 {

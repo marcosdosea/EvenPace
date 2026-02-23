@@ -1,6 +1,5 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
 
-    // 1. Lógica do Alerta (Toast)
     var alerta = document.querySelector(".alert-custom");
     if (alerta) {
         setTimeout(function () {
@@ -11,7 +10,6 @@
         }, 3000);
     }
 
-    // 2. Upload de Imagem do Kit
     var fileInputClass = document.querySelector(".file-hidden");
     var textInput = document.querySelector(".input-wrapper input[type='text']");
 
@@ -23,7 +21,6 @@
         });
     }
 
-    // 3. Limpeza de nome ao editar (Remove o ID Guid se existir)
     var hiddenInput = document.getElementById("Imagem");
     if (hiddenInput && textInput && hiddenInput.value) {
         var nomeCompleto = hiddenInput.value;

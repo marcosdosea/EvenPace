@@ -1,12 +1,7 @@
 using AutoMapper;
-using Core;
 using Core.Service;
 using Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace EvenPace.Controllers
 {
@@ -23,21 +18,15 @@ namespace EvenPace.Controllers
             _eventosService = eventosService;
         }
 
-        // ==========================================================
-        // 1. INDEX (Listagem dos Kits de um Evento)
-        // ==========================================================
         [HttpGet]
         public IActionResult IndexKit(int? idEvento)
         {
-            // 1. Organização Fixa (Simulação de Login)
             int idOrganizacaoLogada = 1;
 
-            // 2. Busca eventos dessa organização para validar ou pegar o padrão
             var eventosDaOrganizacao = _eventosService.GetAll()
                                                        .Where(e => e.IdOrganizacao == idOrganizacaoLogada)
                                                        .ToList();
 
-            // 3. Define qual evento exibir
             if (!idEvento.HasValue || idEvento.Value == 0)
             {
                 var eventoPadrao = eventosDaOrganizacao.FirstOrDefault();
@@ -55,12 +44,10 @@ namespace EvenPace.Controllers
 
             int idFinal = idEvento.Value;
 
-            // Preenche ViewBag para a View saber qual evento estamos vendo
             var eventoAtual = eventosDaOrganizacao.FirstOrDefault(e => e.Id == idFinal);
             ViewBag.NomeCorrida = eventoAtual != null ? eventoAtual.Nome : "Evento";
             ViewBag.IdEventoAtual = idFinal;
 
-            // Filtra os kits do evento específico
             var allKits = _kitsService.GetAll();
             var kitsDoEvento = allKits.Where(k => k.IdEvento == idFinal).ToList();
 
@@ -68,18 +55,13 @@ namespace EvenPace.Controllers
             return View(listaViewModel);
         }
 
-        // ==========================================================
-        // 2. CREATE (Criar - GET)
-        // ==========================================================
         [HttpGet]
         public IActionResult Create(int? idEvento)
         {
             var viewModel = new KitViewModel();
 
-            // Define o evento pai (se não vier, assume 1 por segurança)
             viewModel.IdEvento = idEvento ?? 1;
 
-            // Dados para a View
             ViewBag.TituloPagina = "Novo Kit";
             var evento = _eventosService.Get(viewModel.IdEvento);
             ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
@@ -87,9 +69,6 @@ namespace EvenPace.Controllers
             return View(viewModel);
         }
 
-        // ==========================================================
-        // 3. CREATE (Criar - POST)
-        // ==========================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(KitViewModel model)
@@ -102,7 +81,6 @@ namespace EvenPace.Controllers
                 {
                     var kit = _mapper.Map<Kit>(model);
 
-                    // Upload de Imagem
                     if (model.ImagemUpload != null)
                     {
                         kit.Imagem = SalvarImagemNoDisco(model.ImagemUpload);
@@ -119,7 +97,6 @@ namespace EvenPace.Controllers
                 }
             }
 
-            // Se falhar, recarrega dados da view
             ViewBag.TituloPagina = "Novo Kit";
             var evento = _eventosService.Get(model.IdEvento);
             ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
@@ -127,9 +104,6 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
-        // ==========================================================
-        // 4. EDIT (Editar - GET)
-        // ==========================================================
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -138,7 +112,6 @@ namespace EvenPace.Controllers
 
             var viewModel = _mapper.Map<KitViewModel>(kit);
 
-            // Dados para a View
             ViewBag.TituloPagina = "Editar Kit";
             var evento = _eventosService.Get(kit.IdEvento);
             ViewBag.NomeCorrida = evento != null ? evento.Nome : "Evento";
@@ -146,9 +119,6 @@ namespace EvenPace.Controllers
             return View(viewModel);
         }
 
-        // ==========================================================
-        // 5. EDIT (Editar - POST)
-        // ==========================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, KitViewModel model)
@@ -163,10 +133,8 @@ namespace EvenPace.Controllers
                 {
                     var kit = _mapper.Map<Kit>(model);
 
-                    // Lógica de Imagem no Edit
                     if (model.ImagemUpload != null)
                     {
-                        // Se tem nova imagem, deleta a antiga e salva a nova
                         if (!string.IsNullOrEmpty(model.Imagem))
                             DeletarImagemDoDisco(model.Imagem);
 
@@ -174,7 +142,6 @@ namespace EvenPace.Controllers
                     }
                     else
                     {
-                        // Mantém a imagem antiga
                         kit.Imagem = model.Imagem;
                     }
 
@@ -196,9 +163,6 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
-        // ==========================================================
-        // 6. DELETE (Excluir)
-        // ==========================================================
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -208,7 +172,6 @@ namespace EvenPace.Controllers
             {
                 int idEventoDoKit = kit.IdEvento;
 
-                // Apagar a imagem física do disco se existir
                 if (!string.IsNullOrEmpty(kit.Imagem))
                 {
                     DeletarImagemDoDisco(kit.Imagem);
@@ -220,12 +183,8 @@ namespace EvenPace.Controllers
                 return RedirectToAction("IndexKit", new { idEvento = idEventoDoKit });
             }
 
-            return RedirectToAction("IndexKit"); // Fallback sem ID
+            return RedirectToAction("IndexKit");
         }
-
-        // ==========================================================
-        // MÉTODOS AUXILIARES (Privados)
-        // ==========================================================
 
         private void RemoverValidacoesNaoObrigatorias()
         {
@@ -262,7 +221,7 @@ namespace EvenPace.Controllers
                     System.IO.File.Delete(caminhoCompleto);
                 }
             }
-            catch { /* Ignora erro de arquivo travado/inexistente */ }
+            catch { }
         }
     }
 }

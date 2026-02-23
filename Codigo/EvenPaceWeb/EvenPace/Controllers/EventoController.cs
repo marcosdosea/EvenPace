@@ -3,12 +3,7 @@ using Core.Service;
 using Core;
 using Models;
 using AutoMapper;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using System.IO;
-using EvenPaceWeb.Models;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace EvenPace.Controllers
 {
@@ -30,14 +25,10 @@ namespace EvenPace.Controllers
             _mapper = mapper;
             _context = context;
         }
-   
 
-        // ==========================================================
-        // 1. INDEX (Listagem)
-        // ==========================================================
         public IActionResult Index()
         {
-            int idOrganizacao = 1; // Simulação de login
+            int idOrganizacao = 1; 
 
             var listaEntidades = _service.GetAll()
                                          .Where(e => e.IdOrganizacao == idOrganizacao)
@@ -49,9 +40,6 @@ namespace EvenPace.Controllers
             return View(listaViewModel);
         }
 
-        // ==========================================================
-        // 2. DETAILS (Antigo Resumo)
-        // ==========================================================
         public IActionResult Details(int id)
         {
             var entidade = _service.Get(id);
@@ -62,13 +50,9 @@ namespace EvenPace.Controllers
             ViewBag.IdEventoAtual = viewModel.Id;
             ViewBag.NomeCorrida = viewModel.Nome;
 
-           
             return View(viewModel);
         }
 
-        // ==========================================================
-        // 3. CREATE (Criar - GET)
-        // ==========================================================
         [HttpGet]
         public IActionResult Create()
         {
@@ -76,14 +60,10 @@ namespace EvenPace.Controllers
             return View(new EventoViewModel());
         }
 
-        // ==========================================================
-        // 4. CREATE (Criar - POST)
-        // ==========================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(EventoViewModel model)
         {
-            // Remove validações que não são obrigatórias na criação se necessário
             ModelState.Remove("Imagem");
             ModelState.Remove("Data");
 
@@ -93,19 +73,16 @@ namespace EvenPace.Controllers
                 {
                     var evento = _mapper.Map<Evento>(model);
 
-                    // Lógica de Data + Hora
                     if (model.DataOnly.HasValue && model.HoraOnly.HasValue)
                     {
                         evento.Data = model.DataOnly.Value.Add(model.HoraOnly.Value);
                     }
 
-                    // Upload de Imagem
                     if (model.ImagemUpload != null)
                     {
                         evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload);
                     }
 
-                    // Define organização padrão
                     if (evento.IdOrganizacao == 0) evento.IdOrganizacao = 1;
 
                     _service.Create(evento);
@@ -123,9 +100,6 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
-        // ==========================================================
-        // 5. EDIT (Editar - GET)
-        // ==========================================================
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -140,9 +114,6 @@ namespace EvenPace.Controllers
             return View(viewModel);
         }
 
-        // ==========================================================
-        // 6. EDIT (Editar - POST)
-        // ==========================================================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, EventoViewModel model)
@@ -158,15 +129,11 @@ namespace EvenPace.Controllers
                 {
                     var evento = _mapper.Map<Evento>(model);
 
-                    // Lógica de Data + Hora
                     if (model.DataOnly.HasValue && model.HoraOnly.HasValue)
                     {
                         evento.Data = model.DataOnly.Value.Add(model.HoraOnly.Value);
                     }
 
-                    // Lógica de Imagem no Edit:
-                    // 1. Se tem upload novo: Salva a nova e deleta a antiga.
-                    // 2. Se não tem upload: Mantém a string da imagem antiga (que vem no model.Imagem via hidden input).
                     if (model.ImagemUpload != null)
                     {
                         if (!string.IsNullOrEmpty(model.Imagem))
@@ -194,12 +161,6 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
-
-
-
-        // ==========================================================
-        // 7. DELETE (Excluir)
-        // ==========================================================
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -207,7 +168,6 @@ namespace EvenPace.Controllers
 
             if (evento != null)
             {
-                // Apaga Kits vinculados
                 var kitsDoEvento = _kitService.GetAll().Where(k => k.IdEvento == id).ToList();
                 foreach (var kit in kitsDoEvento)
                 {
@@ -215,13 +175,11 @@ namespace EvenPace.Controllers
                     _kitService.Delete(kit.Id);
                 }
 
-                // Apaga Imagem do Evento
                 if (!string.IsNullOrEmpty(evento.Imagem))
                 {
                     DeletarImagemDoDisco(evento.Imagem);
                 }
 
-                // Apaga o Evento do Banco
                 _service.Delete(id);
 
                 TempData["MensagemSucesso"] = "Evento excluído com sucesso! 🗑️";
@@ -229,10 +187,6 @@ namespace EvenPace.Controllers
 
             return RedirectToAction("Index");
         }
-
-        // ==========================================================
-        // MÉTODOS AUXILIARES (Privados)
-        // ==========================================================
 
         private string SalvarImagemNoDisco(Microsoft.AspNetCore.Http.IFormFile imagemUpload)
         {
@@ -255,7 +209,6 @@ namespace EvenPace.Controllers
         {
             var eventos = _context.Eventos.AsQueryable();
 
-           
             if (!string.IsNullOrEmpty(search))
             {
                 eventos = eventos.Where(e =>
@@ -279,9 +232,6 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
-
-
-
         private void DeletarImagemDoDisco(string nomeImagem)
         {
             try
@@ -291,7 +241,6 @@ namespace EvenPace.Controllers
             }
             catch
             {
-                // Logar erro se necessário, mas não parar a execução
             }
         }
     }

@@ -1,6 +1,5 @@
 using AutoMapper;
 using Models; 
-using Core;
 
 namespace Mappers;
 

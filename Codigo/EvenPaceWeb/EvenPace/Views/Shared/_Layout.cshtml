@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
-    @*Importação do CSS com as cores e fontes definidas nos protótipos de alta fidelidade.*@
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" /> 
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -17,6 +16,7 @@
 <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                <partial name="_LoginPartial"/>
                 <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">EvenPace</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>

@@ -1,9 +1,4 @@
-﻿/* ============================================================
-   ARQUIVO: wwwroot/css/kit.css
-   DESCRIÇÃO: Estilo Kits (Com Estilos de Erro Adicionados)
-   ============================================================ */
-
-/* --- 1. GERAL --- */
+﻿
 body {
     margin: 0;
     padding: 0;
@@ -44,7 +39,6 @@ body {
     padding-bottom: 60px;
 }
 
-/* --- 2. CABEÇALHO --- */
 .page-header {
     background-color: #fff;
     height: 120px;
@@ -76,7 +70,6 @@ body {
     font-weight: 500;
 }
 
-/* --- 3. FORMULÁRIO --- */
 .form-kits {
     max-width: 900px;
     margin: 40px auto;
@@ -85,13 +78,13 @@ body {
     box-sizing: border-box;
 }
 
-    .form-kits form {
-        background: #fff;
-        padding: 40px;
-        border-radius: 12px;
-        border: 1px solid #e0e0e0;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    }
+.form-kits form {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
 
 .form-block {
     margin-bottom: 25px;
@@ -152,7 +145,6 @@ textarea.input-gray {
     line-height: 1.5;
 }
 
-/* Específico Kit */
 .sizes-fieldset {
     border: 1px solid #eee;
     background: #fafafa;
@@ -186,10 +178,10 @@ textarea.input-gray {
     margin-bottom: 15px;
 }
 
-    .size-row span {
-        font-weight: 700;
-        font-size: 1.2rem;
-    }
+.size-row span {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
 
 .input-qtd {
     width: 120px;
@@ -205,10 +197,10 @@ textarea.input-gray {
     width: 100%;
 }
 
-    .input-wrapper .input-gray {
-        padding-right: 45px;
-        cursor: pointer;
-    }
+.input-wrapper .input-gray {
+    padding-right: 45px;
+    cursor: pointer;
+}
 
 .icon-upload {
     position: absolute;
@@ -228,7 +220,6 @@ textarea.input-gray {
     cursor: pointer;
 }
 
-/* --- 4. GRID DE CARDS --- */
 .kits-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -251,11 +242,11 @@ textarea.input-gray {
     transition: transform 0.2s;
 }
 
-    .kit-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        border-color: #bbb;
-    }
+.kit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-color: #bbb;
+}
 
 .kit-card-image {
     height: 180px;
@@ -266,11 +257,11 @@ textarea.input-gray {
     border-bottom: 1px solid #f0f0f0;
 }
 
-    .kit-card-image img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
+.kit-card-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
 
 .placeholder-img {
     color: #ccc;
@@ -327,27 +318,26 @@ textarea.input-gray {
     font-size: 0.9rem;
 }
 
-    .btn-action.edit {
-        background: #fff;
-        color: #333;
-        border-right: 1px solid #eee;
-    }
+.btn-action.edit {
+    background: #fff;
+    color: #333;
+    border-right: 1px solid #eee;
+}
 
-        .btn-action.edit:hover {
-            background: #ffeb3b;
-            color: #000;
-        }
+.btn-action.edit:hover {
+    background: #ffeb3b;
+    color: #000;
+}
 
-    .btn-action.delete {
-        background: #fff;
-        color: #d32f2f;
-    }
+.btn-action.delete {
+    background: #fff;
+    color: #d32f2f;
+}
 
-        .btn-action.delete:hover {
-            background: #ffebee;
-        }
+.btn-action.delete:hover {
+    background: #ffebee;
+}
 
-/* --- 5. BOTÕES GERAIS --- */
 .form-actions {
     margin-top: 40px;
     padding-top: 20px;
@@ -382,23 +372,22 @@ textarea.input-gray {
     gap: 8px;
 }
 
-    .btn-green:hover {
-        background: #218838;
-        transform: translateY(-2px);
-        color: #fff;
-    }
+.btn-green:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    color: #fff;
+}
 
 .btn-gray {
     background: #888;
     color: #fff;
 }
 
-    .btn-gray:hover {
-        background: #666;
-        color: #fff;
-    }
+.btn-gray:hover {
+    background: #666;
+    color: #fff;
+}
 
-/* --- 6. EXTRAS --- */
 .alert-custom {
     position: fixed;
     top: 140px;
@@ -417,7 +406,6 @@ textarea.input-gray {
     opacity: 0;
 }
 
-/* ALERTA DE ERRO (NOVO) */
 .alert-danger {
     background-color: #f8d7da;
     color: #721c24;
@@ -436,7 +424,6 @@ textarea.input-gray {
     font-weight: 600;
 }
 
-/* --- 7. RESPONSIVIDADE --- */
 @media (max-width: 900px) {
     .kits-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -477,7 +464,6 @@ textarea.input-gray {
             font-size: 1.5rem;
         }
 
-    /* Footer Mobile */
     .sidebar-footer {
         display: flex;
         justify-content: center;

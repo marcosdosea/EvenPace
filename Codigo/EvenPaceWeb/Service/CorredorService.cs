@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Core;
 using Core.Service;
 
@@ -27,6 +23,12 @@ namespace Service
             _context.Add(corredor);
             _context.SaveChanges();
             return corredor.Id;
+        }
+
+        public Corredor? GetByEmail(string email)
+        {
+            return _context.Corredors
+                    .FirstOrDefault(c => c.Email == email);
         }
 
         /// <summary>
@@ -74,18 +76,6 @@ namespace Service
                 _context.SaveChanges();
             }
         }
-        
-        /// <summary>
-        /// Pega o corredor com email e senha compativeis
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="senha"></param>
-        /// <returns>retorna corredor com email e senha compativeis</
-        public Corredor Login(string email, string senha)
-        {
-            return _context.Corredors.FirstOrDefault(e => e.Email == email && e.Senha == senha);
-        }
-        
         
         /// <summary>
         /// Pega todos os eventos do banco de dados

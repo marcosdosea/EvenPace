@@ -1,5 +1,14 @@
 @model Models.CorredorViewModel
 
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <p>Usuário logado: @User.Identity.Name</p>
+}
+else
+{
+    <p>Usuário não autenticado</p>
+}
+
 @{
     Layout = null;
 }
@@ -34,12 +43,13 @@
                         <h2 class="fw-bold mb-2 text-uppercase text-center">Login</h2>
                         <p class="text-white-50 mb-4 text-center">Bem-vindo à comunidade EvenPace</p>
 
-                        <form method="post" action="/login">
+                        <form asp-controller="Corredor" asp-action="Login" method="post">
+                            @Html.AntiForgeryToken()
                             <div class="mb-4">
                                 <label class="form-label" for="email">Email</label>
-                                <input 
-                                    type="email" 
-                                    id="email" 
+                                <input
+                                    type="email"
+                                    id="email"
                                     name="email"
                                     class="form-control form-control-lg"
                                     placeholder="Digite seu email"
@@ -48,9 +58,9 @@
 
                             <div class="mb-4">
                                 <label class="form-label" for="senha">Senha</label>
-                                <input 
-                                    type="password" 
-                                    id="senha" 
+                                <input
+                                    type="password"
+                                    id="senha"
                                     name="senha"
                                     class="form-control form-control-lg"
                                     placeholder="Digite sua senha"
@@ -76,8 +86,8 @@
                             </div>
                             <br/>
                             <div class="d-grid gap-2">
-                                <a href="http://localhost:5157/Corredor/Create" class=" btn btn-outline-light btn-lg" >
-                                        Cadastra-se Manualmente
+                                <a href="http://localhost:5157/Corredor/Create" class=" btn btn-outline-light btn-lg">
+                                    Cadastra-se Manualmente
                                 </a>
                             </div>
                         </form>

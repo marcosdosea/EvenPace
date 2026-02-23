@@ -1,6 +1,9 @@
 using AutoMapper;
 using Core;
 using Core.Service;
+using EvenPaceWeb.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
@@ -8,104 +11,124 @@ namespace EvenPace.Controllers;
 
 public class CorredorController : Controller
 {
-      private ICorredorService _corredorService;
-      private IAvaliacaoEventoService _avaliacaoEventoService;
-      private IMapper _mapper;
+    private ICorredorService _corredorService;
+    private IMapper _mapper;
+    private readonly UserManager<UsuarioIdentity>  _userManager;
+    private readonly SignInManager<UsuarioIdentity> _signInManager;
 
-      public CorredorController(
-          ICorredorService corredor,
-          IAvaliacaoEventoService avaliacaoEventoService,
-          IMapper mapper)
-      {
-          _corredorService = corredor;
-          _avaliacaoEventoService = avaliacaoEventoService;
-          _mapper = mapper;
-      }
-      
-      // Post: CorredorController/Login
-      public ActionResult Login(string email, string senha)
-      {
-          Corredor corredor = _corredorService.Login(email, senha);
-          CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
-          return View(corredorModel);
-      }
-      
-      // Get: CorredorController/Login/4
-      public ActionResult Get(int id)
-      {
-          Corredor corredor = _corredorService.Get(id);
-          CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
-          return View(corredorModel);
-      }
-      
-      // Get: CorredorController/Create
-      public ActionResult Create()
-      {
-          return View();
-      }
-      
-      // Post: CorredorController/Create
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult Create(CorredorViewModel corredorModel)
-      {
-          if (ModelState.IsValid)
-          {
-              var corredor = _mapper.Map<Corredor>(corredorModel);
-              _corredorService.Create(corredor); 
-          }
-          return View(corredorModel);
-      }
+    public CorredorController(
+        ICorredorService corredor,
+        IMapper mapper,
+        UserManager<UsuarioIdentity> userManager,
+        SignInManager<UsuarioIdentity> signInManager)
+    {
+        _corredorService = corredor;
+        _mapper = mapper;
+        _userManager = userManager;
+        _signInManager = signInManager;
+    }
+    
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
 
-      // Get: CorredorController/Edit/5
-      public ActionResult Edit(int id)
-      {
-          Console.WriteLine($"[DEBUG] Edit chamado com Id={id}");
-          Corredor corredor = _corredorService.Get(id);
+    [HttpPost]
+    public async Task<IActionResult> Login(string email, string senha)
+    {
+        var result = await _signInManager.PasswordSignInAsync(
+            email,
+            senha,
+            false,
+            false
+        );
 
-          // se vier null, pelo menos não quebra a view
-          if (corredor == null)
-          {
-              return View(new CorredorViewModel());
-          }
+        if (result.Succeeded)
+            return RedirectToAction("IndexUsuario", "Evento");
 
-          // se não vier null, mapear o corredor para o ViewModel e retornar a view
-          CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
-          Console.WriteLine($"[DEBUG] ViewModel Edit - Id={corredorModel.Id}, Nome={corredorModel.Nome}, Email={corredorModel.Email}, CPF={corredorModel.CPF}");
-          return View(corredorModel);
-      }
-      
-      // Post: CorredorController/Edit/4
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult Edit(CorredorViewModel corredorModel)
-      {
-          if (ModelState.IsValid)
-          {
-              var corredor = _mapper.Map<Corredor>(corredorModel);
-              _corredorService.Edit(corredor);
-              return RedirectToAction(nameof(Get), new { id = corredorModel.Id });
-          }
+        ModelState.AddModelError("", "Login inválido");
+        return View();
+    }
 
-          // Se houver erro de validação, volta para a mesma tela com as mensagens
-          return View(corredorModel);
-      }
+    public async Task<IActionResult> GetByEmail()
+    {
+        var usuario = await _userManager.GetUserAsync(User);
 
-      // Get: CorredorController/Delite/5
-      public ActionResult Delete(int id)
-      {
-          Corredor corredor = _corredorService.Get(id);
-          CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
-          return View(corredorModel);
-      }
-        
-      // Post: CorredorController/Delete/1
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult Delete(int id, CorredorViewModel corredorModel)
-      { 
-          _corredorService.Delete(id);
-          return RedirectToAction(nameof(Index));
-      }
+        if (usuario == null)
+            return RedirectToAction("Login");
+
+        var corredor = _corredorService.GetByEmail(usuario.Email);
+
+        if (corredor == null)
+            return RedirectToAction("Create"); // ou alguma tela de completar cadastro
+
+        var model = _mapper.Map<CorredorViewModel>(corredor);
+
+        return View("Get", model);
+    }
+    
+    public ActionResult Get(int id)
+    {
+        Corredor corredor = _corredorService.Get(id);
+        CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+        return View(corredorModel);
+    }
+
+    public ActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Create(CorredorViewModel corredorModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var corredor = _mapper.Map<Corredor>(corredorModel);
+            _corredorService.Create(corredor);
+        }
+        return View(corredorModel);
+    }
+
+    public ActionResult Edit(int id)
+    {
+        Corredor corredor = _corredorService.Get(id);
+        if (corredor == null)
+        {
+            return View(new CorredorViewModel());
+        }
+        CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+        return View(corredorModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Edit(CorredorViewModel corredorModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var corredor = _mapper.Map<Corredor>(corredorModel);
+            _corredorService.Edit(corredor);
+            return RedirectToAction(nameof(Get), new { id = corredorModel.Id });
+        }
+
+        return View(corredorModel);
+    }
+
+    public ActionResult Delete(int id)
+    {
+        Corredor corredor = _corredorService.Get(id);
+        CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+        return View(corredorModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Delete(int id, CorredorViewModel corredorModel)
+    {
+        _corredorService.Delete(id);
+        return RedirectToAction(nameof(Index));
+    }
 }
-

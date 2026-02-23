@@ -5,12 +5,9 @@ using Core.Service.Dtos;
 using EvenPace.Controllers;
 using EvenPaceWeb.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 
 namespace EvenPaceWebTests
 {

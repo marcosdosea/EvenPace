@@ -1,9 +1,4 @@
-﻿/* ============================================================
-   ARQUIVO: wwwroot/css/evento.css
-   DESCRIÇÃO: Estilo Eventos (Com Estilos de Erro Adicionados)
-   ============================================================ */
-
-/* --- 1. GERAL --- */
+﻿
 body {
     margin: 0;
     padding: 0;
@@ -17,7 +12,6 @@ body {
     overflow: hidden;
 }
 
-/* Sidebar */
 .sidebar {
     width: 200px;
     background-color: #fff;
@@ -45,7 +39,6 @@ body {
     padding-bottom: 60px;
 }
 
-/* --- 2. CABEÇALHO --- */
 .page-header {
     background-color: #fff;
     height: 120px;
@@ -77,7 +70,6 @@ body {
     font-weight: 500;
 }
 
-/* --- 3. FORMULÁRIO --- */
 .form-evento {
     max-width: 900px;
     margin: 40px auto;
@@ -140,10 +132,10 @@ body {
     box-sizing: border-box;
 }
 
-    .input-gray:focus {
-        background-color: #fff;
-        border-color: #000;
-    }
+.input-gray:focus {
+    background-color: #fff;
+    border-color: #000;
+}
 
 textarea.input-gray {
     height: auto;
@@ -153,16 +145,15 @@ textarea.input-gray {
     line-height: 1.5;
 }
 
-/* Upload e Checkboxes */
 .input-wrapper {
     position: relative;
     width: 100%;
 }
 
-    .input-wrapper .input-gray {
-        padding-right: 45px;
-        cursor: pointer;
-    }
+.input-wrapper .input-gray {
+    padding-right: 45px;
+    cursor: pointer;
+}
 
 .icon-upload {
     position: absolute;
@@ -206,26 +197,25 @@ textarea.input-gray {
     transition: 0.2s;
 }
 
-    .check-tag:hover {
-        background: #e0e0e0;
-    }
+.check-tag:hover {
+    background: #e0e0e0;
+}
 
-    .check-tag input {
-        display: none;
-    }
+.check-tag input {
+    display: none;
+}
 
-    .check-tag:has(input:checked) {
-        background: #333;
-        color: #ffeb3b;
-        border-color: #000;
-    }
+.check-tag:has(input:checked) {
+    background: #333;
+    color: #ffeb3b;
+    border-color: #000;
+}
 
-        .check-tag:has(input:checked) span::after {
-            content: " ✓";
-            margin-left: 5px;
-        }
+.check-tag:has(input:checked) span::after {
+    content: " ✓";
+    margin-left: 5px;
+}
 
-/* --- 4. GRID DE CARDS --- */
 .kits-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -248,11 +238,11 @@ textarea.input-gray {
     transition: transform 0.2s;
 }
 
-    .kit-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        border-color: #bbb;
-    }
+.kit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-color: #bbb;
+}
 
 .kit-card-image {
     height: 180px;
@@ -263,11 +253,11 @@ textarea.input-gray {
     border-bottom: 1px solid #f0f0f0;
 }
 
-    .kit-card-image img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
+.kit-card-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
 
 .placeholder-img {
     color: #999;
@@ -307,36 +297,35 @@ textarea.input-gray {
     font-size: 0.95rem;
 }
 
-    .btn-action.open {
-        background: #fff;
-        color: #333;
-        border-right: 1px solid #eee;
-    }
+.btn-action.open {
+    background: #fff;
+    color: #333;
+    border-right: 1px solid #eee;
+}
 
-        .btn-action.open:hover {
-            background: #f0f0f0;
-        }
+.btn-action.open:hover {
+    background: #f0f0f0;
+}
 
-    .btn-action.edit {
-        background: #fff;
-        color: #0056b3;
-        border-right: 1px solid #eee;
-    }
+.btn-action.edit {
+    background: #fff;
+    color: #0056b3;
+    border-right: 1px solid #eee;
+}
 
-        .btn-action.edit:hover {
-            background: #e3f2fd;
-        }
+.btn-action.edit:hover {
+    background: #e3f2fd;
+}
 
-    .btn-action.delete {
-        background: #fff;
-        color: #d32f2f;
-    }
+.btn-action.delete {
+    background: #fff;
+    color: #d32f2f;
+}
 
-        .btn-action.delete:hover {
-            background: #ffebee;
-        }
+.btn-action.delete:hover {
+    background: #ffebee;
+}
 
-/* --- 5. BOTÕES GERAIS --- */
 .form-actions {
     margin-top: 40px;
     padding-top: 20px;
@@ -371,24 +360,23 @@ textarea.input-gray {
     gap: 8px;
 }
 
-    .btn-green:hover {
-        background: #218838;
-        transform: translateY(-2px);
-        color: #fff;
-    }
+.btn-green:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    color: #fff;
+}
 
 .btn-gray {
     background: #888;
     color: #fff;
 }
 
-    .btn-gray:hover {
-        background: #666;
-        color: #fff;
-    }
+.btn-gray:hover {
+    background: #666;
+    color: #fff;
+}
 
-/* --- 6. EXTRAS & ALERTAS DE ERRO --- */
-/* Alerta Sucesso */
+
 .alert-custom {
     position: fixed;
     top: 140px;
@@ -407,18 +395,16 @@ textarea.input-gray {
     opacity: 0;
 }
 
-/* ALERTA DE ERRO (NOVO) */
 .alert-danger {
-    background-color: #f8d7da; /* Fundo vermelho claro */
-    color: #721c24; /* Texto vermelho escuro */
+    background-color: #f8d7da; 
+    color: #721c24; 
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #f5c6cb;
-    margin-bottom: 25px; /* Espaço abaixo do alerta */
+    margin-bottom: 25px; 
     font-weight: 500;
 }
 
-/* Texto de Erro embaixo do Input */
 .text-danger {
     color: #dc3545;
     font-size: 0.85rem;
@@ -434,7 +420,6 @@ textarea.input-gray {
     font-weight: 800 !important;
 }
 
-/* --- 7. RESPONSIVIDADE --- */
 @media (max-width: 900px) {
     .kits-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -470,12 +455,11 @@ textarea.input-gray {
         padding: 15px 0;
     }
 
-        .menu-item .menu-icon {
-            margin: 0;
-            font-size: 1.5rem;
-        }
+    .menu-item .menu-icon {
+        margin: 0;
+        font-size: 1.5rem;
+    }
 
-    /* Footer Visível no Mobile */
     .sidebar-footer {
         display: flex;
         justify-content: center;
@@ -503,15 +487,15 @@ textarea.input-gray {
         margin-left: auto;
     }
 
-        .btn-responsive .btn-text {
-            display: none;
-        }
+    .btn-responsive .btn-text {
+        display: none;
+    }
 
-        .btn-responsive .btn-symbol {
-            display: block !important;
-            line-height: 1;
-            margin-top: -4px;
-        }
+    .btn-responsive .btn-symbol {
+        display: block !important;
+        line-height: 1;
+        margin-top: -4px;
+    }
 
     .page-header {
         height: 80px;
@@ -519,9 +503,9 @@ textarea.input-gray {
         width: 100%;
     }
 
-        .page-header h1 {
-            font-size: 1.4rem;
-        }
+    .page-header h1 {
+        font-size: 1.4rem;
+    }
 
     .kits-grid {
         grid-template-columns: 1fr;

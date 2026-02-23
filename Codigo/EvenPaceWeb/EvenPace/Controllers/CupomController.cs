@@ -16,10 +16,6 @@ namespace EvenPaceWeb.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Pega todos os cupons cadastrados
-        /// </summary>
-        /// <returns></returns>        
         public ActionResult Index()
         {
             var cupons = _cupomService.GetAll();
@@ -27,12 +23,6 @@ namespace EvenPaceWeb.Controllers
             return View(cupomViewModels);
         }
 
-
-        /// <summary>
-        /// Retorna os detalhes de um cupom específicado pelo id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public ActionResult Details(int id)
         {
             var cupom = _cupomService.Get((int)id);
@@ -45,11 +35,6 @@ namespace EvenPaceWeb.Controllers
             return View();
         }
 
-        /// <summary>
-        /// Cria um novo cupom a partir do cupomViewModel
-        /// </summary>
-        /// <param name="cupomViewModel"></param>
-        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CupomViewModel cupomViewModel)
@@ -58,18 +43,12 @@ namespace EvenPaceWeb.Controllers
             {
                 var cupom = _mapper.Map<Core.Cupom>(cupomViewModel);
                 _cupomService.Create(cupom);
-                return RedirectToAction(nameof(Index)); // Só redireciona se salvar com sucesso
+                return RedirectToAction(nameof(Index));
             }
 
-            // Se o modelo for inválido, devolvemos a ViewModel para a View mostrar os erros
             return View(cupomViewModel);
         }
 
-        /// <summary>
-        /// Edita um cupom a partir do cupomViewModel
-        /// </summary>
-        /// <param name="cupomViewModel"></param>
-        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CupomViewModel cupomViewModel)
@@ -82,24 +61,14 @@ namespace EvenPaceWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        /// <summary>
-        /// Retorna o cupom para edição a partir do id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public ActionResult Edit(int id)
         {
             var cupom = _cupomService.Get((int)id);
-            
+
             var cupomViewModel = _mapper.Map<CupomViewModel>(cupom);
             return View(cupomViewModel);
         }
 
-        /// <summary>
-        /// Retorna um cupom a partir do id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public ActionResult Delete(int id)
         {
             var cupom = _cupomService.Get((int)id);
@@ -108,12 +77,6 @@ namespace EvenPaceWeb.Controllers
             return View(cupomViewModel);
         }
 
-        /// <summary>
-        /// Deleta um cupom a partir do id e do cupomViewModel
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="cupomViewModel"></param>
-        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, CupomViewModel cupomViewModel)

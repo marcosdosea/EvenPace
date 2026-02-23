@@ -22,11 +22,9 @@
 
             <nav class="sidebar-menu">
                 @{
-                    // Lógica para verificar se o botão deve ficar ativo (amarelo)
                     var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
                     var action = ViewContext.RouteData.Values["Action"]?.ToString();
 
-                    // Verifica se está no EventoController e na ação Index
                     bool isHomeActive = string.Equals(controller, "Evento", StringComparison.OrdinalIgnoreCase)
                     && string.Equals(action, "Index", StringComparison.OrdinalIgnoreCase);
                 }
