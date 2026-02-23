@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core.Service;
+using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Service;
+using Core;
+using Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +13,70 @@ namespace EvenPaceAPI.Controler
     [ApiController]
     public class CupomController : ControllerBase
     {
-        // GET: api/<CupomController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ICupomService _cupomService;
+        private readonly IMapper _mapper;
+
+        public CupomController(ICupomService cupomService, IMapper mapper)
         {
-            return new string[] { "value1", "value2" };
+            _cupomService = cupomService;
+            _mapper = mapper;
+        }
+      
+        // GET api/<CupomController>/5
+        [HttpGet]
+        public ActionResult Get()
+        {
+            var cupons = _cupomService.GetAll();
+            return Ok(cupons);
         }
 
-        // GET api/<CupomController>/5
+        // GET: api/<CupomController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult Get(int id)
         {
-            return "value";
+            Cupom cupom = _cupomService.Get(id);
+            return Ok(cupom);
         }
 
         // POST api/<CupomController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] CupomViewModel cupomViewModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest("Dados inválidos.");
+
+            var cupom = _mapper.Map<Cupom>(cupomViewModel);
+            _cupomService.Create(cupom);
+            return Ok();
         }
 
         // PUT api/<CupomController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(int id, [FromBody] CupomViewModel cupomModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest("Dados inválidos.");
+
+            var cupom = _mapper.Map<Cupom>(cupomModel);
+            if (cupom == null)
+                return NotFound("Cupom não encontrado.");
+
+            _cupomService.Edit(cupom);
+
+            return Ok();
         }
 
         // DELETE api/<CupomController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            Cupom? cupom = _cupomService.Get(id);
+
+            if (cupom == null)
+                return NotFound("Cupom não encontrado.");
+
+            _cupomService.Delete(id);
+            return Ok();
         }
     }
 }
