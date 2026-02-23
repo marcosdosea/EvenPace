@@ -89,7 +89,11 @@ namespace Service
         {
             return _context.Corredors.ToList();
         }
-
+        /// <summary>
+        /// Realiza a filtragem textual de corredores buscando correspondências fragmentadas pelo nome do usuário.
+        /// </summary>
+        /// <param name="nome">Sequência de caracteres que deve estar contida no nome do corredor buscado.</param>
+        /// <returns>Coleção de corredores cujos nomes satisfazem o critério estipulado.</returns>
         public IEnumerable<Corredor> GetByName(string nome)
         {
             return _context.Corredors.Where(e => e.Nome.Contains(nome)).ToList();
