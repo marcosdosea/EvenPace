@@ -1,6 +1,9 @@
 using AutoMapper;
 using Core;
 using Core.Service;
+using EvenPaceWeb.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
@@ -9,26 +12,62 @@ namespace EvenPace.Controllers;
 public class CorredorController : Controller
 {
     private ICorredorService _corredorService;
-    private IAvaliacaoEventoService _avaliacaoEventoService;
     private IMapper _mapper;
+    private readonly UserManager<UsuarioIdentity>  _userManager;
+    private readonly SignInManager<UsuarioIdentity> _signInManager;
 
     public CorredorController(
         ICorredorService corredor,
-        IAvaliacaoEventoService avaliacaoEventoService,
-        IMapper mapper)
+        IMapper mapper,
+        UserManager<UsuarioIdentity> userManager,
+        SignInManager<UsuarioIdentity> signInManager)
     {
         _corredorService = corredor;
-        _avaliacaoEventoService = avaliacaoEventoService;
         _mapper = mapper;
+        _userManager = userManager;
+        _signInManager = signInManager;
     }
-
-    public ActionResult Login(string email, string senha)
+    
+    [HttpGet]
+    public IActionResult Login()
     {
-        Corredor corredor = _corredorService.Login(email, senha);
-        CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
-        return View(corredorModel);
+        return View();
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Login(string email, string senha)
+    {
+        var result = await _signInManager.PasswordSignInAsync(
+            email,
+            senha,
+            false,
+            false
+        );
+
+        if (result.Succeeded)
+            return RedirectToAction("IndexUsuario", "Evento");
+
+        ModelState.AddModelError("", "Login inválido");
+        return View();
+    }
+
+    public async Task<IActionResult> GetByEmail()
+    {
+        var usuario = await _userManager.GetUserAsync(User);
+
+        if (usuario == null)
+            return RedirectToAction("Login");
+
+        var corredor = _corredorService.GetByEmail(usuario.Email);
+
+        if (corredor == null)
+            return RedirectToAction("Create"); // ou alguma tela de completar cadastro
+
+        var model = _mapper.Map<CorredorViewModel>(corredor);
+
+        return View("Get", model);
+    }
+    
     public ActionResult Get(int id)
     {
         Corredor corredor = _corredorService.Get(id);
@@ -55,17 +94,12 @@ public class CorredorController : Controller
 
     public ActionResult Edit(int id)
     {
-        Console.WriteLine($"[DEBUG] Edit chamado com Id={id}");
         Corredor corredor = _corredorService.Get(id);
-
-        // Retorna model vazio para não quebrar a view caso o corredor não seja encontrado
         if (corredor == null)
         {
             return View(new CorredorViewModel());
         }
-
         CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
-        Console.WriteLine($"[DEBUG] ViewModel Edit - Id={corredorModel.Id}, Nome={corredorModel.Nome}, Email={corredorModel.Email}, CPF={corredorModel.CPF}");
         return View(corredorModel);
     }
 

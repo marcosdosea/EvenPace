@@ -25,11 +25,11 @@ namespace Service
             return corredor.Id;
         }
 
-         public Corredor? GetByEmail(string email)
- {
-     return _context.Corredors
-         .FirstOrDefault(c => c.Email == email);
- }
+        public Corredor? GetByEmail(string email)
+        {
+            return _context.Corredors
+                    .FirstOrDefault(c => c.Email == email);
+        }
 
         /// <summary>
         /// Encontra o Corredor com o id correspondente
@@ -76,18 +76,6 @@ namespace Service
                 _context.SaveChanges();
             }
         }
-        
-        /// <summary>
-        /// Pega o corredor com email e senha compativeis
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="senha"></param>
-        /// <returns>retorna corredor com email e senha compativeis</
-        public Corredor Login(string email, string senha)
-        {
-            return _context.Corredors.FirstOrDefault(e => e.Email == email && e.Senha == senha);
-        }
-        
         
         /// <summary>
         /// Pega todos os eventos do banco de dados
