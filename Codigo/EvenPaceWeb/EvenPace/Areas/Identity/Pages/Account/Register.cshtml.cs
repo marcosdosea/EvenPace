@@ -79,6 +79,11 @@ namespace EvenPaceWeb.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+            
+            [Required]
+            [StringLength(11, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+            [Display(Name = "CPF")]
+            public string Cpf { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -113,10 +118,20 @@ namespace EvenPaceWeb.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var existingUser = await _userManager.FindByNameAsync(Input.Cpf);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError(string.Empty, "CPF já cadastrado.");
+                    return Page();
+                }
+                
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                Input.Cpf = Input.Cpf.Replace(".", "").Replace("-", "");
+                
+                await _userStore.SetUserNameAsync(user, Input.Cpf, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

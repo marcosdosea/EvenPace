@@ -35,10 +35,12 @@ public class CorredorController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(string email, string senha)
+    public async Task<IActionResult> Login(string cpf, string senha)
     {
+        cpf = cpf.Replace(".", "").Replace("-", "");
+        
         var result = await _signInManager.PasswordSignInAsync(
-            email,
+            cpf,
             senha,
             false,
             false
@@ -47,7 +49,7 @@ public class CorredorController : Controller
         if (result.Succeeded)
             return RedirectToAction("IndexUsuario", "Evento");
 
-        ModelState.AddModelError("", "Login inválido");
+        ModelState.AddModelError("", "CPF ou Senha inálidos");
         return View();
     }
 
