@@ -81,8 +81,7 @@ namespace Service
             return _context.AvaliacaoEventos.AsNoTracking();
         }
 
-        // Este método está aqui apenas para não dar erro na classe, no entanto,
-        // AvaliaçãoEvento não tem nome.
+        
         public IEnumerable<AvaliacaoEvento> GetByName(string nome)
         {
             throw new NotImplementedException(); 

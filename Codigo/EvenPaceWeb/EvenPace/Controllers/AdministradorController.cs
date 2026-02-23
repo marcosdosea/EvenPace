@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Core.Service;
 using AutoMapper;
 using Models;
@@ -16,7 +15,7 @@ namespace EvenPaceWeb.Controllers
             _administradorService = administradorService;
             _mapper = mapper;
         }
-        // GET: AdministradorController
+
         public ActionResult Index()
         {
             var administradores = _administradorService.GetAll();
@@ -24,7 +23,6 @@ namespace EvenPaceWeb.Controllers
             return View(administradorViewModels);
         }
 
-        // GET: AdministradorController/Details/5
         public ActionResult Details(int id)
         {
             var administrador = _administradorService.Get((int)id);
@@ -32,13 +30,11 @@ namespace EvenPaceWeb.Controllers
             return View(administradorViewModel);
         }
 
-        // GET: AdministradorController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AdministadorController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(AdministradorViewModel administradorViewModel)
@@ -51,7 +47,6 @@ namespace EvenPaceWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: AdministadorController/Edit/5
         public ActionResult Edit(int id)
         {
             var administrador = _administradorService.Get((int)id);
@@ -59,7 +54,6 @@ namespace EvenPaceWeb.Controllers
             return View(administradorViewModel);
         }
 
-        // POST: AdministadorController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -72,7 +66,6 @@ namespace EvenPaceWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: AdministadorController/Delete/5
         public ActionResult Delete(int id)
         {
             var administrador = _administradorService.Get((int)id);
@@ -80,7 +73,6 @@ namespace EvenPaceWeb.Controllers
             return View(administradorViewModel);
         }
 
-        // POST: AdministadorController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, AdministradorViewModel administradorViewModel)
@@ -88,7 +80,5 @@ namespace EvenPaceWeb.Controllers
             _administradorService.Delete((int)id);
             return RedirectToAction(nameof(Index));
         }
-        
-
     }
 }

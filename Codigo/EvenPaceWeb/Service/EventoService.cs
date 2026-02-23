@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core;
+﻿using Core;
 using Core.Service;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,24 +19,19 @@ namespace Service
             return eventos.Id;
         }
 
-        // --- AQUI ESTAVA O ERRO ---
-        // Método Edit corrigido para evitar conflito de IDs
         public void Edit(Evento eventoEditado)
         {
             if (eventoEditado is not null)
             {
-                // 1. Verifica se já existe uma entidade com esse ID rastreada na memória do EF
                 var local = _context.Set<Evento>()
                     .Local
                     .FirstOrDefault(entry => entry.Id.Equals(eventoEditado.Id));
 
-                // 2. Se existir, "desanexa" (Detach) ela para não dar conflito
                 if (local != null)
                 {
                     _context.Entry(local).State = EntityState.Detached;
                 }
 
-                // 3. Agora dizemos que o estado da nova entidade é "Modificado"
                 _context.Entry(eventoEditado).State = EntityState.Modified;
 
                 _context.SaveChanges();
@@ -60,7 +50,6 @@ namespace Service
 
         public Evento Get(int id)
         {
-            // Usamos AsNoTracking aqui para evitar problemas de leitura em cenários de edição
             return _context.Eventos.AsNoTracking().FirstOrDefault(e => e.Id == id);
         }
 

@@ -1,5 +1,4 @@
 using AutoMapper;
-using Core;
 using Core.Service;
 using Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +16,6 @@ public class CartaoCreditoControler : Controller
         _mapper = mapper;
     }
 
-    // GET: CartaoCreditoControler
     public ActionResult Index()
     {
         var cartaoCredito = _cartaoCredito.GetAll();
@@ -25,7 +23,6 @@ public class CartaoCreditoControler : Controller
         return View(cartaoCreditoViewModels);
     }
 
-    // GET: CartaoCreditoControler/Details/5
     public ActionResult Details(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
@@ -33,13 +30,11 @@ public class CartaoCreditoControler : Controller
         return View(cartaoCreditoViewModel);
     }
 
-    // GET: CartaoCreditoControler/Create
     public ActionResult Create()
     {
         return View();
     }
 
-    // POST: CartaoCreditoControler/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Create(CartaoCreditoViewModel cartaoCreditoViewModel)
@@ -52,7 +47,6 @@ public class CartaoCreditoControler : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // GET: CartaoCreditoControler/Edit/5
     public ActionResult Edit(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
@@ -60,7 +54,6 @@ public class CartaoCreditoControler : Controller
         return View(cartaoCreditoViewModel);
     }
 
-    // POST: CartaoCreditoControler/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Edit(int id, IFormCollection collection)
@@ -73,7 +66,6 @@ public class CartaoCreditoControler : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // GET: CartaoCreditoControler/Delete/5
     public ActionResult Delete(int id)
     {
         var cartaoCredito = _cartaoCredito.Get((int)id);
@@ -81,7 +73,6 @@ public class CartaoCreditoControler : Controller
         return View(cartaoCreditoViewModel);
     }
 
-    // POST: CartaoCreditoControler/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Delete(int id, CartaoCreditoViewModel cartaoCreditoViewModel)

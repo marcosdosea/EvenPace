@@ -17,10 +17,6 @@ namespace EvenPaceWeb.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Lista todas as avaliações de eventos
-        /// </summary>
-        /// <returns></returns>
         public ActionResult Index()
         {
             var avaliacoes = _avaliacaoEventoService.GetAll();
@@ -28,11 +24,6 @@ namespace EvenPaceWeb.Controllers
             return View(viewModels);
         }
 
-        /// <summary>
-        /// Retorna os detalhes de uma avaliação de evento específicada pelo id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public ActionResult Details(string nome)
         {
             var avaliacao = _avaliacaoEventoService.GetByName((string)nome);
@@ -40,20 +31,11 @@ namespace EvenPaceWeb.Controllers
             return View(viewModel);
         }
 
-        /// <summary>
-        /// Retorna o formulário de criação de uma nova avaliação de evento
-        /// </summary>
-        /// <returns></returns>
         public ActionResult Create()
         {
             return View();
         }
 
-        /// <summary>
-        /// Cria uma nova avaliação de evento a partir do viewModel
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(AvaliacaoEventoViewModel viewModel)
@@ -67,11 +49,6 @@ namespace EvenPaceWeb.Controllers
             return View(viewModel);
         }
 
-        /// <summary>
-        /// Retorna o formulário de edição de uma avaliação de evento pelo id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public ActionResult Edit(int id)
         {
             var avaliacao = _avaliacaoEventoService.Get((int)id);
@@ -79,11 +56,6 @@ namespace EvenPaceWeb.Controllers
             return View(viewModel);
         }
 
-        /// <summary>
-        /// Edita uma avaliação de evento a partir do viewModel
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(AvaliacaoEventoViewModel viewModel)
@@ -97,11 +69,6 @@ namespace EvenPaceWeb.Controllers
             return View(viewModel);
         }
 
-        /// <summary>
-        /// Retorna o formulário de confirmação de exclusão de uma avaliação de evento pelo id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public ActionResult Delete(int id)
         {
             var avaliacao = _avaliacaoEventoService.Get((int)id);
@@ -109,12 +76,6 @@ namespace EvenPaceWeb.Controllers
             return View(viewModel);
         }
 
-        /// <summary>
-        /// Exclui uma avaliação de evento pelo id e viewModel
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, AvaliacaoEventoViewModel viewModel)
@@ -122,18 +83,6 @@ namespace EvenPaceWeb.Controllers
             _avaliacaoEventoService.Delete((int)id);
             return RedirectToAction(nameof(Index));
         }
-
-        // GET: Corredor/AvaliarEvento/5
-        //public ActionResult AvaliarEvento(int idEvento)
-        //{
-        //    var model = new AvaliacaoEventoViewModel
-        //    {
-        //        DataAvaliacao = DateTime.Now
-        //    };
-
-        //    ViewBag.IdEvento = idEvento; // só para contexto da View
-        //    return View(model);
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -149,6 +98,5 @@ namespace EvenPaceWeb.Controllers
 
             return View(model);
         }
-
     }
 }

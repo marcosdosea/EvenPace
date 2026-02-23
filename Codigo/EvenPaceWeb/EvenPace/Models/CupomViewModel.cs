@@ -40,7 +40,6 @@ namespace Models
         [Display(Name = "Já Utilizados")]
         public int QuantidadeUtilizada { get; set; }
 
-        // --- Relacionamento com Evento ---
 
         [Required(ErrorMessage = "O ID do evento é obrigatório.")]
         [Display(Name = "ID do Evento")]
