@@ -2,7 +2,6 @@ using AutoMapper;
 using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Mvc;
-//using EvenPaceWeb.Models;
 using Service;
 using Models;
 
@@ -102,6 +101,44 @@ namespace EvenPace.Controllers
             return View("Create", vm);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(InscricaoViewModel vm)
+        {
+            try
+            {
+                var idCorredorClaim = User.FindFirst("IdCorredor");
+
+                if (idCorredorClaim == null)
+                {
+                    TempData["Erro"] = "Você precisa estar logado.";
+                    return RedirectToAction("Index", new { id = vm.IdEvento });
+                }
+
+                var inscricao = new Inscricao
+                {
+                    IdEvento = vm.Inscricao.IdEvento,
+                    IdCorredor = int.Parse(idCorredorClaim.Value),
+                    Distancia = vm.Inscricao.Distancia,
+                    TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
+                    DataInscricao = DateTime.Now,
+                    Status = "Ativa", 
+                    StatusRetiradaKit = false
+                };
+
+                _inscricaoService.Create(inscricao);
+
+                TempData["Sucesso"] = "Inscrição realizada com sucesso!";
+                //return RedirectToAction("IndexUsuario", "Evento");
+                return Content("SALVOU NO BANCO");
+            }
+            catch (Exception ex)
+            {
+                TempData["Erro"] = ex.Message;
+                ConfigurarInscricao(vm);
+                return View(vm);
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -136,6 +173,8 @@ namespace EvenPace.Controllers
             return View();
         }
 
+
+
         private void ConfigurarInscricao(InscricaoViewModel vm)
         {
             var evento = _eventoService.Get(vm.IdEvento);
@@ -153,6 +192,39 @@ namespace EvenPace.Controllers
 
             vm.Percursos = new List<string> { "3km", "5km", "10km" };
             vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(InscricaoViewModel vm)
+        {
+            try
+            {
+                var idCorredor = User.FindFirst("IdCorredor");
+
+                if (idCorredor == null)
+                    return Content("Usuário não logado");
+
+                var inscricao = new Inscricao
+                {
+                    IdEvento = vm.Inscricao.IdEvento,
+                    IdCorredor = int.Parse(idCorredor.Value),
+                    Distancia = vm.Inscricao.Distancia,
+                    TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
+                    DataInscricao = DateTime.Now,
+                    Status = "Ativa",
+                    StatusRetiradaKit = false
+                };
+
+                _inscricaoService.Create(inscricao);
+
+                return Content("SALVOU NO BANCO");
+            }
+            catch (Exception ex)
+            {
+                return Content("ERRO: " + ex.Message);
+            }
         }
 
         public ActionResult GetAllByEvento(int idEvento)

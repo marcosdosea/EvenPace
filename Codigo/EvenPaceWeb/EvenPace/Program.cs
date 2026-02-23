@@ -6,6 +6,7 @@ using Service;
 using EvenPaceWeb.Areas.Identity.Data;
 using EvenPaceWeb.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 

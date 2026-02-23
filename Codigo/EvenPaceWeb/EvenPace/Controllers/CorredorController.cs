@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using AutoMapper;
 using Core;
 using Core.Service;
 using EvenPaceWeb.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +50,7 @@ public class CorredorController : Controller
 
         if (result.Succeeded)
             return RedirectToAction("IndexUsuario", "Evento");
-
+        
         ModelState.AddModelError("", "CPF ou Senha inálidos");
         return View();
     }
