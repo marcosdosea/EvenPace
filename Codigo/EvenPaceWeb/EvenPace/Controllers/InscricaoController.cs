@@ -19,6 +19,11 @@ namespace EvenPace.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Verifica as condições e exibe a interface de confirmação para o cancelamento de uma inscrição específica.
+        /// </summary>
+        /// <param name="id">O identificador numérico da inscrição.</param>
+        /// <returns>A view de exclusão caso permitida; do contrário, redireciona exibindo avisos de erro temporal ou inexistência.</returns>
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -31,7 +36,7 @@ namespace EvenPace.Controllers
                 TempData["Erro"] = "Não é possível cancelar após a data do evento.";
                 return RedirectToAction("Index", "Home");
             }
-            
+
             var dadosTelaDelete = result.Data!;
             var telaInscricaoViewModel = new TelaInscricaoViewModel
             {
@@ -51,6 +56,11 @@ namespace EvenPace.Controllers
             return View("Delete", telaInscricaoViewModel);
         }
 
+        /// <summary>
+        /// Acessa a página central (hub) de detalhes de inscrição de um evento.
+        /// </summary>
+        /// <param name="id">O código exclusivo do evento alvo da inscrição.</param>
+        /// <returns>View de índice contendo as informações consolidadas para inscrição.</returns>
         public IActionResult Index(int id)
         {
             var dto = _inscricaoService.GetDadosTelaInscricao(id);
@@ -58,6 +68,11 @@ namespace EvenPace.Controllers
             return View(vm);
         }
 
+        /// <summary>
+        /// Exibe o formulário inicial destinado ao registro da participação no evento.
+        /// </summary>
+        /// <param name="id">O identificador do evento.</param>
+        /// <returns>A view de criação de inscrição.</returns>
         [HttpGet]
         public IActionResult Create(int id)
         {
@@ -66,7 +81,12 @@ namespace EvenPace.Controllers
             return View("Create", vm);
         }
 
-
+        /// <summary>
+        /// Efetiva o cancelamento lógico da inscrição após o envio e validação das credenciais do usuário e prazo do evento.
+        /// </summary>
+        /// <param name="idInscricao">O identificador único do registro de inscrição que será inativado.</param>
+        /// <param name="idEvento">O identificador do evento atrelado à inscrição.</param>
+        /// <returns>Redireciona para o índice do evento mantendo o alerta de sucesso ou erro do processo.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int idInscricao, int idEvento)
@@ -95,6 +115,11 @@ namespace EvenPace.Controllers
             return RedirectToAction("Index", new { id = idEvento });
         }
 
+        /// <summary>
+        /// Confirma a geração da inscrição com base nas escolhas de formulário (distância, blusa, kit) vinculadas ao usuário logado.
+        /// </summary>
+        /// <param name="vm">ViewModel englobando todos os dados selecionados na tela de inscrição do evento.</param>
+        /// <returns>Retorna à indexação do evento com mensagens indicativas das ações.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Index(TelaInscricaoViewModel vm)
@@ -139,6 +164,11 @@ namespace EvenPace.Controllers
             };
         }
 
+        /// <summary>
+        /// Gera uma listagem contendo todos os participantes regularmente inscritos em um determinado evento.
+        /// </summary>
+        /// <param name="idEvento">O identificador do evento.</param>
+        /// <returns>A view com a lista de modelos de inscritos.</returns>
         public ActionResult GetAllByEvento(int idEvento)
         {
             var inscricao = _inscricaoService.GetAllByEvento(idEvento);
@@ -146,6 +176,11 @@ namespace EvenPace.Controllers
             return View(inscricaoViewModel);
         }
 
+        /// <summary>
+        /// Apresenta o painel de suporte que possibilita aos organizadores monitorar e efetuar o checkout de kits de um evento.
+        /// </summary>
+        /// <param name="idEvento">O evento relacionado à entrega em andamento.</param>
+        /// <returns>View contendo o painel de retiradas do evento.</returns>
         [HttpGet]
         public IActionResult Retirada(int idEvento)
         {
@@ -153,9 +188,15 @@ namespace EvenPace.Controllers
 
             var inscricoesViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricoes);
 
-            return View("RetiradaKit",inscricoesViewModel);
+            return View("RetiradaKit", inscricoesViewModel);
         }
 
+        /// <summary>
+        /// Altera o status da inscrição confirmando que o participante fez a coleta do kit adquirido.
+        /// </summary>
+        /// <param name="idInscricao">Identificador único do ingresso/inscrição no sistema.</param>
+        /// <param name="idEvento">Identificador do evento pertencente para efeitos de redirecionamento posterior.</param>
+        /// <returns>Retorna Ok() em caso de requisição assíncrona, ou redireciona a interface novamente para o painel de entrega.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ConfirmarRetirada(int idInscricao, int idEvento)

@@ -26,6 +26,10 @@ namespace EvenPace.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Exibe a listagem de eventos vinculados à organização logada, ordenados pela data mais recente.
+        /// </summary>
+        /// <returns>View contendo uma lista de modelos de visualização de eventos.</returns>
         public IActionResult Index()
         {
             int idOrganizacao = 1; 
@@ -40,6 +44,11 @@ namespace EvenPace.Controllers
             return View(listaViewModel);
         }
 
+        /// <summary>
+        /// Apresenta os detalhes completos de um evento específico.
+        /// </summary>
+        /// <param name="id">Identificador único do evento a ser detalhado.</param>
+        /// <returns>View de detalhes caso o evento exista; caso contrário, redireciona para a listagem principal.</returns>
         public IActionResult Details(int id)
         {
             var entidade = _service.Get(id);
@@ -53,6 +62,10 @@ namespace EvenPace.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Carrega o formulário para o registro de um novo evento no sistema.
+        /// </summary>
+        /// <returns>View com um modelo de evento vazio.</returns>
         [HttpGet]
         public IActionResult Create()
         {
@@ -60,6 +73,12 @@ namespace EvenPace.Controllers
             return View(new EventoViewModel());
         }
 
+        /// <summary>
+        /// Processa os dados submetidos pelo formulário para gravar um novo evento, incluindo o upload de imagem associada.
+        /// </summary>
+        /// <param name="model">Modelo de visualização contendo os dados do evento preenchidos pelo usuário.</param>
+        /// <returns>Redireciona para a listagem em caso de sucesso ou retorna a View com erros de validação.</returns>
+        /// <exception cref="Exception">Captura exceções gerais de conversão ou acesso a disco ao salvar a imagem, repassando para o ModelState.</exception>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(EventoViewModel model)
@@ -100,6 +119,11 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Prepara e exibe o formulário de edição com os dados atuais de um evento existente.
+        /// </summary>
+        /// <param name="id">Identificador do evento que será modificado.</param>
+        /// <returns>View com o formulário preenchido ou redirecionamento caso o evento não seja encontrado.</returns>
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -114,6 +138,13 @@ namespace EvenPace.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Aplica as alterações fornecidas pelo usuário a um evento previamente cadastrado, gerenciando também a substituição da imagem.
+        /// </summary>
+        /// <param name="id">Identificador único do evento a ser atualizado.</param>
+        /// <param name="model">Objeto contendo as novas informações do evento.</param>
+        /// <returns>Redireciona para a listagem em caso de sucesso ou retorna a View com erros em caso de falha.</returns>
+        /// <exception cref="Exception">Captura falhas durante a persistência dos dados ou substituição do arquivo físico.</exception>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, EventoViewModel model)
@@ -161,6 +192,11 @@ namespace EvenPace.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Exclui um evento do sistema, bem como os kits associados e a respectiva imagem armazenada em disco.
+        /// </summary>
+        /// <param name="id">Identificador do evento a ser deletado.</param>
+        /// <returns>Redireciona para a página principal de listagem de eventos.</returns>
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -203,7 +239,11 @@ namespace EvenPace.Controllers
 
             return nomeUnico;
         }
-
+        /// <summary>
+        /// Exibe o catálogo geral de eventos disponíveis na plataforma para os usuários finais, permitindo buscas dinâmicas.
+        /// </summary>
+        /// <param name="search">Termo opcional de pesquisa para filtrar eventos pelo nome, cidade ou estado.</param>
+        /// <returns>View contendo a vitrine de eventos compatíveis com a busca.</returns>
         [HttpGet]
         public IActionResult IndexUsuario(string search)
         {
