@@ -41,14 +41,6 @@ public class InscricaoController : ControllerBase
         return Ok(inscricao);
     }
 
-    // GET: api/Inscricao/evento/3
-    [HttpGet("evento/{idEvento}")]
-    public ActionResult GetByEvento(int idEvento)
-    {
-        var inscricoes = _inscricaoService.GetAllByEvento(idEvento);
-        return Ok(inscricoes);
-    }
-
     // POST: api/Inscricao
     [HttpPost]
     public ActionResult Post([FromBody] InscricaoViewModel inscricaoViewModel)
