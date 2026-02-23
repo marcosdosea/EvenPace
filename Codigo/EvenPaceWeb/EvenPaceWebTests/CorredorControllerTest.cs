@@ -191,17 +191,6 @@ namespace EvenPaceWebTests
             mockService.Verify(s => s.Delete(1), Times.Once);
         }
 
-        [TestMethod()]
-        public async Task LoginTest_Valido()
-        {
-            var result = await controller.Login("feaaa@gmail.com", "123456");
-
-            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-
-            var redirect = (RedirectToActionResult)result;
-            Assert.AreEqual("Dashboard", redirect.ActionName);
-        }
-
         private CorredorViewModel GetNewCorredorModel()
         {
             return new CorredorViewModel
@@ -209,9 +198,7 @@ namespace EvenPaceWebTests
                 Id = 4,
                 CPF = "55544433322",
                 Nome = "Novo",
-                Email = "novo@gmail.com",
-                DataNascimento = new DateTime(2005, 05, 05),
-                Senha = "123456"
+                DataNascimento = new DateTime(2005, 05, 05)
             };
         }
 
@@ -222,9 +209,7 @@ namespace EvenPaceWebTests
                 Id = 1,
                 Cpf = "10101010101",
                 Nome = "Felipe",
-                Email = "feaaa@gmail.com",
-                DataNascimento = new DateTime(2010, 10, 10),
-                Senha = "123456"
+                DataNascimento = new DateTime(2010, 10, 10)
             };
         }
 
@@ -235,9 +220,7 @@ namespace EvenPaceWebTests
                 Id = 1,
                 CPF = "10101010101",
                 Nome = "Felipe",
-                Email = "feaaa@gmail.com",
-                DataNascimento = new DateTime(2010, 10, 10),
-                Senha = "123456"
+                DataNascimento = new DateTime(2010, 10, 10)
             };
         }
     }

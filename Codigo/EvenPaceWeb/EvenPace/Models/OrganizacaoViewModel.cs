@@ -24,16 +24,6 @@ public class OrganizacaoViewModel
     [Required(ErrorMessage = "Telefone é Obrigatório")]
     public string Telefone { get; set; } = null!;
 
-    [Required(ErrorMessage = "Email é obrigatório")]
-    [EmailAddress(ErrorMessage = "Email inválido")]
-    public string Email { get; set; } = null!;
-
-    [Required(ErrorMessage = "Senha é Obrigatória")]
-    [MinLength(6, ErrorMessage = "A senha deve conter pelo menos 6 caracteres")]
-    [StringLength(45, ErrorMessage = "A senha deve conter no máximo 45 caracteres")]
-    [DataType(DataType.Password)]
-    public string Senha { get; set; } = null!;
-
     [Display(Name = "CEP")]
     [Required(ErrorMessage = "O CEP é Obrigatório")]
     [StringLength(9, ErrorMessage = "O CEP deve conter até 9 caracteres")]

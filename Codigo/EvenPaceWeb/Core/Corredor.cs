@@ -11,11 +11,7 @@ public partial class Corredor
 
     public string Nome { get; set; } = null!;
 
-    public string Email { get; set; } = null!;
-
     public DateTime DataNascimento { get; set; }
-
-    public string Senha { get; set; } = null!;
 
     public virtual CartaoCredito? CartaoCredito { get; set; }
 
