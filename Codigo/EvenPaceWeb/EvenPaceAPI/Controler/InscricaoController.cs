@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Core;
 using Core.Service;
-using Core.Service.Dtos;
 using EvenPaceAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 
 namespace EvenPaceAPI.Controler;
 
@@ -49,7 +47,7 @@ public class InscricaoController : ControllerBase
 
         var idGerado = _inscricaoService.Create(inscricao);
 
-        return CreatedAtAction(nameof(Get),new { id = idGerado }, inscricao           );
+        return CreatedAtAction(nameof(Get), new { id = idGerado }, inscricao);
     }
 
     // PUT: api/Inscricao/5
@@ -82,50 +80,12 @@ public class InscricaoController : ControllerBase
     [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
+        var inscricao = _inscricaoService.Get(id);
+
+        if (inscricao == null)
+            return NotFound();
+
         _inscricaoService.Delete(id);
-        return Ok();
-    }
-
-    // POST: api/Inscricao/5/cancelar/3
-    [HttpPost("{idInscricao}/cancelar/{idCorredor}")]
-    public ActionResult Cancelar(int idInscricao, int idCorredor)
-    {
-        try
-        {
-            _inscricaoService.Cancelar(idInscricao, idCorredor);
-            return Ok("Inscrição cancelada com sucesso.");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-    // POST: api/Inscricao/5/confirmar-retirada
-    [HttpPost("{idInscricao}/confirmar-retirada")]
-    public ActionResult ConfirmarRetirada(int idInscricao)
-    {
-        _inscricaoService.ConfirmarRetiradaKit(idInscricao);
-        return Ok("Retirada confirmada.");
-    }
-
-    // GET: api/Inscricao/dados-tela/3
-    [HttpGet("dados-tela/{idEvento}")]
-    public ActionResult GetDadosTela(int idEvento)
-    {
-        var dados = _inscricaoService.GetDadosTelaInscricao(idEvento);
-        return Ok(dados);
-    }
-
-    // GET: api/Inscricao/dados-delete/5
-    [HttpGet("dados-delete/{idInscricao}")]
-    public ActionResult GetDadosDelete(int idInscricao)
-    {
-        var result = _inscricaoService.GetDadosTelaDelete(idInscricao);
-
-        if (!result.Success)
-            return BadRequest(result.ErrorType);
-
-        return Ok(result.Data);
+        return NoContent();
     }
 }
