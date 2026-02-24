@@ -19,7 +19,6 @@ public class CorredorController : ControllerBase
         _mapper = mapper;
     }
         
-    // Get: api/<CorredorController>
     [HttpGet]
     public ActionResult Get()
     {
@@ -27,7 +26,6 @@ public class CorredorController : ControllerBase
         return Ok(corredors);
     }
         
-    // GET: api/<CorredorController>/5
     [HttpGet("{id}")]
     public ActionResult Get(int id)
     {
@@ -35,7 +33,6 @@ public class CorredorController : ControllerBase
         return Ok(corredor);
     }
         
-    // POST: api/<CorredorController>
     [HttpPost]
     public ActionResult Post([FromBody] CorredorViewModel corredorViewModel)
     {
@@ -44,7 +41,6 @@ public class CorredorController : ControllerBase
         return Ok();
     }
     
-    // PUT: api/<CorredorController>/5
     [HttpPut("{id}")]
     public ActionResult Put(int id, [FromBody] CorredorViewModel  corredorViewModel)
     {
@@ -56,7 +52,6 @@ public class CorredorController : ControllerBase
         return Ok();
     }
         
-    // DELETE: api/<CorredorController>/5
     [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {

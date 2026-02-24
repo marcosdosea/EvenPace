@@ -22,7 +22,6 @@ namespace EvenPaceAPI.Controler
             _mapper = mapper;
         }
       
-        // GET api/<CupomController>/5
         [HttpGet]
         public ActionResult Get()
         {
@@ -30,7 +29,6 @@ namespace EvenPaceAPI.Controler
             return Ok(cupons);
         }
 
-        // GET: api/<CupomController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
@@ -38,7 +36,6 @@ namespace EvenPaceAPI.Controler
             return Ok(cupom);
         }
 
-        // POST api/<CupomController>
         [HttpPost]
         public ActionResult Post([FromBody] CupomViewModel cupomViewModel)
         {
@@ -50,7 +47,6 @@ namespace EvenPaceAPI.Controler
             return Ok();
         }
 
-        // PUT api/<CupomController>/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] CupomViewModel cupomModel)
         {
@@ -66,7 +62,6 @@ namespace EvenPaceAPI.Controler
             return Ok();
         }
 
-        // DELETE api/<CupomController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {

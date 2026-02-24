@@ -85,7 +85,7 @@ namespace Service
         /// <returns>Coleção textual alinhada e compativel aos critérios exigidos pela regra negocial.</returns>
         public IEnumerable<Kit> GetByName(string nome)
         {
-            throw new NotImplementedException();
+            return _context.Kits.Where(k => k.Nome.Contains(nome)).ToList();
         }
 
         /// <summary>
