@@ -138,8 +138,8 @@ namespace EvenPace.Controllers
             };
             await _inscricaoService.CreateAsync(inscricao);
 
-            TempData["MensagemSucesso"] = "Inscrição salva com sucesso!";
-            return RedirectToAction("IndexUsuario", "Evento");   
+            return RedirectToAction("Index", "CartaoCredito", 
+                new { idInscricao = inscricao.Id });
         }
         
         [HttpPost]

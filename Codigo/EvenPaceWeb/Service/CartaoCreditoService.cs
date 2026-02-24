@@ -72,5 +72,10 @@ namespace Service
         {
             return _context.CartaoCreditos.AsNoTracking();
         }
+
+        public IEnumerable<CartaoCredito> GetByCorredor(int idCorredor)
+        {
+            return _context.CartaoCreditos.Where(i => i.IdCorredor == idCorredor);
+        }
     }
 }

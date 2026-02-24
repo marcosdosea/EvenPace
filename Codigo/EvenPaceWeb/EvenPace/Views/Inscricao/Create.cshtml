@@ -174,6 +174,19 @@
             .opcao-radio input:checked + .opcao + .check-icon {
                 display: block;
             }
+            
+        .btn-confirmar {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #ffd400;
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+            border-radius: 8px;
+        }
     </style>
 </head>
 
@@ -185,7 +198,7 @@
                     <div class="app-card">
                         <div class="header" onclick="history.back()">← Voltar</div>
 
-                        <form id="formInscricao" class="app-content">
+                        <form asp-controller="Inscricao" asp-action="Create" method="post" class="app-content">
                             @Html.AntiForgeryToken()
 
                             <input type="hidden" asp-for="IdEvento" />
@@ -244,16 +257,9 @@
                                 }
                             </div>
 
-                            <button type="submit" class="btn-confirmar">Confirmar Inscrição</button>
-                            
-                            @* 
-                            <a asp-controller="CartaoCredito" 
-                            />    asp-action="Create"
-                            asp-route-idInscricao="@Model.Inscricao"
-                            class="btn-confirmar">Realizar Pagamento </a>
-                            *@
-                            
-                            <div id="mensagem"></div>
+                            <button type="submit" class="btn-confirmar">
+                                Realizar Pagamento
+                            </button>
                         </form>
 
                         <div class="bottom-nav">

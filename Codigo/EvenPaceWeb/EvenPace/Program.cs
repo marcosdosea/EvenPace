@@ -66,7 +66,7 @@ builder.Services.AddDefaultIdentity<UsuarioIdentity>(options =>
         // Default User settings
         options.User.AllowedUserNameCharacters =
             "abcdefgkijklmnopkrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-        options.User.RequireUniqueEmail = true; // Trocado de false para true para realziação de teste -- Voltar ao normal depois 
+        options.User.RequireUniqueEmail = false; 
 
         // Default Lockout settings
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -120,6 +120,6 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Corredor}/{action=Login}/{id?}");
 
 app.Run();

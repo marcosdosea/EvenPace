@@ -8,11 +8,13 @@ namespace EvenPace.Controllers;
 public class CartaoCreditoController : Controller
 {
     private ICartaoCreditoService _cartaoCredito;
+    private IInscricaoService _inscricaoService;
     private IMapper _mapper;
 
-    public CartaoCreditoController(ICartaoCreditoService cartaoCredito, IMapper mapper)
+    public CartaoCreditoController(ICartaoCreditoService cartaoCredito, IInscricaoService inscricaoService,IMapper mapper)
     {
         _cartaoCredito = cartaoCredito;
+        _inscricaoService = inscricaoService;
         _mapper = mapper;
     }
 
@@ -22,9 +24,17 @@ public class CartaoCreditoController : Controller
     /// <returns>Cat�logo relacional iterativo dos cart�es ativos no sistema.</returns>
     public ActionResult Index()
     {
-        var cartaoCredito = _cartaoCredito.GetAll();
-        var cartaoCreditoViewModels = _mapper.Map<List<CartaoCreditoViewModel>>(cartaoCredito);
-        return View(cartaoCreditoViewModels);
+        var idCorredorClaim = User.FindFirst("IdCorredor");
+
+        if (idCorredorClaim == null)
+            return RedirectToAction("Login", "Account");
+
+        int idCorredor = int.Parse(idCorredorClaim.Value);
+
+        var cartoes = _cartaoCredito.GetByCorredor(idCorredor);
+        var viewModels = _mapper.Map<List<CartaoCreditoViewModel>>(cartoes);
+
+        return View(viewModels);
     }
 
     /// <summary>
@@ -43,9 +53,8 @@ public class CartaoCreditoController : Controller
     /// Elabora a p�gina receptora focada no arquivamento seguro dos n�meros e componentes operantes essenciais � aceita��o de um m�todo financeiro inovador do cliente no momento da aprova��o.
     /// </summary>
     /// <returns>Modelo visual em branco prop�cio ao cadastro contendo inputs requeridos do cart�o.</returns>
-    public ActionResult Create(int IdInscricao)
+    public ActionResult Create()
     {
-        
         return View();
     }
 
@@ -124,5 +133,25 @@ public class CartaoCreditoController : Controller
     {
         _cartaoCredito.Delete((int)id);
         return RedirectToAction(nameof(Index));
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult RealizarPagamento(int IdCartao, int IdInscricao)
+    {
+        var inscricao = _inscricaoService.Get(IdInscricao);
+
+        inscricao.Status = "Confirmada";
+        _inscricaoService.Edit(inscricao);
+
+        return RedirectToAction("Details", "Inscricao", new { id = IdInscricao });
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult CancelarPagamento(int IdInscricao)
+    {
+        _inscricaoService.Delete(IdInscricao);
+        return RedirectToAction("Index", "Evento");
     }
 }

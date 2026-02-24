@@ -1,0 +1,103 @@
+@model List<Models.CartaoCreditoViewModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meus Cartões</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body { background-color: #f5f5f5; }
+
+        .app-container {
+            max-width: 430px;
+            min-height: 100vh;
+            margin: auto;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .content { padding: 25px; }
+
+        .card-item {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #fafafa;
+        }
+
+        .btn-cadastrar {
+            background-color: #ffd400;
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-cadastrar:hover {
+            background-color: #e6c200;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-container">
+    <div class="content">
+
+        <h5 class="text-center mb-4">Meus Cartões</h5>
+
+        <a asp-controller="CartaoCredito" asp-action="Create" class="btn btn-cadastrar w-100 mb-4">
+            Cadastrar cartão
+        </a>
+
+        @if (!Model.Any())
+        {
+            <div class="text-center text-muted">
+                Nenhum cartão cadastrado.
+            </div>
+        }
+        else
+        {
+            @foreach (var cartao in Model)
+            {
+                <form asp-action="RealizarPagamento" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="IdCartao" value="@cartao.Id" />
+                    <input type="hidden" name="IdInscricao" value="@ViewBag.IdInscricao" />
+
+                    <div class="card-item">
+                        <strong>**** **** **** @cartao.Numero.Substring(cartao.Numero.Length - 4)</strong>
+                        <br />
+                        <small>Validade: @cartao.DataValidade</small>
+
+                        <button type="submit" class="btn btn-success w-100 mt-2">
+                            Pagar com este cartão
+                        </button>
+                    </div>
+                </form>
+            }
+        }
+        
+        <form asp-action="CancelarPagamento" method="post" class="mt-3">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="IdInscricao" value="@ViewBag.IdInscricao" />
+
+            <button type="submit" class="btn btn-danger w-100">
+                Cancelar compra
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
