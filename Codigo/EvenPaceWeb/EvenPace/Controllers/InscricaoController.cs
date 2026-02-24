@@ -209,6 +209,7 @@ namespace EvenPace.Controllers
 
         private void ConfigurarInscricao(InscricaoViewModel vm)
         {
+
             var evento = _eventoService.Get(vm.IdEvento);
             if (evento == null)
                 throw new Exception($"Evento {vm.IdEvento} não existe");
