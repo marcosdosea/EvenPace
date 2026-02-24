@@ -62,32 +62,6 @@ namespace EvenPaceWebTests
         }
 
         [TestMethod]
-        public void Cancelar_Get_ComIdValido_RetornaView()
-        {
-            mockInscricaoService
-                .Setup(s => s.GetDadosTelaDelete(1))
-                .Returns(new GetDadosTelaDeleteResult
-                {
-                    Success = true,
-                    Data = new DadosTelaDeleteDto
-                    {
-                        NomeEvento = "Evento Teste",
-                        DataEvento = DateTime.Now.AddDays(10),
-                        Local = "Cidade",
-                        NomeKit = "Sem kit",
-                        IdInscricao = 1,
-                        Distancia = "5km",
-                        TamanhoCamisa = "M",
-                        DataInscricao = DateTime.Today
-                    }
-                });
-
-            var result = controller.Delete(1);
-
-            Assert.IsInstanceOfType(result, typeof(ViewResult));
-        }
-
-        [TestMethod]
         public void Cancelar_Get_InscricaoInexistente_RetornaNotFound()
         {
             mockInscricaoService

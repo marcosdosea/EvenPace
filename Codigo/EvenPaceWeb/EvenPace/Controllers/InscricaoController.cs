@@ -101,6 +101,7 @@ namespace EvenPace.Controllers
             return View("Create", vm);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Index(InscricaoViewModel vm)
@@ -122,14 +123,13 @@ namespace EvenPace.Controllers
                     Distancia = vm.Inscricao.Distancia,
                     TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
                     DataInscricao = DateTime.Now,
-                    Status = "Ativa", 
+                    Status = "Ativa",
                     StatusRetiradaKit = false
                 };
 
                 _inscricaoService.Create(inscricao);
 
                 TempData["Sucesso"] = "Inscrição realizada com sucesso!";
-                //return RedirectToAction("IndexUsuario", "Evento");
                 return Content("SALVOU NO BANCO");
             }
             catch (Exception ex)
@@ -168,6 +168,8 @@ namespace EvenPace.Controllers
             return RedirectToAction("Index", new { id = idEvento });
         }
 
+
+
         public IActionResult salve()
         {
             return View();
@@ -179,9 +181,9 @@ namespace EvenPace.Controllers
         {
             var evento = _eventoService.Get(vm.IdEvento);
             if (evento == null)
-                throw new Exception($"Evento {vm.IdEvento} não existe no banco");
+                throw new Exception($"Evento {vm.IdEvento} não existe");
 
-            var kits = _kitService.GetKitsPorEvento((int)vm.IdEvento);
+            var kits = _kitService.GetKitsPorEvento(vm.IdEvento);
 
             vm.NomeEvento = evento.Nome;
             vm.Local = evento.Cidade;
@@ -197,35 +199,41 @@ namespace EvenPace.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(InscricaoViewModel vm)
+        public IActionResult Create(InscricaoViewModel model)
         {
             try
             {
-                var idCorredor = User.FindFirst("IdCorredor");
 
-                if (idCorredor == null)
-                    return Content("Usuário não logado");
-
-                var inscricao = new Inscricao
+                var inscricao = new Core.Inscricao
                 {
-                    IdEvento = vm.Inscricao.IdEvento,
-                    IdCorredor = int.Parse(idCorredor.Value),
-                    Distancia = vm.Inscricao.Distancia,
-                    TamanhoCamisa = vm.Inscricao.TamanhoCamisa,
+                    IdEvento = model.IdEvento,
+                    IdCorredor = 1,
+                    IdKit = 1,
                     DataInscricao = DateTime.Now,
-                    Status = "Ativa",
-                    StatusRetiradaKit = false
+                    Status = "Confirmada",
+                    Distancia = "5km",
+                    TamanhoCamisa = "M",
+                    StatusRetiradaKit = false,
+                    Tempo = null,
+                    Posicao = null,
+                    IdAvaliacaoEvento = null
                 };
 
                 _inscricaoService.Create(inscricao);
 
-                return Content("SALVOU NO BANCO");
+                TempData["MensagemSucesso"] = "Inscrição salva com sucesso!";
+                return RedirectToAction("IndexUsuario", "Evento");
             }
             catch (Exception ex)
             {
-                return Content("ERRO: " + ex.Message);
+                TempData["Erro"] = "Erro ao salvar inscrição: " + ex.Message;
+
+
+                model.Percursos = new List<string> { "3km", "5km", "10km" };
+                return View(model);
             }
         }
+
 
         public ActionResult GetAllByEvento(int idEvento)
         {
