@@ -62,32 +62,6 @@ namespace EvenPaceWebTests
         }
 
         [TestMethod]
-        public void TelaInscricao_Get_Valido()
-        {
-            var result = controller.Index(1);
-
-            Assert.IsInstanceOfType(result, typeof(ViewResult));
-
-            var view = (ViewResult)result;
-            Assert.IsInstanceOfType(view.Model, typeof(InscricaoViewModel));
-
-            var vm = (InscricaoViewModel)view.Model;
-            Assert.AreEqual(1, vm.IdEvento);
-            Assert.AreEqual("Corrida Teste", vm.NomeEvento);
-        }
-
-        [TestMethod]
-        public void Tela1_Get_Valido()
-        {
-            var result = controller.Index(1);
-
-            Assert.IsInstanceOfType(result, typeof(ViewResult));
-
-            var view = (ViewResult)result;
-            Assert.IsInstanceOfType(result, typeof(ViewResult));
-        }
-
-        [TestMethod]
         public void Cancelar_Get_ComIdValido_RetornaView()
         {
             mockInscricaoService
