@@ -3,6 +3,8 @@ using Core.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Service;
+using System;
+using System.Linq;
 
 namespace EvenPaceWebTests.Service
 {
@@ -30,7 +32,7 @@ namespace EvenPaceWebTests.Service
                 Data = DateTime.Now.AddDays(-2)
             };
 
-            // Inscrição válida
+            // Inscrição válida ligada ao evento
             var inscricao = new Inscricao
             {
                 Id = 1,
@@ -38,16 +40,21 @@ namespace EvenPaceWebTests.Service
                 IdCorredor = 1
             };
 
-            context.Add(evento);
-            context.Add(inscricao);
+            context.Eventos.Add(evento);
+            context.Inscricao.Add(inscricao);
             context.SaveChanges();
 
             avaliacaoService = new AvaliacaoEventoService(context);
         }
 
+        // -------------------------
+        // TESTE VÁLIDO
+        // -------------------------
         [TestMethod()]
         public void CreateTest_Valido()
         {
+            var inscricao = context.Inscricao.First();
+
             var avaliacao = new AvaliacaoEvento
             {
                 Id = 1,
@@ -55,11 +62,16 @@ namespace EvenPaceWebTests.Service
                 Comentario = "Excelente corrida!"
             };
 
+            avaliacao.Inscricaos.Add(inscricao);
+
             avaliacaoService.Create(avaliacao);
 
             Assert.AreEqual(1, context.AvaliacaoEventos.Count());
         }
 
+        // -------------------------
+        // EVENTO NÃO OCORREU
+        // -------------------------
         [TestMethod()]
         [ExpectedException(typeof(Exception))]
         public void CreateTest_EventoNaoOcorreu_DeveLancarExcecao()
@@ -71,7 +83,15 @@ namespace EvenPaceWebTests.Service
                 Data = DateTime.Now.AddDays(5)
             };
 
-            context.Add(eventoFuturo);
+            var inscricaoFutura = new Inscricao
+            {
+                Id = 2,
+                IdEvento = 2,
+                IdCorredor = 1
+            };
+
+            context.Eventos.Add(eventoFuturo);
+            context.Inscricao.Add(inscricaoFutura);
             context.SaveChanges();
 
             var avaliacao = new AvaliacaoEvento
@@ -81,9 +101,14 @@ namespace EvenPaceWebTests.Service
                 Comentario = "Boa"
             };
 
+            avaliacao.Inscricaos.Add(inscricaoFutura);
+
             avaliacaoService.Create(avaliacao);
         }
 
+        // -------------------------
+        // INSCRIÇÃO INEXISTENTE
+        // -------------------------
         [TestMethod()]
         [ExpectedException(typeof(Exception))]
         public void CreateTest_InscricaoInexistente_DeveLancarExcecao()
@@ -98,10 +123,15 @@ namespace EvenPaceWebTests.Service
             avaliacaoService.Create(avaliacao);
         }
 
+        // -------------------------
+        // AVALIAÇÃO DUPLICADA
+        // -------------------------
         [TestMethod()]
         [ExpectedException(typeof(Exception))]
         public void CreateTest_AvaliacaoDuplicada_DeveLancarExcecao()
         {
+            var inscricao = context.Inscricao.First();
+
             var avaliacao = new AvaliacaoEvento
             {
                 Id = 4,
@@ -109,8 +139,10 @@ namespace EvenPaceWebTests.Service
                 Comentario = "Muito boa"
             };
 
+            avaliacao.Inscricaos.Add(inscricao);
+
             avaliacaoService.Create(avaliacao);
-            avaliacaoService.Create(avaliacao); // segunda tentativa
+            avaliacaoService.Create(avaliacao);
         }
     }
 }
