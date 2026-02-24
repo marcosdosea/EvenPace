@@ -52,7 +52,6 @@ public class CorredorController : Controller
         return View();
     }
 
-    
     /// <summary>
     /// Apresenta o perfil de um corredor específico com base na sua chave de identificação.
     /// </summary>
