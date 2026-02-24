@@ -14,7 +14,7 @@ namespace Core.Service
         void Delete(int id);
         IEnumerable<Corredor> GetAll();
         IEnumerable<Corredor> GetByName(string nome);
-        IEnumerable<Corredor> GetByCpf(string cpf);
+        Corredor GetByCpf(string cpf);
         
     }
 }

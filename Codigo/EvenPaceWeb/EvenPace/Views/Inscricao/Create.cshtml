@@ -225,7 +225,7 @@
                                 @foreach (var tamanho in new[] { "P", "M", "G", "GG" })
                                 {
                                     <label class="opcao-label">
-                                        <input type="radio" asp-for="Inscricao.TamanhoCamisa" value="@tamanho" />
+                                        <input type="radio" asp-for="TamanhoCamisa" value="@tamanho" />
                                         <div class="opcao">@tamanho</div>
                                         <div class="checkmark"></div>
                                     </label>
@@ -237,7 +237,7 @@
                                 @foreach (var percurso in Model.Percursos)
                                 {
                                     <label class="opcao-label">
-                                        <input type="radio" asp-for="Inscricao.Distancia" value="@percurso" />
+                                        <input type="radio" asp-for="Distancia" value="@percurso" />
                                         <div class="opcao">@percurso</div>
                                         <div class="checkmark"></div>
                                     </label>
@@ -245,7 +245,14 @@
                             </div>
 
                             <button type="submit" class="btn-confirmar">Confirmar Inscrição</button>
-
+                            
+                            @* 
+                            <a asp-controller="CartaoCredito" 
+                            />    asp-action="Create"
+                            asp-route-idInscricao="@Model.Inscricao"
+                            class="btn-confirmar">Realizar Pagamento </a>
+                            *@
+                            
                             <div id="mensagem"></div>
                         </form>
 

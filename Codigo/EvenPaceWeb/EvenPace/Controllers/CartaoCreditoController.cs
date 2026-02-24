@@ -43,8 +43,9 @@ public class CartaoCreditoController : Controller
     /// Elabora a p�gina receptora focada no arquivamento seguro dos n�meros e componentes operantes essenciais � aceita��o de um m�todo financeiro inovador do cliente no momento da aprova��o.
     /// </summary>
     /// <returns>Modelo visual em branco prop�cio ao cadastro contendo inputs requeridos do cart�o.</returns>
-    public ActionResult Create()
+    public ActionResult Create(int IdInscricao)
     {
+        
         return View();
     }
 
