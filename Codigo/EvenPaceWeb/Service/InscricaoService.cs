@@ -60,6 +60,13 @@ namespace Service
             return inscricao.Id;
         }
 
+        public async Task<int> CreateAsync(Inscricao inscricao)
+        {
+            await _context.Inscricao.AddAsync(inscricao);
+            await _context.SaveChangesAsync();
+            return inscricao.Id;
+        }
+
         /// <summary>
         /// Promove alterações em um registro de inscrição ativado na base.
         /// </summary>

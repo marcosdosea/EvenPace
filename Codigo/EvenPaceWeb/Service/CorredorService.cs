@@ -42,10 +42,9 @@ namespace Service
             return lista.FirstOrDefault(c => c.Id == id);
         }
 
-        public IEnumerable<Corredor> GetByCpf(string cpf)
+        public Corredor GetByCpf(string cpf)
         {
-            var corredor = _context.Corredors.Where(i => i.Cpf == cpf);
-            return corredor;
+            return _context.Corredors.SingleOrDefault(c => c.Cpf == cpf);
         }
 
         /// <summary>

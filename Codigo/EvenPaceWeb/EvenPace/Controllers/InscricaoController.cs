@@ -1,6 +1,8 @@
 using AutoMapper;
 using Core;
 using Core.Service;
+using EvenPaceWeb.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Models;
@@ -12,21 +14,23 @@ namespace EvenPace.Controllers
         private readonly IInscricaoService _inscricaoService;
         private readonly IEventosService _eventoService;
         private readonly IKitService _kitService;
-        private readonly IMapper _mapper;
+        private readonly UserManager<UsuarioIdentity> _userManager;
         private readonly ICorredorService _corredorService;
-
+        private readonly IMapper _mapper;
 
         public InscricaoController(
             IInscricaoService inscricaoService,
             IEventosService eventoService,
             IKitService kitService,
             ICorredorService corredorService,
+            UserManager<UsuarioIdentity> userManager,
             IMapper mapper)
         {
             _inscricaoService = inscricaoService;
             _eventoService = eventoService;
             _kitService = kitService;
             _corredorService = corredorService;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -85,23 +89,59 @@ namespace EvenPace.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create(int id)
+        public IActionResult Create(int idEvento, int idKit)
         {
             var vm = new InscricaoViewModel
             {
-                IdEvento = id,
+                IdEvento = idEvento,
+                IdKit = idKit,
                 Inscricao = new InscricaoViewModel
                 {
-                    IdEvento = id
+                    IdEvento = idEvento,
+                    IdKit = idKit
                 }
             };
 
             ConfigurarInscricao(vm);
+            
+            Console.WriteLine("=== DEBUG INSCRIÇÃO ===");
+            Console.WriteLine($"IdEvento: {vm.IdEvento}");
+            Console.WriteLine($"IdKit: {vm.IdKit}");
 
             return View("Create", vm);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(InscricaoViewModel model)
+        {
+            var usuarioIdentity = await _userManager.GetUserAsync(User);
+            
+            var corredor = _corredorService.GetByCpf(usuarioIdentity.UserName);
+                
+            Console.WriteLine($"Distancia: {model.Distancia}");
+            Console.WriteLine($"TamanhoCamisa: {model.TamanhoCamisa}");
+            Console.WriteLine($"IdCorredor: {corredor?.Id}");
+            var inscricao = new Inscricao()
+            {
+                IdEvento = model.IdEvento,
+                IdCorredor = corredor.Id,
+                IdKit = model.IdKit,
+                DataInscricao = DateTime.Now,
+                Status = "Pendente",
+                Distancia = model.Distancia,
+                TamanhoCamisa = model.TamanhoCamisa,
+                StatusRetiradaKit = false,
+                Tempo = null,
+                Posicao = null,
+                IdAvaliacaoEvento = null
+            };
+            await _inscricaoService.CreateAsync(inscricao);
 
+            TempData["MensagemSucesso"] = "Inscrição salva com sucesso!";
+            return RedirectToAction("IndexUsuario", "Evento");   
+        }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Index(InscricaoViewModel vm)
@@ -109,12 +149,6 @@ namespace EvenPace.Controllers
             try
             {
                 var idCorredorClaim = User.FindFirst("IdCorredor");
-
-                if (idCorredorClaim == null)
-                {
-                    TempData["Erro"] = "Você precisa estar logado.";
-                    return RedirectToAction("Index", new { id = vm.IdEvento });
-                }
 
                 var inscricao = new Inscricao
                 {
@@ -168,14 +202,10 @@ namespace EvenPace.Controllers
             return RedirectToAction("Index", new { id = idEvento });
         }
 
-
-
         public IActionResult salve()
         {
             return View();
         }
-
-
 
         private void ConfigurarInscricao(InscricaoViewModel vm)
         {
@@ -195,45 +225,6 @@ namespace EvenPace.Controllers
             vm.Percursos = new List<string> { "3km", "5km", "10km" };
             vm.Kits = _mapper.Map<List<KitViewModel>>(kits);
         }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(InscricaoViewModel model)
-        {
-            try
-            {
-
-                var inscricao = new Core.Inscricao
-                {
-                    IdEvento = model.IdEvento,
-                    IdCorredor = 1,
-                    IdKit = 1,
-                    DataInscricao = DateTime.Now,
-                    Status = "Confirmada",
-                    Distancia = "5km",
-                    TamanhoCamisa = "M",
-                    StatusRetiradaKit = false,
-                    Tempo = null,
-                    Posicao = null,
-                    IdAvaliacaoEvento = null
-                };
-
-                _inscricaoService.Create(inscricao);
-
-                TempData["MensagemSucesso"] = "Inscrição salva com sucesso!";
-                return RedirectToAction("IndexUsuario", "Evento");
-            }
-            catch (Exception ex)
-            {
-                TempData["Erro"] = "Erro ao salvar inscrição: " + ex.Message;
-
-
-                model.Percursos = new List<string> { "3km", "5km", "10km" };
-                return View(model);
-            }
-        }
-
 
         public ActionResult GetAllByEvento(int idEvento)
         {
