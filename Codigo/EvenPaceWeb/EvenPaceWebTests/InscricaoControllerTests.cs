@@ -1,12 +1,13 @@
 using AutoMapper;
-using Core;
 using Core.Service;
-using Core.Service.Dtos;
 using EvenPace.Controllers;
+using EvenPaceWeb.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Models;
-
+using Core;
 
 namespace EvenPaceWebTests
 {
@@ -14,12 +15,15 @@ namespace EvenPaceWebTests
     public class InscricaoControllerTests
     {
         private InscricaoController controller;
+
         private Mock<IInscricaoService> mockInscricaoService;
         private Mock<IEventosService> mockEventoService;
         private Mock<IKitService> mockKitService;
         private Mock<ICorredorService> mockCorredorService;
+        private Mock<UserManager<UsuarioIdentity>> mockUserManager;
+       
         private IMapper mapper;
-        
+
         [TestInitialize]
         public void Initialize()
         {
@@ -27,6 +31,13 @@ namespace EvenPaceWebTests
             mockEventoService = new Mock<IEventosService>();
             mockKitService = new Mock<IKitService>();
             mockCorredorService = new Mock<ICorredorService>();
+
+            var userStore = new Mock<IUserStore<UsuarioIdentity>>();
+
+            mockUserManager = new Mock<UserManager<UsuarioIdentity>>(
+                userStore.Object,
+                null, null, null, null, null, null, null, null
+            );
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -41,19 +52,28 @@ namespace EvenPaceWebTests
                 mockEventoService.Object,
                 mockKitService.Object,
                 mockCorredorService.Object,
+                mockUserManager.Object,
                 mapper
             );
 
-            mockInscricaoService
-                .Setup(s => s.GetDadosTelaInscricao(1))
-                .Returns(new DadosTelaInscricaoDto
+            
+            mockEventoService
+                .Setup(s => s.Get(It.IsAny<int>()))
+                .Returns(new Evento
                 {
-                    IdEvento = 1,
-                    NomeEvento = "Corrida Teste",
-                    Local = "São Paulo",
-                    DataEvento = DateTime.Today,
-                    Descricao = "Evento de teste",
-                    Kits = GetKits()
+                    Id = 1,
+                    Nome = "Corrida Teste",
+                    Cidade = "São Paulo",
+                    Data = DateTime.Now.AddDays(10),
+                    Descricao = "Evento teste"
+                });
+
+            mockKitService
+                .Setup(s => s.Get(It.IsAny<int>()))
+                .Returns(new Kit
+                {
+                    Id = 1,
+                    Nome = "Kit Básico"
                 });
 
             mockInscricaoService
@@ -61,12 +81,12 @@ namespace EvenPaceWebTests
                 .Returns(GetInscricoes());
         }
 
-        [TestMethod]
-        public void Cancelar_Get_InscricaoInexistente_RetornaNotFound()
+       [TestMethod]
+        public void Delete_Get_InscricaoInexistente_RetornaNotFound()
         {
             mockInscricaoService
-                .Setup(s => s.GetDadosTelaDelete(1))
-                .Returns(new GetDadosTelaDeleteResult { Success = false, ErrorType = "NotFound" });
+                .Setup(s => s.Get(1))
+                .Returns((Inscricao)null);
 
             var result = controller.Delete(1);
 
@@ -81,26 +101,14 @@ namespace EvenPaceWebTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
 
             var view = (ViewResult)result;
+
             Assert.IsNotNull(view.Model);
 
             var model = view.Model as List<InscricaoViewModel>;
+
             Assert.IsNotNull(model);
             Assert.AreEqual(2, model.Count);
             Assert.IsTrue(model.All(i => i.IdEvento == 1));
-        }
-
-        private static IEnumerable<Kit> GetKits()
-        {
-            return new List<Kit>
-            {
-                new Kit
-                {
-                    Id = 1,
-                    Nome = "Kit Básico",
-                    Descricao = "Camiseta",
-                    Valor = 99
-                }
-            };
         }
 
         private static IEnumerable<Inscricao> GetInscricoes()
