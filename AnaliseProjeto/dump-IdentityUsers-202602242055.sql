@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'e7076c7f-eb34-11f0-9650-3c219c9746f4:1-508';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'e7076c7f-eb34-11f0-9650-3c219c9746f4:1-536';
 
 --
 -- Table structure for table `AspNetRoleClaims`
@@ -259,4 +259,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-23 19:34:33
+-- Dump completed on 2026-02-24 20:55:22

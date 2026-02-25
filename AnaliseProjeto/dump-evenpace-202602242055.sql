@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'e7076c7f-eb34-11f0-9650-3c219c9746f4:1-508';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'e7076c7f-eb34-11f0-9650-3c219c9746f4:1-536';
 
 --
 -- Table structure for table `Administrador`
@@ -119,7 +119,7 @@ CREATE TABLE `Corredor` (
   `Imagem` longtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cpf_UNIQUE` (`cpf`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +128,7 @@ CREATE TABLE `Corredor` (
 
 LOCK TABLES `Corredor` WRITE;
 /*!40000 ALTER TABLE `Corredor` DISABLE KEYS */;
-INSERT INTO `Corredor` VALUES (1,'11111111111','Felipe da Silva','2005-01-11',NULL),(2,'22222222222','Luiz Eduardo','1985-05-20',NULL),(3,'33333333333','Lorena','1992-08-10',NULL),(4,'44444444444','Lucas','1988-12-01',NULL),(5,'55555555555','Thiago','1995-03-22',NULL),(6,'66666666666','Hevellny','1980-07-07',NULL),(7,'77777777777','Alanna','1998-11-30',NULL),(8,'88888888888','Gabriel','1992-11-30',NULL);
+INSERT INTO `Corredor` VALUES (1,'11111111111','Felipe da Silva','2005-01-11',NULL),(2,'22222222222','Luiz Eduardo','1985-05-20',NULL),(3,'33333333333','Lorena','1992-08-10',NULL),(4,'44444444444','Lucas','1988-12-01',NULL),(5,'55555555555','Thiago','1995-03-22',NULL),(6,'66666666666','Hevellny','1980-07-07',NULL),(7,'77777777777','Alanna','1998-11-30',NULL),(8,'88888888888','Gabriel','1992-11-30',NULL),(9,'12345678991','Lucas','1231-03-12',NULL);
 /*!40000 ALTER TABLE `Corredor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,7 +204,7 @@ CREATE TABLE `Evento` (
 
 LOCK TABLES `Evento` WRITE;
 /*!40000 ALTER TABLE `Evento` DISABLE KEYS */;
-INSERT INTO `Evento` VALUES (1,'2025-06-01 08:00:00',500,'Corrida de rua 5k e 10k',1,1,0,1,0,0,0,'Av. Beira Mar','Atalaia','Aracaju','SE','Secretaria no dia',1,'Corrida Beira Mar',NULL),(2,'2025-07-15 07:00:00',300,'Meia maratona e 5k',0,1,0,0,1,1,0,'Parque Ibirapuera','Moema','São Paulo','SP','Tenda principal',2,'Corrida Ibirapuera',NULL),(3,'2025-08-20 06:30:00',1000,'Maratona completa e meia',0,0,0,0,0,1,1,'Orla','Barra','Salvador','BA','Retirada no evento',3,'Maratona Salvador',NULL),(4,'2025-09-10 08:00:00',200,'Corrida 3k e 5k infantil',1,1,0,0,0,0,0,'Praia','Copacabana','Rio de Janeiro','RJ','Local do evento',4,'Corrida Kids RJ',NULL),(5,'2025-10-05 07:00:00',400,'Corrida 5k e 10k',0,1,0,1,0,0,0,'Av. Beira Mar','Ponta Verde','Maceió','AL','Dia do evento',5,'Corrida Maceió',NULL),(6,'2025-11-12 06:00:00',600,'Meia maratona 21k',0,0,0,0,0,1,0,'Orla','Boa Viagem','Recife','PE','Tenda de retirada',6,'Meia Maratona Recife',NULL),(7,'2025-12-25 07:30:00',350,'Corrida de Natal 5k/10k',0,1,0,1,0,0,0,'Centro','Centro','Aracaju','SE','Secretaria',7,'Corrida de Natal',NULL);
+INSERT INTO `Evento` VALUES (1,'2025-06-01 08:00:00',500,'Corrida de rua 5k e 10k',1,1,0,1,0,0,0,'Av. Beira Mar','Atalaia','Aracaju','SE','Secretaria no dia',1,'Corrida Beira Mar','evento.png'),(2,'2025-07-15 07:00:00',300,'Meia maratona e 5k',0,1,0,0,1,1,0,'Parque Ibirapuera','Moema','São Paulo','SP','Tenda principal',2,'Corrida Ibirapuera','evento2.png'),(3,'2025-08-20 06:30:00',1000,'Maratona completa e meia',0,0,0,0,0,1,1,'Orla','Barra','Salvador','BA','Retirada no evento',3,'Maratona Salvador','evento3.png'),(4,'2025-09-10 08:00:00',200,'Corrida 3k e 5k infantil',1,1,0,0,0,0,0,'Praia','Copacabana','Rio de Janeiro','RJ','Local do evento',4,'Corrida Kids RJ','evento4.png'),(5,'2025-10-05 07:00:00',400,'Corrida 5k e 10k',0,1,0,1,0,0,0,'Av. Beira Mar','Ponta Verde','Maceió','AL','Dia do evento',5,'Corrida Maceió','evento.png'),(6,'2025-11-12 06:00:00',600,'Meia maratona 21k',0,0,0,0,0,1,0,'Orla','Boa Viagem','Recife','PE','Tenda de retirada',6,'Meia Maratona Recife','evento2.png'),(7,'2025-12-25 07:30:00',350,'Corrida de Natal 5k/10k',0,1,0,1,0,0,0,'Centro','Centro','Aracaju','SE','Secretaria',7,'Corrida de Natal','evento3.png');
 /*!40000 ALTER TABLE `Evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +237,7 @@ CREATE TABLE `Inscricao` (
   CONSTRAINT `fk_Inscricao_Corredor1` FOREIGN KEY (`idCorredor`) REFERENCES `Corredor` (`id`),
   CONSTRAINT `fk_Inscricao_Evento1` FOREIGN KEY (`idEvento`) REFERENCES `Evento` (`id`),
   CONSTRAINT `fk_Inscricao_Kit1` FOREIGN KEY (`idKit`) REFERENCES `Kit` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +246,7 @@ CREATE TABLE `Inscricao` (
 
 LOCK TABLES `Inscricao` WRITE;
 /*!40000 ALTER TABLE `Inscricao` DISABLE KEYS */;
-INSERT INTO `Inscricao` VALUES (1,'Confirmada','2025-01-10','5km','M',NULL,0,0,1,1,1,1),(2,'Pendente','2025-02-01','10km','G',NULL,0,0,1,1,2,NULL),(3,'Confirmada','2025-02-15','5km','P',NULL,0,0,2,2,2,2),(4,'Cancelada','2025-01-20','5km','M',NULL,0,0,1,1,3,NULL),(5,'Confirmada','2025-03-01','21km','G',NULL,0,0,3,3,3,3),(6,'Pendente','2025-03-10','5km','M',NULL,0,0,4,4,4,NULL),(7,'Confirmada','2025-04-01','10km','M',NULL,0,0,5,5,5,4);
+INSERT INTO `Inscricao` VALUES (1,'Confirmada','2025-01-10','5km','M',NULL,0,0,1,1,1,1),(2,'Pendente','2025-02-01','10km','G',NULL,0,0,1,1,2,NULL),(3,'Confirmada','2025-02-15','5km','P',NULL,0,0,2,2,2,2),(4,'Cancelada','2025-01-20','5km','M',NULL,0,0,1,1,3,NULL),(5,'Confirmada','2025-03-01','21km','G',NULL,0,0,3,3,3,3),(6,'Pendente','2025-03-10','5km','M',NULL,0,0,4,4,4,NULL),(7,'Confirmada','2025-04-01','10km','M',NULL,0,0,5,5,5,4),(8,'Confirmada','2026-02-24','5km','M',NULL,NULL,0,1,1,1,NULL),(9,'Confirmada','2026-02-24','5km','M',NULL,NULL,0,1,1,1,NULL),(10,'Confirmada','2026-02-24','5km','M',NULL,NULL,0,1,7,1,NULL),(15,'Pendente','2026-02-24','10km','P',NULL,NULL,0,3,3,1,NULL),(16,'Pendente','2026-02-24','10km','P',NULL,NULL,0,3,3,9,NULL),(17,'Pendente','2026-02-24','10km','P',NULL,NULL,0,4,4,9,NULL),(18,'Pendente','2026-02-24','5km','P',NULL,NULL,0,5,5,9,NULL),(19,'Pendente','2026-02-24','10km','GG',NULL,NULL,0,2,2,9,NULL),(20,'Pendente','2026-02-24','5km','P',NULL,NULL,0,3,3,9,NULL),(21,'Pendente','2026-02-24','5km','P',NULL,NULL,0,3,3,9,NULL),(22,'Pendente','2026-02-24','5km','G',NULL,NULL,0,1,1,9,NULL),(23,'Pendente','2026-02-24','5km','G',NULL,NULL,0,1,1,9,NULL),(24,'Pendente','2026-02-24','3km','GG',NULL,NULL,0,1,1,9,NULL),(25,'Pendente','2026-02-24','5km','G',NULL,NULL,0,2,2,9,NULL);
 /*!40000 ALTER TABLE `Inscricao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -283,7 +283,7 @@ CREATE TABLE `Kit` (
 
 LOCK TABLES `Kit` WRITE;
 /*!40000 ALTER TABLE `Kit` DISABLE KEYS */;
-INSERT INTO `Kit` VALUES (1,49.90,'Kit Básico Beira Mar','Camiseta',50,50,50,0,0,0,1,'2025-05-31 14:00:00',NULL),(2,79.90,'Kit Ibirapuera','Camiseta + Medalha',30,30,30,0,0,0,2,'2025-07-14 14:00:00',NULL),(3,129.90,'Kit Maratona','Camiseta + Medalha + Mochila',20,20,20,0,0,0,3,'2025-08-19 14:00:00',NULL),(4,39.90,'Kit Kids','Camiseta infantil',40,40,40,0,0,0,4,'2025-09-09 14:00:00',NULL),(5,59.90,'Kit Maceió','Camiseta + Boné',35,35,35,0,0,0,5,'2025-10-04 14:00:00',NULL),(6,89.90,'Kit Meia Recife','Camiseta + Medalha',25,25,25,0,0,0,6,'2025-11-11 14:00:00',NULL),(7,69.90,'Kit Natal','Camiseta temática',45,45,45,0,0,0,7,'2025-12-24 14:00:00',NULL);
+INSERT INTO `Kit` VALUES (1,49.90,'Kit Básico Beira Mar','Camiseta',50,50,50,0,0,0,1,'2025-05-31 14:00:00','kit1.png'),(2,79.90,'Kit Ibirapuera','Camiseta + Medalha',30,30,30,0,0,0,2,'2025-07-14 14:00:00','kit2.png'),(3,129.90,'Kit Maratona','Camiseta + Medalha + Mochila',20,20,20,0,0,0,3,'2025-08-19 14:00:00','kit1.png'),(4,39.90,'Kit Kids','Camiseta infantil',40,40,40,0,0,0,4,'2025-09-09 14:00:00','kit2.png'),(5,59.90,'Kit Maceió','Camiseta + Boné',35,35,35,0,0,0,5,'2025-10-04 14:00:00','kit1.png'),(6,89.90,'Kit Meia Recife','Camiseta + Medalha',25,25,25,0,0,0,6,'2025-11-11 14:00:00',NULL),(7,69.90,'Kit Natal','Camiseta temática',45,45,45,0,0,0,7,'2025-12-24 14:00:00','kit1.png');
 /*!40000 ALTER TABLE `Kit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -339,4 +339,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-23 19:34:33
+-- Dump completed on 2026-02-24 20:55:22

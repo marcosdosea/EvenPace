@@ -1,14 +1,5 @@
 @model Models.CorredorViewModel
 
-@if (User.Identity != null && User.Identity.IsAuthenticated)
-{
-    <p>Usuário logado: @User.Identity.Name</p>
-}
-else
-{
-    <p>Usuário não autenticado</p>
-}
-
 @{
     Layout = null;
 }

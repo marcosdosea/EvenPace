@@ -19,10 +19,7 @@ DROP TABLE IF EXISTS `Administrador`;
 CREATE TABLE `Administrador` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `senha` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email_UNIQUE` (`email`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- AvaliacaoEvento
@@ -40,13 +37,10 @@ CREATE TABLE `Corredor` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `cpf` char(11) NOT NULL,
   `nome` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
   `dataNascimento` date NOT NULL,
-  `senha` varchar(45) NOT NULL,
   `Imagem` longtext,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `cpf_UNIQUE` (`cpf`),
-  UNIQUE KEY `email_UNIQUE1` (`email`)
+  UNIQUE KEY `cpf_UNIQUE` (`cpf`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Organizacao (depende de Administrador)
@@ -63,13 +57,10 @@ CREATE TABLE `Organizacao` (
   `cidade` varchar(45) NOT NULL,
   `numero` int NOT NULL,
   `estado` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `senha` varchar(45) NOT NULL,
   `statusSituacao` tinyint(1) NOT NULL,
   `Administrador_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cnpj_UNIQUE` (`cnpj`),
-  UNIQUE KEY `email_UNIQUE2` (`email`),
   KEY `fk_Organizacao_Admistrador1_idx` (`Administrador_id`),
   CONSTRAINT `fk_Organizacao_Admistrador1` FOREIGN KEY (`Administrador_id`) REFERENCES `Administrador` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -149,7 +140,6 @@ CREATE TABLE `Kit` (
   `utilizadaM` tinyint NOT NULL,
   `idEvento` int unsigned NOT NULL,
   `dataRetirada` datetime NOT NULL,
-  `statusRetiradaKit` tinyint(1) NOT NULL,
   `Imagem` longtext,
   PRIMARY KEY (`id`),
   KEY `fk_Kit_Evento1_idx` (`idEvento`),
@@ -167,6 +157,7 @@ CREATE TABLE `Inscricao` (
   `tamanhoCamisa` varchar(45) NOT NULL,
   `tempo` time DEFAULT NULL,
   `posicao` int DEFAULT NULL,
+  `statusRetiradaKit` tinyint(1) NOT NULL,
   `idKit` int unsigned DEFAULT NULL,
   `idEvento` int unsigned NOT NULL,
   `idCorredor` int unsigned NOT NULL,
@@ -187,14 +178,14 @@ CREATE TABLE `Inscricao` (
 -- -----------------------------------------------------------------------------
 
 -- Administrador (7)
-INSERT INTO `Administrador` (`nome`, `email`, `senha`) VALUES
-('Admin Um', 'admin1@evenpace.com', 'senha1'),
-('Admin Dois', 'admin2@evenpace.com', 'senha2'),
-('Admin Tres', 'admin3@evenpace.com', 'senha3'),
-('Admin Quatro', 'admin4@evenpace.com', 'senha4'),
-('Admin Cinco', 'admin5@evenpace.com', 'senha5'),
-('Admin Seis', 'admin6@evenpace.com', 'senha6'),
-('Admin Sete', 'admin7@evenpace.com', 'senha7');
+INSERT INTO `Administrador` (`nome`) VALUES
+('Admin Um'),
+('Admin Dois'),
+('Admin Tres'),
+('Admin Quatro'),
+('Admin Cinco'),
+('Admin Seis'),
+('Admin Sete');
 
 -- AvaliacaoEvento (7)
 INSERT INTO `AvaliacaoEvento` (`comentario`, `estrela`) VALUES
@@ -207,35 +198,36 @@ INSERT INTO `AvaliacaoEvento` (`comentario`, `estrela`) VALUES
 ('Recomendo.', 5);
 
 -- Corredor (7)
-INSERT INTO `Corredor` (`cpf`, `nome`, `email`, `dataNascimento`, `senha`, `Imagem`) VALUES
-('11111111111', 'Felipe da Silva', 'c1@teste.com', '2005-01-11', 'senha1', NULL),
-('22222222222', 'Luiz Eduardo', 'c2@teste.com', '1985-05-20', 'senha2', NULL),
-('33333333333', 'Lorena', 'c3@teste.com', '1992-08-10', 'senha3', NULL),
-('44444444444', 'Lucas', 'c4@teste.com', '1988-12-01', 'senha4', NULL),
-('55555555555', 'Thiago', 'c5@teste.com', '1995-03-22', 'senha5', NULL),
-('66666666666', 'Hevellny', 'c6@teste.com', '1980-07-07', 'senha6', NULL),
-('77777777777', 'Alanna', 'c7@teste.com', '1998-11-30', 'senha7', NULL),
-('88888888888', 'Gabriel', 'c8@teste.com', '1992-11-30', 'senha8', NULL);
+INSERT INTO `Corredor` (`cpf`, `nome`, `dataNascimento`, `Imagem`) VALUES
+('11111111111', 'Felipe da Silva', '2005-01-11', NULL),
+('22222222222', 'Luiz Eduardo', '1985-05-20', NULL),
+('33333333333', 'Lorena', '1992-08-10', NULL),
+('44444444444', 'Lucas', '1988-12-01', NULL),
+('55555555555', 'Thiago', '1995-03-22', NULL),
+('66666666666', 'Hevellny', '1980-07-07', NULL),
+('77777777777', 'Alanna', '1998-11-30',  NULL),
+('88888888888', 'Gabriel', '1992-11-30', NULL),
+('12345678991', 'Lucas', '2005-11-12', NULL);
 
 -- Organizacao (7) - vincula aos administradores
-INSERT INTO `Organizacao` (`nome`, `cnpj`, `cpf`, `telefone`, `cep`, `rua`, `bairro`, `cidade`, `numero`, `estado`, `email`, `senha`, `statusSituacao`, `Administrador_id`) VALUES
-('Velocity Vortex Championship', '11111111000191', '11111111111', '79999990001', '49000001', 'Rua A', 'Centro', 'Aracaju', 100, 'SE', 'org1@teste.com', 'senha', 1, 1),
-('Nitro Knights Racing League', '22222222000192', '22222222222', '79999990002', '49000002', 'Rua B', 'Atalaia', 'Aracaju', 200, 'SE', 'org2@teste.com', 'senha', 1, 2),
-('Apex Accelerators', '33333333000193', '33333333333', '79999990003', '49000003', 'Rua C', 'Jardins', 'São Paulo', 300, 'SP', 'org3@teste.com', 'senha', 1, 3),
-('Circuit Crew Syndicate', '44444444000194', '44444444444', '79999990004', '49000004', 'Rua D', 'Barra', 'Salvador', 400, 'BA', 'org4@teste.com', 'senha', 1, 4),
-('Burnout Brigade', '55555555000195', '55555555555', '79999990005', '49000005', 'Rua E', 'Copacabana', 'Rio de Janeiro', 500, 'RJ', 'org5@teste.com', 'senha', 1, 5),
-('Drift Dynamics Pro', '66666666000196', '66666666666', '79999990006', '49000006', 'Rua F', 'Ponta Verde', 'Maceió', 600, 'AL', 'org6@teste.com', 'senha', 1, 6),
-('Thunder Torque Series', '77777777000197', '77777777777', '79999990007', '49000007', 'Rua G', 'Boa Viagem', 'Recife', 700, 'PE', 'org7@teste.com', 'senha', 1, 7);
+INSERT INTO `Organizacao` (`nome`, `cnpj`, `cpf`, `telefone`, `cep`, `rua`, `bairro`, `cidade`, `numero`, `estado`, `statusSituacao`, `Administrador_id`) VALUES
+('Velocity Vortex Championship', '11111111000191', '11111111111', '79999990001', '49000001', 'Rua A', 'Centro', 'Aracaju', 100, 'SE', 1, 1),
+('Nitro Knights Racing League', '22222222000192', '22222222222', '79999990002', '49000002', 'Rua B', 'Atalaia', 'Aracaju', 200, 'SE', 1, 2),
+('Apex Accelerators', '33333333000193', '33333333333', '79999990003', '49000003', 'Rua C', 'Jardins', 'São Paulo', 300, 'SP', 1, 3),
+('Circuit Crew Syndicate', '44444444000194', '44444444444', '79999990004', '49000004', 'Rua D', 'Barra', 'Salvador', 400, 'BA', 1, 4),
+('Burnout Brigade', '55555555000195', '55555555555', '79999990005', '49000005', 'Rua E', 'Copacabana', 'Rio de Janeiro', 500, 'RJ', 1, 5),
+('Drift Dynamics Pro', '66666666000196', '66666666666', '79999990006', '49000006', 'Rua F', 'Ponta Verde', 'Maceió', 600, 'AL', 1, 6),
+('Thunder Torque Series', '77777777000197', '77777777777', '79999990007', '49000007', 'Rua G', 'Boa Viagem', 'Recife', 700, 'PE', 1, 7);
 
 -- Evento (7) - um por organização, datas variadas
 INSERT INTO `Evento` (`data`, `numeroParticipantes`, `discricao`, `distancia3`, `distancia5`, `distancia7`, `distancia10`, `distancia15`, `distancia21`, `distancia42`, `rua`, `bairro`, `cidade`, `estado`, `infoRetiradaKit`, `idOrganizacao`, `nome`, `Imagem`) VALUES
-('2025-06-01 08:00:00', 500, 'Corrida de rua 5k e 10k', 1, 1, 0, 1, 0, 0, 0, 'Av. Beira Mar', 'Atalaia', 'Aracaju', 'SE', 'Secretaria no dia', 1, 'Corrida Beira Mar', NULL),
-('2025-07-15 07:00:00', 300, 'Meia maratona e 5k', 0, 1, 0, 0, 1, 1, 0, 'Parque Ibirapuera', 'Moema', 'São Paulo', 'SP', 'Tenda principal', 2, 'Corrida Ibirapuera', NULL),
-('2025-08-20 06:30:00', 1000, 'Maratona completa e meia', 0, 0, 0, 0, 0, 1, 1, 'Orla', 'Barra', 'Salvador', 'BA', 'Retirada no evento', 3, 'Maratona Salvador', NULL),
-('2025-09-10 08:00:00', 200, 'Corrida 3k e 5k infantil', 1, 1, 0, 0, 0, 0, 0, 'Praia', 'Copacabana', 'Rio de Janeiro', 'RJ', 'Local do evento', 4, 'Corrida Kids RJ', NULL),
-('2025-10-05 07:00:00', 400, 'Corrida 5k e 10k', 0, 1, 0, 1, 0, 0, 0, 'Av. Beira Mar', 'Ponta Verde', 'Maceió', 'AL', 'Dia do evento', 5, 'Corrida Maceió', NULL),
-('2025-11-12 06:00:00', 600, 'Meia maratona 21k', 0, 0, 0, 0, 0, 1, 0, 'Orla', 'Boa Viagem', 'Recife', 'PE', 'Tenda de retirada', 6, 'Meia Maratona Recife', NULL),
-('2025-12-25 07:30:00', 350, 'Corrida de Natal 5k/10k', 0, 1, 0, 1, 0, 0, 0, 'Centro', 'Centro', 'Aracaju', 'SE', 'Secretaria', 7, 'Corrida de Natal', NULL);
+('2025-06-01 08:00:00', 500, 'Corrida de rua 5k e 10k', 1, 1, 0, 1, 0, 0, 0, 'Av. Beira Mar', 'Atalaia', 'Aracaju', 'SE', 'Secretaria no dia', 1, 'Corrida Beira Mar', 'evento.png'),
+('2025-07-15 07:00:00', 300, 'Meia maratona e 5k', 0, 1, 0, 0, 1, 1, 0, 'Parque Ibirapuera', 'Moema', 'São Paulo', 'SP', 'Tenda principal', 2, 'Corrida Ibirapuera', 'evento2.png'),
+('2025-08-20 06:30:00', 1000, 'Maratona completa e meia', 0, 0, 0, 0, 0, 1, 1, 'Orla', 'Barra', 'Salvador', 'BA', 'Retirada no evento', 3, 'Maratona Salvador', 'evento3.png'),
+('2025-09-10 08:00:00', 200, 'Corrida 3k e 5k infantil', 1, 1, 0, 0, 0, 0, 0, 'Praia', 'Copacabana', 'Rio de Janeiro', 'RJ', 'Local do evento', 4, 'Corrida Kids RJ', 'evento4.png'),
+('2025-10-05 07:00:00', 400, 'Corrida 5k e 10k', 0, 1, 0, 1, 0, 0, 0, 'Av. Beira Mar', 'Ponta Verde', 'Maceió', 'AL', 'Dia do evento', 5, 'Corrida Maceió', 'evento.png'),
+('2025-11-12 06:00:00', 600, 'Meia maratona 21k', 0, 0, 0, 0, 0, 1, 0, 'Orla', 'Boa Viagem', 'Recife', 'PE', 'Tenda de retirada', 6, 'Meia Maratona Recife', 'evento2.png'),
+('2025-12-25 07:30:00', 350, 'Corrida de Natal 5k/10k', 0, 1, 0, 1, 0, 0, 0, 'Centro', 'Centro', 'Aracaju', 'SE', 'Secretaria', 7, 'Corrida de Natal', 'evento3.png');
 
 -- CartaoCredito (5 - 1 por corredor até 5, único por corredor)
 INSERT INTO `CartaoCredito` (`numero`, `dataValidade`, `codeSeguranca`, `nome`, `idCorredor`) VALUES
@@ -258,23 +250,23 @@ INSERT INTO `Cupom` (`nome`, `desconto`, `status`, `dataInicio`, `dataTermino`, 
 ('NATAL30', 30, 1, '2025-11-01', '2025-12-24', 0, 70, 7);
 
 -- Kit (7 - um por evento)
-INSERT INTO `Kit` (`valor`, `nome`, `descricao`, `disponibilidadeP`, `disponibilidadeG`, `disponibilidadeM`, `utilizadaP`, `utilizadaG`, `utilizadaM`, `idEvento`, `dataRetirada`, `statusRetiradaKit`,`Imagem`) VALUES
-(49.90, 'Kit Básico Beira Mar', 'Camiseta', 50, 50, 50, 0, 0, 0, 1, '2025-05-31 14:00:00', 0,NULL),
-(79.90, 'Kit Ibirapuera', 'Camiseta + Medalha', 30, 30, 30, 0, 0, 0, 2, '2025-07-14 14:00:00', 0,NULL),
-(129.90, 'Kit Maratona', 'Camiseta + Medalha + Mochila', 20, 20, 20, 0, 0, 0, 3, '2025-08-19 14:00:00', 0,NULL),
-(39.90, 'Kit Kids', 'Camiseta infantil', 40, 40, 40, 0, 0, 0, 4, '2025-09-09 14:00:00', 0,NULL),
-(59.90, 'Kit Maceió', 'Camiseta + Boné', 35, 35, 35, 0, 0, 0, 5, '2025-10-04 14:00:00', 0,NULL),
-(89.90, 'Kit Meia Recife', 'Camiseta + Medalha', 25, 25, 25, 0, 0, 0, 6, '2025-11-11 14:00:00', 0,NULL),
-(69.90, 'Kit Natal', 'Camiseta temática', 45, 45, 45, 0, 0, 0, 7, '2025-12-24 14:00:00', 0,NULL);
+INSERT INTO `Kit` (`valor`, `nome`, `descricao`, `disponibilidadeP`, `disponibilidadeG`, `disponibilidadeM`, `utilizadaP`, `utilizadaG`, `utilizadaM`, `idEvento`, `dataRetirada`,`Imagem`) VALUES
+(49.90, 'Kit Básico Beira Mar', 'Camiseta', 50, 50, 50, 0, 0, 0, 1, '2025-05-31 14:00:00', 'kit1.png'),
+(79.90, 'Kit Ibirapuera', 'Camiseta + Medalha', 30, 30, 30, 0, 0, 0, 2, '2025-07-14 14:00:00', 'kit2.png'),
+(129.90, 'Kit Maratona', 'Camiseta + Medalha + Mochila', 20, 20, 20, 0, 0, 0, 3, '2025-08-19 14:00:00', 'kit1.png'),
+(39.90, 'Kit Kids', 'Camiseta infantil', 40, 40, 40, 0, 0, 0, 4, '2025-09-09 14:00:00', 'kit2.png'),
+(59.90, 'Kit Maceió', 'Camiseta + Boné', 35, 35, 35, 0, 0, 0, 5, '2025-10-04 14:00:00', 'kit1.png'),
+(89.90, 'Kit Meia Recife', 'Camiseta + Medalha', 25, 25, 25, 0, 0, 0, 6, '2025-11-11 14:00:00', 'kit2.png'),
+(69.90, 'Kit Natal', 'Camiseta temática', 45, 45, 45, 0, 0, 0, 7, '2025-12-24 14:00:00', 'kit1.png');
 
 -- Inscricao (7 - evento, corredor, kit e avaliacao opcionais)
-INSERT INTO `Inscricao` (`status`, `dataInscricao`, `distancia`, `tamanhoCamisa`, `tempo`, `posicao`, `idKit`, `idEvento`, `idCorredor`, `idAvaliacaoEvento`) VALUES
-('Confirmada', '2025-01-10', '5km', 'M', NULL, 0, 1, 1, 1, 1),
-('Pendente', '2025-02-01', '10km', 'G', NULL, 0, 1, 1, 2, NULL),
-('Confirmada', '2025-02-15', '5km', 'P', NULL, 0, 2, 2, 2, 2),
-('Cancelada', '2025-01-20', '5km', 'M', NULL, 0, 1, 1, 3, NULL),
-('Confirmada', '2025-03-01', '21km', 'G', NULL, 0, 3, 3, 3, 3),
-('Pendente', '2025-03-10', '5km', 'M', NULL, 0, 4, 4, 4, NULL),
-('Confirmada', '2025-04-01', '10km', 'M', NULL, 0, 5, 5, 5, 4);
+INSERT INTO `Inscricao` (`status`, `dataInscricao`, `distancia`, `tamanhoCamisa`, `tempo`, `posicao`,`statusRetiradaKit`, `idKit`, `idEvento`, `idCorredor`, `idAvaliacaoEvento`) VALUES
+('Confirmada', '2025-01-10', '5km', 'M', NULL, 0, 0,1, 1, 1, 1),
+('Pendente', '2025-02-01', '10km', 'G', NULL, 0, 0,1, 1, 2, NULL),
+('Confirmada', '2025-02-15', '5km', 'P', NULL, 0, 0,2, 2, 2, 2),
+('Cancelada', '2025-01-20', '5km', 'M', NULL, 0, 0,1, 1, 3, NULL),
+('Confirmada', '2025-03-01', '21km', 'G', NULL, 0, 0,3, 3, 3, 3),
+('Pendente', '2025-03-10', '5km', 'M', NULL, 0, 0,4, 4, 4, NULL),
+('Confirmada', '2025-04-01', '10km', 'M', NULL, 0, 0, 5, 5, 5, 4);
 
 SET FOREIGN_KEY_CHECKS = 1;

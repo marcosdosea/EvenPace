@@ -103,11 +103,6 @@ namespace EvenPace.Controllers
             };
 
             ConfigurarInscricao(vm);
-            
-            Console.WriteLine("=== DEBUG INSCRIÇÃO ===");
-            Console.WriteLine($"IdEvento: {vm.IdEvento}");
-            Console.WriteLine($"IdKit: {vm.IdKit}");
-
             return View("Create", vm);
         }
 
@@ -118,10 +113,7 @@ namespace EvenPace.Controllers
             var usuarioIdentity = await _userManager.GetUserAsync(User);
             
             var corredor = _corredorService.GetByCpf(usuarioIdentity.UserName);
-                
-            Console.WriteLine($"Distancia: {model.Distancia}");
-            Console.WriteLine($"TamanhoCamisa: {model.TamanhoCamisa}");
-            Console.WriteLine($"IdCorredor: {corredor?.Id}");
+            
             var inscricao = new Inscricao()
             {
                 IdEvento = model.IdEvento,
@@ -138,7 +130,6 @@ namespace EvenPace.Controllers
             };
             await _inscricaoService.CreateAsync(inscricao);
 
-            TempData["MensagemSucesso"] = "Inscrição salva com sucesso!";
             return RedirectToAction("IndexUsuario", "Evento");   
         }
         
