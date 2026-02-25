@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Core.Service;
 using Models;
+using EvenPaceWeb.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EvenPaceWeb.Controllers
 {
@@ -9,11 +13,57 @@ namespace EvenPaceWeb.Controllers
     {
         private readonly IOrganizacaoService _organizacaoService;
         private readonly IMapper _mapper;
+        private readonly UserManager<UsuarioIdentity> _userManager;
+        private readonly SignInManager<UsuarioIdentity> _signInManager;
 
-        public OrganizacaoController(IOrganizacaoService organizacaoService, IMapper mapper)
+        public OrganizacaoController(IOrganizacaoService organizacaoService, IMapper mapper, UserManager<UsuarioIdentity> userManager,
+            SignInManager<UsuarioIdentity> signInManager)
         {
             _organizacaoService = organizacaoService;
             _mapper = mapper;
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
+        /// <summary>
+        /// Disponibiliza a interface visual (formulário) para a autenticação da organização no sistema.
+        /// </summary>
+        /// <returns>A página contendo os campos de login para CPF/CNPJ e Senha.</returns>
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Recebe as credenciais, higieniza a formatação do documento informado e tenta validar a autenticação da organização junto ao banco do Identity.
+        /// </summary>
+        /// <param name="documento">CPF ou CNPJ da organização informados na tela de login.</param>
+        /// <param name="senha">A credencial secreta correspondente à conta.</param>
+        /// <returns>Em caso de sucesso, redireciona para a página principal. Em caso de falha, recarrega a página apontando o erro estrutural de credenciais.</returns>
+        [HttpPost]
+        public async Task<IActionResult> Login(string documento, string senha)
+        {
+            if (string.IsNullOrEmpty(documento) || string.IsNullOrEmpty(senha))
+            {
+                ModelState.AddModelError("", "Preencha o CPF/CNPJ e a senha.");
+                return View();
+            }
+
+            documento = documento.Replace(".", "").Replace("-", "").Replace("/", "");
+
+            var result = await _signInManager.PasswordSignInAsync(
+                documento,
+                senha,
+                false,
+                false
+            );
+
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+
+            ModelState.AddModelError("", "CPF/CNPJ ou Senha inválidos");
+            return View();
         }
 
         /// <summary>
@@ -49,19 +99,60 @@ namespace EvenPaceWeb.Controllers
         }
 
         /// <summary>
-        /// Submete a finalização das pendências visuais preenchidas, aprovando de forma relacional os dados essenciais referentes ao cadastro de organização nova após triagem no model state.
+        /// Submete a finalização das pendências visuais preenchidas, criando simultaneamente a credencial de acesso do administrador no Identity e os dados cadastrais da organização na base do sistema.
         /// </summary>
         /// <param name="organizacaoViewModel">Mapeamento direto traduzido pelo processo construtivo da classe representacional.</param>
+        /// <param name="senha">Senha de acesso em texto plano informada na View de cadastro para liberação de login futuro.</param>
         /// <returns>Redireciona à grade de listagens em formato de retorno aprovado ou retrocede ao próprio quadro referenciando inconformidades nos parâmetros propostos.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(OrganizacaoViewModel organizacaoViewModel)
+        public async Task<ActionResult> Create(OrganizacaoViewModel organizacaoViewModel, string senha)
         {
             if (ModelState.IsValid)
             {
                 var organizacao = _mapper.Map<Core.Organizacao>(organizacaoViewModel);
-                _organizacaoService.Create(organizacao);
-                return RedirectToAction(nameof(Index));
+
+                string username = string.Empty;
+
+                if (!string.IsNullOrEmpty(organizacao.Cnpj))
+                {
+                    username = organizacao.Cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
+                }
+                else if (!string.IsNullOrEmpty(organizacao.Cpf))
+                {
+                    username = organizacao.Cpf.Replace(".", "").Replace("-", "");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "É obrigatório informar um CPF ou CNPJ.");
+                    return View(organizacaoViewModel);
+                }
+
+                if (string.IsNullOrEmpty(senha))
+                {
+                    ModelState.AddModelError("", "A senha é obrigatória para o cadastro.");
+                    return View(organizacaoViewModel);
+                }
+
+                var identityUser = new UsuarioIdentity
+                {
+                    UserName = username
+                };
+
+                var result = await _userManager.CreateAsync(identityUser, senha);
+
+                if (result.Succeeded)
+                {
+                    _organizacaoService.Create(organizacao);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
             }
             return View(organizacaoViewModel);
         }

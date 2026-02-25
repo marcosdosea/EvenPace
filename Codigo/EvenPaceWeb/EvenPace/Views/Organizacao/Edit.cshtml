@@ -140,8 +140,9 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <label asp-for="Cnpj" class="form-label">CNPJ/CPF</label>
                     <div class="input-wrapper">
-                        <input asp-for="Cnpj" class="custom-input" />
-                        <i class="bi bi-pencil edit-icon"></i>
+                        <input asp-for="Cnpj" class="custom-input text-muted" readonly style="background-color: #e9ecef; cursor: not-allowed;" title="O documento de login não pode ser alterado." />
+
+                        <i class="bi bi-lock-fill edit-icon"></i>
                     </div>
                     <span asp-validation-for="Cnpj" class="text-danger small"></span>
                 </div>
