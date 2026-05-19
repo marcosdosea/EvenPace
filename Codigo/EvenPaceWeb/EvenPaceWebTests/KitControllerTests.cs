@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Http;
 using Models;
 using Moq;
+using Service;
 
 
 namespace EvenPaceWebTests
@@ -72,6 +73,35 @@ namespace EvenPaceWebTests
                 new DefaultHttpContext(),
                 Mock.Of<ITempDataProvider>()
             );
+        }
+
+        [TestMethod]
+        public void Delete_IdValido_ChamaServiceE_Redireciona()
+        {
+            int idParaDeletar = 1;
+
+            var result = controller.Delete(idParaDeletar);
+
+            mockKitService.Verify(s => s.Delete(idParaDeletar), Times.Once);
+
+            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+            var redirect = (RedirectToActionResult)result;
+            Assert.AreEqual("IndexKit", redirect.ActionName);
+        }
+
+        [TestMethod]
+        public void Edit_Post_RegraDeNegocioQuebrada_RetornaViewComErro()
+        {
+            var kitModel = new KitViewModel { Id = 1, Nome = "Kit Invalido" };
+
+            mockKitService.Setup(s => s.Edit(It.IsAny<Kit>()))
+                          .Throws(new Exception("A quantidade total não pode ser menor que a quantidade já utilizada."));
+
+            var result = controller.Edit(1, kitModel);
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult), "O controller deveria retornar a View para exibir o erro.");
+   
+            var viewResult = (ViewResult)result;
         }
 
         [TestMethod()]
