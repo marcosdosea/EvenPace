@@ -21,7 +21,7 @@ namespace EvenPaceWebTests.Service
             context = new EvenPaceContext(options);
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-            
+
             var kits = new List<Kit>
             {
                 new Kit {
@@ -59,6 +59,78 @@ namespace EvenPaceWebTests.Service
             kitService = new KitService(context);
         }
 
+        [TestMethod]
+        public void ExcluirKitValido_EP41()
+        {
+            var kitValido = new Kit
+            {
+                Id = 5,
+                Nome = "Kit simples",
+                Valor = 50.00m,
+                Descricao = "Kit vem com camiseta, número do peito e bolsa",
+                IdEvento = 1,
+                Imagem = "teste.jpg",
+                DisponibilidadeP = 50,
+                DisponibilidadeM = 100,
+                DisponibilidadeG = 150
+            };
+
+            kitService.Create(kitValido);
+
+            Assert.IsNotNull(kitService.Get(5));
+
+            var idDeletar = 5;
+            kitService.Delete(idDeletar);
+
+            var kitRemovido = kitService.Get(idDeletar);
+            Assert.IsNull(kitRemovido, "O kit deveria ser nulo após a exclusão.");
+
+            Assert.AreEqual(3, kitService.GetAll().Count(), "A contagem total de kits está incorreta após a exclusão.");
+        }
+
+        [TestMethod()]
+        public void EditarKitValido_EP43()
+        {
+            var kitOriginal = kitService.Get(1);
+            Assert.IsNotNull(kitOriginal, "O kit deveria existir para ser editado.");
+
+            string novoNome = "Kit Básico Atualizado";
+            decimal novoValor = 60.00m;
+
+            kitOriginal.Nome = novoNome;
+            kitOriginal.Valor = novoValor;
+
+            kitService.Edit(kitOriginal);
+
+            context.Entry(kitOriginal).State = EntityState.Detached;
+
+            var kitAtualizado = kitService.Get(1);
+
+            Assert.IsNotNull(kitAtualizado);
+            Assert.AreEqual(novoNome, kitAtualizado.Nome, "O nome do kit não foi atualizado corretamente.");
+            Assert.AreEqual(novoValor, kitAtualizado.Valor, "O valor do kit não foi atualizado corretamente.");
+
+            Assert.AreEqual(1, kitAtualizado.Id, "O ID do kit não deveria ter sido alterado após a edição.");
+        }
+
+        [TestMethod()]
+        public void EditarKitInvalido_EP44()
+        {
+
+            var kit = kitService.Get(1);
+
+            kit.DisponibilidadeM = 50;
+
+            kitService.Edit(kit); 
+
+            kit.DisponibilidadeM = 30;
+
+            Assert.ThrowsException<Exception>(() =>
+            {
+                kitService.Edit(kit);
+            }, "O sistema deveria impedir a redução da disponibilidade abaixo do número de inscritos.");
+        }
+
         [TestMethod()]
         public void CreateTest()
         {
@@ -87,52 +159,52 @@ namespace EvenPaceWebTests.Service
             int idParaDeletar = 2;
 
             kitService.Delete(idParaDeletar);
-            
+
             Assert.AreEqual(2, kitService.GetAll().Count());
-            
+
             var kitDeletado = kitService.Get(idParaDeletar);
             Assert.IsNull(kitDeletado, "O kit deveria ser nulo após ser deletado.");
         }
 
         [TestMethod()]
-public void EditTest()
-{
-    var kit = kitService.Get(3);
-    kit.Nome = "Kit VIP Editado";
-    kit.Valor = 200.00m;
-    kit.DisponibilidadeG = 0;
+        public void EditTest()
+        {
+            var kit = kitService.Get(3);
+            kit.Nome = "Kit VIP Editado";
+            kit.Valor = 200.00m;
+            kit.DisponibilidadeG = 0;
 
-    kitService.Edit(kit);
+            kitService.Edit(kit);
 
-    context.Entry(kit).State = EntityState.Detached; 
-    
-    var kitEditado = kitService.Get(3);
-    Assert.IsNotNull(kitEditado);
-    Assert.AreEqual("Kit VIP Editado", kitEditado.Nome);
-    Assert.AreEqual(200.00m, kitEditado.Valor);
-    Assert.AreEqual(0, kitEditado.DisponibilidadeG);
-}
+            context.Entry(kit).State = EntityState.Detached;
+
+            var kitEditado = kitService.Get(3);
+            Assert.IsNotNull(kitEditado);
+            Assert.AreEqual("Kit VIP Editado", kitEditado.Nome);
+            Assert.AreEqual(200.00m, kitEditado.Valor);
+            Assert.AreEqual(0, kitEditado.DisponibilidadeG);
+        }
 
         [TestMethod()]
         public void GetTest()
         {
             var kit = kitService.Get(1);
-            
+
             Assert.IsNotNull(kit);
             Assert.AreEqual("Kit Básico", kit.Nome);
             Assert.AreEqual(50.00m, kit.Valor);
-            Assert.AreEqual(1, (int)kit.IdEvento); 
+            Assert.AreEqual(1, (int)kit.IdEvento);
         }
 
         [TestMethod()]
         public void GetAllTest()
         {
             var listaKits = kitService.GetAll();
-            
+
             Assert.IsInstanceOfType(listaKits, typeof(IEnumerable<Kit>));
             Assert.IsNotNull(listaKits);
             Assert.AreEqual(3, listaKits.Count());
-            
+
             var primeiroKit = listaKits.First();
             Assert.AreEqual((int)1, primeiroKit.Id);
             Assert.AreEqual("Kit Básico", primeiroKit.Nome);
