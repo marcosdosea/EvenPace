@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Core;
 using Core.Service;
+using EvenPaceWeb.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Moq;
 using EvenPaceWeb.Controllers;
 using EvenPaceWeb.Mappers;
 using Mappers;
+using Microsoft.AspNetCore.Identity;
 
 namespace EvenPaceWebTests
 {
@@ -15,11 +17,28 @@ namespace EvenPaceWebTests
     {
         private static OrganizacaoController controller = null!;
         private static Mock<IOrganizacaoService> mockService = null!;
+        private static Mock<UserManager<UsuarioIdentity>> mockUserManager = null!;
+        private static Mock<SignInManager<UsuarioIdentity>> mockSignInManager = null!;
 
         [TestInitialize]
         public void Initialize()
         {
             mockService = new Mock<IOrganizacaoService>();
+
+            var userStore = new Mock<IUserStore<UsuarioIdentity>>();
+            mockUserManager = new Mock<UserManager<UsuarioIdentity>>(
+                userStore.Object, null, null, null, null, null, null, null, null
+            );
+
+            var contextAccessor = new Mock<Microsoft.AspNetCore.Http.IHttpContextAccessor>();
+            var claimsFactory = new Mock<IUserClaimsPrincipalFactory<UsuarioIdentity>>();
+
+            mockSignInManager = new Mock<SignInManager<UsuarioIdentity>>(
+                mockUserManager.Object,
+                contextAccessor.Object,
+                claimsFactory.Object,
+                null, null, null, null
+            );
 
             IMapper mapper = new MapperConfiguration(cfg =>
                 cfg.AddProfile(new OrganizacaoProfile())).CreateMapper();
@@ -39,7 +58,12 @@ namespace EvenPaceWebTests
             mockService.Setup(service => service.Delete(It.IsAny<int>()))
                 .Verifiable();
 
-            controller = new OrganizacaoController(mockService.Object, mapper);
+            controller = new OrganizacaoController(
+                mockService.Object,
+                mapper,
+                mockUserManager.Object,
+                mockSignInManager.Object
+            );
         }
 
         [TestMethod()]
@@ -78,9 +102,9 @@ namespace EvenPaceWebTests
         }
 
         [TestMethod()]
-        public void CreateTest_Post_Valid()
+        public async Task CreateTest_Post_Valid()
         {
-            var result = controller.Create(GetNewOrganizacaoModel());
+            var result = await controller.Create(GetNewOrganizacaoModel(), "SenhaForte2026@");
 
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
             RedirectToActionResult redirect = (RedirectToActionResult)result;
@@ -88,12 +112,11 @@ namespace EvenPaceWebTests
         }
 
         [TestMethod()]
-        public void CreateTest_Post_Invalid()
+        public async Task CreateTest_Post_Invalid()
         {
             controller.ModelState.AddModelError("Nome", "Campo requerido");
 
-            var result = controller.Create(GetNewOrganizacaoModel());
-
+            var result = await controller.Create(GetNewOrganizacaoModel(), "SenhaForte2026@");
             Assert.IsInstanceOfType(result, typeof(ViewResult));
             Assert.AreEqual(1, controller.ModelState.ErrorCount);
         }
@@ -167,6 +190,83 @@ namespace EvenPaceWebTests
                 new Organizacao { Id = 2, Nome = "Organizacao B", Cnpj = "22222222000122" },
                 new Organizacao { Id = 3, Nome = "Organizacao C", Cnpj = "33333333000133" }
             };
+        }
+
+        [TestMethod]
+        public async Task Inserir_OrganizacaoComDadosJaExistente_EP91()
+        {
+            var modelExistente = new OrganizacaoViewModel
+            {
+                Nome = "José Almeida Segundo",
+                Cnpj = "51658141000137",
+                Cpf = " ",
+                Telefone = "79999995555",
+                Cep = "49500362",
+                Rua = "Rua Francisco Santos",
+                Numero = 1245,
+                Estado = "Sergipe"
+            };
+            string senhaTeste = "admin";
+
+            var listaErros = new List<IdentityError>
+            {
+                new IdentityError
+                {
+                    Code = "DuplicateUserName",
+                    Description = "Erro: Já existe uma organização cadastrada com estes dados."
+                }
+            };
+            var resultadoFalhaIdentity = IdentityResult.Failed(listaErros.ToArray());
+
+            mockUserManager
+                .Setup(um => um.CreateAsync(It.Is<UsuarioIdentity>(u => u.UserName == "51658141000137"), senhaTeste))
+                .ReturnsAsync(resultadoFalhaIdentity);
+
+
+            var result = await controller.Create(modelExistente, senhaTeste);
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+
+            Assert.IsFalse(controller.ModelState.IsValid);
+
+            var possuiMensagemDuplicado = controller.ModelState.Values
+                .Any(v => v.Errors.Any(e =>
+                    e.ErrorMessage.Contains("Erro: Já existe uma organização cadastrada com estes dados.")));
+
+            Assert.IsTrue(possuiMensagemDuplicado,
+                "A mensagem de erro exata exigida pelo caso de teste EP-91 não foi encontrada.");
+        }
+
+        [TestMethod]
+        public void Edit_OrganizaoComNomeVazio_EP99()
+        {
+            var modelNomeEmBranco = new OrganizacaoViewModel
+            {
+                Id = 3,
+                Nome = " ",
+                Cnpj = "51658141000137",
+                Cpf = " ",
+                Telefone = "79998024485",
+                Cep = " ",
+                Rua = "Rua Francisco Santos",
+                Numero = 1245,
+                Estado = "Sergipe"
+            };
+
+
+            controller.ModelState.AddModelError("Nome", "O Nome é Obrigatório");
+
+            var result = controller.Edit(modelNomeEmBranco);
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+
+            Assert.IsFalse(controller.ModelState.IsValid);
+
+            var possuiAvisoNomeObrigatorio = controller.ModelState["Nome"]?.Errors
+                .Any(e => e.ErrorMessage.Contains("O Nome é Obrigatório"));
+
+            Assert.IsTrue(possuiAvisoNomeObrigatorio == true,
+                "O aviso de que 'O Nome é Obrigatório' não foi incluído no ModelState.");
         }
     }
 }
