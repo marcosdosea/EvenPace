@@ -88,12 +88,12 @@ namespace EvenPaceWeb.Controllers
         /// <returns>Transição de regresso para a home dos ingressos confirmando as modificações promovidas.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CupomViewModel cupomViewModel)
+        public async Task<ActionResult> Edit(CupomViewModel cupomViewModel)
         {
             if (ModelState.IsValid)
             {
                 var cupom = _mapper.Map<Core.Cupom>(cupomViewModel);
-                _cupomService.Edit(cupom);
+                await _cupomService.Edit(cupom);
             }
             return RedirectToAction(nameof(Index));
         }
