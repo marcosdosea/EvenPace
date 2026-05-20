@@ -108,6 +108,9 @@ namespace EvenPaceWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(OrganizacaoViewModel organizacaoViewModel, string senha)
         {
+
+            // CadastroOrganizacaoViewModel model (Recebeu)
+            // 
             if (ModelState.IsValid)
             {
                 var organizacao = _mapper.Map<Core.Organizacao>(organizacaoViewModel);

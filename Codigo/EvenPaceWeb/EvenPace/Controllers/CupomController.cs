@@ -2,17 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Core.Service;
 using Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Service;
 
 namespace EvenPaceWeb.Controllers
 {
     public class CupomController : Controller
     {
         private readonly ICupomService _cupomService;
+        private readonly IEventosService _eventosService;
         private readonly IMapper _mapper;
 
-        public CupomController(ICupomService cupomService, IMapper mapper)
+        public CupomController(ICupomService cupomService, IEventosService eventoService ,IMapper mapper)
         {
             _cupomService = cupomService;
+            _eventosService = eventoService;
             _mapper = mapper;
         }
 
@@ -20,13 +24,18 @@ namespace EvenPaceWeb.Controllers
         /// Aciona a visualização englobadora extraindo a relação sequencial provinda do banco de registros detalhando todas as parametrizações geradas ativas e inativas dos bônus transacionais de cupom listados pela plataforma organizacional.
         /// </summary>
         /// <returns>Disponibiliza um ViewModel relacional listando e compondo o formulário visual com as particularidades de cada código atrelado no hub principal do gerenciador.</returns>
-        public ActionResult Index()
+        /// <summary>
+        /// Aciona a visualização englobadora extraindo a relação sequencial provinda do banco de registros detalhando todas as parametrizações geradas ativas e inativas dos bônus transacionais de cupom listados pela plataforma organizacional.
+        /// </summary>
+        /// <returns>Disponibiliza um ViewModel relacional listando e compondo o formulário visual com as particularidades de cada código atrelado no hub principal do gerenciador.</returns>
+        public async Task<ActionResult> Index()
         {
-            var cupons = _cupomService.GetAll();
+            var cupons = await _cupomService.GetAll();
+
             var cupomViewModels = _mapper.Map<List<CupomViewModel>>(cupons);
+
             return View(cupomViewModels);
         }
-
         /// <summary>
         /// Destrincha as informações e particularidades aplicadas exclusivamente em um dos descontos da base para que possam ser checadas pelo seu gestor correspondente através das telas de apoio secundárias da requisição HTTP processada no model MVC.
         /// </summary>
@@ -45,9 +54,12 @@ namespace EvenPaceWeb.Controllers
         /// <returns>Exposição imediata no método GET com espaço integral reservado e livre destinado à geração estipulada em prol de vantagens para inscrições por corredores associados.</returns>
         public ActionResult Create()
         {
+            // Busca os eventos para preencher o dropdown na tela
+            var eventos = _eventosService.GetAll(); // ou await se o método virar async Task
+            ViewBag.Eventos = new SelectList(eventos, "Id", "Nome");
+
             return View();
         }
-
         /// <summary>
         /// Atua efetuando o repasse e armazenamento em infraestrutura persistente de um desconto criado através das especificações de percentual e código da janela visual e enviando o repasse às instâncias apropriadas com a tratativa de vulnerabilidades e erros associados ao envio HTTP.
         /// </summary>
@@ -55,12 +67,14 @@ namespace EvenPaceWeb.Controllers
         /// <returns>Promove o reenquadramento ao catálogo ou, detectando anomalia sintática providenciada pelos requerimentos em tela não satisfeitos perante as exigências do ModelState, reescreve os erros in-loco da janela visual do emissor de criação abortado temporariamente.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CupomViewModel cupomViewModel)
+        public async Task<ActionResult> Create(CupomViewModel cupomViewModel)
         {
             if (ModelState.IsValid)
             {
                 var cupom = _mapper.Map<Core.Cupom>(cupomViewModel);
-                _cupomService.Create(cupom);
+
+                await _cupomService.Create(cupom);
+
                 return RedirectToAction(nameof(Index));
             }
 
