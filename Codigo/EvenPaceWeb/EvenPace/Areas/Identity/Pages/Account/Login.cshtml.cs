@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Core;
 
 namespace EvenPaceWeb.Areas.Identity.Pages.Account
 {
@@ -104,38 +105,38 @@ namespace EvenPaceWeb.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
-
+            returnUrl ??= Url.Content("~/Evento/Index");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                string loginInformado = Input.Email;
+                string userNameParaLogin = loginInformado;
+
+                // Se o usuário digitou um E-mail, precisamos descobrir qual o UserName (CPF) dele
+                if (loginInformado.Contains("@"))
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
+                    var user = await _signInManager.UserManager.FindByEmailAsync(loginInformado);
+                    if (user != null) userNameParaLogin = user.UserName;
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
+                    // Se digitou CPF/CNPJ, limpamos a máscara para bater com o banco
+                    userNameParaLogin = new string(loginInformado.Where(char.IsDigit).ToArray());
                 }
-            }
 
-            // If we got this far, something failed, redisplay form
+                var result = await _signInManager.PasswordSignInAsync(userNameParaLogin, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Usuário logado com sucesso.");
+                    return LocalRedirect(returnUrl);
+                }
+
+                ModelState.AddModelError(string.Empty, "Dados de acesso inválidos.");
+            }
             return Page();
         }
+
     }
 }

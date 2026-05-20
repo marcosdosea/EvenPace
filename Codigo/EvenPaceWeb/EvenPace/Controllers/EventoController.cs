@@ -1,18 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Core.Service;
-using Core;
-using Models;
 using AutoMapper;
-
+using Core;
+using Core.Service;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Models;
 
 namespace EvenPace.Controllers
 {
     public class EventoController : Controller
     {
-        private readonly IEventosService _service;
+        private readonly IEventosService _service; // Este é o seu serviço principal
         private readonly IKitService _kitService;
         private readonly IMapper _mapper;
         private readonly EvenPaceContext _context;
+        private object _logger;
 
         public EventoController(
             IEventosService service,
@@ -26,22 +27,24 @@ namespace EvenPace.Controllers
             _context = context;
         }
 
-        /// <summary>
-        /// Exibe a listagem de eventos vinculados à organização logada, ordenados pela data mais recente.
-        /// </summary>
-        /// <returns>View contendo uma lista de modelos de visualização de eventos.</returns>
+        [Authorize]
         public IActionResult Index()
         {
-            int idOrganizacao = 1; 
+            // 1. Obtém o documento (CPF/CNPJ) do usuário logado
+            var documentoSessao = User.Identity.Name;
 
-            var listaEntidades = _service.GetAll()
-                                         .Where(e => e.IdOrganizacao == idOrganizacao)
-                                         .OrderByDescending(e => e.Data)
-                                         .ToList();
+            // 2. Busca o ID da organização através do documento
+            var organizacao = _context.Organizacaos
+                .FirstOrDefault(o => o.Cpf == documentoSessao || o.Cnpj == documentoSessao);
 
-            var listaViewModel = _mapper.Map<List<EventoViewModel>>(listaEntidades);
+            if (organizacao == null)
+                return View(new List<EventoViewModel>());
 
-            return View(listaViewModel);
+            // 3. Busca eventos filtrando pelo ID da organização
+            var entidades = _service.GetByOrganizacao((int)organizacao.Id);
+            var model = _mapper.Map<IEnumerable<EventoViewModel>>(entidades);
+
+            return View(model);
         }
 
         /// <summary>
@@ -81,8 +84,10 @@ namespace EvenPace.Controllers
         /// <exception cref="Exception">Captura exceções gerais de conversão ou acesso a disco ao salvar a imagem, repassando para o ModelState.</exception>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Create(EventoViewModel model)
         {
+            // 1. Limpeza de validações automáticas que não se aplicam ao POST inicial
             ModelState.Remove("Imagem");
             ModelState.Remove("Data");
 
@@ -90,31 +95,49 @@ namespace EvenPace.Controllers
             {
                 try
                 {
-                    var evento = _mapper.Map<Evento>(model);
+                    // 2. Identifica a organização logada para vincular o evento corretamente
+                    var documentoSessao = User.Identity.Name;
+                    var organizacao = _context.Organizacaos
+                        .FirstOrDefault(o => o.Cpf == documentoSessao || o.Cnpj == documentoSessao);
 
-                    if (model.DataOnly.HasValue && model.HoraOnly.HasValue)
+                    if (organizacao == null)
                     {
-                        evento.Data = model.DataOnly.Value.Add(model.HoraOnly.Value);
+                        ModelState.AddModelError("", "Erro: Perfil de organização não encontrado para este usuário.");
+                        return View(model);
                     }
 
+                    // 3. Mapeia a ViewModel para a Entidade do Banco
+                    var evento = _mapper.Map<Evento>(model);
+
+                    // 4. Atribui o ID da organização logada (evita o Id fixo = 1)
+                    evento.IdOrganizacao = (int)organizacao.Id;
+
+                    // 5. Combina Data e Hora em um único campo DateTime
+                    if (model.DataOnly.HasValue && model.HoraOnly.HasValue)
+                    {
+                        evento.Data = model.DataOnly.Value.Date.Add(model.HoraOnly.Value);
+                    }
+
+                    // 6. Processa o upload da imagem (Banner do evento)
                     if (model.ImagemUpload != null)
                     {
                         evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload);
                     }
 
-                    if (evento.IdOrganizacao == 0) evento.IdOrganizacao = 1;
-
+                    // 7. Persiste no banco de dados via serviço
                     _service.Create(evento);
-                    TempData["MensagemSucesso"] = "Evento criado com sucesso! 🏃‍♂️";
 
-                    return RedirectToAction("Index");
+                    TempData["MensagemSucesso"] = "Evento criado com sucesso! 🏃‍♂️";
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Erro: " + ex.Message);
+                    //_logger.LogError(ex, "Erro ao criar evento");
+                    ModelState.AddModelError("", "Ocorreu um erro interno ao salvar o evento: " + ex.Message);
                 }
             }
 
+            // Se houver erro de validação, recarrega a página com o modelo
             ViewBag.TituloPagina = "Novo Evento";
             return View(model);
         }
@@ -197,20 +220,38 @@ namespace EvenPace.Controllers
         /// </summary>
         /// <param name="id">Identificador do evento a ser deletado.</param>
         /// <returns>Redireciona para a página principal de listagem de eventos.</returns>
-        [HttpGet]
+        [Authorize]
         public IActionResult Delete(int id)
         {
+            // 1. Busca o evento para garantir que ele existe
             var evento = _service.Get(id);
-
-            if (evento != null)
+            if (evento == null)
             {
-                var kitsDoEvento = _kitService.GetAll().Where(k => k.IdEvento == id).ToList();
-                foreach (var kit in kitsDoEvento)
+                TempData["MensagemErro"] = "Evento não encontrado.";
+                return RedirectToAction("Index");
+            }
+
+            // 2. VERIFICAÇÃO REAL NA TABELA DE INSCRIÇÕES:
+            // Contamos quantos registros existem para este IdEvento na tabela 'inscricao'
+            int totalAtletasInscritos = _context.Inscricao.Count(i => i.IdEvento == id);
+
+            if (totalAtletasInscritos > 0)
+            {
+                TempData["MensagemErro"] = $"O evento '{evento.Nome}' não pode ser excluído porque possui {totalAtletasInscritos} atleta(s) inscrito(s).";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                // 3. Se não há inscritos, removemos os Kits primeiro (dependência de FK)
+                var kits = _kitService.GetAll().Where(k => k.IdEvento == id).ToList();
+                foreach (var kit in kits)
                 {
                     if (!string.IsNullOrEmpty(kit.Imagem)) DeletarImagemDoDisco(kit.Imagem);
                     _kitService.Delete(kit.Id);
                 }
 
+                // 4. Remove a imagem do evento e o registro do banco
                 if (!string.IsNullOrEmpty(evento.Imagem))
                 {
                     DeletarImagemDoDisco(evento.Imagem);
@@ -218,7 +259,11 @@ namespace EvenPace.Controllers
 
                 _service.Delete(id);
 
-                TempData["MensagemSucesso"] = "Evento excluído com sucesso! 🗑️";
+                TempData["MensagemSucesso"] = "Evento removido com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = "Erro ao tentar excluir: " + ex.Message;
             }
 
             return RedirectToAction("Index");

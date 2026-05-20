@@ -85,5 +85,13 @@ namespace Service
         {
             return _context.Eventos.Where(e => e.Nome.Contains(nome)).AsNoTracking();
         }
+
+        public IEnumerable<Evento> GetByOrganizacao(int idOrganizacao)
+        {
+            return _context.Eventos
+                .Where(e => e.IdOrganizacao == idOrganizacao)
+                .OrderByDescending(e => e.Data) // Opcional: traz os mais recentes primeiro
+                .ToList();
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace Core.Service
         void Delete(int id);
         IEnumerable<Evento> GetAll();
         IEnumerable<Evento> GetByName(string nome);
-       
+        IEnumerable<Evento> GetByOrganizacao(int idOrganizacao);
+
     }
 }
