@@ -71,13 +71,119 @@ public class CorredorController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult Create(CorredorViewModel corredorModel)
     {
+        // Removemos a validação de Email e Senha pois eles não estão nesta View
+        ModelState.Remove("Email");
+        ModelState.Remove("Senha");
+
         if (ModelState.IsValid)
         {
+            // 1. Mapeia e Salva o Corredor no banco de negócio (EvenPaceContext)
             var corredor = _mapper.Map<Corredor>(corredorModel);
             _corredorService.Create(corredor);
+
+            // 2. Redireciona para a nova View de Email/Senha, passando o CPF por parâmetro
+            return RedirectToAction("DefinirAcesso", new { cpf = corredorModel.CPF });
         }
+
         return View(corredorModel);
     }
+
+    [HttpGet]
+    public IActionResult DefinirAcesso(string cpf)
+    {
+        if (string.IsNullOrEmpty(cpf)) return RedirectToAction("Create");
+
+        // Passamos o CPF para a View para sabermos qual usuário estamos finalizando
+        ViewBag.Cpf = cpf;
+        return View();
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> FinalizarCadastro(string cpf, string email, string senha)
+    {
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+        {
+            ModelState.AddModelError("", "E-mail e Senha são obrigatórios.");
+            ViewBag.Cpf = cpf;
+            return View("DefinirAcesso");
+        }
+
+        // 1. Prepara o usuário para o Identity (removendo formatação do CPF)
+        var identityUser = new UsuarioIdentity
+        {
+            UserName = cpf.Replace(".", "").Replace("-", ""),
+            Email = email
+        };
+
+        // 2. Tenta criar o usuário no banco do Identity com a senha informada
+        var result = await _userManager.CreateAsync(identityUser, senha);
+
+        if (result.Succeeded)
+        {
+            // Se deu certo, manda para o Login
+            return RedirectToAction("Login", "Corredor");
+        }
+        else
+        {
+            // Se houver erro (senha fraca, e-mail já existe), mostra na tela
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+            ViewBag.Cpf = cpf;
+            return View("DefinirAcesso");
+        }
+    }
+    /*[HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(CorredorViewModel corredorModel)
+    {
+        // Remova a validação estrita se estiver enviando apenas parte dos dados
+        // Ou certifique-se de que Nome, CPF e Data de Nascimento são os únicos obrigatórios no ViewModel
+
+        if (ModelState.IsValid)
+        {
+            // 1. Mapeia para a entidade de banco de dados
+            var corredor = _mapper.Map<Corredor>(corredorModel);
+
+            // 2. Tenta criar no banco de dados de negócio (EvenPaceContext)
+            try
+            {
+                _corredorService.Create(corredor);
+
+                // IMPORTANTE: Para o Identity funcionar, você precisaria criar o UsuarioIdentity aqui também
+                // com o CPF como UserName e uma senha padrão ou vinda do formulário.
+
+                return RedirectToAction("Login"); // Redireciona para não ficar na mesma página
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Erro ao salvar no banco: " + ex.Message);
+            }
+        }
+        return View(corredorModel);
+    }*/
+    /*[HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(CorredorViewModel corredorModel)
+    {
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                var corredor = _mapper.Map<Corredor>(corredorModel);
+                _corredorService.Create(corredor);
+                return RedirectToAction("ProximaEtapa"); // Ou onde for o fluxo
+            }
+            catch (Exception ex)
+            {
+                // Isso vai mostrar o erro REAL do MySQL na tela (ex: "Column 'Email' cannot be null")
+                var mensagemReal = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                ModelState.AddModelError("", "Erro detalhado: " + mensagemReal);
+            }
+        }
+        return View(corredorModel);
+    }*/
 
     public ActionResult Edit(int id)
     {

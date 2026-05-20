@@ -55,7 +55,7 @@ namespace Service
         {
             if (corredor != null)
             {
-                _context.Administradors.Find(corredor.Id);
+                //_context.Administradors.Find(corredor.Id);
                 _context.Update(corredor);
                 _context.SaveChanges();
             }

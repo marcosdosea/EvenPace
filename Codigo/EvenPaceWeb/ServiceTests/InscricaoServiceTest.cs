@@ -148,5 +148,46 @@ namespace EvenPaceWebTests.Service
                 service.Cancelar(99, 1)
             );
         }
+        [TestMethod]
+        public void Cancelar_InscricaoJaCancelada_EP90()
+        {
+            int idInscricaoRepetida = 10;
+            int idCorredorFake = 42;
+
+            var evento = new Evento
+            {
+                Id = 5,
+                Nome = "Corrida de Teste EP90",
+                Descricao = "Descricao do Evento",
+                Cidade = "Itabaiana",
+                Estado = "SE",
+                Bairro = "Centro",
+                Rua = "Rua Teste",
+                InfoRetiradaKit = "Informacoes de retirada",
+                Data = DateTime.Now.AddDays(10)
+            };
+
+            var inscricaoJaCancelada = new Inscricao
+            {
+                Id = idInscricaoRepetida,
+                IdCorredor = idCorredorFake,
+                IdEvento = 5,
+                Status = "Cancelada", 
+                Distancia = "5km",
+                TamanhoCamisa = "G",
+                IdEventoNavigation = evento
+            };
+
+            context.Eventos.Add(evento);
+            context.Inscricao.Add(inscricaoJaCancelada);
+            context.SaveChanges();
+            
+            service.Cancelar(idInscricaoRepetida, idCorredorFake);
+
+            var resultadoInscricao = context.Inscricao.Find(idInscricaoRepetida);
+    
+            Assert.IsNotNull(resultadoInscricao);
+            Assert.AreEqual("Cancelada", resultadoInscricao.Status, "A inscrição deveria continuar com o status Cancelada.");
+        }
     }
 }
