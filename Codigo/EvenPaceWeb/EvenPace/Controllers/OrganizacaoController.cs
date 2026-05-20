@@ -93,9 +93,19 @@ namespace EvenPaceWeb.Controllers
         /// Estrutura e retorna as prerrogativas de formulário sem formatações residuais destinadas à criação limpa de uma conta/organização corporativa recente.
         /// </summary>
         /// <returns>Página base de registros.</returns>
-        public ActionResult Create()
+        [HttpGet]
+        public ActionResult Create(string documento = null)
         {
-            return View();
+            var model = new OrganizacaoViewModel();
+            if (!string.IsNullOrEmpty(documento))
+            {
+                // Se o documento tem 11 dígitos, tratamos como CPF, se tem 14 como CNPJ
+                if (documento.Length <= 11)
+                    model.Cpf = documento;
+                else
+                    model.Cnpj = documento;
+            }
+            return View(model);
         }
 
         /// <summary>
@@ -104,57 +114,36 @@ namespace EvenPaceWeb.Controllers
         /// <param name="organizacaoViewModel">Mapeamento direto traduzido pelo processo construtivo da classe representacional.</param>
         /// <param name="senha">Senha de acesso em texto plano informada na View de cadastro para liberação de login futuro.</param>
         /// <returns>Redireciona à grade de listagens em formato de retorno aprovado ou retrocede ao próprio quadro referenciando inconformidades nos parâmetros propostos.</returns>
+        /// <summary>
+        /// Submete a finalização das pendências visuais preenchidas, salvando a organização na base do sistema.
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(OrganizacaoViewModel organizacaoViewModel, string senha)
+        public async Task<ActionResult> Create(OrganizacaoViewModel model)
         {
+            // Removemos a validação de "Senha" se ela não fizer parte desse formulário
+            ModelState.Remove("Senha");
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                var organizacao = _mapper.Map<Core.Organizacao>(organizacaoViewModel);
-
-                string username = string.Empty;
-
-                if (!string.IsNullOrEmpty(organizacao.Cnpj))
+                try
                 {
-                    username = organizacao.Cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
-                }
-                else if (!string.IsNullOrEmpty(organizacao.Cpf))
-                {
-                    username = organizacao.Cpf.Replace(".", "").Replace("-", "");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "É obrigatório informar um CPF ou CNPJ.");
-                    return View(organizacaoViewModel);
-                }
+                    model.Cep = new string(model.Cep?.Where(char.IsDigit).ToArray());
+                    model.Cpf = new string(model.Cpf?.Where(char.IsDigit).ToArray());
+                    model.Cnpj = new string(model.Cnpj?.Where(char.IsDigit).ToArray());
 
-                if (string.IsNullOrEmpty(senha))
-                {
-                    ModelState.AddModelError("", "A senha é obrigatória para o cadastro.");
-                    return View(organizacaoViewModel);
-                }
-
-                var identityUser = new UsuarioIdentity
-                {
-                    UserName = username
-                };
-
-                var result = await _userManager.CreateAsync(identityUser, senha);
-
-                if (result.Succeeded)
-                {
+                    var organizacao = _mapper.Map<Core.Organizacao>(model);
                     _organizacaoService.Create(organizacao);
-                    return RedirectToAction(nameof(Index));
+
+                    // Isso faz o botão "Cadastrar" levar para a tela de Login
+                    return RedirectToPage("/Account/Login", new { area = "Identity" });
                 }
-                else
+                catch (Exception ex)
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
+                    ModelState.AddModelError("", "Erro ao salvar: " + ex.Message);
                 }
             }
-            return View(organizacaoViewModel);
+            return View(model);
         }
 
         /// <summary>
