@@ -193,4 +193,37 @@
 
     toggle.addEventListener('change', updateText);
     updateText();
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const dataInicioInput = document.getElementById('DataInicio').value;
+        const dataTerminoInput = document.getElementById('DataTermino').value;
+
+        // Só faz a validação se as duas datas estiverem preenchidas
+        if (dataInicioInput && dataTerminoInput) {
+            const dataInicio = new Date(dataInicioInput);
+            const dataTermino = new Date(dataTerminoInput);
+
+            if (dataTermino <= dataInicio) {
+                // Impede o envio do formulário (trava a ação do botão Salvar)
+                e.preventDefault();
+
+                // Encontra o span vermelho de erro nativo do ASP.NET e injeta o texto
+                const errorSpan = document.querySelector('span[data-valmsg-for="DataTermino"]');
+                if (errorSpan) {
+                    errorSpan.textContent = "A data de término deve ser maior que a data de início.";
+                } else {
+                    alert("A data de término deve ser maior que a data de início.");
+                }
+
+                // Opcional: Foca no campo com erro e pinta a borda de vermelho
+                document.getElementById('DataTermino').style.borderColor = "red";
+                document.getElementById('DataTermino').focus();
+            } else {
+                // Limpa o erro se o usuário consertar e tentar salvar de novo
+                const errorSpan = document.querySelector('span[data-valmsg-for="DataTermino"]');
+                if (errorSpan) errorSpan.textContent = "";
+                document.getElementById('DataTermino').style.borderColor = "var(--text-black)";
+            }
+        }
+    });
 </script>
