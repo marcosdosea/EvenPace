@@ -117,10 +117,16 @@
 
     <section class="form-container shadow-sm">
         <form asp-action="Create" method="post">
-            <input type="hidden" asp-for="IdEvento" value="1" /> 
-
             <div class="row g-4">
                 <div class="col-12 col-md-6 col-lg-4">
+                    <div class="mb-3">
+                        <label asp-for="IdEvento" class="form-label fw-bold">Evento</label>
+                        <select asp-for="IdEvento" class="custom-input" asp-items="ViewBag.Eventos">
+                            <option value="">Selecione um evento...</option>
+                        </select>
+                        <span asp-validation-for="IdEvento" class="text-danger small"></span>
+                    </div>
+
                     <div class="mb-3">
                         <label asp-for="Nome" class="form-label fw-bold">Nome do Cupom</label>
                         <input asp-for="Nome" class="custom-input" placeholder="EX: VERAO20" />
@@ -186,5 +192,38 @@
     };
 
     toggle.addEventListener('change', updateText);
-    updateText(); 
+    updateText();
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const dataInicioInput = document.getElementById('DataInicio').value;
+        const dataTerminoInput = document.getElementById('DataTermino').value;
+
+        // Só faz a validação se as duas datas estiverem preenchidas
+        if (dataInicioInput && dataTerminoInput) {
+            const dataInicio = new Date(dataInicioInput);
+            const dataTermino = new Date(dataTerminoInput);
+
+            if (dataTermino <= dataInicio) {
+                // Impede o envio do formulário (trava a ação do botão Salvar)
+                e.preventDefault();
+
+                // Encontra o span vermelho de erro nativo do ASP.NET e injeta o texto
+                const errorSpan = document.querySelector('span[data-valmsg-for="DataTermino"]');
+                if (errorSpan) {
+                    errorSpan.textContent = "A data de término deve ser maior que a data de início.";
+                } else {
+                    alert("A data de término deve ser maior que a data de início.");
+                }
+
+                // Opcional: Foca no campo com erro e pinta a borda de vermelho
+                document.getElementById('DataTermino').style.borderColor = "red";
+                document.getElementById('DataTermino').focus();
+            } else {
+                // Limpa o erro se o usuário consertar e tentar salvar de novo
+                const errorSpan = document.querySelector('span[data-valmsg-for="DataTermino"]');
+                if (errorSpan) errorSpan.textContent = "";
+                document.getElementById('DataTermino').style.borderColor = "var(--text-black)";
+            }
+        }
+    });
 </script>

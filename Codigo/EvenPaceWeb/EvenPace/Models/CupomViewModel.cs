@@ -14,7 +14,7 @@ namespace Models
         public string Nome { get; set; } = null!;
 
         [Required(ErrorMessage = "O valor do desconto é obrigatório.")]
-        [Range(1, int.MaxValue, ErrorMessage = "O desconto deve ser maior que zero.")]
+        [Range(1, 99, ErrorMessage = "O desconto deve ser maior que zero e menor que 100.")]
         [Display(Name = "Valor do Desconto")]
         public int Desconto { get; set; }
 

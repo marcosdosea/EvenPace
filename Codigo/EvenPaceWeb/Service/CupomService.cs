@@ -81,30 +81,5 @@ namespace Service
                 .AsNoTracking()
                 .ToListAsync();
         }
-
-        void ICupomService.Edit(Cupom cupom)
-        {
-            throw new NotImplementedException();
-        }
-
-        int ICupomService.Create(Cupom cupom)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICupomService.Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Cupom> ICupomService.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Cupom> ICupomService.GetByName(string nome)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
