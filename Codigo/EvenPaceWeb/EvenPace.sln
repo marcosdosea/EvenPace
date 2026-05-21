@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTests", "ServiceTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvenPaceAPI", "EvenPaceAPI\EvenPaceAPI.csproj", "{38FAEF8C-3E04-49F7-A438-023FE7F664BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomacaoTests", "AutomacaoTests\AutomacaoTests.csproj", "{F22C3CA2-E5F0-4557-B782-A3F5B115A376}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{38FAEF8C-3E04-49F7-A438-023FE7F664BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38FAEF8C-3E04-49F7-A438-023FE7F664BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38FAEF8C-3E04-49F7-A438-023FE7F664BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F22C3CA2-E5F0-4557-B782-A3F5B115A376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F22C3CA2-E5F0-4557-B782-A3F5B115A376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F22C3CA2-E5F0-4557-B782-A3F5B115A376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F22C3CA2-E5F0-4557-B782-A3F5B115A376}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
