@@ -1,0 +1,9 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6f19f689_002Defcb_002D46e0_002Dac7c_002Dfef7c8d59876/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="InserirCupomValidoTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::95CCECF7-9199-43AF-92C9-1E1C0B94BFAA::net10.0::InserirCupomValidoTest&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::95CCECF7-9199-43AF-92C9-1E1C0B94BFAA::net10.0::InserirCupomInvalidoTest&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::95CCECF7-9199-43AF-92C9-1E1C0B94BFAA::net10.0::InserirCupomComDescontoInvalidoTest&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::95CCECF7-9199-43AF-92C9-1E1C0B94BFAA::net10.0::InserirCupomComDataInvalidaTest&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
