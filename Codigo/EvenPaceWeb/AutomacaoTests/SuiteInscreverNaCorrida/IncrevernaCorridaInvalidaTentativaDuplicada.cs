@@ -13,31 +13,25 @@ using OpenQA.Selenium.Interactions;
 using NUnit.Framework;
 
 [TestFixture]
-public class InscricaoDuplicadaTest
-{
-    private IWebDriver driver;
-    private WebDriverWait wait;
-
-    [SetUp]
-    public void IniciarTeste()
-    {
-        driver = new ChromeDriver();
-        driver.Manage().Window.Maximize();
-
-        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-    }
-
-    [TearDown]
-    public void EncerrarTeste()
-    {
-        driver.Quit();
-    }
-
-    [Test]
-    public void ValidarTentativaDeInscricaoDuplicada()
-    {
+public class UntitledTest {
+  private IWebDriver driver;
+  public IDictionary<string, object> vars {get; private set;}
+  private IJavaScriptExecutor js;
+  [SetUp]
+  public void SetUp() {
+    driver = new RemoteWebDriver(new Uri("https://localhost:7131/"), new ChromeOptions().ToCapabilities());
+    js = (IJavaScriptExecutor)driver;
+    vars = new Dictionary<string, object>();
+  }
+  [TearDown]
+  protected void TearDown() {
+    driver.Quit();
+  }
+  [Test]
+  public void untitled() {
+  
         driver.Navigate().GoToUrl("https://localhost:7131/");
-      driver.Manage().Window.Size = new System.Drawing.Size(790, 816);
+        driver.Manage().Window.Size = new System.Drawing.Size(790, 816);
         driver.FindElement(By.LinkText("Entrar como Corredor")).Click();
         driver.FindElement(By.Id("email")).SendKeys("teste@gmail.com");
         driver.FindElement(By.Id("senha")).SendKeys("123456");
