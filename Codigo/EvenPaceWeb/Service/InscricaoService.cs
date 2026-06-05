@@ -7,134 +7,92 @@ namespace Service
 {
     public class InscricaoService : IInscricaoService
     {
-        private readonly EvenPaceContext _context;
-        private readonly IEventosService _eventoService;
-        private readonly IKitService _kitService;
+        private static readonly HashSet<string> TamanhosCamisaValidos = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "P",
+            "M",
+            "G",
+            "GG"
+        };
 
-        public InscricaoService(
-            EvenPaceContext context,
-            IEventosService eventoService,
-            IKitService kitService)
+        private readonly EvenPaceContext _context;
+
+        public InscricaoService(EvenPaceContext context)
         {
             _context = context;
-            _eventoService = eventoService;
-            _kitService = kitService;
-        }
-
-        /// <summary>
-        /// Processa o cancelamento lógico da inscrição, avaliando previamente a compatibilidade entre titular e evento, bem como restrições de prazo temporal estipuladas.
-        /// </summary>
-        /// <param name="idInscricao">O ID da inscrição no banco de dados.</param>
-        /// <param name="idCorredor">A identificação numérica do solicitante logado.</param>
-        /// <exception cref="Exception">Apresenta exceções descritivas em casos de incompatibilidade de usuário, registro inexistente ou expiração temporal em relação ao evento correspondente.</exception>
-        public void Cancelar(int idInscricao, int idCorredor)
-        {
-            var inscricao = _context.Inscricao
-                .Include(i => i.IdEventoNavigation)
-                .FirstOrDefault(i => i.Id == idInscricao && i.IdCorredor == idCorredor);
-
-            if (inscricao == null)
-                throw new Exception("Inscrição não encontrada ou não pertence ao corredor.");
-
-            if (inscricao.IdEventoNavigation.Data < DateTime.Now)
-                throw new Exception("Não é possível cancelar após a data do evento.");
-
-            if (inscricao.Status == "Cancelada")
-                return;
-
-            inscricao.Status = "Cancelada";
-
-            _context.Update(inscricao);
-            _context.SaveChanges();
-        }
-
-        /// <summary>
-        /// Salva uma nova requisição de participação (inscrição) na tabela baseada nos dados do formulário submetido pelo atleta.
-        /// </summary>
-        /// <param name="inscricao">Objeto contendo as seleções de prova e relacionamento relativas ao usuário.</param>
-        /// <returns>Identificador recém-gerado da inscrição validada no banco.</returns>
-        public int Create(Inscricao inscricao)
-        {
-            _context.Add(inscricao);
-            _context.SaveChanges();
-            return inscricao.Id;
         }
 
         public async Task<int> CreateAsync(Inscricao inscricao)
         {
+            if (inscricao is null)
+                throw new ArgumentNullException(nameof(inscricao));
+
+            await ValidarInscricaoAsync(inscricao);
+
             await _context.Inscricao.AddAsync(inscricao);
             await _context.SaveChangesAsync();
             return inscricao.Id;
         }
 
-        /// <summary>
-        /// Promove alterações em um registro de inscrição ativado na base.
-        /// </summary>
-        /// <param name="inscricao">Objeto populado com os valores superpostos à entidade antiga.</param>
-        public void Edit(Inscricao inscricao)
+        public async Task EditAsync(Inscricao inscricao)
         {
-            _context.Update(inscricao);
-            _context.SaveChanges();
+            if (inscricao is null)
+                throw new ArgumentNullException(nameof(inscricao));
+
+            _context.Entry(inscricao).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Remove permanentemente o vínculo de inscrição dos servidores persistentes.
-        /// </summary>
-        /// <param name="id">Chave de registro exclusivo da inscrição a ser decomposta.</param>
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var _inscricao = _context.Inscricao.Find(id);
-            _context.Remove(_inscricao);
-            _context.SaveChanges();
+            var inscricao = await _context.Inscricao.FirstOrDefaultAsync(i => i.Id == id);
+            if (inscricao is null)
+                return;
+
+            _context.Inscricao.Remove(inscricao);
+            await _context.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Seleciona as características de uma inscrição fornecendo o seu respectivo Id.
-        /// </summary>
-        /// <param name="id">Id da inscrição requisitada.</param>
-        /// <returns>Entidade localizada de Inscrição.</returns>
-        public Inscricao? Get(int id)
+        public async Task<Inscricao?> GetAsync(int id)
         {
-            return _context.Inscricao.FirstOrDefault(i => i.Id == id);
+            return await _context.Inscricao
+                .AsNoTracking()
+                .FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        /// <summary>
-        /// Fornece o controle integral de todas as inscrições criadas historicamente sem filtro específico de evento.
-        /// </summary>
-        /// <returns>Iterador abrangendo todo o contexto de inscrições inseridas.</returns>
-        public IEnumerable<Inscricao> GetAll()
+        public async Task<IEnumerable<Inscricao>> GetAllAsync()
         {
-            return _context.Inscricao;
+            return await _context.Inscricao
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        /// <summary>
-        /// Resgata toda a segmentação de ingressos comprados referentes a um mesmo campeonato esportivo, embutindo os relacionamentos vinculados.
-        /// </summary>
-        /// <param name="idEvento">Código-alvo da busca agrupadora.</param>
-        /// <returns>Conjunto mapeado com navegabilidade para kit, corredor e detalhamento do evento correspondente.</returns>
-        public IEnumerable<Inscricao> GetAllByEvento(int idEvento)
+        public async Task<IEnumerable<Inscricao>> GetAllByEventoAsync(int idEvento)
         {
-            return _context.Inscricao
+            return await _context.Inscricao
+                .AsNoTracking()
                 .Include(i => i.IdKitNavigation)
                 .Include(i => i.IdCorredorNavigation)
                 .Include(i => i.IdEventoNavigation)
                 .Where(i => i.IdEvento == idEvento)
-                .ToList();
+                .OrderBy(i => i.Id)
+                .ToListAsync();
         }
 
-        /// <summary>
-        /// Produz uma estrutura unificada aglomerando os dados básicos de um evento bem como as alternativas de aquisição (Kits) correspondentes a ele, viabilizando o carregamento de telas interativas ao usuário.
-        /// </summary>
-        /// <param name="idEvento">A identificação de contexto do evento a ser analisado.</param>
-        /// <returns>Instância de Dto com variáveis agrupadas para a visualização.</returns>
-        /// <exception cref="InvalidOperationException">Exceção forçada quando o evento consultado não reside ativamente no diretório de informações.</exception>
-        public DadosTelaInscricaoDto GetDadosTelaInscricao(int idEvento)
+        public async Task<DadosTelaInscricaoDto> GetDadosTelaInscricaoAsync(int idEvento)
         {
-            var evento = _eventoService.Get(idEvento);
-            if (evento == null)
+            var evento = await _context.Eventos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == idEvento);
+
+            if (evento is null)
                 throw new InvalidOperationException($"Evento {idEvento} não existe no banco.");
 
-            var kits = _kitService.GetKitsPorEvento(idEvento);
+            var kits = await _context.Kits
+                .AsNoTracking()
+                .Where(k => k.IdEvento == idEvento)
+                .OrderBy(k => k.Id)
+                .ToListAsync();
 
             return new DadosTelaInscricaoDto
             {
@@ -144,30 +102,26 @@ namespace Service
                 DataEvento = evento.Data,
                 Descricao = evento.Descricao,
                 ImagemEvento = evento.Imagem,
+                InfoRetiradaKit = evento.InfoRetiradaKit,
+                Percursos = ObterPercursosDisponiveis(evento),
                 Kits = kits
             };
         }
 
-        /// <summary>
-        /// Analisa as condicionalidades temporais e coleta as informações essenciais necessárias para preencher corretamente a confirmação em tela de um cancelamento de inscrição iminente.
-        /// </summary>
-        /// <param name="idInscricao">Id da requisição do participante.</param>
-        /// <returns>Classe Result providenciando o sucesso ou a justificativa explícita de recusa e, caso aprovada, as propriedades da inscrição a serem apresentadas.</returns>
-        public GetDadosTelaDeleteResult GetDadosTelaDelete(int idInscricao)
+        public async Task<GetDadosTelaDeleteResult> GetDadosTelaDeleteAsync(int idInscricao)
         {
-            var inscricao = _context.Inscricao
+            var inscricao = await _context.Inscricao
+                .AsNoTracking()
                 .Include(i => i.IdEventoNavigation)
+                .Include(i => i.IdCorredorNavigation)
                 .Include(i => i.IdKitNavigation)
-                .FirstOrDefault(i => i.Id == idInscricao);
+                .FirstOrDefaultAsync(i => i.Id == idInscricao);
 
-            if (inscricao == null)
+            if (inscricao is null)
                 return new GetDadosTelaDeleteResult { Success = false, ErrorType = "NotFound" };
 
             if (inscricao.IdEventoNavigation.Data < DateTime.Now)
                 return new GetDadosTelaDeleteResult { Success = false, ErrorType = "EventoExpirado" };
-
-            var kit = inscricao.IdKit.HasValue ? _kitService.Get(inscricao.IdKit.Value) : null;
-            var nomeKit = kit?.Nome ?? "Sem kit";
 
             return new GetDadosTelaDeleteResult
             {
@@ -177,7 +131,8 @@ namespace Service
                     NomeEvento = inscricao.IdEventoNavigation.Nome,
                     DataEvento = inscricao.IdEventoNavigation.Data,
                     Local = inscricao.IdEventoNavigation.Cidade,
-                    NomeKit = nomeKit,
+                    NomeCorredor = inscricao.IdCorredorNavigation?.Nome ?? "Corredor",
+                    NomeKit = inscricao.IdKitNavigation?.Nome ?? "Sem kit",
                     IdInscricao = inscricao.Id,
                     Distancia = inscricao.Distancia,
                     TamanhoCamisa = inscricao.TamanhoCamisa,
@@ -186,20 +141,98 @@ namespace Service
             };
         }
 
-        /// <summary>
-        /// Efetiva e homologa a retirada do material desportivo, chaveando as informações de validação do banco para confirmar o recebimento pelo participante.
-        /// </summary>
-        /// <param name="idInscricao">A chave primária correspondente à inscrição e respectivo ticket validado no posto de controle.</param>
-        public void ConfirmarRetiradaKit(int idInscricao)
+        public async Task CancelarAsync(int idInscricao, int idCorredor)
         {
-            var inscricao = _context.Inscricao.Find(idInscricao);
+            var inscricao = await _context.Inscricao
+                .Include(i => i.IdEventoNavigation)
+                .FirstOrDefaultAsync(i => i.Id == idInscricao && i.IdCorredor == idCorredor);
 
-            if (inscricao != null)
+            if (inscricao is null)
+                throw new InvalidOperationException("Inscrição não encontrada ou não pertence ao corredor.");
+
+            if (inscricao.IdEventoNavigation.Data < DateTime.Now)
+                throw new InvalidOperationException("Não é possível cancelar após a data do evento.");
+
+            if (string.Equals(inscricao.Status, "Cancelada", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            inscricao.Status = "Cancelada";
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ConfirmarRetiradaKitAsync(int idInscricao)
+        {
+            var inscricao = await _context.Inscricao.FirstOrDefaultAsync(i => i.Id == idInscricao);
+
+            if (inscricao is null || inscricao.StatusRetiradaKit)
+                return;
+
+            inscricao.StatusRetiradaKit = true;
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task ValidarInscricaoAsync(Inscricao inscricao)
+        {
+            if (inscricao.IdCorredor <= 0)
+                throw new InvalidOperationException("Corredor inválido para a inscrição.");
+
+            var evento = await _context.Eventos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == inscricao.IdEvento);
+
+            if (evento is null)
+                throw new InvalidOperationException($"Evento {inscricao.IdEvento} não existe no banco.");
+
+            if (evento.Data < DateTime.Now)
+                throw new InvalidOperationException("Não é possível realizar a inscrição porque a data do evento já expirou.");
+
+            if (inscricao.IdKit is null || inscricao.IdKit <= 0)
+                throw new InvalidOperationException("Selecione um kit para continuar.");
+
+            var kitPertenceAoEvento = await _context.Kits
+                .AsNoTracking()
+                .AnyAsync(k => k.Id == inscricao.IdKit.Value && k.IdEvento == inscricao.IdEvento);
+
+            if (!kitPertenceAoEvento)
+                throw new InvalidOperationException("O kit selecionado não pertence ao evento informado.");
+
+            var percursosDisponiveis = ObterPercursosDisponiveis(evento);
+            if (string.IsNullOrWhiteSpace(inscricao.Distancia) ||
+                !percursosDisponiveis.Contains(inscricao.Distancia, StringComparer.OrdinalIgnoreCase))
             {
-                inscricao.StatusRetiradaKit = true;
-
-                _context.SaveChanges();
+                throw new InvalidOperationException("Selecione uma distância válida para este evento.");
             }
+
+            if (string.IsNullOrWhiteSpace(inscricao.TamanhoCamisa) ||
+                !TamanhosCamisaValidos.Contains(inscricao.TamanhoCamisa))
+            {
+                throw new InvalidOperationException("Selecione um tamanho de camisa válido.");
+            }
+
+            var possuiInscricaoAtiva = await _context.Inscricao
+                .AsNoTracking()
+                .AnyAsync(i =>
+                    i.IdCorredor == inscricao.IdCorredor &&
+                    i.IdEvento == inscricao.IdEvento &&
+                    !string.Equals(i.Status, "Cancelada", StringComparison.OrdinalIgnoreCase));
+
+            if (possuiInscricaoAtiva)
+                throw new InvalidOperationException("Você já possui uma inscrição para este evento.");
+        }
+
+        private static List<string> ObterPercursosDisponiveis(Evento evento)
+        {
+            var percursos = new List<string>();
+
+            if (evento.Distancia3) percursos.Add("3km");
+            if (evento.Distancia5) percursos.Add("5km");
+            if (evento.Distancia7) percursos.Add("7km");
+            if (evento.Distancia10) percursos.Add("10km");
+            if (evento.Distancia15) percursos.Add("15km");
+            if (evento.Distancia21) percursos.Add("21km");
+            if (evento.Distancia42) percursos.Add("42km");
+
+            return percursos;
         }
     }
 }

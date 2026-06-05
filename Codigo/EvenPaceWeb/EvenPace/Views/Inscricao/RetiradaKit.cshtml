@@ -1,119 +1,158 @@
-﻿@model IEnumerable<Models.InscricaoViewModel>
+@model IEnumerable<Models.InscricaoViewModel>
 
 @{
-	ViewData["Title"] = "Ingressos do Evento";
+	ViewData["Title"] = "Retirada de kit";
 	var nomeEvento = Model.FirstOrDefault()?.IdEventoNavigation?.Nome ?? "Evento";
+	var aprovados = Model.Count(i => i.StatusRetiradaKit);
+	var cancelados = Model.Count(i => string.Equals(i.Status, "Cancelada", StringComparison.OrdinalIgnoreCase));
+	var pendentes = Model.Count(i => !i.StatusRetiradaKit && !string.Equals(i.Status, "Cancelada", StringComparison.OrdinalIgnoreCase));
 }
 
 <style>
 	:root {
-		--primary-yellow: #ffd700;
-		--bg-light: #f8f9fa;
-		--gray-card: #e0e0e0;
+		--text: #121212;
+		--muted: #6f7780;
+		--border: #ece7d5;
+		--yellow: #ffe07a;
+		--yellow-strong: #f4c542;
 	}
 
 	main.index-page {
-		padding: 20px;
+		padding: 24px 0 36px;
+		background: #fff;
+		color: var(--text);
+	}
+
+	.page-head {
+		background: linear-gradient(135deg, #fffdf4, #ffffff);
+		border: 1px solid var(--border);
+		border-radius: 26px;
+		padding: 22px;
+		box-shadow: 0 18px 40px rgba(18, 18, 18, 0.06);
+		margin-bottom: 22px;
+	}
+
+	.page-head h1 {
+		margin: 0;
+		font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+		font-weight: 800;
+		letter-spacing: -0.03em;
+	}
+
+	.subtitle {
+		margin: 8px 0 0;
+		color: var(--muted);
+	}
+
+	.summary-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 14px;
+		margin-bottom: 22px;
 	}
 
 	.summary-card {
-		background-color: var(--gray-card);
-		border-radius: 12px;
-		padding: 15px 25px;
-		flex: 1;
-		min-width: 250px;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 22px;
+		padding: 18px;
+		box-shadow: 0 12px 24px rgba(18, 18, 18, 0.05);
+		font-weight: 700;
 	}
 
-	.summary-label {
-		font-weight: bold;
-		font-size: 1.1rem;
-		margin-bottom: 0;
-	}
-
-	.summary-value {
-		font-size: 1.2rem;
-		font-weight: bold;
-	}
-
-	.table-container {
-		background-color: #d3d3d3;
-		border-radius: 15px;
-		padding: 20px;
-	}
-
-	.evenpace-table {
-		background-color: white;
-		border-radius: 8px;
+	.table-shell {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 24px;
+		padding: 16px;
+		box-shadow: 0 12px 24px rgba(18, 18, 18, 0.05);
 		overflow: hidden;
 	}
 
-		.evenpace-table thead th {
-			background-color: #f0f0f0;
-			border-bottom: 1px solid #ccc;
-			color: #000;
-			font-weight: bold;
-		}
-
-	.dataTables_filter input {
-		border-radius: 20px;
-		border: 1px solid #ced4da;
-		padding: 5px 15px;
-		outline: none;
+	.ingressos-table {
+		width: 100%;
+		border-collapse: separate;
+		border-spacing: 0;
 	}
 
-	.btn-checkin-pending {
-		background-color: #808080;
-		color: white;
-		border-radius: 5px;
-		font-size: 0.75rem;
-		width: 100px;
+	.ingressos-table thead th {
+		background: #fffdf3;
+		color: var(--text);
+		border-bottom: 1px solid var(--border);
+		font-weight: 800;
+		padding: 14px 12px;
+		white-space: nowrap;
+	}
+
+	.ingressos-table tbody td {
+		padding: 14px 12px;
+		border-bottom: 1px solid #f3f0e3;
+		vertical-align: middle;
+	}
+
+	.badge-soft {
+		display: inline-flex;
+		align-items: center;
+		padding: 8px 12px;
+		border-radius: 999px;
+		background: rgba(255, 224, 122, 0.22);
+		border: 1px solid rgba(244, 197, 66, 0.22);
+		font-size: .82rem;
+		font-weight: 800;
+		color: #2b2b2b;
+	}
+
+	.badge-ok {
+		background: #eef8ef;
+		border-color: #d9efd9;
+		color: #2f7a35;
+	}
+
+	.checkin-btn {
 		border: none;
-		padding: 6px;
-		transition: 0.2s;
+		border-radius: 999px;
+		padding: 9px 14px;
+		background: linear-gradient(135deg, var(--yellow), var(--yellow-strong));
+		color: #222;
+		font-weight: 800;
+		min-width: 120px;
 	}
 
-		.btn-checkin-pending:hover {
-			background-color: #666;
+	@@media (min-width: 768px) {
+		.summary-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+
+	@@media (max-width: 767.98px) {
+		main.index-page {
+			padding: 16px 0 28px;
 		}
 
-	.btn-checkin-done {
-		background-color: #28a745;
-		color: white;
-		border-radius: 5px;
-		font-size: 0.75rem;
-		width: 100px;
-		display: inline-block;
-		text-align: center;
-		padding: 6px;
+		.page-head,
+		.table-shell {
+			border-radius: 20px;
+		}
 	}
 </style>
 
-<main class="container-fluid index-page">
-	<header class="mb-4">
-		<h1 class="fw-bold mb-0">Ingressos</h1>
-		<p class="fs-5">@nomeEvento</p>
+<main class="container-fluid index-page px-3 px-md-4 px-xl-5">
+	<header class="page-head">
+		<h1>Retirada de kit</h1>
+		<p class="subtitle">@nomeEvento</p>
 	</header>
 
-	<section class="d-flex flex-wrap gap-3 mb-5">
-		<div class="summary-card d-flex justify-content-between align-items-center shadow-sm">
-			<span class="summary-label">Ingressos Aprovados:</span>
-			<span class="summary-value" id="qtdAprovados">@Model.Count(i => i.StatusRetiradaKit)</span>
-		</div>
-		<div class="summary-card d-flex justify-content-between align-items-center shadow-sm">
-			<span class="summary-label">Ingressos Cancelados:</span>
-			<span class="summary-value">0</span>
-		</div>
-		<div class="summary-card d-flex justify-content-between align-items-center shadow-sm">
-			<span class="summary-label">Ingressos Pendentes:</span>
-			<span class="summary-value" id="qtdPendentes">@Model.Count(i => !i.StatusRetiradaKit)</span>
-		</div>
+	<section class="summary-grid">
+		<div class="summary-card">Aprovados: <strong id="qtdAprovados">@aprovados</strong></div>
+		<div class="summary-card">Cancelados: <strong>@cancelados</strong></div>
+		<div class="summary-card">Pendentes: <strong id="qtdPendentes">@pendentes</strong></div>
 	</section>
 
 	@Html.AntiForgeryToken()
 
-	<section class="table-container shadow-sm">
-		<div class="table-responsive bg-white rounded-3 p-3">
-			<table id="tabelaInscritos" class="table evenpace-table mb-0 w-100">
+	<section class="table-shell">
+		<div class="table-responsive">
+			<table id="tabelaInscritos" class="ingressos-table">
 				<thead>
 					<tr>
 						<th>Nome</th>
@@ -128,24 +167,24 @@
 					@foreach (var item in Model)
 					{
 						<tr>
-							<td class="fw-semibold">@item.IdCorredorNavigation?.Nome</td>
-							<td>@item.IdCorredorNavigation?.Cpf</td>
-							<td>@item.IdKitNavigation?.Nome</td>
-							<td>@item.Distancia</td>
-							<td>@item.TamanhoCamisa</td>
+							<td class="fw-semibold text-nowrap">@item.IdCorredorNavigation?.Nome</td>
+							<td class="text-nowrap">@item.IdCorredorNavigation?.Cpf</td>
+							<td class="text-nowrap">@item.IdKitNavigation?.Nome</td>
+							<td class="text-nowrap">@item.Distancia</td>
+							<td class="text-nowrap">@item.TamanhoCamisa</td>
 							<td class="text-center" id="td-checkin-@item.Id">
 								@if (!item.StatusRetiradaKit)
 								{
 									<button type="button"
-											class="btn-checkin-pending btn-checkin"
+											class="checkin-btn btn-checkin"
 											data-id="@item.Id"
 											data-evento="@item.IdEvento">
-										Não Retirado
+										Não retirado
 									</button>
 								}
 								else
 								{
-									<span class="btn-checkin-done">Retirado</span>
+									<span class="badge-soft badge-ok">Retirado</span>
 								}
 							</td>
 						</tr>
@@ -164,12 +203,12 @@
 	<script>
 		$(document).ready(function () {
 			$('#tabelaInscritos').DataTable({
-				"language": {
-					"url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
+				language: {
+					url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
 				},
-				"pageLength": 10,
-				"columnDefs": [
-					{ "orderable": false, "targets": 5 }
+				pageLength: 10,
+				columnDefs: [
+					{ orderable: false, targets: 5 }
 				]
 			});
 
@@ -189,19 +228,21 @@
 						idEvento: idEvento,
 						__RequestVerificationToken: token
 					},
-					success: function (response) {
+					success: function () {
 						var parentTd = btn.closest('td');
-						parentTd.html('<span class="btn-checkin-done">Retirado</span>');
+						parentTd.html('<span class="badge-soft badge-ok">Retirado</span>');
 
 						var qtdPendentes = $('#qtdPendentes');
 						var qtdAprovados = $('#qtdAprovados');
 
-						qtdPendentes.text(parseInt(qtdPendentes.text()) - 1);
-						qtdAprovados.text(parseInt(qtdAprovados.text()) + 1);
+						if (qtdPendentes.length && qtdAprovados.length) {
+							qtdPendentes.text(parseInt(qtdPendentes.text()) - 1);
+							qtdAprovados.text(parseInt(qtdAprovados.text()) + 1);
+						}
 					},
 					error: function () {
-						alert("Erro ao confirmar a retirada. Tente novamente.");
-						btn.prop('disabled', false).text('Não Retirado');
+						alert('Erro ao confirmar a retirada. Tente novamente.');
+						btn.prop('disabled', false).text('Não retirado');
 					}
 				});
 			});

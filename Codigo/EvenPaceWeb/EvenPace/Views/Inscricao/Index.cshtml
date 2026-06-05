@@ -2,230 +2,416 @@
 
 @{
 	Layout = null;
+	var popupMessage = ViewBag.PopupMessage as string;
+	var successMessage = TempData["Sucesso"] as string;
+	var errorMessage = TempData["Erro"] as string;
 }
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8" />
-	<title>@Model.NomeEvento</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>@Model.NomeEvento</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
 
 	<style>
-		body {
-			background: #fff;
-			background: #fff;
+		:root {
+			--surface: #ffffff;
+			--surface-soft: #fffdf3;
+			--text: #121212;
+			--muted: #6f7780;
+			--border: #ece7d5;
+			--yellow: #ffe07a;
+			--yellow-strong: #f4c542;
+			--shadow: 0 18px 40px rgba(18, 18, 18, 0.08);
 		}
 
-		.app-card {
+		* { box-sizing: border-box; }
+
+		body {
+			margin: 0;
+			font-family: "Montserrat", system-ui, sans-serif;
+			color: var(--text);
+			background: linear-gradient(180deg, #ffffff 0%, #fffef7 100%);
+			min-height: 100vh;
+		}
+
+		.page-shell {
+			min-height: 100vh;
+			padding: 0;
+		}
+
+		.page-card {
+			width: 100%;
+			min-height: 100vh;
 			background: #fff;
-			border-radius: 1rem;
-			overflow: hidden;
 			display: flex;
 			flex-direction: column;
-			height: 85vh;
-			position: relative;
-			box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
 		}
 
-		.header {
-			padding: 18px;
-			border-bottom: 1px solid #eee;
-			cursor: pointer;
+		.topbar {
+			padding: 18px 18px 14px;
+			border-bottom: 1px solid var(--border);
+			background: rgba(255, 255, 255, 0.95);
+			backdrop-filter: blur(10px);
+			position: sticky;
+			top: 0;
+			z-index: 5;
 		}
 
-		.app-content {
-			flex: 1;
-			overflow-y: auto;
-			padding: 16px;
-		}
-
-		.image-placeholder {
-			width: 100%;
-			height: 220px;
-			background: #eef1f4;
-			border-radius: 14px;
-			display: flex;
+		.back-link {
+			display: inline-flex;
 			align-items: center;
-			justify-content: center;
-			color: #6c757d;
-			font-size: .95rem;
-			margin-bottom: 16px;
+			gap: 8px;
+			text-decoration: none;
+			color: var(--text);
+			font-weight: 800;
+		}
+
+		.hero {
+			padding: 18px 0 24px;
+		}
+
+		.hero-box {
+			background: linear-gradient(135deg, #fffdf4, #ffffff);
+			border: 1px solid var(--border);
+			border-radius: 26px;
+			box-shadow: var(--shadow);
+			overflow: hidden;
+		}
+
+		.hero-media {
+			position: relative;
+			min-height: 260px;
+			background: var(--surface-soft);
+		}
+
+		.hero-media img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+
+		.hero-fallback {
+			min-height: 260px;
+			display: grid;
+			place-items: center;
+			color: var(--muted);
+			font-weight: 700;
+			text-align: center;
+			padding: 24px;
+		}
+
+		.hero-content {
+			padding: 22px;
 		}
 
 		.event-title {
-			font-weight: bold;
-			text-align: center;
-			margin-bottom: 12px;
+			margin: 0;
+			font-size: clamp(1.7rem, 2.4vw, 2.4rem);
+			font-weight: 800;
+			letter-spacing: -0.04em;
 		}
 
-		.event-info {
-			font-size: .9rem;
-			color: #6c757d;
-			margin-bottom: 16px;
-		}
-
-		.percurso-opcoes {
-			display: flex;
-			justify-content: center;
+		.meta-grid {
+			display: grid;
+			grid-template-columns: 1fr;
 			gap: 12px;
-			flex-wrap: wrap;
-			margin: 12px 0 16px;
+			margin-top: 18px;
 		}
 
-		.badge-distance {
-			border: 1px solid #000;
-			padding: 8px 16px;
+		.meta-card {
+			padding: 14px 16px;
+			border-radius: 18px;
+			background: #fff;
+			border: 1px solid var(--border);
+		}
+
+		.meta-label {
+			display: block;
+			font-size: .8rem;
+			text-transform: uppercase;
+			letter-spacing: .08em;
+			color: var(--muted);
+			margin-bottom: 6px;
+			font-weight: 700;
+		}
+
+		.meta-value {
+			margin: 0;
+			font-weight: 700;
+			line-height: 1.5;
+		}
+
+		.section {
+			padding: 0 0 22px;
+		}
+
+		.section-title {
+			margin: 0 0 12px;
+			font-size: 1.05rem;
+			font-weight: 800;
+			letter-spacing: -0.02em;
+		}
+
+		.text-muted-soft {
+			color: var(--muted);
+			line-height: 1.65;
+		}
+
+		.pill-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+
+		.pill {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 10px 14px;
 			border-radius: 999px;
-			font-size: .9rem;
-			font-weight: 600;
-			background: #000;
-			color: #FFD700;
+			background: rgba(255, 224, 122, 0.22);
+			border: 1px solid rgba(244, 197, 66, 0.22);
+			font-weight: 700;
+			font-size: .86rem;
+		}
+
+		.kits-grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 14px;
 		}
 
 		.kit-card {
 			display: flex;
-			justify-content: space-between;
-			gap: 12px;
-			border: 1px solid #eee;
-			border-radius: 12px;
-			padding: 12px;
-			margin-bottom: 12px;
-			align-items: center;
+			flex-direction: column;
+			gap: 14px;
+			padding: 16px;
+			border-radius: 22px;
+			border: 1px solid var(--border);
+			background: #fff;
+			box-shadow: 0 12px 24px rgba(18, 18, 18, 0.05);
 		}
 
-			.kit-card img {
-				width: 80px;
-				height: 80px;
-				object-fit: cover;
-				border-radius: 10px;
-			}
+		.kit-top {
+			display: flex;
+			gap: 14px;
+			align-items: flex-start;
+		}
+
+		.kit-card img {
+			width: 92px;
+			height: 92px;
+			object-fit: cover;
+			border-radius: 18px;
+			flex: 0 0 92px;
+			background: var(--surface-soft);
+		}
+
+		.kit-name {
+			margin: 0;
+			font-size: 1rem;
+			font-weight: 800;
+		}
+
+		.kit-desc {
+			margin: 6px 0 0;
+			color: var(--muted);
+			font-size: .92rem;
+			line-height: 1.5;
+		}
+
+		.kit-price {
+			margin-top: 10px;
+			font-weight: 800;
+			color: #313131;
+		}
 
 		.btn-inscrever {
-			display: block;
-			width: 80px;
-			padding: 4px 0;
-			background: #FFD700;
-			color: #000;
-			text-align: center;
-			border-radius: 999px;
-			font-weight: 600;
-			font-size: 0.75rem;
-			text-transform: uppercase;
-			text-decoration: none;
-			border: none;
-		}
-
-		.bottom-nav {
-			height: 70px;
-			border-top: 1px solid #ddd;
-			display: flex;
-			justify-content: space-around;
+			display: inline-flex;
 			align-items: center;
-			font-size: 12px;
-			background: #fff;
-			flex-shrink: 0;
+			justify-content: center;
+			width: 100%;
+			padding: 13px 16px;
+			border-radius: 999px;
+			background: linear-gradient(135deg, var(--yellow), var(--yellow-strong));
+			color: #222;
+			font-weight: 800;
+			text-decoration: none;
+			box-shadow: 0 12px 18px rgba(244, 197, 66, 0.18);
+			border: 1px solid rgba(244, 197, 66, 0.32);
 		}
 
-		@@media (max-width: 768px) {
-			.app-card {
-				height: 100vh;
-				border-radius: 0;
+		.swal2-popup {
+			border-radius: 1rem;
+			border: 1px solid rgba(220, 53, 69, 0.12);
+			background: #fff;
+			color: #212529;
+		}
+
+		.alert-stack {
+			display: grid;
+			gap: 12px;
+			margin-bottom: 14px;
+		}
+
+		@@media (min-width: 768px) {
+			.meta-grid {
+				grid-template-columns: repeat(3, minmax(0, 1fr));
 			}
 
-			.kit-card {
+			.kits-grid {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+		}
+
+		@@media (min-width: 1200px) {
+			.kits-grid {
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+			}
+		}
+
+		@@media (max-width: 767.98px) {
+			.topbar {
+				padding: 16px;
+			}
+
+			.hero-content {
+				padding: 18px;
+			}
+
+			.kit-top {
 				flex-direction: column;
-				align-items: flex-start;
+			}
+
+			.kit-card img {
+				width: 100%;
+				height: 180px;
+				flex: none;
 			}
 		}
 	</style>
 </head>
-
 <body>
+	<div class="page-shell">
+		<div class="page-card">
+			<div class="topbar">
+				<div class="container-fluid px-0">
+					<a href="javascript:history.back()" class="back-link">← Voltar</a>
+				</div>
+			</div>
 
-	<section class="vh-100 d-flex align-items-center">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-12 col-md-8 col-lg-6 col-xl-5">
-
-					<div class="app-card">
-
-						<div class="header" onclick="history.back()">← Voltar</div>
-
-						<div class="app-content">
-
+			<div class="container-fluid px-3 px-md-4 px-xl-5">
+				<div class="hero">
+					<div class="hero-box">
+						<div class="hero-media">
 							@if (!string.IsNullOrEmpty(Model.ImagemEvento))
 							{
-								<img src="@Url.Content($"~/imagens/{Model.ImagemEvento}")"
-									 class="img-fluid mb-3"
-									 style="width:100%; height:220px; object-fit:cover; border-radius:14px;" />
+								<img src="@Url.Content($"~/imagens/{Model.ImagemEvento}")" alt="@Model.NomeEvento" />
 							}
 							else
 							{
-								<div class="image-placeholder">Sem imagem do evento</div>
+								<div class="hero-fallback">Sem imagem do evento</div>
 							}
-
-							<div class="event-title">@Model.NomeEvento</div>
-
-							<div class="event-info">
-								📍 @Model.Local<br />
-								📅 @Model.DataEvento.ToString("dd/MM/yyyy")
-							</div>
-
-							<strong>Sobre o Evento</strong>
-							<p>@Model.Descricao</p>
-
-							<h6 class="fw-bold text-center mt-3">Percurso</h6>
-							<div class="percurso-opcoes">
-								@foreach (var percurso in Model.Percursos)
-								{
-									<span class="badge-distance">@percurso</span>
-								}
-							</div>
-
-							@if (!string.IsNullOrEmpty(Model.InfoRetiradaKit))
-							{
-								<h6 class="fw-bold mt-3">Informações de retirada de kits</h6>
-								<p>@Html.Raw(Model.InfoRetiradaKit.Replace("\n", "<br />"))</p>
-							}
-
-							@foreach (var kit in Model.Kits)
-							{
-								<div class="kit-card">
-									@if (!string.IsNullOrEmpty(kit.Imagem))
-									{
-										<img src="@Url.Content($"~/imagens/{kit.Imagem}")" />
-									}
-									<div>
-										<div class="fw-bold">@kit.Nome</div>
-										<small>@kit.Descricao</small><br />
-										<span class="fw-bold">R$ @kit.Valor.ToString("N2")</span>
-									</div>
-									<a asp-controller="Inscricao"
-									   asp-action="Create"
-									   asp-route-idEvento="@Model.IdEvento"
-									   asp-route-idKit="@kit.Id"
-									   class="btn-inscrever">Inscrever-se</a>
-								</div>
-							}
-
 						</div>
-
-						<div class="bottom-nav">
-							<a asp-controller="Evento" asp-action="IndexUsuario" style="text-decoration:none; color:inherit;">🏠<br />Início</a>
-							<div>🏆<br />Conquistas</div>
-							<div>🎟️<br />Cupons</div>
-							<div>🕓<br />Histórico</div>
-							<div>👤<br />Perfil</div>
+						<div class="hero-content">
+							<h1 class="event-title">@Model.NomeEvento</h1>
+							<div class="pill-row mt-3">
+								<span class="pill">📍 @Model.Local</span>
+								<span class="pill">📅 @Model.DataEvento.ToString("dd/MM/yyyy")</span>
+								<span class="pill">💛 Inscrição aberta</span>
+							</div>
 						</div>
-
 					</div>
-
 				</div>
+
+				<div class="alert-stack">
+					@if (!string.IsNullOrWhiteSpace(popupMessage))
+					{
+						<div class="swal2-popup shadow-sm p-3 p-md-4 text-center">
+							<div class="fw-bold mb-2 text-danger">Atenção</div>
+							<div>@popupMessage</div>
+						</div>
+					}
+
+					@if (!string.IsNullOrWhiteSpace(successMessage))
+					{
+						<div class="alert alert-success border-0 rounded-4 shadow-sm mb-0">@successMessage</div>
+					}
+
+					@if (!string.IsNullOrWhiteSpace(errorMessage))
+					{
+						<div class="alert alert-danger border-0 rounded-4 shadow-sm mb-0">@errorMessage</div>
+					}
+				</div>
+
+				<section class="section">
+					<h2 class="section-title">Sobre o evento</h2>
+					<p class="text-muted-soft">@Model.Descricao</p>
+				</section>
+
+				<section class="section">
+					<h2 class="section-title">Percursos</h2>
+					<div class="pill-row">
+						@foreach (var percurso in Model.Percursos)
+						{
+							<span class="pill">@percurso</span>
+						}
+					</div>
+				</section>
+
+				@if (!string.IsNullOrWhiteSpace(Model.InfoRetiradaKit))
+				{
+					<section class="section">
+						<h2 class="section-title">Informações de retirada do kit</h2>
+						<p class="text-muted-soft">@Html.Raw(Model.InfoRetiradaKit.Replace("\n", "<br />"))</p>
+					</section>
+				}
+
+				<section class="section">
+					<h2 class="section-title">Kits disponíveis</h2>
+					<div class="kits-grid">
+						@foreach (var kit in Model.Kits)
+						{
+							<div class="kit-card">
+								<div class="kit-top">
+									@if (!string.IsNullOrWhiteSpace(kit.Imagem))
+									{
+										<img src="@Url.Content($"~/imagens/{kit.Imagem}")" alt="@kit.Nome" />
+									}
+									else
+									{
+										<div class="d-grid place-items-center text-center" style="width:100%; min-height:92px; border-radius:18px; background:#fffdf3; border:1px solid #ece7d5; color:#6f7780; font-weight:700;">
+											Sem imagem
+										</div>
+									}
+
+									<div class="flex-grow-1">
+										<h3 class="kit-name">@kit.Nome</h3>
+										<p class="kit-desc">@kit.Descricao</p>
+										<div class="kit-price">R$ @kit.Valor.ToString("N2")</div>
+									</div>
+								</div>
+
+								<a asp-controller="Inscricao"
+								   asp-action="Create"
+								   asp-route-idEvento="@Model.IdEvento"
+								   asp-route-idKit="@kit.Id"
+								   class="btn-inscrever">
+									Inscrever-se
+								</a>
+							</div>
+						}
+					</div>
+				</section>
 			</div>
 		</div>
-	</section>
-
+	</div>
 </body>
 </html>

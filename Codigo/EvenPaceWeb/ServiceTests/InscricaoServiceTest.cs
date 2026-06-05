@@ -1,7 +1,5 @@
 using Core;
-using Core.Service;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using Service;
 
 namespace EvenPaceWebTests.Service
@@ -9,8 +7,8 @@ namespace EvenPaceWebTests.Service
     [TestClass]
     public class InscricaoServiceTest
     {
-        private EvenPaceContext context;
-        private InscricaoService service;
+        private EvenPaceContext context = null!;
+        private InscricaoService service = null!;
 
         [TestInitialize]
         public void Initialize()
@@ -23,31 +21,31 @@ namespace EvenPaceWebTests.Service
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-            var mockEventoService = new Mock<IEventosService>();
-            var mockKitService = new Mock<IKitService>();
-            service = new InscricaoService(context, mockEventoService.Object, mockKitService.Object);
+            service = new InscricaoService(context);
         }
 
         [TestMethod]
-        public void Create_DeveAdicionarInscricaoESalvar()
+        public async Task CreateAsync_DeveAdicionarInscricaoESalvar()
         {
+            SeedEventoComKit();
+
             var inscricao = new Inscricao
             {
                 Status = "Pendente",
                 Distancia = "5km",
                 TamanhoCamisa = "M",
-                IdEvento = 2,
+                IdEvento = 1,
                 IdCorredor = 3,
                 IdKit = 1
             };
 
-            service.Create(inscricao);
+            await service.CreateAsync(inscricao);
 
-            Assert.AreEqual(1, context.Inscricao.Count());
+            Assert.AreEqual(1, await context.Inscricao.CountAsync());
         }
 
         [TestMethod]
-        public void Get_DeveRetornarInscricaoPorId()
+        public async Task GetAsync_DeveRetornarInscricaoPorId()
         {
             var inscricao = new Inscricao
             {
@@ -61,16 +59,16 @@ namespace EvenPaceWebTests.Service
             };
 
             context.Inscricao.Add(inscricao);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
-            var result = service.Get(1);
+            var result = await service.GetAsync(1);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Id);
         }
 
         [TestMethod]
-        public void GetAll_DeveRetornarListaDeInscricoes()
+        public async Task GetAllAsync_DeveRetornarListaDeInscricoes()
         {
             context.Inscricao.AddRange(
                 new Inscricao
@@ -95,29 +93,17 @@ namespace EvenPaceWebTests.Service
                 }
             );
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
-            var result = service.GetAll();
+            var result = await service.GetAllAsync();
 
             Assert.AreEqual(2, result.Count());
         }
 
         [TestMethod]
-        public void Cancelar_DeveAlterarStatusParaCancelada()
+        public async Task CancelarAsync_DeveAlterarStatusParaCancelada()
         {
-            var evento = new Evento
-            {
-                Id = 1,
-                Nome = "Evento Teste",
-                Descricao = "Descrição teste",
-                Cidade = "São Paulo",
-                Estado = "SP",
-                Bairro = "Centro",
-                Rua = "Rua A",
-                InfoRetiradaKit = "Retirada no local",
-                Data = DateTime.Now.AddDays(5)
-            };
-
+            SeedEventoComKit();
 
             var inscricao = new Inscricao
             {
@@ -127,67 +113,141 @@ namespace EvenPaceWebTests.Service
                 TamanhoCamisa = "M",
                 IdEvento = 1,
                 IdCorredor = 1,
-                IdKit = 1,
-                IdEventoNavigation = evento
+                IdKit = 1
             };
 
-            context.Eventos.Add(evento);
             context.Inscricao.Add(inscricao);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
-            service.Cancelar(1, 1);
+            await service.CancelarAsync(1, 1);
 
-            var result = context.Inscricao.First();
+            var result = await context.Inscricao.FirstAsync();
             Assert.AreEqual("Cancelada", result.Status);
         }
 
         [TestMethod]
-        public void Cancelar_InscricaoNaoExiste_LancaExcecao()
+        public async Task CancelarAsync_InscricaoNaoExiste_LancaExcecao()
         {
-            Assert.ThrowsException<Exception>(() =>
-                service.Cancelar(99, 1)
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+                service.CancelarAsync(99, 1)
             );
         }
+
         [TestMethod]
-        public void Cancelar_InscricaoJaCancelada_EP90()
+        public async Task CreateAsync_InscricaoDuplicadaMesmoEvento_LancaExcecao()
         {
-            int idInscricaoRepetida = 10;
-            int idCorredorFake = 42;
+            SeedEventoComKit();
 
-            var evento = new Evento
+            context.Inscricao.Add(new Inscricao
             {
-                Id = 5,
-                Nome = "Corrida de Teste EP90",
-                Descricao = "Descricao do Evento",
-                Cidade = "Itabaiana",
-                Estado = "SE",
-                Bairro = "Centro",
-                Rua = "Rua Teste",
-                InfoRetiradaKit = "Informacoes de retirada",
-                Data = DateTime.Now.AddDays(10)
-            };
-
-            var inscricaoJaCancelada = new Inscricao
-            {
-                Id = idInscricaoRepetida,
-                IdCorredor = idCorredorFake,
-                IdEvento = 5,
-                Status = "Cancelada", 
+                Id = 1,
+                Status = "Pendente",
                 Distancia = "5km",
-                TamanhoCamisa = "G",
-                IdEventoNavigation = evento
+                TamanhoCamisa = "M",
+                IdEvento = 1,
+                IdCorredor = 1,
+                IdKit = 1
+            });
+            await context.SaveChangesAsync();
+
+            var inscricaoDuplicada = new Inscricao
+            {
+                Status = "Pendente",
+                Distancia = "5km",
+                TamanhoCamisa = "M",
+                IdEvento = 1,
+                IdCorredor = 1,
+                IdKit = 1
             };
 
-            context.Eventos.Add(evento);
-            context.Inscricao.Add(inscricaoJaCancelada);
-            context.SaveChanges();
-            
-            service.Cancelar(idInscricaoRepetida, idCorredorFake);
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+                service.CreateAsync(inscricaoDuplicada)
+            );
+        }
 
-            var resultadoInscricao = context.Inscricao.Find(idInscricaoRepetida);
-    
-            Assert.IsNotNull(resultadoInscricao);
-            Assert.AreEqual("Cancelada", resultadoInscricao.Status, "A inscrição deveria continuar com o status Cancelada.");
+        [TestMethod]
+        public async Task CreateAsync_EventoExpirado_LancaExcecao()
+        {
+            context.Eventos.Add(new Evento
+            {
+                Id = 1,
+                Nome = "Evento expirado",
+                Descricao = "Descrição",
+                Cidade = "São Paulo",
+                Estado = "SP",
+                Bairro = "Centro",
+                Rua = "Rua A",
+                InfoRetiradaKit = "Retirada no local",
+                Data = DateTime.Now.AddDays(-1)
+            });
+
+            context.Kits.Add(new Kit
+            {
+                Id = 1,
+                Nome = "Kit A",
+                Descricao = "Descrição",
+                Valor = 100,
+                DisponibilidadeP = 1,
+                DisponibilidadeM = 1,
+                DisponibilidadeG = 1,
+                UtilizadaP = 0,
+                UtilizadaM = 0,
+                UtilizadaG = 0,
+                IdEvento = 1,
+                DataRetirada = DateTime.Now.AddDays(-2)
+            });
+
+            await context.SaveChangesAsync();
+
+            var inscricao = new Inscricao
+            {
+                Status = "Pendente",
+                Distancia = "5km",
+                TamanhoCamisa = "M",
+                IdEvento = 1,
+                IdCorredor = 1,
+                IdKit = 1
+            };
+
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+                service.CreateAsync(inscricao)
+            );
+        }
+
+        private void SeedEventoComKit()
+        {
+            context.Eventos.Add(new Evento
+            {
+                Id = 1,
+                Nome = "Evento Teste",
+                Descricao = "Descrição teste",
+                Cidade = "São Paulo",
+                Estado = "SP",
+                Bairro = "Centro",
+                Rua = "Rua A",
+                InfoRetiradaKit = "Retirada no local",
+                Data = DateTime.Now.AddDays(5),
+                Distancia5 = true,
+                Distancia10 = true
+            });
+
+            context.Kits.Add(new Kit
+            {
+                Id = 1,
+                Nome = "Kit Básico",
+                Descricao = "Descrição kit",
+                Valor = 100,
+                DisponibilidadeP = 10,
+                DisponibilidadeM = 10,
+                DisponibilidadeG = 10,
+                UtilizadaP = 0,
+                UtilizadaM = 0,
+                UtilizadaG = 0,
+                IdEvento = 1,
+                DataRetirada = DateTime.Now.AddDays(2)
+            });
+
+            context.SaveChanges();
         }
     }
 }

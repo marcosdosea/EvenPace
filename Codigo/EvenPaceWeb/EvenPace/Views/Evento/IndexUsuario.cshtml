@@ -1,193 +1,429 @@
 @model IEnumerable<Models.EventoViewModel>
-
 @{
-	Layout = null;
+    ViewData["Title"] = "Eventos";
+    Layout = "_Layout";
+
+    var eventos = Model?.ToList() ?? new List<Models.EventoViewModel>();
+    var termo = Context.Request.Query["search"].ToString();
 }
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-	<meta charset="utf-8" />
-	<title>Eventos</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+@functions {
+    private static string ObterDistancias(Models.EventoViewModel evento)
+    {
+        var distancias = new List<string>();
 
-	<style>
-		body {
-			background: #fff;
-		}
+        if (evento.Distancia3) distancias.Add("3 km");
+        if (evento.Distancia5) distancias.Add("5 km");
+        if (evento.Distancia7) distancias.Add("7 km");
+        if (evento.Distancia10) distancias.Add("10 km");
+        if (evento.Distancia15) distancias.Add("15 km");
+        if (evento.Distancia21) distancias.Add("21 km");
+        if (evento.Distancia42) distancias.Add("42 km");
 
-		.app-card {
-			background: #fff;
-			border-radius: 1rem;
-			overflow: hidden;
-			display: flex;
-			flex-direction: column;
-			height: 85vh;
-			position: relative;
-		}
+        return distancias.Count == 0 ? "Percurso a definir" : string.Join(" e ", distancias);
+    }
 
-		.header {
-			padding: 18px;
-			border-bottom: 1px solid #eee;
-		}
+    private string ObterImagem(string? imagem)
+    {
+        if (string.IsNullOrWhiteSpace(imagem))
+        {
+            return string.Empty;
+        }
 
-		.search-wrapper {
-			display: flex;
-		}
+        if (imagem.StartsWith("http", StringComparison.OrdinalIgnoreCase) || imagem.StartsWith("/", StringComparison.Ordinal))
+        {
+            return imagem;
+        }
 
-		.search-input {
-			flex: 1;
-			border: 1px solid #000;
-			border-right: none;
-			border-radius: 25px 0 0 25px;
-			padding: 10px;
-		}
+        if (imagem.StartsWith("~", StringComparison.Ordinal))
+        {
+            return Url.Content(imagem);
+        }
 
-		.search-btn {
-			background: #000;
-			color: #fff;
-			border: 1px solid #000;
-			border-radius: 0 25px 25px 0;
-			padding: 10px 16px;
-		}
+        return Url.Content($"~/imagens/{imagem}");
+    }
+}
 
-		.filter-box {
-			margin-top: 8px;
-		}
+<section class="events-home">
+    <div class="events-container">
+        <div class="events-intro">
+            <div>
+                <span class="events-kicker">Eventos em Sergipe</span>
+                <h1>Encontre sua próxima corrida.</h1>
+            </div>
 
-		.app-content {
-			flex: 1;
-			overflow-y: auto;
-			padding: 12px;
-		}
+            <form method="get" asp-controller="Evento" asp-action="IndexUsuario" class="events-search">
+                <input type="search"
+                       name="search"
+                       value="@termo"
+                       placeholder="Buscar por evento, cidade ou estado"
+                       aria-label="Buscar eventos" />
+                <button type="submit">Buscar</button>
+            </form>
+        </div>
 
-		.events-grid {
-			display: grid;
-			grid-template-columns: repeat(2, 1fr);
-			gap: 12px;
-		}
+        <div class="events-toolbar">
+            <div>
+                <h2>Corridas disponíveis</h2>
+                <p>Eventos futuros com inscrição aberta pelo EvenPace.</p>
+            </div>
+            <span>@eventos.Count evento(s)</span>
+        </div>
 
-		.event-card {
-			border-radius: 14px;
-			overflow: hidden;
-			border: 1px solid #eee;
-			background: #fff;
-			display: flex;
-			flex-direction: column;
-		}
+        @if (!eventos.Any())
+        {
+            <div class="events-empty">
+                <strong>Nenhum evento disponível no momento.</strong>
+                <p>Quando novas corridas futuras forem cadastradas, elas aparecerão aqui.</p>
+            </div>
+        }
+        else
+        {
+            <div class="events-grid">
+                @foreach (var evento in eventos)
+                {
+                    var imagem = ObterImagem(evento.Imagem);
+                    var inscricaoUrl = Url.Action("Index", "Inscricao", new { id = evento.Id });
 
-			.event-card img {
-				width: 100%;
-				height: 150px;
-				object-fit: cover;
-			}
+                    <article class="event-card">
+                        <a href="@inscricaoUrl" class="event-card-link" aria-label="Ver inscrição de @evento.Nome">
+                            <div class="event-image">
+                                @if (!string.IsNullOrWhiteSpace(imagem))
+                                {
+                                    <img src="@imagem" alt="@evento.Nome" />
+                                }
+                                else
+                                {
+                                    <div class="event-image-empty">
+                                        Sem imagem do evento
+                                    </div>
+                                }
+                            </div>
 
-		.event-body {
-			padding: 10px;
-		}
+                            <div class="event-content">
+                                <div class="event-tags">
+                                    <span>@evento.Data.ToString("dd/MM/yyyy")</span>
+                                    <span>@ObterDistancias(evento)</span>
+                                </div>
 
-		.event-title {
-			font-weight: bold;
-		}
+                                <h3>@evento.Nome</h3>
+                                <p class="event-description">@evento.Descricao</p>
 
-		.event-info {
-			font-size: .9rem;
-			color: #6c757d;
-		}
+                                <dl class="event-meta">
+                                    <div>
+                                        <dt>Cidade</dt>
+                                        <dd>@evento.Cidade - @evento.Estado</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Vagas</dt>
+                                        <dd>@evento.NumeroParticipantes participantes</dd>
+                                    </div>
+                                </dl>
 
-		.btn-inscrever {
-			display: block;
-			width: 80%;
-			margin: 10px auto 0;
-			padding: 6px 0;
-			background: #000;
-			color: #fff;
-			text-align: center;
-			border-radius: 999px;
-			font-weight: 600;
-		}
+                                <span class="event-cta">Ver inscrição</span>
+                            </div>
+                        </a>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+</section>
 
-		.bottom-nav {
-			height: 70px;
-			border-top: 1px solid #ddd;
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-			font-size: 12px;
-			background: #fff;
-			flex-shrink: 0;
-		}
-	</style>
-</head>
+@section Styles {
+    <style>
+        .events-home {
+            width: 100%;
+            background: #ffffff;
+            padding: 32px 20px 56px;
+        }
 
-<body>
+        .events-container {
+            width: min(100%, 1480px);
+            margin: 0 auto;
+        }
 
-	<section class="vh-100 d-flex align-items-center">
+        .events-intro {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(320px, 520px);
+            align-items: end;
+            gap: 28px;
+            padding: 24px 0 30px;
+        }
 
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        .events-kicker {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            margin-bottom: 12px;
+            padding: 8px 14px;
+            border: 1px solid #f1e2b6;
+            border-radius: 999px;
+            background: #fff7d9;
+            color: #765a12;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
 
-					<div class="app-card shadow-lg">
+        .events-intro h1 {
+            margin: 0;
+            color: #202124;
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            line-height: 1.04;
+            font-weight: 800;
+            letter-spacing: 0;
+        }
 
-						<div class="header">
-							<form method="get" asp-action="IndexUsuario">
-								<div class="search-wrapper">
-									<input type="text"
-										   name="search"
-										   class="search-input"
-										   placeholder="Pesquisar"
-										   value="@Context.Request.Query["search"]" />
-									<button type="submit" class="search-btn">🔍</button>
-								</div>
-							</form>
-							<div class="filter-box">🔽 Filtro</div>
-						</div>
+        .events-search {
+            display: flex;
+            gap: 10px;
+            padding: 8px;
+            border: 1px solid #f1e2b6;
+            border-radius: 999px;
+            background: #fffdf6;
+        }
 
-						<div class="app-content">
-							<div class="events-grid">
-								@foreach (var evento in Model)
-								{
-									<a asp-controller="Inscricao"
-									   asp-action="Index"
-									   asp-route-id="@evento.Id"
-									   style="text-decoration:none; color:inherit;">
-										<div class="event-card">
-											<img src="@Url.Content("~/imagens/" + evento.Imagem)" />
-											<div class="event-body">
-												<div class="event-title">@evento.Nome</div>
-												<div class="event-info">
-													📍 @evento.Cidade - @evento.Estado <br />
-													📅 @evento.Data.ToString("dd/MM/yyyy")
-												</div>
-												<div class="btn-inscrever">
-													Inscrever-se
-												</div>
-											</div>
-										</div>
-									</a>
-								}
-							</div>
-						</div>
+        .events-search input {
+            min-width: 0;
+            flex: 1;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            padding: 12px 14px;
+            color: #202124;
+            font-weight: 600;
+        }
 
-						<div class="bottom-nav">
-							<a asp-controller="Evento" asp-action="IndexUsuario" style="text-decoration:none; color:inherit;">
-								🏠<br />Início
-							</a>
-							<div>🏆<br />Conquistas</div>
-							<div>🎟️<br />Cupons</div>
-							<div>🕓<br />Histórico</div>
-							<a class="nav-link text-dark" asp-controller="Corredor" asp-action="Get">👤<br />Perfil</a>
-						</div>
+        .events-search button,
+        .event-cta {
+            border: 1px solid #f0d07e;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #ffe7a6, #f7cf66);
+            color: #443200;
+            font-weight: 800;
+        }
 
-					</div>
+        .events-search button {
+            padding: 0 22px;
+        }
 
-				</div>
-			</div>
-		</div>
+        .events-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
 
-	</section>
+        .events-toolbar h2 {
+            margin: 0 0 4px;
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: 0;
+        }
 
-</body>
-</html>
+        .events-toolbar p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .events-toolbar span {
+            flex: 0 0 auto;
+            border: 1px solid #f1e2b6;
+            border-radius: 999px;
+            background: #fff7d9;
+            color: #765a12;
+            padding: 8px 14px;
+            font-weight: 800;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .event-card {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid #ece7d5;
+            border-radius: 8px;
+            background: #ffffff;
+            box-shadow: 0 18px 36px rgba(24, 24, 27, 0.07);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 44px rgba(24, 24, 27, 0.1);
+        }
+
+        .event-card-link {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .event-image {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background: #fff7d9;
+        }
+
+        .event-image img,
+        .event-image-empty {
+            width: 100%;
+            height: 100%;
+        }
+
+        .event-image img {
+            display: block;
+            object-fit: cover;
+        }
+
+        .event-image-empty {
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            color: #765a12;
+            text-align: center;
+            font-weight: 800;
+            background: repeating-linear-gradient(135deg, #fff7d9 0, #fff7d9 12px, #fffdf6 12px, #fffdf6 24px);
+        }
+
+        .event-content {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+        .event-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .event-tags span {
+            border: 1px solid #f1e2b6;
+            border-radius: 999px;
+            background: #fffdf6;
+            color: #765a12;
+            padding: 6px 10px;
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .event-content h3 {
+            margin: 0 0 8px;
+            color: #202124;
+            font-size: 1.12rem;
+            line-height: 1.25;
+            font-weight: 800;
+            letter-spacing: 0;
+        }
+
+        .event-description {
+            display: -webkit-box;
+            min-height: 3.1rem;
+            margin: 0 0 16px;
+            overflow: hidden;
+            color: #6b7280;
+            line-height: 1.55;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .event-meta {
+            display: grid;
+            gap: 10px;
+            margin: auto 0 18px;
+        }
+
+        .event-meta div {
+            display: grid;
+            gap: 2px;
+        }
+
+        .event-meta dt {
+            color: #88816f;
+            font-size: 0.76rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .event-meta dd {
+            margin: 0;
+            color: #2f2f2f;
+            font-weight: 700;
+        }
+
+        .event-cta {
+            display: inline-flex;
+            justify-content: center;
+            padding: 12px 16px;
+        }
+
+        .events-empty {
+            border: 1px solid #f1e2b6;
+            border-radius: 8px;
+            background: #fffdf6;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .events-empty strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 1.15rem;
+        }
+
+        .events-empty p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        @@media (max-width: 1199.98px) {
+            .events-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @@media (max-width: 991.98px) {
+            .events-intro {
+                grid-template-columns: 1fr;
+            }
+
+            .events-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @@media (max-width: 575.98px) {
+            .events-home {
+                padding: 22px 14px 40px;
+            }
+
+            .events-search {
+                flex-direction: column;
+                border-radius: 8px;
+            }
+
+            .events-search button {
+                min-height: 46px;
+            }
+
+            .events-toolbar {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+}
