@@ -1,24 +1,23 @@
-using System.Collections.Generic;
 using Core.Service.Dtos;
 
 namespace Core.Service;
 
 public interface IInscricaoService
 {
-    void Edit(Inscricao inscricao);
-    int Create(Inscricao inscricao);
-    Inscricao? Get(int id);
-    void Delete(int id);
-    void Cancelar(int idInscricao, int idCorredor);
+    Task EditAsync(Inscricao inscricao);
+    Task<int> CreateAsync(Inscricao inscricao);
+    Task<Inscricao?> GetAsync(int id);
+    Task DeleteAsync(int id);
+    Task CancelarAsync(int idInscricao, int idCorredor);
 
-    IEnumerable<Inscricao> GetAll();
-    IEnumerable<Inscricao> GetAllByEvento(int idEvento);
+    Task<IEnumerable<Inscricao>> GetAllAsync();
+    Task<IEnumerable<Inscricao>> GetAllByEventoAsync(int idEvento);
 
     /// <summary>Obtém dados para a tela de inscrição (evento + kits).</summary>
-    DadosTelaInscricaoDto GetDadosTelaInscricao(int idEvento);
+    Task<DadosTelaInscricaoDto> GetDadosTelaInscricaoAsync(int idEvento);
 
     /// <summary>Obtém dados para a tela de cancelamento. Retorna Success=false com ErrorType quando inscrição não existe ou evento já passou.</summary>
-    GetDadosTelaDeleteResult GetDadosTelaDelete(int idInscricao);
+    Task<GetDadosTelaDeleteResult> GetDadosTelaDeleteAsync(int idInscricao);
 
-    public Task<int> CreateAsync(Inscricao inscricao);
+    Task ConfirmarRetiradaKitAsync(int idInscricao);
 }

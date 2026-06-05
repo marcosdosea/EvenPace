@@ -1,83 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Página Inicial";
+@{
+    ViewData["Title"] = "Entrar";
+    Layout = "_Layout";
 }
 
-<style>
-    .evenpace-bg-dark {
-        background-color: #1a1a1a !important; /* Preto suave para os cards */
-    }
-
-    .evenpace-text-yellow {
-        color: #FFC107 !important; /* Amarelo clássico */
-    }
-
-    .evenpace-btn-yellow {
-        background-color: #FFC107;
-        color: #000000;
-        font-weight: 800;
-        border: none;
-        transition: all 0.3s ease;
-    }
-
-        .evenpace-btn-yellow:hover {
-            background-color: #e0a800;
-            color: #000000;
-            transform: translateY(-2px); /* Efeito de flutuar ao passar o mouse */
-            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
-        }
-
-    .evenpace-card {
-        border-radius: 15px;
-        border: 2px solid #333;
-    }
-
-    .evenpace-link {
-        color: #b38600;
-        transition: color 0.3s ease;
-    }
-
-        .evenpace-link:hover {
-            color: #FFC107;
-        }
-</style>
-
-<div class="text-center mt-5">
-    <h1 class="display-4 fw-bold text-dark mb-2">
-        Bem-vindo ao <span class="evenpace-text-yellow" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">EvenPace</span>
-    </h1>
-    <p class="lead mb-5 text-secondary fw-semibold">A plataforma definitiva para organizar e dominar suas corridas.</p>
-
-    <div class="row justify-content-center">
-        <div class="col-md-5 mb-4">
-            <div class="card shadow-lg h-100 evenpace-bg-dark evenpace-card">
-                <div class="card-body d-flex flex-column justify-content-center py-5 px-4">
-                    <h3 class="card-title evenpace-text-yellow mb-3 fw-bold">Sou uma Organização</h3>
-                    <p class="card-text text-light mb-4">
-                        Crie e gerencie seus eventos, controle a venda de ingressos, organize a distribuição de kits e acompanhe todos os resultados em tempo real.
+<section class="container-fluid px-3 px-lg-5 py-5 py-lg-6">
+    <div class="mx-auto" style="max-width: 1180px;">
+        <div class="rounded-5 border p-4 p-lg-5" style="background: linear-gradient(180deg, #fffdf6 0%, #ffffff 100%); border-color: #f1e2b6 !important;">
+            <div class="row align-items-center g-4">
+                <div class="col-12 col-lg-7">
+                    <span class="d-inline-flex align-items-center gap-2 rounded-pill px-3 py-2 mb-3" style="background:#fff4cf;color:#7b5d12;font-weight:800;border:1px solid #f1e2b6;">
+                        Acesso EvenPace
+                    </span>
+                    <h1 class="display-5 fw-bold mb-3" style="letter-spacing:-0.03em;">
+                        Escolha como entrar na plataforma.
+                    </h1>
+                    <p class="fs-5 text-secondary mb-0" style="max-width: 36rem;">
+                        Se você corre, entre como corredor. Se você organiza eventos, acesse como organização para criar e gerenciar suas corridas.
                     </p>
-                    <div class="mt-auto">
-                        <a href="/Identity/Account/Login" class="btn btn-lg w-100 evenpace-btn-yellow shadow-sm">
-                            Entrar como Organização
-                        </a>
-                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-md-5 mb-4">
-            <div class="card shadow-lg h-100 evenpace-bg-dark evenpace-card">
-                <div class="card-body d-flex flex-column justify-content-center py-5 px-4">
-                    <h3 class="card-title evenpace-text-yellow mb-3 fw-bold">Sou um Corredor</h3>
-                    <p class="card-text text-light mb-4">
-                        Inscreva-se nas melhores corridas, acompanhe seu histórico de desempenho, resgate cupons exclusivos e avalie os eventos.
-                    </p>
-                    <div class="mt-auto">
-                        <a href="/Corredor/Login" class="btn btn-lg w-100 evenpace-btn-yellow shadow-sm">
-                            Entrar como Corredor
+                <div class="col-12 col-lg-5">
+                    <div class="d-grid gap-3">
+                        <a class="btn btn-lg rounded-pill py-3 fw-bold" href="@Url.Action("Login", "Corredor")" style="background:linear-gradient(135deg,#ffe7a6,#f7cf66);border:1px solid #f0d07e;color:#443200;">
+                            Entrar como corredor
+                        </a>
+                        <a class="btn btn-lg rounded-pill py-3 fw-bold" href="@Url.Action("Login", "Organizacao")" style="background:#fff4cf;border:1px solid #f1e2b6;color:#6e5410;">
+                            Entrar como organização
                         </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>

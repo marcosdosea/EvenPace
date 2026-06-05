@@ -13,5 +13,7 @@ public class DadosTelaInscricaoDto
     public DateTime DataEvento { get; set; }
     public string Descricao { get; set; } = null!;
     public string? ImagemEvento { get; set; }
+    public string? InfoRetiradaKit { get; set; }
+    public List<string> Percursos { get; set; } = new();
     public IEnumerable<Kit> Kits { get; set; } = new List<Kit>();
 }

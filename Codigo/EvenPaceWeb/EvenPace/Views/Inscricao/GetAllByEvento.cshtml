@@ -1,31 +1,166 @@
 @model List<Models.InscricaoViewModel>
 
 @{
-	ViewData["Title"] = "Listagem de Ingressos";
+	ViewData["Title"] = "Ingressos do Evento";
 	Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+	var nomeEvento = Model.FirstOrDefault()?.IdEventoNavigation?.Nome ?? "Evento";
+	var aprovados = Model.Count(i => i.StatusRetiradaKit);
+	var cancelados = Model.Count(i => string.Equals(i.Status, "Cancelada", StringComparison.OrdinalIgnoreCase));
+	var pendentes = Model.Count(i => !i.StatusRetiradaKit && !string.Equals(i.Status, "Cancelada", StringComparison.OrdinalIgnoreCase));
 }
-<link rel="stylesheet" href="~/css/kit.css" />
-<link rel="stylesheet" href="~/css/Ingresso.css" />
 
-<main class="main-container">
+<style>
+	:root {
+		--text: #121212;
+		--muted: #6f7780;
+		--border: #ece7d5;
+		--yellow: #ffe07a;
+		--yellow-strong: #f4c542;
+	}
 
-	<header class="page-header">
-		<div class="header-titles">
-			<h1>Insgresos</h1>
-			<p class="subtitle">@ViewBag.NomeCorrida</p>
-		</div>
+	main.index-page {
+		padding: 24px 0 36px;
+		background: #fff;
+		color: var(--text);
+	}
+
+	.page-head {
+		background: linear-gradient(135deg, #fffdf4, #ffffff);
+		border: 1px solid var(--border);
+		border-radius: 26px;
+		padding: 22px;
+		box-shadow: 0 18px 40px rgba(18, 18, 18, 0.06);
+		margin-bottom: 22px;
+	}
+
+	.page-head h1 {
+		margin: 0;
+		font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+		font-weight: 800;
+		letter-spacing: -0.03em;
+	}
+
+	.subtitle {
+		margin: 8px 0 0;
+		color: var(--muted);
+	}
+
+	.summary-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 14px;
+		margin-bottom: 22px;
+	}
+
+	.summary-card {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 22px;
+		padding: 18px;
+		box-shadow: 0 12px 24px rgba(18, 18, 18, 0.05);
+		font-weight: 700;
+	}
+
+	.summary-card strong {
+		font-weight: 800;
+	}
+
+	.table-shell {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 24px;
+		padding: 16px;
+		box-shadow: 0 12px 24px rgba(18, 18, 18, 0.05);
+		overflow: hidden;
+	}
+
+	.table-responsive {
+		overflow-x: auto;
+	}
+
+	.ingressos-table {
+		width: 100%;
+		border-collapse: separate;
+		border-spacing: 0;
+	}
+
+	.ingressos-table thead th {
+		background: #fffdf3;
+		color: var(--text);
+		border-bottom: 1px solid var(--border);
+		font-weight: 800;
+		padding: 14px 12px;
+		white-space: nowrap;
+	}
+
+	.ingressos-table tbody td {
+		padding: 14px 12px;
+		border-bottom: 1px solid #f3f0e3;
+		vertical-align: middle;
+	}
+
+	.badge-soft {
+		display: inline-flex;
+		align-items: center;
+		padding: 8px 12px;
+		border-radius: 999px;
+		background: rgba(255, 224, 122, 0.22);
+		border: 1px solid rgba(244, 197, 66, 0.22);
+		font-size: .82rem;
+		font-weight: 800;
+		color: #2b2b2b;
+	}
+
+	.badge-ok {
+		background: #eef8ef;
+		border-color: #d9efd9;
+		color: #2f7a35;
+	}
+
+	.badge-cancel {
+		background: #fff0ef;
+		border-color: #f2d2cf;
+		color: #b23b34;
+	}
+
+	@@media (min-width: 768px) {
+		.summary-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+
+	@@media (max-width: 767.98px) {
+		main.index-page {
+			padding: 16px 0 28px;
+		}
+
+		.page-head,
+		.table-shell {
+			border-radius: 20px;
+		}
+
+		.ingressos-table thead th,
+		.ingressos-table tbody td {
+			padding: 12px 10px;
+		}
+	}
+</style>
+
+<main class="container-fluid index-page px-3 px-md-4 px-xl-5">
+	<header class="page-head">
+		<h1>Ingressos do evento</h1>
+		<p class="subtitle">@nomeEvento</p>
 	</header>
 
-	<div class="ingressos-container">
+	<section class="summary-grid">
+		<div class="summary-card">Ingressos aprovados: <strong>@aprovados</strong></div>
+		<div class="summary-card">Ingressos cancelados: <strong>@cancelados</strong></div>
+		<div class="summary-card">Ingressos pendentes: <strong>@pendentes</strong></div>
+	</section>
 
-		<section class="ingressos-resumo">
-			<div class="resumo-card aprovado">Ingressos Aprovados: <strong>100</strong></div>
-			<div class="resumo-card cancelado">Ingressos Cancelados: <strong>10</strong></div>
-			<div class="resumo-card pendente">Ingressos Pendentes: <strong>100</strong></div>
-		</section>
-
-		<section class="ingressos-tabela-wrapper">
-			<table id="tabelaIngressos" class="display ingressos-table">
+	<section class="table-shell">
+		<div class="table-responsive">
+			<table id="tabelaIngressos" class="ingressos-table">
 				<thead>
 					<tr>
 						<th>Nome</th>
@@ -39,95 +174,48 @@
 				<tbody>
 					@foreach (var item in Model)
 					{
-						@Html.AntiForgeryToken()
 						<tr>
-							<td class="text-nowrap">@item.IdCorredorNavigation.Nome</td>
-							<td class="text-nowrap">@item.IdCorredorNavigation.Cpf/td>
+							<td class="fw-semibold text-nowrap">@item.IdCorredorNavigation.Nome</td>
+							<td class="text-nowrap">@item.IdCorredorNavigation.Cpf</td>
 							<td class="text-nowrap">@item.IdKitNavigation.Nome</td>
 							<td class="text-nowrap">
-									@if (item.IdEventoNavigation.Distancia3)
-									{
-									<span class="badge bg-success"> 3 Km</span>
-									}
-
-									@if (item.IdEventoNavigation.Distancia5)
-									{
-									<span class="badge bg-success"> 5 Km</span>
-									}
-
-									@if (item.IdEventoNavigation.Distancia7)
-									{
-									<span class="badge bg-success"> 7 Km</span>
-									}
-
-									@if (item.IdEventoNavigation.Distancia10)
-									{
-									<span class="badge bg-success"> 10 Km</span>
-									}
-
-									@if (item.IdEventoNavigation.Distancia15)
-									{
-									<span class="badge bg-success"> 15 Km</span>
-									}
-
-									@if (item.IdEventoNavigation.Distancia21)
-									{
-									<span class="badge bg-success"> 21 Km</span>
-									}
-
-									@if (item.IdEventoNavigation.Distancia42)
-									{
-									<span class="badge bg-success"> 42 Km</span>
-									}
+								<span class="badge-soft">@item.Distancia</span>
 							</td>
 							<td class="text-nowrap">
-									@if (item.IdKitNavigation.UtilizadaP == 1)
-									{
-									<span class="badge bg-success">P</span>
-									}
-									else if (item.IdKitNavigation.UtilizadaG == 1)
-									{
-									<span class="badge bg-success">G</span>
-									}
-									else if (item.IdKitNavigation.UtilizadaM == 1)
-									{
-									<span class="badge bg-success">M</span>
-									}
+								<span class="badge-soft">@item.TamanhoCamisa</span>
 							</td>
 							<td class="text-nowrap">
-									@if (item.StatusRetiradaKit == true)
-									{
-									<span class="badge bg-success">Retirado</span>
-									}
-									else
-									{
-									<span class="badge bg-secondary">Não Retirado</span>
-									}
+								@if (item.StatusRetiradaKit)
+								{
+									<span class="badge-soft badge-ok">Retirado</span>
+								}
+								else if (string.Equals(item.Status, "Cancelada", StringComparison.OrdinalIgnoreCase))
+								{
+									<span class="badge-soft badge-cancel">Cancelado</span>
+								}
+								else
+								{
+									<span class="badge-soft">Não retirado</span>
+								}
 							</td>
 						</tr>
 					}
 				</tbody>
 			</table>
-		</section>
-
-	</div>
+		</div>
+	</section>
 </main>
-@section Scripts {
 
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+@section Scripts {
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
 	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
 	<script>
 		$(document).ready(function () {
 			$('#tabelaIngressos').DataTable({
 				language: {
-					search: "Pesquisar:",
-					lengthMenu: "Mostrar _MENU_ registros",
-					info: "Mostrando _START_ a _END_ de _TOTAL_ ingressos",
-					paginate: {
-						previous: "Anterior",
-						next: "Próximo"
-					}
+					url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
 				},
 				pageLength: 10,
 				ordering: true

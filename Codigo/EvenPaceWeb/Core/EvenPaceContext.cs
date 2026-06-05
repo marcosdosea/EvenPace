@@ -176,7 +176,9 @@ public partial class EvenPaceContext : DbContext
                 .HasMaxLength(45)
                 .HasColumnName("estado");
             entity.Property(e => e.IdOrganizacao).HasColumnName("idOrganizacao");
-            entity.Property(e => e.Imagem).HasMaxLength(255);
+            entity.Property(e => e.Imagem)
+                .HasMaxLength(255)
+                .HasColumnName("imagem");
             entity.Property(e => e.InfoRetiradaKit)
                 .HasMaxLength(45)
                 .HasColumnName("infoRetiradaKit");
@@ -271,7 +273,9 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.DisponibilidadeM).HasColumnName("disponibilidadeM");
             entity.Property(e => e.DisponibilidadeP).HasColumnName("disponibilidadeP");
             entity.Property(e => e.IdEvento).HasColumnName("idEvento");
-            entity.Property(e => e.Imagem).HasMaxLength(255);
+            entity.Property(e => e.Imagem)
+                .HasMaxLength(255)
+                .HasColumnName("imagem");
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
                 .HasColumnName("nome");

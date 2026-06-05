@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Core;
 using Core.Service;
 using EvenPaceAPI.Models;
@@ -20,39 +20,38 @@ public class InscricaoController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult Get()
+    public async Task<ActionResult<IEnumerable<Inscricao>>> Get()
     {
-        var inscricoes = _inscricaoService.GetAll();
+        var inscricoes = await _inscricaoService.GetAllAsync();
         return Ok(inscricoes);
     }
 
     [HttpGet("{id}")]
-    public ActionResult Get(int id)
+    public async Task<ActionResult<Inscricao>> Get(int id)
     {
-        var inscricao = _inscricaoService.Get(id);
+        var inscricao = await _inscricaoService.GetAsync(id);
 
-        if (inscricao == null)
+        if (inscricao is null)
             return NotFound();
 
         return Ok(inscricao);
     }
 
     [HttpPost]
-    public ActionResult Post([FromBody] InscricaoViewModel model)
+    public async Task<ActionResult> Post([FromBody] InscricaoViewModel model)
     {
         var inscricao = _mapper.Map<Inscricao>(model);
-
-        var idGerado = _inscricaoService.Create(inscricao);
+        var idGerado = await _inscricaoService.CreateAsync(inscricao);
 
         return CreatedAtAction(nameof(Get), new { id = idGerado }, inscricao);
     }
 
     [HttpPut("{id}")]
-    public ActionResult Put(int id, [FromBody] InscricaoViewModel model)
+    public async Task<ActionResult> Put(int id, [FromBody] InscricaoViewModel model)
     {
-        var inscricao = _inscricaoService.Get(id);
+        var inscricao = await _inscricaoService.GetAsync(id);
 
-        if (inscricao == null)
+        if (inscricao is null)
             return NotFound();
 
         inscricao.Status = model.Status;
@@ -67,16 +66,15 @@ public class InscricaoController : ControllerBase
         inscricao.Posicao = model.Posicao;
         inscricao.IdAvaliacaoEvento = model.IdAvaliacaoEvento;
 
-        _inscricaoService.Edit(inscricao);
+        await _inscricaoService.EditAsync(inscricao);
 
         return Ok(inscricao);
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
-        _inscricaoService.Delete(id);
+        await _inscricaoService.DeleteAsync(id);
         return Ok();
     }
-
 }
