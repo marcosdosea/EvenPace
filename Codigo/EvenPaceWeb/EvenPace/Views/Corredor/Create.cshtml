@@ -50,6 +50,22 @@
                             </div>
 
                             <div class="mb-4">
+    <label class="form-label" asp-for="Email">E-mail</label>
+    <input asp-for="Email" type="email" class="form-control form-control-lg" placeholder="exemplo@email.com" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+
+
+                                <div class="mb-4">
+                                    <label class="form-label" asp-for="Senha">Senha</label>
+                                    <input asp-for="Senha"
+                                           type="password"
+                                           class="form-control form-control-lg"
+                                           placeholder="********" />
+                                    <span asp-validation-for="Senha" class="text-danger"></span>
+                                </div>
+
+                            <div class="mb-4">
                                 <label class="form-label" asp-for="CPF">CPF</label>
                                 <input asp-for="CPF" class="form-control form-control-lg" placeholder="000.000.000-00"/>
                                 <span asp-validation-for="CPF" class="text-danger"></span>

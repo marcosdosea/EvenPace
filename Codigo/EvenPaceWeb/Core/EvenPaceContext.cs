@@ -102,16 +102,27 @@ public partial class EvenPaceContext : DbContext
             entity.HasIndex(e => e.Cpf, "cpf_UNIQUE").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
+
             entity.Property(e => e.Cpf)
                 .HasMaxLength(11)
                 .IsFixedLength()
                 .HasColumnName("cpf");
-            entity.Property(e => e.DataNascimento)
-                .HasColumnType("date")
-                .HasColumnName("dataNascimento");
+
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
                 .HasColumnName("nome");
+
+            entity.Property(e => e.DataNascimento)
+                .HasColumnType("date")
+                .HasColumnName("dataNascimento");
+
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .HasColumnName("email");
+
+            entity.Property(e => e.Senha)
+                .HasMaxLength(255)
+                .HasColumnName("senha");
         });
 
         modelBuilder.Entity<Cupom>(entity =>
