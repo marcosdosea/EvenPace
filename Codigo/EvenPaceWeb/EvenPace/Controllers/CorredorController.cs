@@ -69,23 +69,39 @@ public class CorredorController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(CorredorViewModel corredorModel)
+    public async Task<IActionResult> Create(CorredorViewModel corredorModel)
     {
-        // Removemos a validação de Email e Senha pois eles não estão nesta View
-        ModelState.Remove("Email");
-        ModelState.Remove("Senha");
+        if (!ModelState.IsValid)
+            return View(corredorModel);
 
-        if (ModelState.IsValid)
+        var corredor = _mapper.Map<Corredor>(corredorModel);
+
+        // Salva no banco do sistema
+        _corredorService.Create(corredor);
+
+        // Cria o usuário do Identity
+        var identityUser = new UsuarioIdentity
         {
-            // 1. Mapeia e Salva o Corredor no banco de negócio (EvenPaceContext)
-            var corredor = _mapper.Map<Corredor>(corredorModel);
-            _corredorService.Create(corredor);
+            UserName = corredor.Cpf.Replace(".", "").Replace("-", ""),
+            Email = corredor.Email
+        };
 
-            // 2. Redireciona para a nova View de Email/Senha, passando o CPF por parâmetro
-            return RedirectToAction("DefinirAcesso", new { cpf = corredorModel.CPF });
+        var result = await _userManager.CreateAsync(identityUser, corredorModel.Senha);
+
+        if (!result.Succeeded)
+        {
+            // Remove o corredor caso o Identity falhe
+            _corredorService.Delete(corredor.Id);
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View(corredorModel);
         }
 
-        return View(corredorModel);
+        return RedirectToAction("Login", "Corredor");
     }
 
     [HttpGet]
@@ -99,40 +115,55 @@ public class CorredorController : Controller
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
+    
     public async Task<IActionResult> FinalizarCadastro(string cpf, string email, string senha)
     {
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(senha))
         {
             ModelState.AddModelError("", "E-mail e Senha são obrigatórios.");
             ViewBag.Cpf = cpf;
             return View("DefinirAcesso");
         }
 
-        // 1. Prepara o usuário para o Identity (removendo formatação do CPF)
+        // Procura o corredor cadastrado anteriormente
+        var corredor = _corredorService.GetByCpf(cpf);
+
+        if (corredor == null)
+        {
+            ModelState.AddModelError("", "Corredor não encontrado.");
+            ViewBag.Cpf = cpf;
+            return View("DefinirAcesso");
+        }
+
+        // Atualiza os dados do corredor
+        corredor.Email = email;
+        corredor.Senha = senha; // Se estiver usando Identity, o ideal é remover esta linha futuramente
+
+        // Cria o usuário no Identity
         var identityUser = new UsuarioIdentity
         {
             UserName = cpf.Replace(".", "").Replace("-", ""),
             Email = email
         };
 
-        // 2. Tenta criar o usuário no banco do Identity com a senha informada
         var result = await _userManager.CreateAsync(identityUser, senha);
 
         if (result.Succeeded)
         {
-            // Se deu certo, manda para o Login
+            // Salva Email e Senha na tabela Corredor
+            _corredorService.Edit(corredor);
+
+            // Redireciona para o login
             return RedirectToAction("Login", "Corredor");
         }
-        else
+
+        foreach (var error in result.Errors)
         {
-            // Se houver erro (senha fraca, e-mail já existe), mostra na tela
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
-            ViewBag.Cpf = cpf;
-            return View("DefinirAcesso");
+            ModelState.AddModelError("", error.Description);
         }
+
+        ViewBag.Cpf = cpf;
+        return View("DefinirAcesso");
     }
     /*[HttpPost]
     [ValidateAntiForgeryToken]
