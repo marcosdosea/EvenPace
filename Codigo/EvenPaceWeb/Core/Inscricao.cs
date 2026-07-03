@@ -35,5 +35,6 @@ namespace Core
         public virtual Evento IdEventoNavigation { get; set; } = null!;
 
         public virtual Kit IdKitNavigation { get; set; } = null!;
+        public virtual ICollection<Pagamento> Pagamentos { get; set; } = new List<Pagamento>();
     }
 }

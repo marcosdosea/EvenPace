@@ -16,6 +16,8 @@ public partial class EvenPaceContext : DbContext
     {
     }
 
+    public virtual DbSet<Pagamento> Pagamentos { get; set; }
+
     public virtual DbSet<Administrador> Administradors { get; set; }
 
     public virtual DbSet<AvaliacaoEvento> AvaliacaoEventos { get; set; }
@@ -297,6 +299,28 @@ public partial class EvenPaceContext : DbContext
                 .HasForeignKey(d => d.IdEvento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Kit_Evento1");
+        });
+
+
+        modelBuilder.Entity<Pagamento>(entity =>
+        {
+            entity.ToTable("Pagamentos");
+
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.IdInscricao).HasColumnName("idInscricao");
+            entity.Property(e => e.ValorPago).HasColumnName("valorPago");
+            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.FormaPagamento).HasColumnName("formaPagamento");
+            entity.Property(e => e.IdTransacaoMP).HasColumnName("idTransacaoMP");
+            entity.Property(e => e.DataPagamento).HasColumnName("dataPagamento");
+            entity.Property(e => e.Parcelas).HasColumnName("parcelas");
+
+            entity.HasOne(e => e.IdInscricaoNavigation)
+    .WithMany(i => i.Pagamentos)
+    .HasForeignKey(e => e.IdInscricao)
+            .HasConstraintName("FK_Pagamentos_Inscricao");
         });
 
         modelBuilder.Entity<Organizacao>(entity =>

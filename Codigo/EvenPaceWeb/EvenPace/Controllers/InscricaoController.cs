@@ -111,9 +111,9 @@ namespace EvenPace.Controllers
         public async Task<IActionResult> Create(InscricaoViewModel model)
         {
             var usuarioIdentity = await _userManager.GetUserAsync(User);
-            
+
             var corredor = _corredorService.GetByCpf(usuarioIdentity.UserName);
-            
+
             var inscricao = new Inscricao()
             {
                 IdEvento = model.IdEvento,
@@ -128,12 +128,17 @@ namespace EvenPace.Controllers
                 Posicao = null,
                 IdAvaliacaoEvento = null
             };
-            await _inscricaoService.CreateAsync(inscricao);
+            //await _inscricaoService.CreateAsync(inscricao);
 
-            return RedirectToAction("IndexUsuario", "Evento");   
+            //return RedirectToAction("IndexUsuario", "Evento");   
+            //ar idGerado = await _inscricaoService.CreateAsync(inscricao);
+            //return RedirectToAction("Pagar", "Pagamento", new { idInscricao = idGerado });
+            var idGerado = await _inscricaoService.CreateAsync(inscricao);
+
+            return RedirectToAction("Pagar", "Pagamento", new { idInscricao = idGerado });
         }
-        
-        [HttpPost]
+
+            [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Index(InscricaoViewModel vm)
         {
