@@ -123,6 +123,69 @@ namespace EvenPace.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Cartao(int idInscricao)
+        {
+            var inscricao = _inscricaoService.Get(idInscricao);
+            if (inscricao == null)
+                return NotFound();
+
+            var corredor = await ObterCorredorLogadoAsync();
+            if (corredor == null || inscricao.IdCorredor != corredor.Id)
+                return Unauthorized();
+
+            var evento = _eventoService.Get(inscricao.IdEvento);
+            Kit? kit = inscricao.IdKit.HasValue
+                ? _kitService.Get(inscricao.IdKit.Value)
+                : null;
+
+            var vm = new PagamentoViewModel
+            {
+                IdInscricao = idInscricao,
+                NomeEvento = evento?.Nome ?? "",
+                NomeCorredor = corredor.Nome,
+                NomeKit = kit?.Nome ?? "Sem kit",
+                Distancia = inscricao.Distancia,
+                TamanhoCamisa = inscricao.TamanhoCamisa,
+                ValorKit = kit?.Valor ?? 0,
+                MercadoPagoPublicKey = _configuration["MercadoPago:PublicKey"] ?? ""
+            };
+
+            return View(vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Pix(int idInscricao)
+        {
+            var inscricao = _inscricaoService.Get(idInscricao);
+            if (inscricao == null)
+                return NotFound();
+
+            var corredor = await ObterCorredorLogadoAsync();
+            if (corredor == null || inscricao.IdCorredor != corredor.Id)
+                return Unauthorized();
+
+            var evento = _eventoService.Get(inscricao.IdEvento);
+            Kit? kit = inscricao.IdKit.HasValue
+                ? _kitService.Get(inscricao.IdKit.Value)
+                : null;
+
+            var vm = new PagamentoViewModel
+            {
+                IdInscricao = idInscricao,
+                NomeEvento = evento?.Nome ?? "",
+                NomeCorredor = corredor.Nome,
+                NomeKit = kit?.Nome ?? "Sem kit",
+                Distancia = inscricao.Distancia,
+                TamanhoCamisa = inscricao.TamanhoCamisa,
+                ValorKit = kit?.Valor ?? 0,
+                MercadoPagoPublicKey = _configuration["MercadoPago:PublicKey"] ?? ""
+            };
+
+            return View(vm);
+        }
+
+
         // ── GET /Pagamento/Resultado?status=approved&idTransacaoMP=xxx ──────
         [HttpGet]
         public IActionResult Resultado(string status, string? idTransacaoMP)

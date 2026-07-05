@@ -1,285 +1,178 @@
-﻿@using EvenPaceWeb
-@using EvenPaceWeb.Models
-@model EvenPaceWeb.Models.PagamentoViewModel
+﻿@using EvenPaceWeb.Models
+@model PagamentoViewModel
+
 @{
     Layout = null;
-    var valorFormatado = Model.ValorKit.ToString("N2", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
-    var valorInvariant = Model.ValorKit.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+    var valor = Model.ValorKit.ToString("N2",
+        System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
 }
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pagamento – @Model.NomeEvento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Escolha como pagar</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --surface: #ffffff;
-            --surface-soft: #fffdf3;
-            --text: #121212;
-            --muted: #6f7780;
-            --border: #ece7d5;
-            --yellow: #ffe07a;
-            --yellow-strong: #f4c542;
-            --shadow: 0 18px 40px rgba(18,18,18,.08);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
 
         body {
-            margin: 0;
-            font-family: "Montserrat", system-ui, sans-serif;
-            color: var(--text);
-            background: linear-gradient(180deg,#ffffff 0%,#fffef7 100%);
-            min-height: 100vh;
-        }
-
-        .topbar {
-            padding: 18px 18px 14px;
-            border-bottom: 1px solid var(--border);
-            background: rgba(255,255,255,.95);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 5;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 800;
-        }
-
-        .page-title {
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: -.03em;
-            margin: 0 0 4px;
-        }
-
-        .page-subtitle {
-            color: var(--muted);
-            margin: 0 0 24px;
-            font-size: .93rem;
-        }
-
-        .summary-card {
             background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 26px;
-            box-shadow: var(--shadow);
-            padding: 20px;
-            margin-bottom: 20px;
+            font-family: Montserrat, sans-serif;
         }
 
-        .summary-title {
-            font-size: 1.15rem;
-            font-weight: 800;
-            margin: 0 0 14px;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 7px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: .9rem;
-        }
-
-            .summary-row:last-child {
-                border-bottom: none;
-            }
-
-            .summary-row .label {
-                color: var(--muted);
-            }
-
-            .summary-row .value {
-                font-weight: 700;
-            }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 2px solid var(--border);
-        }
-
-        .total-label {
-            font-size: 1rem;
-            font-weight: 800;
-        }
-
-        .total-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #1a7a3e;
-        }
-
-        .brick-card {
+        .app-card {
             background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 26px;
-            box-shadow: var(--shadow);
-            padding: 20px;
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 85vh;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
         }
 
-        .brick-title {
-            font-size: 1.05rem;
+        .header {
+            padding: 18px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        h1 {
+            font-size: 22px;
             font-weight: 800;
-            margin: 0 0 16px;
+            margin-bottom: 18px;
         }
 
-        .alert-erro {
-            display: none;
-            background: #fff5f5;
-            border: 1px solid #fca5a5;
+        h2 {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 16px 0 10px;
+        }
+
+        .card-box {
+            background: #f2f2f2;
             border-radius: 14px;
-            color: #dc2626;
-            padding: 12px 16px;
-            margin-top: 14px;
-            font-size: .9rem;
-            font-weight: 600;
+            overflow: hidden;
+            margin-bottom: 18px;
         }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            color: #111;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+            .item + .item {
+                border-top: 1px solid #ddd;
+            }
+
+            .item:hover {
+                background: #e9e9e9;
+            }
+
+        .arrow {
+            font-size: 22px;
+        }
+
+        .footer {
+            border-top: 1px solid #eee;
+            padding: 16px;
+            background: #fff;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            background: #000;
+            color: #FFD700;
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
     </style>
 </head>
+
 <body>
 
-    <div class="topbar">
-        <div class="container-fluid px-0">
-            <a href="javascript:history.back()" class="back-link">← Voltar</a>
+    <section class="vh-100 d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+                    <div class="app-card">
+
+                        <div class="header" onclick="history.back()">
+                            ← Voltar
+                        </div>
+
+                        <div class="app-content">
+
+                            <h1>Escolha como pagar</h1>
+
+                            <h2>Cartões</h2>
+                            <div class="card-box">
+                                <a href="@Url.Action("Cartao","Pagamento",new{idInscricao=Model.IdInscricao})" class="item">
+                                    <span>Cartão de crédito</span>
+                                    <span class="arrow">›</span>
+                                </a>
+                            </div>
+
+                            <h2>Transferências</h2>
+                            <div class="card-box">
+                                <a href="@Url.Action("Pix","Pagamento",new{idInscricao=Model.IdInscricao})" class="item">
+                                    <span>Pix</span>
+                                    <span class="arrow">›</span>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="footer">
+
+                            <div class="total">
+                                <span>Você pagará</span>
+                                <span>R$ @valor</span>
+                            </div>
+
+                            <button class="btn" disabled>
+                                Confirmar a compra
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <div class="container-fluid px-3 px-md-4 px-xl-5 py-4" style="max-width:700px;">
-
-        <h1 class="page-title">Finalizar Pagamento</h1>
-        <p class="page-subtitle">Preencha os dados do cartão para confirmar sua inscrição.</p>
-
-        @* Resumo da inscrição *@
-        <div class="summary-card">
-            <div class="summary-title">@Model.NomeEvento</div>
-
-            <div class="summary-row">
-                <span class="label">Corredor</span>
-                <span class="value">@Model.NomeCorredor</span>
-            </div>
-            <div class="summary-row">
-                <span class="label">Kit</span>
-                <span class="value">@(Model.NomeKit ?? "Sem kit")</span>
-            </div>
-            <div class="summary-row">
-                <span class="label">Distância</span>
-                <span class="value">@Model.Distancia</span>
-            </div>
-            <div class="summary-row">
-                <span class="label">Tamanho da camisa</span>
-                <span class="value">@Model.TamanhoCamisa</span>
-            </div>
-
-            <div class="total-row">
-                <span class="total-label">Total</span>
-                <span class="total-value">R$ @valorFormatado</span>
-            </div>
-        </div>
-        
-        @*Brick do Mercado Pago*@ 
-        <div class="brick-card">
-            <div class="brick-title">💳 Dados do Cartão</div>
-            <div id="cardPaymentBrick_container"></div>
-            <div id="mp-erro" class="alert-erro"></div>
-        </div>
-
-    </div>
-
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
-    <script>
-        const MP_PUBLIC_KEY = "@Model.MercadoPagoPublicKey";
-        const ID_INSCRICAO  = @Model.IdInscricao;
-        const VALOR_KIT     = @valorInvariant;
-
-        const mp            = new MercadoPago(MP_PUBLIC_KEY, { locale: "pt-BR" });
-        const bricksBuilder = mp.bricks();
-
-        async function renderBrick(builder) {
-            const settings = {
-                initialization: {
-                    amount: VALOR_KIT
-                },
-                customization: {
-                    paymentMethods: {
-                        maxInstallments: 3
-                    },
-                    visual: {
-                        style: { theme: "default" }
-                    }
-                },
-                callbacks: {
-                    onReady: () => {},
-
-                    onSubmit: (formData) => {
-                        return new Promise((resolve, reject) => {
-
-                            // Adiciona o id da inscrição ao payload
-                            formData.idInscricao = ID_INSCRICAO;
-
-                            fetch("/Pagamento/Processar", {
-                                method : "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body   : JSON.stringify(formData)
-                            })
-                            .then(r => r.json())
-                            .then(response => {
-                                if (response.success) {
-                                    window.location.href =
-                                        `/Pagamento/Resultado?status=${response.status}` +
-                                        `&idTransacaoMP=${response.idTransacaoMP ?? ""}`;
-                                    resolve();
-                                } else {
-                                    const erroDiv = document.getElementById("mp-erro");
-                                    erroDiv.textContent = response.mensagemErro
-                                        ?? "Pagamento recusado. Verifique os dados do cartão.";
-                                    erroDiv.style.display = "block";
-                                    reject();
-                                }
-                            })
-                            .catch(() => {
-                                const erroDiv = document.getElementById("mp-erro");
-                                erroDiv.textContent = "Erro de conexão. Tente novamente.";
-                                erroDiv.style.display = "block";
-                                reject();
-                            });
-                        });
-                    },
-
-                    onError: (error) => {
-                        console.error("Erro no Brick:", error);
-                    }
-                }
-            };
-
-            window.cardPaymentBrickController = await builder.create(
-                "cardPayment",
-                "cardPaymentBrick_container",
-                settings
-            );
-        }
-
-        renderBrick(bricksBuilder);
-    </script>
 </body>
 </html>
