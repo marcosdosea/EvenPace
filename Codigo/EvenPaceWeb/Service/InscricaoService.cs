@@ -79,6 +79,27 @@ namespace Service
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Inscricao>> GetAllByCorredorAsync(int idCorredor)
+        {
+            return await _context.Inscricao
+                .AsNoTracking()
+                .Include(i => i.IdKitNavigation)
+                .Include(i => i.IdEventoNavigation)
+                .Where(i => i.IdCorredor == idCorredor && i.Status != "Cancelada")
+                .OrderBy(i => i.IdEventoNavigation.Data)
+                .ToListAsync();
+        }
+
+        public async Task<bool> PossuiInscricaoAtivaAsync(int idCorredor, int idEvento)
+        {
+            return await _context.Inscricao
+                .AsNoTracking()
+                .AnyAsync(i =>
+                    i.IdCorredor == idCorredor &&
+                    i.IdEvento == idEvento &&
+                    i.Status != "Cancelada");
+        }
+
         public async Task<DadosTelaInscricaoDto> GetDadosTelaInscricaoAsync(int idEvento)
         {
             var evento = await _context.Eventos
@@ -129,6 +150,7 @@ namespace Service
                 Data = new DadosTelaDeleteDto
                 {
                     NomeEvento = inscricao.IdEventoNavigation.Nome,
+                    ImagemEvento = inscricao.IdEventoNavigation.Imagem,
                     DataEvento = inscricao.IdEventoNavigation.Data,
                     Local = inscricao.IdEventoNavigation.Cidade,
                     NomeCorredor = inscricao.IdCorredorNavigation?.Nome ?? "Corredor",
@@ -214,7 +236,7 @@ namespace Service
                 .AnyAsync(i =>
                     i.IdCorredor == inscricao.IdCorredor &&
                     i.IdEvento == inscricao.IdEvento &&
-                    !string.Equals(i.Status, "Cancelada", StringComparison.OrdinalIgnoreCase));
+                    i.Status != "Cancelada");
 
             if (possuiInscricaoAtiva)
                 throw new InvalidOperationException("Você já possui uma inscrição para este evento.");

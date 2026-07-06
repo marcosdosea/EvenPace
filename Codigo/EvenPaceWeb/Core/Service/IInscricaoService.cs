@@ -12,6 +12,8 @@ public interface IInscricaoService
 
     Task<IEnumerable<Inscricao>> GetAllAsync();
     Task<IEnumerable<Inscricao>> GetAllByEventoAsync(int idEvento);
+    Task<IEnumerable<Inscricao>> GetAllByCorredorAsync(int idCorredor);
+    Task<bool> PossuiInscricaoAtivaAsync(int idCorredor, int idEvento);
 
     /// <summary>Obtém dados para a tela de inscrição (evento + kits).</summary>
     Task<DadosTelaInscricaoDto> GetDadosTelaInscricaoAsync(int idEvento);

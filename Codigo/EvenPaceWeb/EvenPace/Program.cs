@@ -96,7 +96,7 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -125,16 +125,20 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roles = new[] { "Administrador", "Organizacao", "Corredor" };
 
-    if (!await roleManager.RoleExistsAsync("Organizacao"))
+    foreach (var role in roles)
     {
-        await roleManager.CreateAsync(new IdentityRole("Organizacao"));
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
     }
 }
 
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Evento}/{action=IndexUsuario}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

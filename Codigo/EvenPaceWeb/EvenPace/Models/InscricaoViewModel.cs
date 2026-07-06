@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Core;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Models
 {
@@ -49,18 +50,22 @@ namespace Models
         public int? IdAvaliacaoEvento { get; set; }
 
         [ForeignKey("IdAvaliacaoEvento")]
+        [ValidateNever]
         public virtual AvaliacaoEvento IdAvaliacaoEventoNavigation { get; set; } = null!;
 
         [Display(Name = "Kit Retirado")]
         public bool StatusRetiradaKit { get; set; }
 
         [ForeignKey("IdCorredor")]
+        [ValidateNever]
         public virtual Corredor IdCorredorNavigation { get; set; } = null!;
 
         [ForeignKey("IdEvento")]
+        [ValidateNever]
         public virtual Evento IdEventoNavigation { get; set; } = null!;
 
         [ForeignKey("IdKit")]
+        [ValidateNever]
         public virtual Kit IdKitNavigation { get; set; } = null!;
 
         public string NomeEvento { get; set; } = string.Empty;

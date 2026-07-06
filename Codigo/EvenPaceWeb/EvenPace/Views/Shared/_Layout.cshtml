@@ -141,6 +141,49 @@
             transform: translateY(-1px);
         }
 
+        .evenpace-profile-dropdown .dropdown-toggle::after {
+            margin-left: 0.45rem;
+            vertical-align: 0.12em;
+        }
+
+        .evenpace-profile-menu {
+            min-width: 180px;
+            padding: 0.4rem;
+            border: 1px solid var(--evenpace-line);
+            border-radius: 12px;
+            box-shadow: 0 18px 36px rgba(32, 33, 36, 0.12);
+        }
+
+        .evenpace-profile-menu-item {
+            min-height: 42px;
+            border-radius: 8px;
+            color: var(--evenpace-text);
+            font-weight: 700;
+        }
+
+        .evenpace-profile-menu-item:hover,
+        .evenpace-profile-menu-item:focus {
+            background: var(--evenpace-accent-soft);
+            color: #4d3a08;
+        }
+
+        .evenpace-profile-menu .evenpace-profile-logout,
+        .evenpace-profile-menu .evenpace-profile-logout.active {
+            color: var(--evenpace-text) !important;
+            box-shadow: none !important;
+            text-decoration: none !important;
+        }
+
+        .evenpace-profile-menu .evenpace-profile-logout:hover,
+        .evenpace-profile-menu .evenpace-profile-logout:focus,
+        .evenpace-profile-menu .evenpace-profile-logout:active,
+        .evenpace-profile-menu .evenpace-profile-logout:focus-visible {
+            background-color: var(--evenpace-accent-soft) !important;
+            color: #4d3a08 !important;
+            box-shadow: none !important;
+            text-decoration: none !important;
+        }
+
         .evenpace-profile-chip {
             width: 46px;
             height: 46px;

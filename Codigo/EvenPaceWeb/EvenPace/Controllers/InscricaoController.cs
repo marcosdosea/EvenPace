@@ -48,6 +48,13 @@ namespace EvenPace.Controllers
                 ViewBag.PopupMessage = "Não é possível se inscrever porque a data desta corrida já expirou.";
             }
 
+            var corredor = await ObterCorredorLogadoAsync();
+            if (corredor is not null &&
+                await _inscricaoService.PossuiInscricaoAtivaAsync(corredor.Id, model.IdEvento))
+            {
+                ViewBag.InscricaoExistenteMessage = "Você já está inscrito nesta corrida.";
+            }
+
             return View(model);
         }
 
@@ -77,6 +84,8 @@ namespace EvenPace.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(InscricaoViewModel model)
         {
+            RemoverValidacoesCamposDeTela(model);
+
             if (!ModelState.IsValid)
             {
                 try
@@ -98,41 +107,41 @@ namespace EvenPace.Controllers
                 return RedirectToAction("Login", "Corredor");
             }
 
-            var inscricao = new Inscricao
+            if (await _inscricaoService.PossuiInscricaoAtivaAsync(corredor.Id, model.IdEvento))
             {
-                IdEvento = model.IdEvento,
-                IdCorredor = corredor.Id,
-                IdKit = model.IdKit > 0 ? model.IdKit : null,
-                DataInscricao = DateTime.Now,
-                Status = "Pendente",
-                Distancia = model.Distancia,
-                TamanhoCamisa = model.TamanhoCamisa,
-                StatusRetiradaKit = false,
-                Tempo = null,
-                Posicao = null,
-                IdAvaliacaoEvento = null
-            };
-
-            try
-            {
-                var idGerado = await _inscricaoService.CreateAsync(inscricao);
-                TempData["Sucesso"] = "Inscrição realizada com sucesso!";
-                return RedirectToAction("Pagar", "Pagamento", new { idInscricao = idGerado });
-            }
-            catch (InvalidOperationException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                ViewBag.PopupMessage = ex.Message;
-                try
-                {
-                    await RecarregarTelaInscricaoAsync(model);
-                }
-                catch (InvalidOperationException exception)
-                {
-                    return NotFound(exception.Message);
-                }
+                ModelState.AddModelError(string.Empty, "Você já possui uma inscrição para este evento.");
+                await RecarregarTelaInscricaoAsync(model);
                 return View("Create", model);
             }
+
+            return RedirectToAction("AguardarCheckoutInscricao", "Pagamento", new
+            {
+                idEvento = model.IdEvento,
+                idKit = model.IdKit,
+                distancia = model.Distancia,
+                tamanhoCamisa = model.TamanhoCamisa
+            });
+        }
+
+        private void RemoverValidacoesCamposDeTela(InscricaoViewModel model)
+        {
+            ModelState.Remove(nameof(model.DataInscricao));
+            ModelState.Remove(nameof(model.IdCorredor));
+            ModelState.Remove(nameof(model.NomeEvento));
+            ModelState.Remove(nameof(model.ImagemEvento));
+            ModelState.Remove(nameof(model.Local));
+            ModelState.Remove(nameof(model.DataEvento));
+            ModelState.Remove(nameof(model.Descricao));
+            ModelState.Remove(nameof(model.InfoRetiradaKit));
+            ModelState.Remove(nameof(model.Percursos));
+            ModelState.Remove(nameof(model.Kits));
+            ModelState.Remove(nameof(model.Inscricao));
+            ModelState.Remove(nameof(model.NomeCorredor));
+            ModelState.Remove(nameof(model.NomeKit));
+            ModelState.Remove(nameof(model.IdAvaliacaoEventoNavigation));
+            ModelState.Remove(nameof(model.IdCorredorNavigation));
+            ModelState.Remove(nameof(model.IdEventoNavigation));
+            ModelState.Remove(nameof(model.IdKitNavigation));
         }
 
         [HttpGet]
@@ -162,6 +171,7 @@ namespace EvenPace.Controllers
             {
                 IdEvento = inscricao.IdEvento,
                 NomeEvento = dados.Data!.NomeEvento,
+                ImagemEvento = dados.Data.ImagemEvento,
                 DataEvento = dados.Data.DataEvento,
                 Local = dados.Data.Local,
                 NomeKit = dados.Data.NomeKit,
@@ -216,6 +226,25 @@ namespace EvenPace.Controllers
             var inscricoes = await _inscricaoService.GetAllByEventoAsync(idEvento);
             var inscricaoViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricoes);
             return View(inscricaoViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> IndexCorridasInscritas()
+        {
+            var corredor = await ObterCorredorLogadoAsync();
+            if (corredor is null)
+            {
+                TempData["Erro"] = "Faça login para ver suas corridas.";
+                return RedirectToAction("Login", "Corredor");
+            }
+
+            ViewBag.IdCorredor = corredor.Id;
+            ViewBag.NomeCorredor = corredor.Nome;
+
+            var inscricoes = await _inscricaoService.GetAllByCorredorAsync(corredor.Id);
+            var model = _mapper.Map<List<InscricaoViewModel>>(inscricoes);
+
+            return View(model);
         }
 
         private async Task<InscricaoViewModel> CarregarTelaInscricaoAsync(int idEvento, int idKit)

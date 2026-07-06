@@ -6,6 +6,7 @@ namespace Core.Service.Dtos;
 public class DadosTelaDeleteDto
 {
     public string NomeEvento { get; set; } = null!;
+    public string? ImagemEvento { get; set; }
     public DateTime DataEvento { get; set; }
     public string Local { get; set; } = null!;
     public string NomeCorredor { get; set; } = null!;

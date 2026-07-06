@@ -3,6 +3,7 @@
 @{
 	Layout = null;
 	var popupMessage = ViewBag.PopupMessage as string;
+	var inscricaoExistenteMessage = ViewBag.InscricaoExistenteMessage as string;
 	var successMessage = TempData["Sucesso"] as string;
 	var errorMessage = TempData["Erro"] as string;
 }
@@ -109,6 +110,13 @@
 
 		.hero-content {
 			padding: 22px;
+		}
+
+		.inscricao-existente-alert {
+			margin: 0;
+			padding: 14px 22px 0;
+			color: #b42318;
+			font-weight: 800;
 		}
 
 		.event-title {
@@ -320,6 +328,10 @@
 								<div class="hero-fallback">Sem imagem do evento</div>
 							}
 						</div>
+						@if (!string.IsNullOrWhiteSpace(inscricaoExistenteMessage))
+						{
+							<p class="inscricao-existente-alert">@inscricaoExistenteMessage</p>
+						}
 						<div class="hero-content">
 							<h1 class="event-title">@Model.NomeEvento</h1>
 							<div class="pill-row mt-3">
@@ -374,42 +386,45 @@
 					</section>
 				}
 
-				<section class="section">
-					<h2 class="section-title">Kits disponíveis</h2>
-					<div class="kits-grid">
-						@foreach (var kit in Model.Kits)
-						{
-							<div class="kit-card">
-								<div class="kit-top">
-									@if (!string.IsNullOrWhiteSpace(kit.Imagem))
-									{
-										<img src="@Url.Content($"~/imagens/{kit.Imagem}")" alt="@kit.Nome" />
-									}
-									else
-									{
-										<div class="d-grid place-items-center text-center" style="width:100%; min-height:92px; border-radius:18px; background:#fffdf3; border:1px solid #ece7d5; color:#6f7780; font-weight:700;">
-											Sem imagem
+				@if (string.IsNullOrWhiteSpace(inscricaoExistenteMessage))
+				{
+					<section class="section">
+						<h2 class="section-title">Kits disponíveis</h2>
+						<div class="kits-grid">
+							@foreach (var kit in Model.Kits)
+							{
+								<div class="kit-card">
+									<div class="kit-top">
+										@if (!string.IsNullOrWhiteSpace(kit.Imagem))
+										{
+											<img src="@Url.Content($"~/imagens/{kit.Imagem}")" alt="@kit.Nome" />
+										}
+										else
+										{
+											<div class="d-grid place-items-center text-center" style="width:100%; min-height:92px; border-radius:18px; background:#fffdf3; border:1px solid #ece7d5; color:#6f7780; font-weight:700;">
+												Sem imagem
+											</div>
+										}
+
+										<div class="flex-grow-1">
+											<h3 class="kit-name">@kit.Nome</h3>
+											<p class="kit-desc">@kit.Descricao</p>
+											<div class="kit-price">R$ @kit.Valor.ToString("N2")</div>
 										</div>
-									}
-
-									<div class="flex-grow-1">
-										<h3 class="kit-name">@kit.Nome</h3>
-										<p class="kit-desc">@kit.Descricao</p>
-										<div class="kit-price">R$ @kit.Valor.ToString("N2")</div>
 									</div>
-								</div>
 
-								<a asp-controller="Inscricao"
-								   asp-action="Create"
-								   asp-route-idEvento="@Model.IdEvento"
-								   asp-route-idKit="@kit.Id"
-								   class="btn-inscrever">
-									Inscrever-se
-								</a>
-							</div>
-						}
-					</div>
-				</section>
+									<a asp-controller="Inscricao"
+									   asp-action="Create"
+									   asp-route-idEvento="@Model.IdEvento"
+									   asp-route-idKit="@kit.Id"
+									   class="btn-inscrever">
+										Inscrever-se
+									</a>
+								</div>
+							}
+						</div>
+					</section>
+				}
 			</div>
 		</div>
 	</div>

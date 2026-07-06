@@ -271,6 +271,14 @@
 			margin-top: 8px;
 		}
 
+		.payment-note {
+			margin: 14px 0 0;
+			color: var(--muted);
+			font-size: .9rem;
+			font-weight: 700;
+			line-height: 1.5;
+		}
+
 		.swal2-popup {
 			border-radius: 1rem;
 			border: 1px solid rgba(220, 53, 69, 0.12);
@@ -367,7 +375,7 @@
 							<div class="meta-row">
 								<span class="meta-pill">📍 @Model.Local</span>
 								<span class="meta-pill">📅 @Model.DataEvento.ToString("dd/MM/yyyy")</span>
-								<span class="meta-pill">💛 Escolha seu kit</span>
+								<span class="meta-pill">💛 Pagamento pelo Mercado Pago</span>
 							</div>
 						</div>
 					</div>
@@ -390,8 +398,8 @@
 						<input type="hidden" asp-for="IdKit" />
 
 						<div class="form-card">
-							<h2 class="form-title">Inscrição no evento</h2>
-							<p class="form-subtitle">Selecione o tamanho da camisa e a distância para concluir sua inscrição.</p>
+							<h2 class="form-title">Inscrição e pagamento</h2>
+							<p class="form-subtitle">Selecione o tamanho da camisa e a distância. Ao confirmar, você será redirecionado para concluir o pagamento no Mercado Pago.</p>
 
 							<div class="field-group">
 								<label class="label-bold">Tamanho da camisa</label>
@@ -421,12 +429,13 @@
 								<span asp-validation-for="Distancia" class="text-danger small validation-note"></span>
 							</div>
 
-							<div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+							<div asp-validation-summary="All" class="text-danger small"></div>
 
 							<div class="btn-row">
-								<button type="submit" class="btn-submit">Confirmar inscrição</button>
+								<button type="submit" class="btn-submit">Confirmar e ir para pagamento</button>
 								<a asp-controller="Evento" asp-action="IndexUsuario" class="btn-secondary-soft">Voltar para eventos</a>
 							</div>
+							<p class="payment-note">Sua inscrição ficará pendente até a confirmação do pagamento.</p>
 						</div>
 					</form>
 				</div>
