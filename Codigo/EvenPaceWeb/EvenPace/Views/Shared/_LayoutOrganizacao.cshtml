@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EvenPace</title>
 
+    <!-- Exemplo de ordem correta no head -->
     <link rel="stylesheet" href="~/css/theme.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/evento-detalhes.css" /> <!-- Carregue este por último para que ele tenha prioridade -->
     
 </head>
 <body>
@@ -38,11 +40,6 @@
                 <a asp-controller="Cupom" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual" class="menu-item">
                     <span class="menu-icon">🏷️</span>
                     <span class="menu-text">Cupons</span>
-                </a>
-
-                <a asp-controller="Evento" asp-action="Create" asp-route-id="@ViewBag.IdEventoAtual" class="menu-item">
-                    <span class="menu-icon">📄</span>
-                    <span class="menu-text">Informações</span>
                 </a>
 
                 <a asp-controller="Financeiro" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual" class="menu-item">

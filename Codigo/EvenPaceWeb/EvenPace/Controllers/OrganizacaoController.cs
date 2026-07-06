@@ -59,15 +59,13 @@ namespace EvenPaceWeb.Controllers
 
             if (result.Succeeded)
             {
-                // CORREÇÃO 1: Redireciona direto para a Index da Organização
-                return RedirectToAction("Index", "Organizacao");
+                return RedirectToAction("Index", "Evento");
             }
 
             ModelState.AddModelError("", "CPF/CNPJ ou Senha inválidos");
             return View();
         }
 
-        // CORREÇÃO 2: Alterado para carregar os eventos da organização logada
         [Authorize]
         public async Task<IActionResult> Index()
         {
@@ -166,7 +164,7 @@ namespace EvenPaceWeb.Controllers
                         _organizacaoService.Create(organizacao);
 
                         // Opcional: Você pode logar o usuário automaticamente aqui se quiser, ou mandar para o login
-                        return RedirectToAction("Index", "Organizacao");
+                        return RedirectToAction("Index", "Evento");
                     }
                     else
                     {

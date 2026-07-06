@@ -122,7 +122,13 @@ namespace EvenPace.Controllers
                     // 6. Processa o upload da imagem (Banner do evento)
                     if (model.ImagemUpload != null)
                     {
-                        evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload);
+                        string extensao = Path.GetExtension(model.ImagemUpload.FileName);
+                        string nomeArquivo = $"EventoBanner_{evento.Id}{extensao}";
+
+                        evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload, nomeArquivo);
+
+                        // C. Atualiza o banco com o nome da imagem
+                        _service.Edit(evento);
                     }
 
                     // 7. Persiste no banco de dados via serviço
@@ -191,10 +197,15 @@ namespace EvenPace.Controllers
 
                     if (model.ImagemUpload != null)
                     {
+                        // Deleta a anterior se existir
                         if (!string.IsNullOrEmpty(model.Imagem))
                             DeletarImagemDoDisco(model.Imagem);
 
-                        evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload);
+                        // Salva com o mesmo padrão de nomenclatura usando o ID que já existe
+                        string extensao = Path.GetExtension(model.ImagemUpload.FileName);
+                        string nomeArquivo = $"EventoBanner_{evento.Id}{extensao}";
+
+                        evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload, nomeArquivo);
                     }
                     else
                     {
@@ -270,20 +281,20 @@ namespace EvenPace.Controllers
             return RedirectToAction("Index");
         }
 
-        private string SalvarImagemNoDisco(Microsoft.AspNetCore.Http.IFormFile imagemUpload)
+        private string SalvarImagemNoDisco(Microsoft.AspNetCore.Http.IFormFile imagemUpload, string nomeDesejado)
         {
-            string pasta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
+            string pasta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens/banner-eventos");
             if (!Directory.Exists(pasta)) Directory.CreateDirectory(pasta);
 
-            string nomeUnico = Guid.NewGuid().ToString() + "_" + imagemUpload.FileName;
-            string caminhoCompleto = Path.Combine(pasta, nomeUnico);
+            // Usa o nome passado como parâmetro
+            string caminhoCompleto = Path.Combine(pasta, nomeDesejado);
 
             using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
             {
                 imagemUpload.CopyTo(stream);
             }
 
-            return nomeUnico;
+            return nomeDesejado;
         }
         /// <summary>
         /// Exibe o catálogo geral de eventos disponíveis na plataforma para os usuários finais, permitindo buscas dinâmicas.
@@ -342,7 +353,7 @@ namespace EvenPace.Controllers
         {
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", nomeImagem);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens/banner-eventos", nomeImagem);
                 if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
             }
             catch

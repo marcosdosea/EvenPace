@@ -3,83 +3,177 @@
 @{
     ViewData["Title"] = "Meus Eventos";
     Layout = "~/Views/Shared/_LayoutOrganizacaoHome.cshtml";
-    <link rel="stylesheet" href="~/css/evento.css" />
 }
 
-<main class="main-container">
-
-    @if (TempData["MensagemSucesso"] != null)
-    {
-        <div class="alert-custom">@TempData["MensagemSucesso"]</div>
-    }
-    @if (TempData["MensagemErro"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            @TempData["MensagemErro"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+<style>
+    /* Ajustes de Layout */
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+        width: 100%;
     }
 
-    @if (TempData["MensagemSucesso"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["MensagemSucesso"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    .sidebar {
+        width: 250px;
+        flex-shrink: 0;
     }
-    <header class="page-header header-responsive">
-        <div class="header-text">
-            <h1>Meus Eventos</h1>
-            <p class="subtitle">Escolha um evento para gerenciar</p>
-        </div>
 
-        <a asp-action="Create" class="btn-green btn-responsive">
-            <span class="btn-symbol" style="display:none;">+</span>
-            <span class="btn-text">+ Novo Evento</span>
-        </a>
-    </header>
+    .content-area {
+        flex-grow: 1;
+        background-color: #ffffff !important;
+        padding: 40px;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
 
-    <section class="kits-grid">
+    .org-top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e5e7eb;
+        margin-bottom: 40px;
+        width: 100%;
+    }
+
+    .btn-create-event {
+        background-color: #9ca3af;
+        color: #000000;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 24px;
+        text-decoration: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+        display: inline-block;
+    }
+
+        .btn-create-event:hover {
+            background-color: #4b5563;
+            color: #ffffff;
+        }
+
+    .section-title {
+        font-weight: 700;
+        font-size: 1.6rem;
+        margin-bottom: 35px;
+        color: #1f2937;
+    }
+
+    /* Estilos dos Cards */
+    .event-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.2s;
+    }
+
+        .event-card-link:hover {
+            transform: translateY(-5px);
+        }
+
+    .event-card-container {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .image-wrapper {
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .event-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .event-label-yellow {
+        background-color: #ffc107;
+        color: #000000;
+        text-align: center;
+        font-weight: 700;
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    /* Ícones de ação */
+    .action-icons-panel {
+        position: absolute;
+        top: 5px;
+        right: -35px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 5;
+    }
+
+    .btn-panel-icon {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .icon-edit {
+        color: #6b7280;
+    }
+
+    .icon-delete {
+        color: #dc3545;
+        font-weight: bold;
+    }
+</style>
+
+<div class="org-top-bar">
+    <div>
+        <span class="text-muted small d-block" style="font-size: 0.85rem;">Bem vindo</span>
+        <h5 class="fw-bold m-0 text-dark">@ViewBag.NomeOrganizacao</h5>
+    </div>
+    <a asp-controller="Evento" asp-action="Create" class="btn-create-event">Criar novo evento</a>
+</div>
+
+<div class="container-fluid p-0">
+    <h3 class="section-title text-center text-dark">Meus eventos</h3>
+
+    <div class="row g-5 justify-content-start" style="padding-right: 40px;">
         @if (Model != null && Model.Any())
         {
-            @foreach (var item in Model)
+            @foreach (var evento in Model)
             {
-                <div class="kit-card">
-                    <div class="kit-card-image">
-                        @if (!string.IsNullOrEmpty(item.Imagem))
-                        {
-                            <img src="~/imagens/@item.Imagem" alt="Foto do Evento" />
-                        }
-                        else
-                        {
-                            <div class="placeholder-img">📷 Sem Foto</div>
-                        }
-                    </div>
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+                    <div class="event-card-container">
 
-                    <div class="kit-card-body">
-                        <h3 class="kit-title">@item.Nome</h3>
-                        <p class="kit-price">@item.Data.ToString("dd/MM/yyyy")</p>
-                        <span style="font-size: 0.9rem; color: #888;">@item.Cidade - @item.Estado</span>
-                    </div>
+                        <!-- Link clicável para Detalhes -->
+                        <a asp-controller="Evento" asp-action="Details" asp-route-id="@evento.Id" class="event-card-link">
+                            <div class="image-wrapper">
+                                @if (!string.IsNullOrEmpty(evento.Imagem))
+                                {
+                                    <img src="@Url.Content("~/imagens/banner-eventos/" + evento.Imagem)" class="event-img" alt="@evento.Nome">
+                                }
+                                else
+                                {
+                                    <img src="https://placehold.co/300x180?text=EvenPace" class="event-img" alt="@evento.Nome">
+                                }
+                                <div class="event-label-yellow">@evento.Nome</div>
+                            </div>
+                        </a>
 
-                    <div class="kit-card-actions">
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn-action open" title="Abrir">📂 Abrir</a>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action edit" title="Editar">✏️ Editar</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action delete" title="Excluir" onclick="return confirm('Apagar este evento?');">🗑️ Excluir</a>
-                
-   
-
+                       
                     </div>
                 </div>
             }
         }
         else
         {
-            <div class="empty-state-card" style="grid-column: 1 / -1; text-align: center; padding: 40px; border: 2px dashed #ccc; border-radius: 10px; color: #666;">
-                <p>Nenhum evento encontrado.</p>
-                <a asp-action="Create" style="font-weight: bold; color: #28a745; text-decoration: underline;">Criar meu primeiro evento</a>
+            <div class="col-12 text-center mt-5">
+                <p class="text-muted">Nenhum evento criado por esta organização até o momento.</p>
             </div>
         }
-    </section>
-</main>
-<script src="~/js/evento.js"></script>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+/* Banner com mais destaque e altura */
+.banner-wrapper {
+    margin-bottom: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.banner-img {
+    width: 100%;
+    height: 400px; /* Aumentado para dar o destaque que você pediu */
+    object-fit: cover; /* Garante que a imagem não distorça */
+    transition: transform 0.3s ease;
+}
+
+/* Botões modernos com largura fixa e uniforme */
+.btn-action {
+    display: block; /* Faz o botão ocupar a largura total */
+    width: 100%; /* Garante que todos tenham a mesma largura */
+    padding: 16px;
+    margin-bottom: 12px; /* Distância entre os botões */
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+    /* Efeito ao passar o mouse */
+    .btn-action:hover {
+        transform: scale(1.02);
+    }
+
+.btn-edit {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.event-info-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.card-info {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.distancia-badge {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 5px;
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #374151;
+}
+
+@media (max-width: 768px) {
+    .event-info-section {
+        grid-template-columns: 1fr;
+    }
+}

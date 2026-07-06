@@ -43,4 +43,8 @@
       <ProjectReference Include="..\Service\Service.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\imagens\banner-eventos\" />
+    </ItemGroup>
+
 </Project>

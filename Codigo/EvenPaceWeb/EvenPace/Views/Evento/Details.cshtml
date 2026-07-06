@@ -1,46 +1,59 @@
 ﻿@model Models.EventoViewModel
 
 @{
-    ViewData["Title"] = "Resumo do Evento";
+    ViewData["Title"] = "Detalhes do Evento";
     Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
-    <link rel="stylesheet" href="~/css/evento.css" />
+
+    // Lógica do Placeholder
+    string imagemSrc = !string.IsNullOrEmpty(Model.Imagem)
+        ? "/imagens/banner-eventos/" + Model.Imagem
+        : "https://placehold.co/300x180?text=EvenPace";
 }
 
-<main class="main-container">
+<link rel="stylesheet" href="~/css/evento-detalhes.css" />
 
-    <header class="page-header header-responsive" style="margin-bottom: 30px;">
-        <div class="header-title-group">
-            <div class="header-text">
-                <h1>Resumo</h1>
-                <p class="subtitle">@Model.Nome</p>
+@if (Model != null)
+{
+    <div class="main-container">
+        <div class="banner-wrapper">
+            <img src="@imagemSrc" class="banner-img" alt="@Model.Nome">
+        </div>
+
+        <header class="page-header" style="margin-bottom: 30px;">
+            <h1>@Model.Nome</h1>
+        </header>
+
+        <div class="event-info-section">
+            <div class="card-info">
+                <h3>Sobre o evento</h3>
+                <p><strong>Data:</strong> @Model.Data.ToString("dd/MM/yyyy HH:mm")</p>
+                <p><strong>Descrição:</strong> @Model.Descricao</p>
+                <p><strong>Local:</strong> @Model.Cidade - @Model.Estado</p>
+            </div>
+
+            <div class="card-info" style="border-left: 5px solid #FEEA00;">
+                <h3>Ações do Evento</h3>
+                <div class="mt-3">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-action btn-edit">
+                        ✏️ Editar Evento
+                    </a>
+
+                    <button type="button" class="btn-action btn-delete"
+                            onclick="confirmarExclusao(@Model.Id, '@Model.Nome')">
+                        🗑️ Excluir Evento
+                    </button>
+                </div>
             </div>
         </div>
-    </header>
+    </div>
+}
 
-    <section class="kits-grid">
-        <div class="kit-card" style="padding: 25px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <span style="font-size: 2rem; margin-bottom: 10px;">📅</span>
-            <h3 style="margin: 0; font-size: 1.1rem; color: #666;">Data</h3>
-            <p style="font-size: 1.4rem; font-weight: bold; margin: 5px 0 0 0; color: #333;">
-                @Model.Data.ToString("dd/MM/yyyy")
-            </p>
-        </div>
-
-        <div class="kit-card" style="padding: 25px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <span style="font-size: 2rem; margin-bottom: 10px;">👥</span>
-            <h3 style="margin: 0; font-size: 1.1rem; color: #666;">Participantes</h3>
-            <p style="font-size: 1.4rem; font-weight: bold; margin: 5px 0 0 0; color: #333;">
-                @Model.NumeroParticipantes
-            </p>
-        </div>
-
-        <div class="kit-card" style="padding: 25px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <span style="font-size: 2rem; margin-bottom: 10px;">📍</span>
-            <h3 style="margin: 0; font-size: 1.1rem; color: #666;">Local</h3>
-            <p style="font-size: 1.4rem; font-weight: bold; margin: 5px 0 0 0; color: #333;">
-                @Model.Cidade - @Model.Estado
-            </p>
-        </div>
-    </section>
-
-</main>
+@section Scripts {
+    <script>
+        function confirmarExclusao(id, nome) {
+            if (confirm('Tem certeza que deseja excluir o evento "' + nome + '"? Esta ação é irreversível.')) {
+                window.location.href = '@Url.Action("Delete", "Evento")/' + id;
+            }
+        }
+    </script>
+}
