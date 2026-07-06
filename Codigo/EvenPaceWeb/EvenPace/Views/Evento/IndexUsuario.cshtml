@@ -49,6 +49,12 @@
         <div class="events-intro">
             <div>
                 <span class="events-kicker">Eventos em Sergipe</span>
+
+                @if (!string.IsNullOrWhiteSpace(ViewBag.NomeCorredor))
+                {
+                    <p class="events-welcome">Olá, @ViewBag.NomeCorredor!</p>
+                }
+
                 <h1>Encontre sua próxima corrida.</h1>
             </div>
 
@@ -136,6 +142,13 @@
             width: 100%;
             background: #ffffff;
             padding: 32px 20px 56px;
+        }
+
+        .events-welcome {
+            margin: 0 0 8px;
+            color: #765a12;
+            font-size: 1rem;
+            font-weight: 800;
         }
 
         .events-container {

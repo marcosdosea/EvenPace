@@ -1,10 +1,12 @@
 using AutoMapper;
 using Core;
 using Core.Service;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Service;
 
 namespace EvenPace.Controllers
 {
@@ -14,18 +16,21 @@ namespace EvenPace.Controllers
         private readonly IKitService _kitService;
         private readonly IMapper _mapper;
         private readonly EvenPaceContext _context;
+        private readonly ICorredorService _corredorService;
         private object _logger;
 
         public EventoController(
             IEventosService service,
             IKitService kitService,
             IMapper mapper,
-            EvenPaceContext context)
+            EvenPaceContext context,
+            ICorredorService corredorService)
         {
             _service = service;
             _kitService = kitService;
             _mapper = mapper;
             _context = context;
+            _corredorService = corredorService;
         }
 
         [Authorize]
@@ -302,8 +307,30 @@ namespace EvenPace.Controllers
         /// <param name="search">Termo opcional de pesquisa para filtrar eventos pelo nome, cidade ou estado.</param>
         /// <returns>View contendo a vitrine de eventos compatíveis com a busca.</returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> IndexUsuario(string? search)
         {
+            // CPF salvo como UserName no Identity, sem ponto e hífen.
+            string? cpfUsuarioLogado = User.Identity?.Name;
+
+            if (string.IsNullOrWhiteSpace(cpfUsuarioLogado))
+            {
+                return RedirectToAction("Login", "Corredor");
+            }
+
+            // Busca o perfil do corredor no banco principal.
+            var corredor = await _corredorService.GetByCpfAsync(cpfUsuarioLogado);
+
+            if (corredor == null)
+            {
+                await HttpContext.SignOutAsync();
+                return RedirectToAction("Login", "Corredor");
+            }
+
+            // Dados disponíveis para a View.
+            ViewBag.IdCorredor = corredor.Id;
+            ViewBag.NomeCorredor = corredor.Nome;
+
             search = search?.Trim();
             var agora = DateTime.Now;
 
