@@ -23,5 +23,11 @@ namespace Models
         [DataType(DataType.Date)]
         public DateTime DataNascimento { get; set; }
 
+        [Required(ErrorMessage = "O e-mail é obrigatório.")]
+        [EmailAddress(ErrorMessage = "Digite um e-mail válido.")]
+        public string Email { get; set; }
+
+        public string? Senha { get; set; }
+
     }
 }

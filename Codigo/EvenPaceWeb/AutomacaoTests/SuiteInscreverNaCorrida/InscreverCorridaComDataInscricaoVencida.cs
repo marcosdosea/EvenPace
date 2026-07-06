@@ -29,7 +29,7 @@ public class UntitledTest {
   }
   [Test]
   public void untitled() {
-  
+
         driver.Navigate().GoToUrl("https://localhost:7131/");
         driver.Manage().Window.Size = new System.Drawing.Size(790, 816);
         driver.FindElement(By.LinkText("Entrar como Corredor")).Click();

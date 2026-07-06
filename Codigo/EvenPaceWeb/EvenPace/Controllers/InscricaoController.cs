@@ -115,9 +115,9 @@ namespace EvenPace.Controllers
 
             try
             {
-                await _inscricaoService.CreateAsync(inscricao);
+                var idGerado = await _inscricaoService.CreateAsync(inscricao);
                 TempData["Sucesso"] = "Inscrição realizada com sucesso!";
-                return RedirectToAction("IndexUsuario", "Evento");
+                return RedirectToAction("Pagar", "Pagamento", new { idInscricao = idGerado });
             }
             catch (InvalidOperationException ex)
             {

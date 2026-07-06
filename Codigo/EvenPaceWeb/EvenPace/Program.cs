@@ -20,6 +20,7 @@ builder.Services.AddControllers()
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(EvenPaceWeb.Mappers.AutoMapperProfile));
 builder.Services.AddScoped<ICorredorService, CorredorService>();
+builder.Services.AddScoped<IPagamentoService, PagamentoService>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -50,30 +51,30 @@ builder.Services.AddScoped<IOrganizacaoService, OrganizacaoService>();
 
 
 builder.Services.AddDefaultIdentity<UsuarioIdentity>(options =>
-    {
-        // SignIn settings
-        options.SignIn.RequireConfirmedAccount = false;
-        options.SignIn.RequireConfirmedEmail = false;
-        options.SignIn.RequireConfirmedPhoneNumber = false;
+{
+    // SignIn settings
+    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
 
-        // Passowrd settings
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 6;
+    // Passowrd settings
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
 
-        // Default User settings
-        options.User.AllowedUserNameCharacters =
-            "abcdefgkijklmnopkrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-        options.User.RequireUniqueEmail = true; // Trocado de false para true para realziação de teste -- Voltar ao normal depois 
+    // Default User settings
+    options.User.AllowedUserNameCharacters =
+        "abcdefgkijklmnopkrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = true; // Trocado de false para true para realziação de teste -- Voltar ao normal depois 
 
-        // Default Lockout settings
-        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-        options.Lockout.MaxFailedAccessAttempts = 5;
-        options.Lockout.AllowedForNewUsers = true;
+    // Default Lockout settings
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
 
-    }
+}
 ).AddEntityFrameworkStores<IdentityContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>

@@ -7,6 +7,6 @@ namespace AutomacaoTests.SuiteManterEvento
 {
     public class NewClass
     {
-        
+
     }
 }

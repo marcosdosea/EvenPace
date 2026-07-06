@@ -1,0 +1,174 @@
+﻿@using EvenPaceWeb
+@using EvenPaceWeb.Models
+@model EvenPaceWeb.Models.PagamentoViewModel
+@{
+    Layout = null;
+    var status = Model.StatusPagamento ?? "unknown";
+
+    string emoji, corTitulo, titulo, descricao, corBg;
+    switch (status)
+    {
+        case "approved":
+            emoji = "✅";
+            corTitulo = "#1a7a3e";
+            corBg = "#f0fdf4";
+            titulo = "Pagamento Aprovado!";
+            descricao = "Sua inscrição foi confirmada com sucesso. Boa corrida!";
+            break;
+        case "in_process":
+        case "pending":
+            emoji = "⏳";
+            corTitulo = "#92400e";
+            corBg = "#fffbeb";
+            titulo = "Pagamento em Análise";
+            descricao = "Seu pagamento está sendo processado. Você receberá a confirmação em breve.";
+            break;
+        default:
+            emoji = "❌";
+            corTitulo = "#dc2626";
+            corBg = "#fff5f5";
+            titulo = "Pagamento Não Aprovado";
+            descricao = "Não conseguimos processar o pagamento. Verifique os dados e tente novamente.";
+            break;
+    }
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@titulo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Montserrat", system-ui, sans-serif;
+            color: #121212;
+            background: linear-gradient(180deg,#ffffff 0%,#fffef7 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .result-card {
+            background: #fff;
+            border: 1px solid #ece7d5;
+            border-radius: 32px;
+            box-shadow: 0 18px 40px rgba(18,18,18,.08);
+            padding: 40px 32px;
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        .result-status-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            background: @corBg;
+            color: @corTitulo;
+            margin-bottom: 14px;
+        }
+
+        .result-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -.03em;
+            color: @corTitulo;
+            margin: 0 0 10px;
+        }
+
+        .result-desc {
+            color: #6f7780;
+            font-size: .95rem;
+            line-height: 1.6;
+            margin: 0 0 8px;
+        }
+
+        .result-code {
+            color: #aaa;
+            font-size: .78rem;
+            margin: 0 0 28px;
+        }
+
+        .btn-primary-ep {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 999px;
+            background: linear-gradient(135deg,#ffe07a,#f4c542);
+            color: #222;
+            font-weight: 800;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: .95rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary-ep {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid #ece7d5;
+            color: #121212;
+            font-weight: 800;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: .95rem;
+        }
+
+        .btn-group-ep {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-card">
+        <div class="result-icon">@emoji</div>
+        <div class="result-status-badge">@titulo</div>
+        <h1 class="result-title">@titulo</h1>
+        <p class="result-desc">@descricao</p>
+
+        @if (!string.IsNullOrWhiteSpace(Model.IdTransacaoMP))
+        {
+            <p class="result-code">Código da transação: @Model.IdTransacaoMP</p>
+        }
+
+        <div class="btn-group-ep">
+            <a href="/Evento/IndexUsuario" class="btn-primary-ep">
+                Ir para Home
+            </a>
+
+            @if (status is not "approved")
+            {
+                <a href="javascript:history.back()" class="btn-secondary-ep">
+                    Tentar Novamente
+                </a>
+            }
+        </div>
+    </div>
+</body>
+</html>

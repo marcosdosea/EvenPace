@@ -47,7 +47,7 @@ public class UntitledTest {
         driver.FindElement(By.CssSelector(".cartao-option")).Click();
         driver.FindElement(By.CssSelector(".btn-pagamento")).Click();
         driver.FindElement(By.LinkText("Inicio")).Click();
-        
+
         // Seleciona segunda corrida Maratona Ita
         driver.FindElement(By.CssSelector("a:nth-child(2) .btn-inscrever")).Click();
         driver.FindElement(By.CssSelector(".kit-card:nth-child(1) > .btn-inscrever")).Click();

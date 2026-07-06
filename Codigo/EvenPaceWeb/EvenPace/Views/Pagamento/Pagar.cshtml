@@ -1,0 +1,178 @@
+﻿@using EvenPaceWeb.Models
+@model PagamentoViewModel
+
+@{
+    Layout = null;
+
+    var valor = Model.ValorKit.ToString("N2",
+        System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Escolha como pagar</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        body {
+            background: #fff;
+            font-family: Montserrat, sans-serif;
+        }
+
+        .app-card {
+            background: #fff;
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 85vh;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+        }
+
+        .header {
+            padding: 18px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 18px;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 16px 0 10px;
+        }
+
+        .card-box {
+            background: #f2f2f2;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            color: #111;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+            .item + .item {
+                border-top: 1px solid #ddd;
+            }
+
+            .item:hover {
+                background: #e9e9e9;
+            }
+
+        .arrow {
+            font-size: 22px;
+        }
+
+        .footer {
+            border-top: 1px solid #eee;
+            padding: 16px;
+            background: #fff;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            background: #000;
+            color: #FFD700;
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <section class="vh-100 d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+                    <div class="app-card">
+
+                        <div class="header" onclick="history.back()">
+                            ← Voltar
+                        </div>
+
+                        <div class="app-content">
+
+                            <h1>Escolha como pagar</h1>
+
+                            <h2>Cartões</h2>
+                            <div class="card-box">
+                                <a href="@Url.Action("Cartao","Pagamento",new{idInscricao=Model.IdInscricao})" class="item">
+                                    <span>Cartão de crédito</span>
+                                    <span class="arrow">›</span>
+                                </a>
+                            </div>
+
+                            <h2>Transferências</h2>
+                            <div class="card-box">
+                                <a href="@Url.Action("Pix","Pagamento",new{idInscricao=Model.IdInscricao})" class="item">
+                                    <span>Pix</span>
+                                    <span class="arrow">›</span>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="footer">
+
+                            <div class="total">
+                                <span>Você pagará</span>
+                                <span>R$ @valor</span>
+                            </div>
+
+                            <button class="btn" disabled>
+                                Confirmar a compra
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

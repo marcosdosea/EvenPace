@@ -16,6 +16,8 @@ public partial class EvenPaceContext : DbContext
     {
     }
 
+    public virtual DbSet<Pagamento> Pagamentos { get; set; }
+
     public virtual DbSet<Administrador> Administradors { get; set; }
 
     public virtual DbSet<AvaliacaoEvento> AvaliacaoEventos { get; set; }
@@ -102,16 +104,27 @@ public partial class EvenPaceContext : DbContext
             entity.HasIndex(e => e.Cpf, "cpf_UNIQUE").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
+
             entity.Property(e => e.Cpf)
                 .HasMaxLength(11)
                 .IsFixedLength()
                 .HasColumnName("cpf");
-            entity.Property(e => e.DataNascimento)
-                .HasColumnType("date")
-                .HasColumnName("dataNascimento");
+
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
                 .HasColumnName("nome");
+
+            entity.Property(e => e.DataNascimento)
+                .HasColumnType("date")
+                .HasColumnName("dataNascimento");
+
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .HasColumnName("email");
+
+            entity.Property(e => e.Senha)
+                .HasMaxLength(255)
+                .HasColumnName("senha");
         });
 
         modelBuilder.Entity<Cupom>(entity =>
@@ -290,6 +303,28 @@ public partial class EvenPaceContext : DbContext
                 .HasForeignKey(d => d.IdEvento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Kit_Evento1");
+        });
+
+
+        modelBuilder.Entity<Pagamento>(entity =>
+        {
+            entity.ToTable("Pagamentos");
+
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.IdInscricao).HasColumnName("idInscricao");
+            entity.Property(e => e.ValorPago).HasColumnName("valorPago");
+            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.FormaPagamento).HasColumnName("formaPagamento");
+            entity.Property(e => e.IdTransacaoMP).HasColumnName("idTransacaoMP");
+            entity.Property(e => e.DataPagamento).HasColumnName("dataPagamento");
+            entity.Property(e => e.Parcelas).HasColumnName("parcelas");
+
+            entity.HasOne(e => e.IdInscricaoNavigation)
+    .WithMany(i => i.Pagamentos)
+    .HasForeignKey(e => e.IdInscricao)
+            .HasConstraintName("FK_Pagamentos_Inscricao");
         });
 
         modelBuilder.Entity<Organizacao>(entity =>
