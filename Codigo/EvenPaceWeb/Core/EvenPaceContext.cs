@@ -310,21 +310,41 @@ public partial class EvenPaceContext : DbContext
         {
             entity.ToTable("Pagamentos");
 
-            entity.HasKey(e => e.Id);
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.IdInscricao).HasColumnName("idInscricao");
-            entity.Property(e => e.ValorPago).HasColumnName("valorPago");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.FormaPagamento).HasColumnName("formaPagamento");
-            entity.Property(e => e.IdTransacaoMP).HasColumnName("idTransacaoMP");
-            entity.Property(e => e.DataPagamento).HasColumnName("dataPagamento");
-            entity.Property(e => e.Parcelas).HasColumnName("parcelas");
+            entity.Property(e => e.Id)
+                .HasColumnType("int unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.IdInscricao)
+                .HasColumnType("int unsigned")
+                .HasColumnName("idInscricao");
+            entity.Property(e => e.ValorPago)
+                .HasPrecision(10, 2)
+                .HasColumnName("valorPago");
+            entity.Property(e => e.Status)
+                .HasMaxLength(50)
+                .HasColumnName("status");
+            entity.Property(e => e.FormaPagamento)
+                .HasMaxLength(50)
+                .HasColumnName("formaPagamento");
+            entity.Property(e => e.IdTransacaoMP)
+                .HasMaxLength(100)
+                .HasColumnName("idTransacaoMP");
+            entity.Property(e => e.DataPagamento)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnName("dataPagamento");
+            entity.Property(e => e.Parcelas)
+                .HasDefaultValue(1)
+                .HasColumnName("parcelas");
+
+            entity.HasIndex(e => e.IdInscricao, "IX_Pagamentos_idInscricao");
 
             entity.HasOne(e => e.IdInscricaoNavigation)
-    .WithMany(i => i.Pagamentos)
-    .HasForeignKey(e => e.IdInscricao)
-            .HasConstraintName("FK_Pagamentos_Inscricao");
+                .WithMany(i => i.Pagamentos)
+                .HasForeignKey(e => e.IdInscricao)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_Pagamentos_Inscricao");
         });
 
         modelBuilder.Entity<Organizacao>(entity =>

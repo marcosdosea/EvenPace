@@ -454,6 +454,59 @@ namespace Core.Migrations
                     b.ToTable("Kit", (string)null);
                 });
 
+            modelBuilder.Entity("Core.Pagamento", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int unsigned")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("DataPagamento")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("dataPagamento")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("FormaPagamento")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("formaPagamento");
+
+                    b.Property<uint>("IdInscricao")
+                        .HasColumnType("int unsigned")
+                        .HasColumnName("idInscricao");
+
+                    b.Property<string>("IdTransacaoMP")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("idTransacaoMP");
+
+                    b.Property<int>("Parcelas")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("parcelas")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("status");
+
+                    b.Property<decimal>("ValorPago")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("valorPago");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "IdInscricao" }, "IX_Pagamentos_idInscricao");
+
+                    b.ToTable("Pagamentos", (string)null);
+                });
+
             modelBuilder.Entity("Core.Organizacao", b =>
                 {
                     b.Property<uint>("Id")
@@ -627,6 +680,18 @@ namespace Core.Migrations
                     b.Navigation("IdEventoNavigation");
                 });
 
+            modelBuilder.Entity("Core.Pagamento", b =>
+                {
+                    b.HasOne("Core.Inscricao", "IdInscricaoNavigation")
+                        .WithMany("Pagamentos")
+                        .HasForeignKey("IdInscricao")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Pagamentos_Inscricao");
+
+                    b.Navigation("IdInscricaoNavigation");
+                });
+
             modelBuilder.Entity("Core.Organizacao", b =>
                 {
                     b.HasOne("Core.Administrador", "Administrador")
@@ -666,6 +731,11 @@ namespace Core.Migrations
             modelBuilder.Entity("Core.Kit", b =>
                 {
                     b.Navigation("Inscricaos");
+                });
+
+            modelBuilder.Entity("Core.Inscricao", b =>
+                {
+                    b.Navigation("Pagamentos");
                 });
 
             modelBuilder.Entity("Core.Organizacao", b =>
