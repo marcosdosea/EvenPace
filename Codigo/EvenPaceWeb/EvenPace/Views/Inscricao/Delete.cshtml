@@ -2,182 +2,295 @@
 
 @{
 	Layout = null;
+	var inscricao = Model.Inscricao!;
 }
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 	<meta charset="utf-8" />
-	<title>Cancelar Inscrição</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Cancelar inscrição</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
 
 	<style>
+		:root {
+			--surface: #ffffff;
+			--surface-soft: #fffdf3;
+			--text: #121212;
+			--muted: #6f7780;
+			--border: #ece7d5;
+			--yellow: #ffe07a;
+			--yellow-strong: #f4c542;
+			--shadow: 0 18px 40px rgba(18, 18, 18, 0.08);
+		}
+
+		* { box-sizing: border-box; }
+
 		body {
-			background: #f5c400;
-		}
-
-		.app-card {
-			background: #fff;
-			border-radius: 1rem;
-			overflow: hidden;
-			display: flex;
-			flex-direction: column;
-			height: 85vh;
-			position: relative;
-			box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
-		}
-
-		.header {
-			padding: 18px;
-			border-bottom: 1px solid #eee;
-			cursor: pointer;
-		}
-
-		.app-content {
-			flex: 1;
-			overflow-y: auto;
-			padding: 16px;
-		}
-
-		h2 {
-			font-weight: bold;
-			text-align: center;
-			margin-bottom: 20px;
-		}
-
-		.card-box {
-			background: #fff;
-			border-radius: 12px;
-			padding: 16px;
-			box-shadow: 0 2px 8px rgba(0,0,0,.08);
-			margin-bottom: 16px;
-		}
-
-			.card-box.top {
-				border-top: 6px solid #FFD700;
-			}
-
-		.label-pequeno {
-			font-size: .85rem;
-			color: #6c757d;
-		}
-
-		.valor-negrito {
-			font-weight: bold;
 			margin: 0;
+			font-family: "Montserrat", system-ui, sans-serif;
+			color: var(--text);
+			background: linear-gradient(180deg, #ffffff 0%, #fffef7 100%);
+			min-height: 100vh;
 		}
 
-		.alerta {
-			background: #fff3cd;
-			border-radius: 12px;
-			padding: 16px;
-			font-size: .95rem;
+		.page-shell { min-height: 100vh; }
+		.page-card { min-height: 100vh; background: #fff; }
+
+		.topbar {
+			padding: 18px;
+			border-bottom: 1px solid var(--border);
+			background: rgba(255, 255, 255, 0.95);
+			backdrop-filter: blur(10px);
+			position: sticky;
+			top: 0;
+			z-index: 5;
 		}
 
-			.alerta ul {
-				padding-left: 18px;
-				margin: 8px 0 0;
-			}
-
-		.btn-cancelar {
-			width: 100%;
-			background: #FFD700;
-			border: none;
-			border-radius: 30px;
-			font-weight: bold;
-			padding: 12px;
-			margin-top: 20px;
-		}
-
-			.btn-cancelar:hover {
-				background: #f1c40f;
-			}
-
-		.bottom-nav {
-			height: 70px;
-			border-top: 1px solid #ddd;
-			display: flex;
-			justify-content: space-around;
+		.back-link {
+			display: inline-flex;
 			align-items: center;
-			font-size: 12px;
-			background: #fff;
-			flex-shrink: 0;
+			gap: 8px;
+			text-decoration: none;
+			color: var(--text);
+			font-weight: 800;
 		}
 
-		@@media (max-width: 768px) {
-			.app-card {
-				height: 100vh;
-				border-radius: 0;
+		.hero {
+			padding: 18px 0 22px;
+		}
+
+		.hero-box {
+			background: linear-gradient(135deg, #fffdf4, #ffffff);
+			border: 1px solid var(--border);
+			border-radius: 26px;
+			box-shadow: var(--shadow);
+			overflow: hidden;
+		}
+
+		.hero-media {
+			position: relative;
+			min-height: 250px;
+			background: var(--surface-soft);
+		}
+
+		.hero-media img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+
+		.hero-fallback {
+			min-height: 250px;
+			display: grid;
+			place-items: center;
+			color: var(--muted);
+			font-weight: 700;
+			text-align: center;
+			padding: 24px;
+		}
+
+		.hero-content { padding: 22px; }
+		.event-title {
+			margin: 0;
+			font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+			font-weight: 800;
+			letter-spacing: -0.04em;
+		}
+
+		.meta-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+			margin-top: 16px;
+		}
+
+		.meta-pill, .pill {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 10px 14px;
+			border-radius: 999px;
+			background: rgba(255, 224, 122, 0.22);
+			border: 1px solid rgba(244, 197, 66, 0.22);
+			font-weight: 700;
+			font-size: .86rem;
+		}
+
+		.content {
+			padding: 0 0 34px;
+		}
+
+		.summary-grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 14px;
+			margin-top: 10px;
+		}
+
+		.summary-card {
+			background: #fff;
+			border: 1px solid var(--border);
+			border-radius: 22px;
+			padding: 18px;
+			box-shadow: 0 12px 24px rgba(18, 18, 18, 0.05);
+		}
+
+		.summary-label {
+			display: block;
+			color: var(--muted);
+			font-size: .8rem;
+			text-transform: uppercase;
+			letter-spacing: .08em;
+			font-weight: 700;
+			margin-bottom: 8px;
+		}
+
+		.summary-value {
+			margin: 0;
+			font-weight: 800;
+			line-height: 1.55;
+		}
+
+		.warning-box {
+			margin-top: 18px;
+			padding: 18px;
+			border-radius: 22px;
+			background: #fff9dd;
+			border: 1px solid rgba(244, 197, 66, 0.35);
+		}
+
+		.warning-box ul {
+			margin: 10px 0 0;
+			padding-left: 18px;
+			color: #454545;
+		}
+
+		.btn-row {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 12px;
+			margin-top: 24px;
+		}
+
+		.btn-danger-soft {
+			border: none;
+			border-radius: 999px;
+			padding: 14px 18px;
+			background: linear-gradient(135deg, var(--yellow), var(--yellow-strong));
+			color: #222;
+			font-weight: 800;
+			box-shadow: 0 12px 18px rgba(244, 197, 66, 0.18);
+		}
+
+		.btn-secondary-soft {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 14px 18px;
+			border-radius: 999px;
+			text-decoration: none;
+			background: #fff;
+			border: 1px solid var(--border);
+			color: var(--text);
+			font-weight: 800;
+		}
+
+		@@media (min-width: 768px) {
+			.summary-grid {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
 			}
+
+			.btn-row {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+		}
+
+		@@media (max-width: 767.98px) {
+			.topbar { padding: 16px; }
+			.hero-content { padding: 18px; }
 		}
 	</style>
 </head>
-
 <body>
+	<div class="page-shell">
+		<div class="page-card">
+			<div class="topbar">
+				<div class="container-fluid px-0">
+					<a href="javascript:history.back()" class="back-link">← Voltar</a>
+				</div>
+			</div>
 
-	<section class="vh-100 d-flex align-items-center">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-12 col-md-8 col-lg-6 col-xl-5">
-
-					<div class="app-card">
-
-						<div class="header" onclick="history.back()">← Voltar</div>
-
-						<form asp-controller="Inscricao" asp-action="Cancelar" method="post" class="app-content">
-							@Html.AntiForgeryToken()
-							<input type="hidden" asp-for="Inscricao.Id" />
-							<input type="hidden" asp-for="Inscricao.IdEvento" />
-
-							<h2>Cancelar inscrição ⚠️</h2>
-
-							<div class="card-box top">
-								<p class="valor-negrito">@Model.NomeEvento</p>
-								<span class="label-pequeno">Evento</span>
-								<hr />
-								<p class="mb-1"><strong>📅 Data:</strong> @Model.DataEvento.ToString("dd/MM/yyyy")</p>
-								<p class="mb-1"><strong>📍 Local:</strong> @Model.Local</p>
-								<p class="mb-0"><strong>🏃 Distância:</strong> @Model.Inscricao.Distancia</p>
-							</div>
-
-							<div class="card-box">
-								<p class="valor-negrito">Sua inscrição</p>
-								<span class="label-pequeno">Detalhes</span>
-								<hr />
-								<p class="mb-1"><strong>Corredor:</strong> @Model.NomeCorredor</p>
-								<p class="mb-1"><strong>Data da inscrição:</strong> @Model.Inscricao.DataInscricao.ToString("dd/MM/yyyy")</p>
-								<p class="mb-0"><strong>Kit escolhido:</strong> @Model.NomeKit</p>
-							</div>
-
-							<div class="alerta">
-								<strong>⚠️ Ao cancelar sua inscrição:</strong>
-								<ul>
-									<li>Você perderá a vaga na corrida</li>
-									<li>Esta ação não poderá ser desfeita</li>
-								</ul>
-							</div>
-
-							<button type="submit" class="btn-cancelar">
-								🗑️ Cancelar inscrição
-							</button>
-
-						</form>
-
-						<div class="bottom-nav">
-							<a asp-controller="Evento" asp-action="IndexUsuario" style="text-decoration:none; color:inherit;">🏠<br />Início</a>
-							<div>🏆<br />Conquistas</div>
-							<div>🎟️<br />Cupons</div>
-							<div>🕓<br />Histórico</div>
-							<div>👤<br />Perfil</div>
+			<div class="container-fluid px-3 px-md-4 px-xl-5">
+				<div class="hero">
+					<div class="hero-box">
+						<div class="hero-media">
+							@if (!string.IsNullOrEmpty(Model.ImagemEvento))
+							{
+								<img src="@Url.Content($"~/imagens/{Model.ImagemEvento}")" alt="@Model.NomeEvento" />
+							}
+							else
+							{
+								<div class="hero-fallback">Sem imagem do evento</div>
+							}
 						</div>
+						<div class="hero-content">
+							<h1 class="event-title">Cancelar inscrição</h1>
+							<div class="meta-row">
+								<span class="meta-pill">📍 @Model.Local</span>
+								<span class="meta-pill">📅 @Model.DataEvento.ToString("dd/MM/yyyy")</span>
+								<span class="meta-pill">⚠️ Revise antes de confirmar</span>
+							</div>
+						</div>
+					</div>
+				</div>
 
+				<div class="content">
+					<div class="summary-grid">
+						<div class="summary-card">
+							<span class="summary-label">Evento</span>
+							<p class="summary-value">@Model.NomeEvento</p>
+						</div>
+						<div class="summary-card">
+							<span class="summary-label">Inscrição</span>
+							<p class="summary-value">#@inscricao.Id - @inscricao.Distancia</p>
+						</div>
+						<div class="summary-card">
+							<span class="summary-label">Corredor</span>
+							<p class="summary-value">@Model.NomeCorredor</p>
+						</div>
+						<div class="summary-card">
+							<span class="summary-label">Kit escolhido</span>
+							<p class="summary-value">@Model.NomeKit</p>
+						</div>
 					</div>
 
+					<div class="warning-box">
+						<strong>Antes de cancelar, lembre-se:</strong>
+						<ul>
+							<li>Você perde a vaga na corrida.</li>
+							<li>Essa ação não pode ser desfeita.</li>
+						</ul>
+					</div>
+
+					<form asp-controller="Inscricao" asp-action="Delete" method="post">
+						@Html.AntiForgeryToken()
+						<input type="hidden" asp-for="Inscricao.Id" />
+						<input type="hidden" asp-for="IdEvento" />
+
+						<div class="btn-row">
+							<button type="submit" class="btn-danger-soft">Cancelar inscrição</button>
+							<a asp-controller="Evento" asp-action="IndexUsuario" class="btn-secondary-soft">Voltar para eventos</a>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
-	</section>
-
+	</div>
 </body>
 </html>

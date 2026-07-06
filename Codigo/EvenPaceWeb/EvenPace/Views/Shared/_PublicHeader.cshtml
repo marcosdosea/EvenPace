@@ -1,0 +1,26 @@
+<header class="evenpace-public-header">
+    <div class="container-fluid px-3 px-lg-5">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 py-3 py-lg-4">
+            <a class="evenpace-brand" href="@Url.Action("IndexUsuario", "Evento")">
+                <img src="~/imagens/logo-amarela-evenpace.jpeg" alt="EvenPace" class="evenpace-logo" />
+                <span class="evenpace-brand-name">EvenPace</span>
+            </a>
+
+            <nav class="d-flex flex-wrap align-items-center justify-content-end gap-2 gap-lg-3">
+                <a class="evenpace-instagram-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram EvenPace">
+                    <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                        <path d="M7.75 2h8.5A5.76 5.76 0 0 1 22 7.75v8.5A5.76 5.76 0 0 1 16.25 22h-8.5A5.76 5.76 0 0 1 2 16.25v-8.5A5.76 5.76 0 0 1 7.75 2Zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5Zm4.25 3.25A4.75 4.75 0 1 1 7.25 12 4.75 4.75 0 0 1 12 7.25Zm0 2A2.75 2.75 0 1 0 14.75 12 2.75 2.75 0 0 0 12 9.25ZM17.25 6.7a1.05 1.05 0 1 1-1.05 1.05 1.05 1.05 0 0 1 1.05-1.05Z" />
+                    </svg>
+                </a>
+
+                <a class="evenpace-header-action evenpace-header-action-secondary" href="@Url.Action("Login", "Organizacao")">
+                    Crie sua corrida
+                </a>
+
+                <a class="evenpace-header-action evenpace-header-action-primary" href="@Url.Action("Index", "Home")">
+                    Entrar
+                </a>
+            </nav>
+        </div>
+    </div>
+</header>

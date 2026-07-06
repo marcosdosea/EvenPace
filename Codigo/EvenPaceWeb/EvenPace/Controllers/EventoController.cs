@@ -3,6 +3,7 @@ using Core;
 using Core.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace EvenPace.Controllers
@@ -290,11 +291,17 @@ namespace EvenPace.Controllers
         /// <param name="search">Termo opcional de pesquisa para filtrar eventos pelo nome, cidade ou estado.</param>
         /// <returns>View contendo a vitrine de eventos compatíveis com a busca.</returns>
         [HttpGet]
-        public IActionResult IndexUsuario(string search)
+        public async Task<IActionResult> IndexUsuario(string? search)
         {
-            var eventos = _context.Eventos.AsQueryable();
+            search = search?.Trim();
+            var agora = DateTime.Now;
 
-            if (!string.IsNullOrEmpty(search))
+            var eventos = _context.Eventos
+                .AsNoTracking()
+                .Where(e => e.Data >= agora)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
             {
                 eventos = eventos.Where(e =>
                     e.Nome.Contains(search) ||
@@ -302,17 +309,31 @@ namespace EvenPace.Controllers
                     e.Estado.Contains(search));
             }
 
-            var model = eventos
+            var model = await eventos
+                .OrderBy(e => e.Data)
                 .Select(e => new EventoViewModel
                 {
                     Id = (uint)e.Id,
                     Nome = e.Nome,
                     Data = e.Data,
+                    NumeroParticipantes = e.NumeroParticipantes,
+                    Descricao = e.Descricao,
+                    Distancia3 = e.Distancia3,
+                    Distancia5 = e.Distancia5,
+                    Distancia7 = e.Distancia7,
+                    Distancia10 = e.Distancia10,
+                    Distancia15 = e.Distancia15,
+                    Distancia21 = e.Distancia21,
+                    Distancia42 = e.Distancia42,
+                    Rua = e.Rua,
+                    Bairro = e.Bairro,
                     Cidade = e.Cidade,
                     Estado = e.Estado,
+                    InfoRetiradaKit = e.InfoRetiradaKit,
+                    IdOrganizacao = (uint)e.IdOrganizacao,
                     Imagem = e.Imagem
                 })
-                .ToList();
+                .ToListAsync();
 
             return View(model);
         }

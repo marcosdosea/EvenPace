@@ -1,6 +1,7 @@
 
 using Core;
 using Core.Service;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -45,6 +46,13 @@ namespace Service
         public Corredor GetByCpf(string cpf)
         {
             return _context.Corredors.SingleOrDefault(c => c.Cpf == cpf);
+        }
+
+        public Task<Corredor?> GetByCpfAsync(string cpf)
+        {
+            return _context.Corredors
+                .AsNoTracking()
+                .SingleOrDefaultAsync(c => c.Cpf == cpf);
         }
 
         /// <summary>

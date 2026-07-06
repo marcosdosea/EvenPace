@@ -83,7 +83,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = "EvenPace";
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-    options.LoginPath = "/Home/Index";
+options.LoginPath = "/Home/Index";
     // ReturnUrlParameter requires
     options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
     options.SlidingExpiration = true;
@@ -121,6 +121,6 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Evento}/{action=IndexUsuario}/{id?}");
 
 app.Run();

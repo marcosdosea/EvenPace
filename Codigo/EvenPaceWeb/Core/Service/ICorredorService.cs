@@ -15,6 +15,7 @@ namespace Core.Service
         IEnumerable<Corredor> GetAll();
         IEnumerable<Corredor> GetByName(string nome);
         Corredor GetByCpf(string cpf);
+        Task<Corredor?> GetByCpfAsync(string cpf);
         
     }
 }
