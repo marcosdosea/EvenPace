@@ -13,13 +13,55 @@
                     </svg>
                 </a>
 
-                <a class="evenpace-header-action evenpace-header-action-secondary" href="@Url.Action("Login", "Organizacao")">
-                    Crie sua corrida
-                </a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    var perfilUrl = ViewBag.IdCorredor is not null
+                        ? Url.Action("Get", "Corredor", new { id = ViewBag.IdCorredor })
+                        : Url.Action("IndexUsuario", "Evento");
 
-                <a class="evenpace-header-action evenpace-header-action-primary" href="@Url.Action("Index", "Home")">
-                    Entrar
-                </a>
+                    <div class="dropdown evenpace-profile-dropdown">
+                        <button class="evenpace-header-action evenpace-header-action-primary dropdown-toggle"
+                                type="button"
+                                id="perfilDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            Perfil
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end evenpace-profile-menu" aria-labelledby="perfilDropdown">
+                            <li>
+                                <a class="dropdown-item evenpace-profile-menu-item" href="@perfilUrl">
+                                    Meu Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item evenpace-profile-menu-item" href="@Url.Action("IndexCorridasInscritas", "Inscricao")">
+                                    Minhas Corridas
+                                </a>
+                            </li>
+                            <li>
+                                <form asp-area="Identity"
+                                      asp-page="/Account/Logout"
+                                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                                      method="post">
+                                    <button type="submit" class="dropdown-item evenpace-profile-menu-item evenpace-profile-logout">
+                                        Desconectar
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a class="evenpace-header-action evenpace-header-action-secondary" href="@Url.Action("Login", "Organizacao")">
+                        Crie sua corrida
+                    </a>
+
+                    <a class="evenpace-header-action evenpace-header-action-primary" href="@Url.Action("Login", "Corredor")">
+                        Entrar
+                    </a>
+                }
             </nav>
         </div>
     </div>

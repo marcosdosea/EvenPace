@@ -117,6 +117,20 @@ public class CorredorController : Controller
             return View(corredorModel);
         }
 
+        var roleResult = await _userManager.AddToRoleAsync(identityUser, "Corredor");
+
+        if (!roleResult.Succeeded)
+        {
+            await _userManager.DeleteAsync(identityUser);
+
+            foreach (var error in roleResult.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View(corredorModel);
+        }
+
         try
         {
             var corredor = _mapper.Map<Corredor>(corredorModel);
