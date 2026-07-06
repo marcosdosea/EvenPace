@@ -7,6 +7,7 @@ using EvenPaceWeb.Areas.Identity.Data;
 using EvenPaceWeb.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,7 +76,9 @@ builder.Services.AddDefaultIdentity<UsuarioIdentity>(options =>
     options.Lockout.AllowedForNewUsers = true;
 
 }
-).AddEntityFrameworkStores<IdentityContext>();
+)
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<IdentityContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -118,6 +121,17 @@ app.UseAuthorization();
 app.UseSession();
 
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    if (!await roleManager.RoleExistsAsync("Organizacao"))
+    {
+        await roleManager.CreateAsync(new IdentityRole("Organizacao"));
+    }
+}
+
 
 app.MapControllerRoute(
     name: "default",

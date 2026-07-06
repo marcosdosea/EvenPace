@@ -1,0 +1,162 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EvenPace - Login Organização</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9; /* Fundo levemente cinza para destacar o card */
+            color: #212529;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-section {
+            min-height: 100vh;
+        }
+
+        .evenpace-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.5rem; /* Card bem arredondado */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important; /* Sombra destacada */
+        }
+
+        .evenpace-text-yellow {
+            color: #d4a017 !important;
+        }
+
+        /* Botões em estilo pílula */
+        .evenpace-btn-yellow {
+            background-color: #ffc107;
+            color: #000000;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+            .evenpace-btn-yellow:hover {
+                background-color: #ffca2c;
+                color: #000000;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+            }
+
+        /* Inputs arredondados */
+        .evenpace-input {
+            background-color: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #212529 !important;
+            border-radius: 0.75rem;
+        }
+
+            .evenpace-input:focus {
+                border-color: #ffc107 !important;
+                box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.2) !important;
+            }
+
+        .evenpace-label {
+            color: #6c757d !important;
+        }
+
+        .form-floating > .evenpace-input:focus ~ .evenpace-label,
+        .form-floating > .evenpace-input:not(:placeholder-shown) ~ .evenpace-label {
+            color: #d4a017 !important;
+        }
+
+        .evenpace-link {
+            color: #6c757d;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+            .evenpace-link:hover {
+                color: #d4a017;
+                text-decoration: underline;
+            }
+
+        .evenpace-btn-outline {
+            border-color: #ffc107;
+            color: #d4a017;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+        }
+
+            .evenpace-btn-outline:hover {
+                background-color: #ffc107;
+                border-color: #ffc107;
+                color: #000000;
+            }
+    </style>
+</head>
+
+<body>
+
+    <section class="login-section d-flex align-items-center py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card evenpace-card p-2 p-md-4">
+                        <div class="card-body">
+
+                            <div class="text-center mb-4">
+                                <h2 class="fw-bold text-uppercase text-dark m-0">
+                                    Login <span class="evenpace-text-yellow">Organização</span>
+                                </h2>
+                            </div>
+
+                            <form asp-controller="Organizacao" asp-action="Login" method="post">
+                                @Html.AntiForgeryToken()
+
+                                <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+
+                                <!-- Campo de CPF mapeando para o parâmetro 'documento' da controller -->
+                                <div class="form-floating mb-3">
+                                    <input type="text" id="documento" name="documento" class="form-control evenpace-input" placeholder="000.000.000-00" required>
+                                    <label for="documento" class="evenpace-label">CPF</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="password" id="senha" name="senha" class="form-control evenpace-input" placeholder="Senha" required>
+                                    <label for="senha" class="evenpace-label">Senha</label>
+                                </div>
+
+                                <div class="text-center mb-4">
+                                    <a class="evenpace-link small" href="/esqueci-senha">Esqueci a senha</a>
+                                </div>
+
+                                <div class="d-grid gap-2 mb-4">
+                                    <button class="btn btn-lg evenpace-btn-yellow shadow-sm" type="submit">
+                                        Entrar
+                                    </button>
+                                </div>
+
+                                <hr class="border-light-subtle my-4">
+
+                                <div class="d-grid gap-2">
+                                    <a asp-controller="Organizacao" asp-action="Create" class="btn btn-lg evenpace-btn-outline">
+                                        Cadastrar Nova Organização
+                                    </a>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

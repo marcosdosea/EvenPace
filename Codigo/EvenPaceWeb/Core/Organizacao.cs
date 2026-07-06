@@ -27,11 +27,5 @@ public partial class Organizacao
 
     public string Estado { get; set; } = null!;
 
-    public bool StatusSituacao { get; set; }
-
-    public int? AdministradorId { get; set; }
-
-    public virtual Administrador? Administrador { get; set; }
-
     public virtual ICollection<Evento> Eventos { get; set; } = new List<Evento>();
 }

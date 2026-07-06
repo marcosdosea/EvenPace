@@ -1,5 +1,147 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<Core.Evento>
+
 @{
+    ViewData["Title"] = "Meus Eventos";
+
+    // 1. ADICIONE O NOME EXATO DO SEU SEGUNDO ARQUIVO DE LAYOUT AQUI:
+    Layout = "~/Views/Shared/_LayoutOrganizacaoHome.cshtml";
 }
+
+<style>
+    /* Estilização da Topbar interna */
+    .org-top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e5e7eb;
+        margin-bottom: 40px;
+    }
+
+    .btn-create-event {
+        background-color: #9ca3af;
+        color: #000000;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 24px;
+        text-decoration: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+    }
+
+        .btn-create-event:hover {
+            background-color: #4b5563;
+            color: #ffffff;
+        }
+
+    .section-title {
+        font-weight: 700;
+        font-size: 1.6rem;
+        margin-bottom: 35px;
+    }
+
+    /* Cards de Evento baseados na Tela04 */
+    .event-card-container {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .image-wrapper {
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .event-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .event-label-yellow {
+        background-color: #ffc107;
+        color: #000000;
+        text-align: center;
+        font-weight: 700;
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    /* Ícones laterais de ação móveis */
+    .action-icons-panel {
+        position: absolute;
+        top: 5px;
+        right: -35px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-panel-icon {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .icon-edit {
+        color: #6b7280;
+    }
+
+    .icon-delete {
+        color: #dc3545;
+        font-weight: bold;
+    }
+</style>
+
+<!-- Topbar alinhada com o topo do painel de conteúdo -->
+<div class="org-top-bar">
+    <div>
+        <span class="text-muted small d-block" style="font-size: 0.85rem;">Bem vindo</span>
+        <h5 class="fw-bold m-0 text-dark">@ViewBag.NomeOrganizacao</h5>
+    </div>
+    <a asp-controller="Evento" asp-action="Create" class="btn-create-event">Criar novo evento</a>
+</div>
+
+<!-- Conteúdo Principal de Eventos -->
+<div class="container-fluid p-0">
+    <h3 class="section-title text-center text-dark">Meus eventos</h3>
+
+    <div class="row g-5 justify-content-start" style="padding-right: 40px;">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var evento in Model)
+            {
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+                    <div class="event-card-container">
+                        <div class="image-wrapper">
+                            <!-- Usando imagem temporária para o projeto compilar -->
+                            <img src="https://placehold.co/300x180?text=EvenPace" class="event-img" alt="@evento.Nome">
+                            <div class="event-label-yellow">@evento.Nome</div>
+                        </div>
+
+                        <!-- Ícones de Edição e Exclusão fora do card (lado direito) -->
+                        <div class="action-icons-panel">
+                            <a asp-controller="Evento" asp-action="Edit" asp-route-id="@evento.Id" class="btn-panel-icon icon-edit" title="Editar">
+                                ✏️
+                            </a>
+                            <a asp-controller="Evento" asp-action="Delete" asp-route-id="@evento.Id" class="btn-panel-icon icon-delete" title="Excluir">
+                                ❌
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center mt-5">
+                <p class="text-muted">Nenhum evento criado por esta organização até o momento.</p>
+            </div>
+        }
+    </div>
+</div>

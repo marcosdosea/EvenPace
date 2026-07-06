@@ -44,6 +44,8 @@ public partial class EvenPaceContext : DbContext
 
             entity.ToTable("Administrador");
 
+            entity.Ignore("AdministradorId");
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Nome)
                 .HasMaxLength(45)
@@ -355,10 +357,8 @@ public partial class EvenPaceContext : DbContext
 
             entity.HasIndex(e => e.Cnpj, "cnpj_UNIQUE").IsUnique();
 
-            entity.HasIndex(e => e.AdministradorId, "fk_Organizacao_Admistrador1_idx");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AdministradorId).HasColumnName("Administrador_id");
             entity.Property(e => e.Nome)
                 .HasMaxLength(70)
                 .IsFixedLength()
@@ -390,12 +390,7 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.Rua)
                 .HasMaxLength(45)
                 .HasColumnName("rua");
-            entity.Property(e => e.StatusSituacao).HasColumnName("statusSituacao");
             entity.Property(e => e.Telefone).HasColumnName("telefone");
-
-            entity.HasOne(d => d.Administrador).WithMany(p => p.Organizacaos)
-                .HasForeignKey(d => d.AdministradorId)
-                .HasConstraintName("fk_Organizacao_Admistrador1");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -6,41 +6,39 @@ using EvenPaceWeb.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Service;
 
 namespace EvenPaceWeb.Controllers
 {
     public class OrganizacaoController : Controller
     {
         private readonly IOrganizacaoService _organizacaoService;
+        private readonly IEventosService _eventoService; // 1. Adicionado o serviço de eventos para o painel
         private readonly IMapper _mapper;
         private readonly UserManager<UsuarioIdentity> _userManager;
         private readonly SignInManager<UsuarioIdentity> _signInManager;
 
-        public OrganizacaoController(IOrganizacaoService organizacaoService, IMapper mapper, UserManager<UsuarioIdentity> userManager,
+        // Injete o IEventoService no construtor
+        public OrganizacaoController(
+            IOrganizacaoService organizacaoService,
+            IEventosService eventoService,
+            IMapper mapper,
+            UserManager<UsuarioIdentity> userManager,
             SignInManager<UsuarioIdentity> signInManager)
         {
             _organizacaoService = organizacaoService;
+            _eventoService = eventoService;
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        /// <summary>
-        /// Disponibiliza a interface visual (formulário) para a autenticação da organização no sistema.
-        /// </summary>
-        /// <returns>A página contendo os campos de login para CPF/CNPJ e Senha.</returns>
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        /// <summary>
-        /// Recebe as credenciais, higieniza a formatação do documento informado e tenta validar a autenticação da organização junto ao banco do Identity.
-        /// </summary>
-        /// <param name="documento">CPF ou CNPJ da organização informados na tela de login.</param>
-        /// <param name="senha">A credencial secreta correspondente à conta.</param>
-        /// <returns>Em caso de sucesso, redireciona para a página principal. Em caso de falha, recarrega a página apontando o erro estrutural de credenciais.</returns>
         [HttpPost]
         public async Task<IActionResult> Login(string documento, string senha)
         {
@@ -60,28 +58,40 @@ namespace EvenPaceWeb.Controllers
             );
 
             if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+            {
+                // CORREÇÃO 1: Redireciona direto para a Index da Organização
+                return RedirectToAction("Index", "Organizacao");
+            }
 
             ModelState.AddModelError("", "CPF/CNPJ ou Senha inválidos");
             return View();
         }
 
-        /// <summary>
-        /// Compila e exibe de maneira geral o resumo catalogado com as contas de todas as organizações inscritas e regularizadas nos bancos de registros.
-        /// </summary>
-        /// <returns>A página geradora renderizada com os resultados contidos na listagem visual.</returns>
-        public ActionResult Index()
+        // CORREÇÃO 2: Alterado para carregar os eventos da organização logada
+        [Authorize]
+        public async Task<IActionResult> Index()
         {
-            var organizacoes = _organizacaoService.GetAll();
-            var organizacaoViewModels = _mapper.Map<List<OrganizacaoViewModel>>(organizacoes);
-            return View(organizacaoViewModels);
+            var userName = User.Identity?.Name; // CPF ou CNPJ usado no login
+
+            // Busca a organização logada para capturar o Nome e o ID
+            var organizacao = _organizacaoService.GetAll()
+                .FirstOrDefault(o => o.Cpf == userName || o.Cnpj == userName);
+
+            if (organizacao == null)
+            {
+                return NotFound("Organização não encontrada.");
+            }
+
+            ViewBag.NomeOrganizacao = organizacao.Nome;
+
+            // Filtra os eventos vinculados ao ID desta organização
+            var meusEventos = _eventoService.GetAll()
+                .Where(e => e.IdOrganizacao == organizacao.Id)
+                .ToList();
+
+            return View(meusEventos);
         }
 
-        /// <summary>
-        /// Elabora um carregamento descritivo minucioso focado em disponibilizar transparência informativa referente aos dados cadastrais de uma organização.
-        /// </summary>
-        /// <param name="id">Valor determinante para localizar uma entidade isoladamente com fins consultivos.</param>
-        /// <returns>Interface estendendo o objeto do sistema traduzido em painel.</returns>
         public ActionResult Details(int id)
         {
             var organizacao = _organizacaoService.Get((int)id);
@@ -89,68 +99,94 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModel);
         }
 
-        /// <summary>
-        /// Estrutura e retorna as prerrogativas de formulário sem formatações residuais destinadas à criação limpa de uma conta/organização corporativa recente.
-        /// </summary>
-        /// <returns>Página base de registros.</returns>
         [HttpGet]
         public ActionResult Create(string documento = null)
         {
             var model = new OrganizacaoViewModel();
             if (!string.IsNullOrEmpty(documento))
             {
-                // Se o documento tem 11 dígitos, tratamos como CPF, se tem 14 como CNPJ
-                if (documento.Length <= 11)
-                    model.Cpf = documento;
+                var docLimpo = new string(documento.Where(char.IsDigit).ToArray());
+                if (docLimpo.Length <= 11)
+                    model.Cpf = docLimpo;
                 else
-                    model.Cnpj = documento;
+                    model.Cnpj = docLimpo;
             }
             return View(model);
         }
 
-        /// <summary>
-        /// Submete a finalização das pendências visuais preenchidas, criando simultaneamente a credencial de acesso do administrador no Identity e os dados cadastrais da organização na base do sistema.
-        /// </summary>
-        /// <param name="organizacaoViewModel">Mapeamento direto traduzido pelo processo construtivo da classe representacional.</param>
-        /// <param name="senha">Senha de acesso em texto plano informada na View de cadastro para liberação de login futuro.</param>
-        /// <returns>Redireciona à grade de listagens em formato de retorno aprovado ou retrocede ao próprio quadro referenciando inconformidades nos parâmetros propostos.</returns>
-        /// <summary>
-        /// Submete a finalização das pendências visuais preenchidas, salvando a organização na base do sistema.
-        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(OrganizacaoViewModel model)
+        public async Task<ActionResult> Create(OrganizacaoViewModel model, string tipoDocumento)
         {
-            // Removemos a validação de "Senha" se ela não fizer parte desse formulário
-            ModelState.Remove("Senha");
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            string documentoLimpo = "";
+
+            if (tipoDocumento == "CPF")
+            {
+                model.Cnpj = null;
+                ModelState.Remove("Cnpj");
+                if (string.IsNullOrEmpty(model.Cpf))
+                    ModelState.AddModelError("Cpf", "O CPF é obrigatório.");
+                else
+                    documentoLimpo = new string(model.Cpf.Where(char.IsDigit).ToArray());
+            }
+            else
+            {
+                model.Cpf = null;
+                ModelState.Remove("Cpf");
+                if (string.IsNullOrEmpty(model.Cnpj))
+                    ModelState.AddModelError("Cnpj", "O CNPJ é obrigatório.");
+                else
+                    documentoLimpo = new string(model.Cnpj.Where(char.IsDigit).ToArray());
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     model.Cep = new string(model.Cep?.Where(char.IsDigit).ToArray());
-                    model.Cpf = new string(model.Cpf?.Where(char.IsDigit).ToArray());
-                    model.Cnpj = new string(model.Cnpj?.Where(char.IsDigit).ToArray());
+                    if (tipoDocumento == "CPF") model.Cpf = documentoLimpo;
+                    if (tipoDocumento == "CNPJ") model.Cnpj = documentoLimpo;
 
-                    var organizacao = _mapper.Map<Core.Organizacao>(model);
-                    _organizacaoService.Create(organizacao);
+                    var novoUsuario = new UsuarioIdentity
+                    {
+                        UserName = documentoLimpo,
+                        PhoneNumber = model.Telefone,
+                        Email = model.Email,
+                        NormalizedEmail = model.Email.ToUpper()
+                    };
 
-                    // Isso faz o botão "Cadastrar" levar para a tela de Login
-                    return RedirectToPage("/Account/Login", new { area = "Identity" });
+                    var identityResult = await _userManager.CreateAsync(novoUsuario, model.Senha);
+
+                    if (identityResult.Succeeded)
+                    {
+                        // CORREÇÃO 3: Vincula explicitamente o usuário Identity à Role "Organizacao"
+                        await _userManager.AddToRoleAsync(novoUsuario, "Organizacao");
+
+                        var organizacao = _mapper.Map<Core.Organizacao>(model);
+                        _organizacaoService.Create(organizacao);
+
+                        // Opcional: Você pode logar o usuário automaticamente aqui se quiser, ou mandar para o login
+                        return RedirectToAction("Index", "Organizacao");
+                    }
+                    else
+                    {
+                        foreach (var error in identityResult.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Erro ao salvar: " + ex.Message);
+                    // Captura o erro real retornado pelo banco de dados (SQL Server, PostgreSQL, etc.)
+                    var mensagemReal = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                    ModelState.AddModelError("", "Erro ao salvar registros: " + mensagemReal);
                 }
             }
+
             return View(model);
         }
 
-        /// <summary>
-        /// Invoca as credenciais em posse do banco de informações para alocar um painel interativo que viabiliza alterações sistêmicas sobre um determinado CNPJ/Conta base de organizador.
-        /// </summary>
-        /// <param name="id">Cifra que valida as credenciais numéricas relativas à estrutura requisitada.</param>
-        /// <returns>View de repopulação textual propícia a edições pontuais do gestor logado.</returns>
         public ActionResult Edit(int id)
         {
             var organizacao = _organizacaoService.Get((int)id);
@@ -158,17 +194,11 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModel);
         }
 
-        /// <summary>
-        /// Avaliza as tratativas editáveis promovidas nas regras da conta da organização, validando as informações enquanto exclui da triagem parâmetros sensíveis e pontuais, como a senha do administrador principal.
-        /// </summary>
-        /// <param name="organizacaoViewModel">Agrupamento pós edição provindo das rotinas estruturadas no preenchimento de view models.</param>
-        /// <returns>Rotaciona o trânsito da requisição visando a central de configurações principais se houver êxito no preenchimento de integridade.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(OrganizacaoViewModel organizacaoViewModel)
         {
             organizacaoViewModel.Id = 3;
-
             ModelState.Remove("Senha");
 
             if (ModelState.IsValid)
@@ -181,11 +211,6 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModel);
         }
 
-        /// <summary>
-        /// Aciona e preenche o espaço visual destinado e reservado a atestar as confirmações decisivas antes de realizar os descartes do registro da organização.
-        /// </summary>
-        /// <param name="id">Código primário contendo a entidade pré-aprovada aos filtros.</param>
-        /// <returns>Formulário de preenchimento voltado à inativação contendo informações consolidadas da conta que perderá o vínculo com o programa e o sistema vigente.</returns>
         public ActionResult Delete(int id)
         {
             var organizacao = _organizacaoService.Get((int)id);
@@ -193,12 +218,6 @@ namespace EvenPaceWeb.Controllers
             return View(organizacaoViewModel);
         }
 
-        /// <summary>
-        /// Executa e expurga os indícios lógicos que relacionavam a organização logada nas tratativas integradas do bando de banco principal, promovendo uma eliminação total dos indícios pregressos em conjunto à validação Anti-forgery.
-        /// </summary>
-        /// <param name="id">Indexador que aponta à estrutura extinta referenciada na transação.</param>
-        /// <param name="organizacaoViewModel">Condução sistêmica que auxilia nas diretrizes internas das requisições via ASP.NET MVC model-binding.</param>
-        /// <returns>O usuário é destituído de suas ações e realocado ao ponto inicial da navegação com uma reescrita dos estados transicionais.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, OrganizacaoViewModel organizacaoViewModel)
