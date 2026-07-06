@@ -1,0 +1,231 @@
+@model List<Models.InscricaoViewModel>
+
+@{
+    ViewData["Title"] = "Minhas Corridas";
+    var agora = DateTime.Now;
+}
+
+<style>
+    :root {
+        --minhas-text: #202124;
+        --minhas-muted: #6b7280;
+        --minhas-line: #f1e2b6;
+        --minhas-soft: #fffdf6;
+        --minhas-accent: #f7cf66;
+        --minhas-accent-soft: #fff4cf;
+    }
+
+    .minhas-corridas-page {
+        padding: 28px 0 44px;
+        background: #ffffff;
+        color: var(--minhas-text);
+    }
+
+    .minhas-corridas-head {
+        margin-bottom: 22px;
+    }
+
+    .minhas-corridas-head h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 3vw, 2.6rem);
+        font-weight: 800;
+        letter-spacing: 0;
+    }
+
+    .minhas-corridas-head p {
+        margin: 8px 0 0;
+        color: var(--minhas-muted);
+        font-weight: 600;
+    }
+
+    .corridas-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .corrida-card {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 18px;
+        border: 1px solid var(--minhas-line);
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 12px 28px rgba(32, 33, 36, 0.06);
+    }
+
+    .corrida-title {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 800;
+    }
+
+    .corrida-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .corrida-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: var(--minhas-accent-soft);
+        border: 1px solid var(--minhas-line);
+        color: #4d3a08;
+        font-size: 0.86rem;
+        font-weight: 800;
+    }
+
+    .corrida-info {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        color: var(--minhas-muted);
+        font-weight: 600;
+    }
+
+    .corrida-info strong {
+        color: var(--minhas-text);
+        font-weight: 800;
+    }
+
+    .corrida-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .corrida-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0.65rem 1rem;
+        border-radius: 999px;
+        font-weight: 800;
+        text-decoration: none;
+        border: 1px solid transparent;
+    }
+
+    .corrida-action-primary {
+        background: linear-gradient(135deg, #ffe7a6, var(--minhas-accent));
+        color: #443200;
+        border-color: #f0d07e;
+    }
+
+    .corrida-action-secondary {
+        background: #ffffff;
+        color: var(--minhas-text);
+        border-color: var(--minhas-line);
+    }
+
+    .empty-state {
+        padding: 30px;
+        border: 1px solid var(--minhas-line);
+        border-radius: 8px;
+        background: var(--minhas-soft);
+    }
+
+    .empty-state h2 {
+        margin: 0 0 8px;
+        font-size: 1.25rem;
+        font-weight: 800;
+    }
+
+    .empty-state p {
+        margin: 0 0 18px;
+        color: var(--minhas-muted);
+        font-weight: 600;
+    }
+
+    @@media (min-width: 768px) {
+        .corrida-card {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+        }
+
+        .corrida-info {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .corrida-actions {
+            justify-content: flex-end;
+        }
+    }
+</style>
+
+<main class="minhas-corridas-page">
+    <div class="container-fluid px-3 px-md-4 px-xl-5">
+        <header class="minhas-corridas-head">
+            <h1>Minhas Corridas</h1>
+            <p>Corridas em que sua inscrição está ativa.</p>
+        </header>
+
+        @if (!Model.Any())
+        {
+            <section class="empty-state">
+                <h2>Nenhuma corrida inscrita</h2>
+                <p>Quando você confirmar uma inscrição, ela aparecerá aqui.</p>
+                <a class="corrida-action corrida-action-primary" href="@Url.Action("IndexUsuario", "Evento")">
+                    Ver corridas disponíveis
+                </a>
+            </section>
+        }
+        else
+        {
+            <section class="corridas-grid">
+                @foreach (var item in Model)
+                {
+                    var evento = item.IdEventoNavigation;
+                    var kit = item.IdKitNavigation;
+                    var statusData = evento.Data >= agora ? "Próxima" : "Finalizada";
+
+                    <article class="corrida-card">
+                        <div>
+                            <h2 class="corrida-title">@evento.Nome</h2>
+                            <div class="corrida-meta">
+                                <span class="corrida-pill">@statusData</span>
+                                <span class="corrida-pill">@item.Status</span>
+                                <span class="corrida-pill">@item.Distancia</span>
+                            </div>
+
+                            <div class="corrida-info mt-3">
+                                <div>
+                                    <strong>Data</strong><br />
+                                    @evento.Data.ToString("dd/MM/yyyy HH:mm")
+                                </div>
+                                <div>
+                                    <strong>Local</strong><br />
+                                    @evento.Cidade - @evento.Estado
+                                </div>
+                                <div>
+                                    <strong>Kit</strong><br />
+                                    @(kit?.Nome ?? "Sem kit")
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="corrida-actions">
+                            <a class="corrida-action corrida-action-secondary" href="@Url.Action("Index", "Inscricao", new { id = item.IdEvento })">
+                                Detalhes
+                            </a>
+
+                            @if (evento.Data >= agora)
+                            {
+                                <a class="corrida-action corrida-action-primary" href="@Url.Action("Delete", "Inscricao", new { id = item.Id })">
+                                    Cancelar
+                                </a>
+                            }
+                        </div>
+                    </article>
+                }
+            </section>
+        }
+    </div>
+</main>
