@@ -39,8 +39,8 @@ public class CorredorController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(string cpf, string senha)
     {
-        cpf = cpf.Replace(".", "").Replace("-", "");
-        
+        cpf = cpf.Replace(".", "").Replace("-", "").Trim();
+
         var result = await _signInManager.PasswordSignInAsync(
             cpf,
             senha,
@@ -50,8 +50,8 @@ public class CorredorController : Controller
 
         if (result.Succeeded)
             return RedirectToAction("IndexUsuario", "Evento");
-        
-        ModelState.AddModelError("", "CPF ou Senha inálidos");
+
+        ModelState.AddModelError("", "CPF ou senha inválidos.");
         return View();
     }
 
@@ -71,28 +71,44 @@ public class CorredorController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CorredorViewModel corredorModel)
     {
+        if (!string.IsNullOrWhiteSpace(corredorModel.CPF))
+        {
+            corredorModel.CPF = corredorModel.CPF
+                .Replace(".", "")
+                .Replace("-", "")
+                .Trim();
+        }
+
+        // Como o CPF foi alterado depois do binding,
+        // removemos a validação anterior e validamos novamente.
+        ModelState.Remove(nameof(corredorModel.CPF));
+
+        if (string.IsNullOrWhiteSpace(corredorModel.CPF) ||
+            corredorModel.CPF.Length != 11)
+        {
+            ModelState.AddModelError(
+                nameof(corredorModel.CPF),
+                "O CPF deve conter 11 números."
+            );
+        }
+
         if (!ModelState.IsValid)
             return View(corredorModel);
 
-        var corredor = _mapper.Map<Corredor>(corredorModel);
-
-        // Salva no banco do sistema
-        _corredorService.Create(corredor);
-
-        // Cria o usuário do Identity
         var identityUser = new UsuarioIdentity
         {
-            UserName = corredor.Cpf.Replace(".", "").Replace("-", ""),
-            Email = corredor.Email
+            UserName = corredorModel.CPF,
+            Email = corredorModel.Email,
+            EmailConfirmed = false
         };
 
-        var result = await _userManager.CreateAsync(identityUser, corredorModel.Senha);
+        var result = await _userManager.CreateAsync(
+            identityUser,
+            corredorModel.Senha
+        );
 
         if (!result.Succeeded)
         {
-            // Remove o corredor caso o Identity falhe
-            _corredorService.Delete(corredor.Id);
-
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error.Description);
@@ -101,120 +117,28 @@ public class CorredorController : Controller
             return View(corredorModel);
         }
 
-        return RedirectToAction("Login", "Corredor");
-    }
-
-    [HttpGet]
-    public IActionResult DefinirAcesso(string cpf)
-    {
-        if (string.IsNullOrEmpty(cpf)) return RedirectToAction("Create");
-
-        // Passamos o CPF para a View para sabermos qual usuário estamos finalizando
-        ViewBag.Cpf = cpf;
-        return View();
-    }
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    
-    public async Task<IActionResult> FinalizarCadastro(string cpf, string email, string senha)
-    {
-        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(senha))
+        try
         {
-            ModelState.AddModelError("", "E-mail e Senha são obrigatórios.");
-            ViewBag.Cpf = cpf;
-            return View("DefinirAcesso");
-        }
-
-        // Procura o corredor cadastrado anteriormente
-        var corredor = _corredorService.GetByCpf(cpf);
-
-        if (corredor == null)
-        {
-            ModelState.AddModelError("", "Corredor não encontrado.");
-            ViewBag.Cpf = cpf;
-            return View("DefinirAcesso");
-        }
-
-        // Atualiza os dados do corredor
-        corredor.Email = email;
-        corredor.Senha = senha; // Se estiver usando Identity, o ideal é remover esta linha futuramente
-
-        // Cria o usuário no Identity
-        var identityUser = new UsuarioIdentity
-        {
-            UserName = cpf.Replace(".", "").Replace("-", ""),
-            Email = email
-        };
-
-        var result = await _userManager.CreateAsync(identityUser, senha);
-
-        if (result.Succeeded)
-        {
-            // Salva Email e Senha na tabela Corredor
-            _corredorService.Edit(corredor);
-
-            // Redireciona para o login
-            return RedirectToAction("Login", "Corredor");
-        }
-
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError("", error.Description);
-        }
-
-        ViewBag.Cpf = cpf;
-        return View("DefinirAcesso");
-    }
-    /*[HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CorredorViewModel corredorModel)
-    {
-        // Remova a validação estrita se estiver enviando apenas parte dos dados
-        // Ou certifique-se de que Nome, CPF e Data de Nascimento são os únicos obrigatórios no ViewModel
-
-        if (ModelState.IsValid)
-        {
-            // 1. Mapeia para a entidade de banco de dados
             var corredor = _mapper.Map<Corredor>(corredorModel);
 
-            // 2. Tenta criar no banco de dados de negócio (EvenPaceContext)
-            try
-            {
-                _corredorService.Create(corredor);
+            // Garantia extra caso o Profile do AutoMapper esteja errado.
+            corredor.Cpf = corredorModel.CPF;
 
-                // IMPORTANTE: Para o Identity funcionar, você precisaria criar o UsuarioIdentity aqui também
-                // com o CPF como UserName e uma senha padrão ou vinda do formulário.
+            _corredorService.Create(corredor);
 
-                return RedirectToAction("Login"); // Redireciona para não ficar na mesma página
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "Erro ao salvar no banco: " + ex.Message);
-            }
+            return RedirectToAction(nameof(Login));
         }
-        return View(corredorModel);
-    }*/
-    /*[HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CorredorViewModel corredorModel)
-    {
-        if (ModelState.IsValid)
+        catch (Exception ex)
         {
-            try
-            {
-                var corredor = _mapper.Map<Corredor>(corredorModel);
-                _corredorService.Create(corredor);
-                return RedirectToAction("ProximaEtapa"); // Ou onde for o fluxo
-            }
-            catch (Exception ex)
-            {
-                // Isso vai mostrar o erro REAL do MySQL na tela (ex: "Column 'Email' cannot be null")
-                var mensagemReal = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                ModelState.AddModelError("", "Erro detalhado: " + mensagemReal);
-            }
+            // Evita deixar usuário no Identity sem um corredor correspondente.
+            await _userManager.DeleteAsync(identityUser);
+
+            var erro = ex.InnerException?.Message ?? ex.Message;
+            ModelState.AddModelError("", $"Erro ao cadastrar corredor: {erro}");
+
+            return View(corredorModel);
         }
-        return View(corredorModel);
-    }*/
+    }
 
     public ActionResult Edit(int id)
     {
