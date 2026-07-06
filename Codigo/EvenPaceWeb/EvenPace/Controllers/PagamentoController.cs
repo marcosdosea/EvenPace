@@ -41,11 +41,10 @@ namespace EvenPace.Controllers
 
         // ── GET /Pagamento/Pagar?idInscricao=X ─────────────────────────────
         [HttpGet]
-        
+
         public async Task<IActionResult> Pagar(int idInscricao)
         {
-            // Usa Get (síncrono) igual ao InscricaoController do projeto
-            var inscricao = _inscricaoService.Get(idInscricao);
+            var inscricao = await _inscricaoService.GetAsync(idInscricao);
             if (inscricao is null)
                 return NotFound("Inscrição não encontrada.");
 
@@ -92,7 +91,7 @@ namespace EvenPace.Controllers
             if (dto is null || dto.IdInscricao <= 0)
                 return BadRequest(new { success = false, mensagemErro = "Dados inválidos." });
 
-            var inscricao = _inscricaoService.Get(dto.IdInscricao);
+            var inscricao = await _inscricaoService.GetAsync(dto.IdInscricao);
             var corredor = await ObterCorredorLogadoAsync();
 
             if (inscricao is null || corredor is null || inscricao.IdCorredor != corredor.Id)
@@ -126,7 +125,7 @@ namespace EvenPace.Controllers
         [HttpGet]
         public async Task<IActionResult> Cartao(int idInscricao)
         {
-            var inscricao = _inscricaoService.Get(idInscricao);
+            var inscricao = await _inscricaoService.GetAsync(idInscricao);
             if (inscricao == null)
                 return NotFound();
 
@@ -157,7 +156,7 @@ namespace EvenPace.Controllers
         [HttpGet]
         public async Task<IActionResult> Pix(int idInscricao)
         {
-            var inscricao = _inscricaoService.Get(idInscricao);
+            var inscricao = await _inscricaoService.GetAsync(idInscricao);
             if (inscricao == null)
                 return NotFound();
 
