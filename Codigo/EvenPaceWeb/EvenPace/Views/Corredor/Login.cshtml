@@ -1,147 +1,268 @@
-@model Models.CorredorViewModel
-
 @{
     Layout = null;
+    ViewData["Title"] = "Login";
 }
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EvenPace - Login Corredor</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - EvenPace</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
     <style>
-        .gradient-custom {
-            background: linear-gradient(180deg, #FFD700 0%, #FFD700 60%, #111111 100%);
-            min-height: 100vh;
-        }
-
-        .evenpace-bg-dark {
-            background-color: #1a1a1a !important;
-            border: 2px solid #333;
-            border-radius: 1rem;
-        }
-
-        .evenpace-text-yellow {
-            color: #FFD700 !important;
-        }
-
-        .evenpace-btn-yellow {
-            background-color: #FFD700;
-            color: #000000;
-            font-weight: 700;
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-            .evenpace-btn-yellow:hover {
-                background-color: #e0a800;
-                color: #000000;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+            * {
+                box-sizing: border-box;
             }
 
-        .evenpace-input {
-            background-color: #2b2b2b !important;
-            border: 1px solid #444 !important;
-            color: #ffffff !important;
-        }
-
-            .evenpace-input:focus {
-                border-color: #FFD700 !important;
-                box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25) !important;
+            body {
+                margin: 0;
+                min-height: 100vh;
+                background: #ffffff;
+                font-family: Arial, sans-serif;
+                color: #202124;
             }
 
-        .evenpace-label {
-            color: #aaa !important;
-        }
+            .login-home {
+                width: 100%;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 32px 20px;
+                background: #ffffff;
+            }
 
-        .form-floating > .evenpace-input:focus ~ .evenpace-label,
-        .form-floating > .evenpace-input:not(:placeholder-shown) ~ .evenpace-label {
-            color: #FFD700 !important;
-        }
+            .login-container {
+                width: min(100%, 620px);
+                margin: 0 auto;
+            }
 
-        .evenpace-link {
-            color: #FFD700;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
+            .login-card {
+                width: 100%;
+                margin: 0 auto;
+                border: 1px solid #ece7d5;
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 18px 36px rgba(24, 24, 27, 0.07);
+                padding: 36px;
+            }
 
-            .evenpace-link:hover {
-                color: #e0a800;
-                text-decoration: underline;
+            .login-card-header {
+                margin-bottom: 28px;
+                text-align: center;
+            }
+
+                .login-card-header h2 {
+                    margin: 0 0 6px;
+                    color: #202124;
+                    font-size: 1.6rem;
+                    font-weight: 800;
+                }
+
+                .login-card-header p {
+                    margin: 0;
+                    color: #6b7280;
+                }
+
+            .validation-summary {
+                margin-bottom: 18px;
+                border: 1px solid #efb4b4;
+                border-radius: 10px;
+                background: #fff5f5;
+                color: #a52a2a;
+                padding: 14px;
+                font-size: 0.92rem;
+                font-weight: 700;
+            }
+
+                .validation-summary ul {
+                    margin: 0;
+                    padding-left: 20px;
+                }
+
+            .login-field {
+                display: grid;
+                gap: 8px;
+                margin-bottom: 18px;
+            }
+
+            .login-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                color: #88816f;
+                font-size: 0.8rem;
+                font-weight: 800;
+                text-transform: uppercase;
+            }
+
+                .login-label i {
+                    color: #765a12;
+                    font-size: 1rem;
+                }
+
+            .login-input {
+                width: 100%;
+                border: 1px solid #f1e2b6;
+                border-radius: 10px;
+                background: #fffdf6;
+                color: #2f2f2f;
+                padding: 14px 16px;
+                font-family: inherit;
+                font-size: 1rem;
+                font-weight: 700;
+            }
+
+                .login-input::placeholder {
+                    color: #aaa18b;
+                    font-weight: 600;
+                }
+
+                .login-input:focus {
+                    outline: none;
+                    border-color: #e6bd4d;
+                    box-shadow: 0 0 0 3px rgba(247, 207, 102, 0.25);
+                }
+
+            .login-actions {
+                display: flex;
+                gap: 12px;
+                margin-top: 28px;
+            }
+
+            .login-submit-btn,
+            .login-create-btn {
+                display: inline-flex;
+                flex: 1;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border-radius: 999px;
+                padding: 13px 18px;
+                font-family: inherit;
+                font-size: 1rem;
+                font-weight: 800;
+                text-decoration: none;
+                cursor: pointer;
+                transition: transform 0.18s ease, box-shadow 0.18s ease;
+            }
+
+            .login-submit-btn {
+                border: 1px solid #f0d07e;
+                background: linear-gradient(135deg, #ffe7a6, #f7cf66);
+                color: #443200;
+            }
+
+            .login-create-btn {
+                border: 1px solid #d9d9d9;
+                background: #ffffff;
+                color: #4b5563;
+            }
+
+                .login-submit-btn:hover,
+                .login-create-btn:hover {
+                    transform: translateY(-2px);
+                    color: inherit;
+                    box-shadow: 0 8px 18px rgba(24, 24, 27, 0.1);
+                }
+
+            .login-help {
+                display: block;
+                margin-top: 4px;
+                color: #6b7280;
+                font-size: 0.86rem;
+            }
+
+            @@media (max-width: 575.98px) {
+                .login-home {
+                    padding: 22px 14px;
+                }
+
+                .login-card {
+                    padding: 24px 18px;
+                }
+
+                .login-actions {
+                    flex-direction: column;
+                }
             }
     </style>
 </head>
 
 <body>
-
-    <section class="gradient-custom d-flex align-items-center py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div class="card shadow-lg evenpace-bg-dark p-2 p-md-4">
-                        <div class="card-body">
-
-                            <div class="text-center mb-4">
-                                <h2 class="fw-bold text-uppercase text-light">Login <span class="evenpace-text-yellow">Corredor</span></h2>
-                                <p class="text-muted small">Bem-vindo à comunidade EvenPace</p>
-                            </div>
-
-                            <form asp-controller="Corredor" asp-action="Login" method="post">
-                                @Html.AntiForgeryToken()
-
-                                <div class="form-floating mb-3">
-                                    <input type="email" id="email" name="email" class="form-control evenpace-input" placeholder="Email" required>
-                                    <label for="email" class="evenpace-label">Email</label>
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <input type="text" id="cpf" name="cpf" class="form-control evenpace-input" placeholder="CPF" required>
-                                    <label for="cpf" class="evenpace-label">CPF</label>
-                                </div>
-
-                                <div class="form-floating mb-3">
-                                    <input type="password" id="senha" name="senha" class="form-control evenpace-input" placeholder="Senha" required>
-                                    <label for="senha" class="evenpace-label">Senha</label>
-                                </div>
-
-                                <div class="text-center mb-4">
-                                    <a class="evenpace-link small" href="/esqueci-senha">Esqueci a senha</a>
-                                </div>
-
-                                <div class="d-grid gap-2 mb-4">
-                                    <button class="btn btn-lg evenpace-btn-yellow shadow-sm" type="submit">
-                                        Entrar
-                                    </button>
-                                </div>
-
-                                <hr class="border-secondary">
-
-                                <div class="d-grid gap-2 mb-3">
-                                    <button class="btn btn-outline-light btn-lg" type="button">
-                                        Entrar com Google
-                                    </button>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <a href="http://localhost:5157/Corredor/Create" class="btn btn-outline-warning btn-lg fw-bold" style="border-color: #FFD700; color: #FFD700;">
-                                        Cadastre-se Manualmente
-                                    </a>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
+    <section class="login-home">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-card-header">
+                    <h2>Login do corredor</h2>
+                    <p>Entre utilizando seu CPF e sua senha.</p>
                 </div>
+
+                <form asp-controller="Corredor"
+                      asp-action="Login"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="validation-summary">
+                    </div>
+
+                    <div class="login-field">
+                        <label for="cpf" class="login-label">
+                            <i class="bi bi-card-text"></i>
+                            CPF
+                        </label>
+
+                        <input type="text"
+                               id="cpf"
+                               name="cpf"
+                               class="login-input"
+                               placeholder="000.000.000-00"
+                               inputmode="numeric"
+                               autocomplete="username"
+                               required />
+
+                        <span class="login-help">
+                            Use o CPF cadastrado na sua conta.
+                        </span>
+                    </div>
+
+                    <div class="login-field">
+                        <label for="senha" class="login-label">
+                            <i class="bi bi-lock"></i>
+                            Senha
+                        </label>
+
+                        <input type="password"
+                               id="senha"
+                               name="senha"
+                               class="login-input"
+                               placeholder="Digite sua senha"
+                               autocomplete="current-password"
+                               required />
+                    </div>
+
+                    <div class="login-actions">
+                        <button type="submit" class="login-submit-btn">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            Entrar
+                        </button>
+
+                        <a asp-controller="Corredor"
+                           asp-action="Create"
+                           class="login-create-btn">
+                            <i class="bi bi-person-plus"></i>
+                            Criar conta
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

@@ -1,10 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace Models;
 
 public class CorredorViewModel
 {
     public int Id { get; set; }
+
+    [Display(Name = "Foto de Perfil")]
+    public IFormFile? FotoPerfilUpload { get; set; }
+
+    public string? FotoPerfil { get; set; }
 
     [Display(Name = "CPF")]
     [Required(ErrorMessage = "O CPF é obrigatório.")]

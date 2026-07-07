@@ -45,6 +45,7 @@
 
     <ItemGroup>
       <Folder Include="wwwroot\imagens\banner-eventos\" />
+      <Folder Include="wwwroot\imagens\fotos-perfil\" />
     </ItemGroup>
 
 </Project>

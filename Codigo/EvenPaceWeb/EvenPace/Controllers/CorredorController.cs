@@ -15,7 +15,7 @@ public class CorredorController : Controller
 {
     private ICorredorService _corredorService;
     private IMapper _mapper;
-    private readonly UserManager<UsuarioIdentity>  _userManager;
+    private readonly UserManager<UsuarioIdentity> _userManager;
     private readonly SignInManager<UsuarioIdentity> _signInManager;
 
     public CorredorController(
@@ -29,7 +29,7 @@ public class CorredorController : Controller
         _userManager = userManager;
         _signInManager = signInManager;
     }
-    
+
     [HttpGet]
     public IActionResult Login()
     {
@@ -154,43 +154,206 @@ public class CorredorController : Controller
         }
     }
 
+    [HttpGet]
     public ActionResult Edit(int id)
     {
         Corredor corredor = _corredorService.Get(id);
+
         if (corredor == null)
         {
-            return View(new CorredorViewModel());
+            return RedirectToAction(nameof(Login));
         }
+
         CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+
         return View(corredorModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Edit(CorredorViewModel corredorModel)
+    public IActionResult Edit(CorredorViewModel corredorModel)
     {
-        if (ModelState.IsValid)
+        // E-mail e senha pertencem ao Identity e não são alterados nesta tela.
+        ModelState.Remove(nameof(corredorModel.Email));
+        ModelState.Remove(nameof(corredorModel.Senha));
+
+        // Foto é opcional.
+        ModelState.Remove(nameof(corredorModel.FotoPerfilUpload));
+
+        if (!ModelState.IsValid)
         {
-            var corredor = _mapper.Map<Corredor>(corredorModel);
-            _corredorService.Edit(corredor);
-            return RedirectToAction(nameof(Get), new { id = corredorModel.Id });
+            return View(corredorModel);
         }
 
-        return View(corredorModel);
+        var corredorExistente = _corredorService.Get(corredorModel.Id);
+
+        if (corredorExistente == null)
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        try
+        {
+            corredorExistente.Nome = corredorModel.Nome;
+            corredorExistente.DataNascimento = corredorModel.DataNascimento;
+
+            if (corredorModel.FotoPerfilUpload != null &&
+                corredorModel.FotoPerfilUpload.Length > 0)
+            {
+                string novaFoto = SalvarFotoPerfil(corredorModel.FotoPerfilUpload);
+
+                DeletarFotoPerfil(corredorExistente.FotoPerfil);
+
+                corredorExistente.FotoPerfil = novaFoto;
+            }
+
+            _corredorService.Edit(corredorExistente);
+
+            TempData["MensagemSucesso"] = "Perfil atualizado com sucesso!";
+            return RedirectToAction(nameof(Get), new { id = corredorExistente.Id });
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError(
+                "",
+                "Erro ao atualizar perfil: " +
+                (ex.InnerException?.Message ?? ex.Message)
+            );
+
+            return View(corredorModel);
+        }
     }
 
-    public ActionResult Delete(int id)
+    [HttpGet]
+    [Authorize]
+    public IActionResult Delete(int id)
     {
-        Corredor corredor = _corredorService.Get(id);
-        CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+        var cpfUsuarioLogado = User.Identity?.Name;
+
+        if (string.IsNullOrWhiteSpace(cpfUsuarioLogado))
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        var corredor = _corredorService.Get(id);
+
+        if (corredor == null || corredor.Cpf != cpfUsuarioLogado)
+        {
+            return Forbid();
+        }
+
+        var corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+
         return View(corredorModel);
     }
 
     [HttpPost]
+    [Authorize]
     [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, CorredorViewModel corredorModel)
+    [ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        _corredorService.Delete(id);
-        return RedirectToAction(nameof(Index));
+        var cpfUsuarioLogado = User.Identity?.Name;
+
+        if (string.IsNullOrWhiteSpace(cpfUsuarioLogado))
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        var corredor = _corredorService.Get(id);
+
+        if (corredor == null || corredor.Cpf != cpfUsuarioLogado)
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var usuarioIdentity = await _userManager.FindByNameAsync(corredor.Cpf);
+
+            if (usuarioIdentity == null)
+            {
+                TempData["MensagemErro"] =
+                    "Usuário de autenticação não encontrado.";
+
+                return RedirectToAction(nameof(Get), new { id });
+            }
+
+            var nomeFoto = corredor.FotoPerfil;
+
+            _corredorService.Delete(corredor.Id);
+
+            var resultadoIdentity = await _userManager.DeleteAsync(usuarioIdentity);
+
+            if (!resultadoIdentity.Succeeded)
+            {
+                TempData["MensagemErro"] =
+                    "O perfil foi removido, mas ocorreu um erro ao excluir o acesso de login.";
+
+                return RedirectToAction(nameof(Login));
+            }
+
+            DeletarFotoPerfil(nomeFoto);
+
+            await HttpContext.SignOutAsync();
+
+            TempData["MensagemSucesso"] = "Sua conta foi excluída com sucesso.";
+
+            return RedirectToAction(nameof(Login));
+        }
+        catch (Exception ex)
+        {
+            TempData["MensagemErro"] =
+                "Erro ao excluir conta: " +
+                (ex.InnerException?.Message ?? ex.Message);
+
+            return RedirectToAction(nameof(Get), new { id });
+        }
     }
+
+    private string SalvarFotoPerfil(IFormFile foto)
+    {
+        string pasta = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "wwwroot",
+            "imagens",
+            "fotos-perfil"
+        );
+
+        if (!Directory.Exists(pasta))
+        {
+            Directory.CreateDirectory(pasta);
+        }
+
+        string extensao = Path.GetExtension(foto.FileName).ToLowerInvariant();
+        string nomeArquivo = $"{Guid.NewGuid()}{extensao}";
+        string caminhoCompleto = Path.Combine(pasta, nomeArquivo);
+
+        using var stream = new FileStream(caminhoCompleto, FileMode.Create);
+        foto.CopyTo(stream);
+
+        return nomeArquivo;
+    }
+
+    private void DeletarFotoPerfil(string? nomeArquivo)
+    {
+        if (string.IsNullOrWhiteSpace(nomeArquivo))
+        {
+            return;
+        }
+
+        string caminho = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "wwwroot",
+            "imagens",
+            "fotos-perfil",
+            nomeArquivo
+        );
+
+        if (System.IO.File.Exists(caminho))
+        {
+            System.IO.File.Delete(caminho);
+        }
+    }
+
 }

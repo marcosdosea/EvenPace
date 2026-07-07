@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    ViewData["Title"] = "Editar Perfil";
 }
 
 <!DOCTYPE html>
@@ -11,140 +12,450 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Editar Perfil</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
     <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(180deg, #FFD700 0%, #FFD700 60%, #111 100%);
-            font-family: Arial, sans-serif;
-        }
+            * {
+                box-sizing: border-box;
+            }
 
-        .page {
-            padding: 20px;
-            text-align: center;
-            color: #000;
-        }
+            body {
+                margin: 0;
+                min-height: 100vh;
+                background: #ffffff;
+                font-family: Arial, sans-serif;
+                color: #202124;
+            }
 
-        .back {
-            position: absolute;
-            left: 20px;
-            top: 20px;
-            font-size: 32px;
-            text-decoration: none;
-            color: #000;
-        }
+            .profile-home {
+                position: relative;
+                width: 100%;
+                min-height: 100vh;
+                padding: 32px 20px 56px;
+            }
 
-        .avatar {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: #fff;
-            margin: 40px auto 10px;
-            overflow: hidden;
-        }
+            .profile-back {
+                position: absolute;
+                top: 32px;
+                left: 20px;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 16px;
+                border: 1px solid #f1e2b6;
+                border-radius: 999px;
+                background: #fffdf6;
+                color: #765a12;
+                font-weight: 800;
+                text-decoration: none;
+                transition: transform 0.18s ease, background 0.18s ease;
+            }
 
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+                .profile-back:hover {
+                    background: #fff7d9;
+                    color: #765a12;
+                    transform: translateX(-3px);
+                }
 
-        .title {
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
+            .profile-container {
+                width: min(100%, 980px);
+                margin: 0 auto;
+                padding-top: 78px;
+            }
 
-        label {
-            margin-top: 15px;
-            font-weight: 600;
-        }
+            .profile-intro {
+                padding: 8px 0 30px;
+            }
 
-        .input-box {
-            background: #000;
-            border-radius: 14px;
-            padding: 10px;
-        }
+            .profile-kicker {
+                display: inline-flex;
+                margin-bottom: 12px;
+                padding: 8px 14px;
+                border: 1px solid #f1e2b6;
+                border-radius: 999px;
+                background: #fff7d9;
+                color: #765a12;
+                font-size: 0.9rem;
+                font-weight: 800;
+            }
 
-        .input-box input {
-            width: 100%;
-            border: none;
-            background: transparent;
-            color: #FFD700;
-            text-align: center;
-            outline: none;
-            font-weight: bold;
-        }
+            .profile-intro h1 {
+                margin: 0 0 8px;
+                font-size: clamp(2rem, 5vw, 3.4rem);
+                line-height: 1.04;
+                font-weight: 800;
+            }
 
-        .btn-save {
-            margin-top: 0;
-            background: #FFD700;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 12px;
-            font-weight: bold;
-        }
+            .profile-intro p {
+                margin: 0;
+                color: #6b7280;
+                font-size: 1.05rem;
+            }
+
+            .profile-card {
+                width: 100%;
+                border: 1px solid #ece7d5;
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 18px 36px rgba(24, 24, 27, 0.07);
+                padding: 36px;
+            }
+
+            .profile-avatar {
+                width: 132px;
+                height: 132px;
+                margin: 0 auto 18px;
+                overflow: hidden;
+                border: 4px solid #fff7d9;
+                border-radius: 50%;
+                background: #fff7d9;
+                box-shadow: 0 8px 22px rgba(118, 90, 18, 0.15);
+            }
+
+                .profile-avatar img {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+            .profile-avatar-placeholder {
+                display: grid;
+                place-items: center;
+                width: 100%;
+                height: 100%;
+                color: #765a12;
+                font-size: 3.4rem;
+            }
+
+            .profile-header {
+                margin-bottom: 30px;
+                text-align: center;
+            }
+
+                .profile-header h2 {
+                    margin: 0 0 6px;
+                    font-size: 1.6rem;
+                    font-weight: 800;
+                }
+
+                .profile-header span {
+                    color: #6b7280;
+                }
+
+            .profile-info-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px;
+            }
+
+            .profile-field {
+                display: grid;
+                gap: 8px;
+                min-width: 0;
+            }
+
+            .profile-field-full {
+                grid-column: 1 / -1;
+            }
+
+            .profile-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                color: #88816f;
+                font-size: 0.8rem;
+                font-weight: 800;
+                text-transform: uppercase;
+            }
+
+                .profile-label i {
+                    color: #765a12;
+                }
+
+            .profile-input,
+            .profile-readonly {
+                width: 100%;
+                border: 1px solid #f1e2b6;
+                border-radius: 10px;
+                background: #fffdf6;
+                color: #2f2f2f;
+                padding: 14px 16px;
+                font-family: inherit;
+                font-size: 1rem;
+                font-weight: 700;
+            }
+
+                .profile-input:focus {
+                    outline: none;
+                    border-color: #e6bd4d;
+                    box-shadow: 0 0 0 3px rgba(247, 207, 102, 0.25);
+                }
+
+            .profile-readonly {
+                display: flex;
+                align-items: center;
+                min-height: 51px;
+                color: #6b7280;
+                background: #f8f8f6;
+                cursor: not-allowed;
+            }
+
+            .profile-file-input {
+                cursor: pointer;
+                font-weight: 600;
+            }
+
+                .profile-file-input::file-selector-button {
+                    margin-right: 12px;
+                    border: 1px solid #f0d07e;
+                    border-radius: 999px;
+                    background: #ffe7a6;
+                    color: #443200;
+                    padding: 8px 12px;
+                    font-weight: 800;
+                    cursor: pointer;
+                }
+
+            .profile-photo-help {
+                color: #6b7280;
+                font-size: 0.82rem;
+            }
+
+            .field-message {
+                color: #b42318;
+                font-size: 0.85rem;
+                font-weight: 700;
+            }
+
+            .validation-summary {
+                margin-bottom: 18px;
+                border: 1px solid #efb4b4;
+                border-radius: 10px;
+                background: #fff5f5;
+                color: #a52a2a;
+                padding: 14px;
+            }
+
+                .validation-summary ul {
+                    margin: 0;
+                    padding-left: 20px;
+                }
+
+            .profile-actions {
+                display: flex;
+                gap: 12px;
+                margin-top: 30px;
+            }
+
+            .profile-save-btn,
+            .profile-cancel-btn {
+                display: inline-flex;
+                flex: 1;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border-radius: 999px;
+                padding: 13px 18px;
+                font-family: inherit;
+                font-size: 1rem;
+                font-weight: 800;
+                text-decoration: none;
+                cursor: pointer;
+                transition: transform 0.18s ease, box-shadow 0.18s ease;
+            }
+
+            .profile-save-btn {
+                border: 1px solid #f0d07e;
+                background: linear-gradient(135deg, #ffe7a6, #f7cf66);
+                color: #443200;
+            }
+
+            .profile-cancel-btn {
+                border: 1px solid #d9d9d9;
+                background: #ffffff;
+                color: #4b5563;
+            }
+
+                .profile-save-btn:hover,
+                .profile-cancel-btn:hover {
+                    transform: translateY(-2px);
+                    color: inherit;
+                    box-shadow: 0 8px 18px rgba(24, 24, 27, 0.1);
+                }
+
+            @@media (max-width: 575.98px) {
+                .profile-home {
+                    padding: 22px 14px 40px;
+                }
+
+                .profile-back {
+                    top: 22px;
+                    left: 14px;
+                    width: 44px;
+                    height: 44px;
+                    justify-content: center;
+                    padding: 0;
+                }
+
+                    .profile-back span {
+                        display: none;
+                    }
+
+                .profile-container {
+                    padding-top: 72px;
+                }
+
+                .profile-card {
+                    padding: 24px 18px;
+                }
+
+                .profile-info-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .profile-field-full {
+                    grid-column: auto;
+                }
+
+                .profile-actions {
+                    flex-direction: column;
+                }
+            }
     </style>
 </head>
 
 <body>
+    <section class="profile-home">
 
-<a asp-controller="Corredor" asp-action="Edit" asp-route-id="@Model.Id"></a>
+        <a asp-action="Get"
+           asp-route-id="@Model.Id"
+           class="profile-back"
+           aria-label="Voltar para perfil"
+           title="Voltar">
+            <i class="bi bi-arrow-left"></i>
+            <span>Voltar</span>
+        </a>
 
-<div class="page" style="border-radius: 1rem">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-
-            <h5 class="title text-center mb-4">Foto de Perfil</h5>
-
-            <div class="avatar mx-auto mb-4">
-                <img src="https://i.pravatar.cc/300" alt="Foto Perfil"/>
+        <div class="profile-container">
+            <div class="profile-intro">
+                <span class="profile-kicker">Minha conta</span>
+                <h1>Editar perfil</h1>
+                <p>Atualize suas informações pessoais e sua foto.</p>
             </div>
 
-            <form asp-action="Edit" method="post">
-                @Html.AntiForgeryToken()
-                <input type="hidden" asp-for="Id"/>
-
-                <div class="mb-3">
-                    <label class="form-label" asp-for="Nome">
-                        Nome <i class="bi bi-pencil-fill ms-2"></i>
-                    </label>
-                    <input asp-for="Nome"  class="form-control bg-dark text-warning border-0 text-center"/>
-                    <span asp-validation-for="Nome" class="text-danger"></span>
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    @if (!string.IsNullOrWhiteSpace(Model.FotoPerfil))
+                    {
+                        <img src="@Url.Content($"~/imagens/fotos-perfil/{Model.FotoPerfil}")"
+                             alt="Foto de perfil de @Model.Nome" />
+                    }
+                    else
+                    {
+                        <div class="profile-avatar-placeholder">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                    }
                 </div>
 
-                <div class="row">
-                    <div class="col-12 col-md-6 mb-3">
-                        <label class="form-label" asp-for="DataNascimento">
-                            Data de Nascimento <i class="bi bi-pencil-fill ms-2"></i>
-                        </label>
-                        <input asp-for="DataNascimento" type="date" class="form-control bg-dark text-warning border-0 text-center"/>
-                        <span asp-validation-for="DataNascimento" class="text-danger"></span>
+                <div class="profile-header">
+                    <h2>@Model.Nome</h2>
+                    <span>Altere apenas os dados permitidos.</span>
+                </div>
+
+                <form asp-action="Edit"
+                      method="post"
+                      enctype="multipart/form-data">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CPF" />
+                    <input type="hidden" asp-for="FotoPerfil" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="validation-summary">
                     </div>
 
-                    <div class="col-12 col-md-6 mb-3">
-                        <label class="form-label" asp-for="CPF">
-                            CPF <i class="bi bi-pencil-fill ms-2"></i>
-                        </label>
-                        <input asp-for="CPF" class="form-control bg-dark text-warning border-0 text-center"/>
-                        <span asp-validation-for="CPF" class="text-danger"></span>
-                    </div>
-                </div>
-                <footer class="mt-3">
-                    <div class="row">
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn-save">Atualizar Corredor</button>
-                            <a asp-action="Get" asp-route-id="@Model.Id" class="btn btn-secondary text-center">Cancelar</a>
+                    <div class="profile-info-grid">
+                        <div class="profile-field profile-field-full">
+                            <label asp-for="FotoPerfilUpload" class="profile-label">
+                                <i class="bi bi-camera"></i>
+                                Foto de perfil
+                            </label>
+
+                            <input asp-for="FotoPerfilUpload"
+                                   type="file"
+                                   accept=".jpg,.jpeg,.png,.webp"
+                                   class="profile-input profile-file-input" />
+
+                            <span class="profile-photo-help">
+                                Formatos aceitos: JPG, JPEG, PNG e WEBP. Máximo de 5 MB.
+                            </span>
+
+                            <span asp-validation-for="FotoPerfilUpload"
+                                  class="field-message"></span>
+                        </div>
+
+                        <div class="profile-field profile-field-full">
+                            <label asp-for="Nome" class="profile-label">
+                                <i class="bi bi-person"></i>
+                                Nome
+                            </label>
+
+                            <input asp-for="Nome"
+                                   class="profile-input"
+                                   autocomplete="name" />
+
+                            <span asp-validation-for="Nome"
+                                  class="field-message"></span>
+                        </div>
+
+                        <div class="profile-field">
+                            <label asp-for="DataNascimento" class="profile-label">
+                                <i class="bi bi-calendar-event"></i>
+                                Data de nascimento
+                            </label>
+
+                            <input asp-for="DataNascimento"
+                                   type="date"
+                                   class="profile-input" />
+
+                            <span asp-validation-for="DataNascimento"
+                                  class="field-message"></span>
+                        </div>
+
+                        <div class="profile-field">
+                            <span class="profile-label">
+                                <i class="bi bi-card-text"></i>
+                                CPF
+                            </span>
+
+                            <div class="profile-readonly"
+                                 title="O CPF não pode ser alterado">
+                                @Model.CPF
+                            </div>
                         </div>
                     </div>
-                </footer>
-            </form>
-        </div>
-    </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+                    <div class="profile-actions">
+                        <button type="submit" class="profile-save-btn">
+                            <i class="bi bi-check-circle"></i>
+                            Salvar alterações
+                        </button>
+
+                        <a asp-action="Get"
+                           asp-route-id="@Model.Id"
+                           class="profile-cancel-btn">
+                            <i class="bi bi-x-circle"></i>
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 </body>
 </html>

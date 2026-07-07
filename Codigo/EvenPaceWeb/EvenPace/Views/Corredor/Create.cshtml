@@ -2,96 +2,353 @@
 
 @{
     Layout = null;
+    ViewData["Title"] = "Cadastro";
 }
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EvenPace - Login</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro - EvenPace</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
     <style>
-        .gradient-custom {
-            background: #f6d476;
-            background: -webkit-linear-gradient(to right, #2E2E2E, #D9D9D9);
-            background: linear-gradient(180deg, #FFD700 0%, #FFD700 60%, #111111 100%);
-        }
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                min-height: 100vh;
+                background: #ffffff;
+                font-family: Arial, sans-serif;
+                color: #202124;
+            }
+
+            .register-home {
+                width: 100%;
+                min-height: 100vh;
+                padding: 48px 20px 56px;
+                background: #ffffff;
+            }
+
+            .register-container {
+                width: min(100%, 980px);
+                margin: 0 auto;
+            }
+
+            .register-intro {
+                padding: 8px 0 30px;
+            }
+
+            .register-kicker {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 12px;
+                padding: 8px 14px;
+                border: 1px solid #f1e2b6;
+                border-radius: 999px;
+                background: #fff7d9;
+                color: #765a12;
+                font-size: 0.9rem;
+                font-weight: 800;
+            }
+
+            .register-intro h1 {
+                margin: 0 0 8px;
+                color: #202124;
+                font-size: clamp(2rem, 5vw, 3.4rem);
+                line-height: 1.04;
+                font-weight: 800;
+            }
+
+            .register-intro p {
+                margin: 0;
+                color: #6b7280;
+                font-size: 1.05rem;
+            }
+
+            .register-card {
+                width: 100%;
+                border: 1px solid #ece7d5;
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 18px 36px rgba(24, 24, 27, 0.07);
+                padding: 36px;
+            }
+
+            .register-card-header {
+                margin-bottom: 28px;
+                text-align: center;
+            }
+
+                .register-card-header h2 {
+                    margin: 0 0 6px;
+                    color: #202124;
+                    font-size: 1.6rem;
+                    font-weight: 800;
+                }
+
+                .register-card-header p {
+                    margin: 0;
+                    color: #6b7280;
+                }
+
+            .register-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px;
+            }
+
+            .register-field {
+                display: grid;
+                gap: 8px;
+                min-width: 0;
+            }
+
+            .register-field-full {
+                grid-column: 1 / -1;
+            }
+
+            .register-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                color: #88816f;
+                font-size: 0.8rem;
+                font-weight: 800;
+                text-transform: uppercase;
+            }
+
+                .register-label i {
+                    color: #765a12;
+                    font-size: 1rem;
+                }
+
+            .register-input {
+                width: 100%;
+                border: 1px solid #f1e2b6;
+                border-radius: 10px;
+                background: #fffdf6;
+                color: #2f2f2f;
+                padding: 14px 16px;
+                font-family: inherit;
+                font-size: 1rem;
+                font-weight: 700;
+            }
+
+                .register-input::placeholder {
+                    color: #aaa18b;
+                    font-weight: 600;
+                }
+
+                .register-input:focus {
+                    outline: none;
+                    border-color: #e6bd4d;
+                    box-shadow: 0 0 0 3px rgba(247, 207, 102, 0.25);
+                }
+
+            .field-message {
+                color: #b42318;
+                font-size: 0.85rem;
+                font-weight: 700;
+            }
+
+            .register-actions {
+                display: flex;
+                gap: 12px;
+                margin-top: 30px;
+            }
+
+            .register-submit-btn,
+            .register-login-btn {
+                display: inline-flex;
+                flex: 1;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border-radius: 999px;
+                padding: 13px 18px;
+                font-family: inherit;
+                font-size: 1rem;
+                font-weight: 800;
+                text-decoration: none;
+                cursor: pointer;
+                transition: transform 0.18s ease, box-shadow 0.18s ease;
+            }
+
+            .register-submit-btn {
+                border: 1px solid #f0d07e;
+                background: linear-gradient(135deg, #ffe7a6, #f7cf66);
+                color: #443200;
+            }
+
+            .register-login-btn {
+                border: 1px solid #d9d9d9;
+                background: #ffffff;
+                color: #4b5563;
+            }
+
+                .register-submit-btn:hover,
+                .register-login-btn:hover {
+                    transform: translateY(-2px);
+                    color: inherit;
+                    box-shadow: 0 8px 18px rgba(24, 24, 27, 0.1);
+                }
+
+            @@media (max-width: 575.98px) {
+                .register-home {
+                    padding: 28px 14px 40px;
+                }
+
+                .register-card {
+                    padding: 24px 18px;
+                }
+
+                .register-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .register-field-full {
+                    grid-column: auto;
+                }
+
+                .register-actions {
+                    flex-direction: column;
+                }
+            }
     </style>
 </head>
 
 <body>
-<section class="vh-100 gradient-custom d-flex align-items-center">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card bg-dark text-white shadow-lg" style="border-radius: 1rem;">
-                    <div class="card-body p-5">
+    <section class="register-home">
+        <div class="register-container">
 
-                        <h2 class="fw-bold mb-2 text-uppercase text-center">Cadastro</h2>
+            <div class="register-intro">
+                <span class="register-kicker">
+                    <i class="bi bi-person-plus"></i>
+                    EvenPace
+                </span>
 
-                        <form asp-action="Create" asp-controller="Corredor" method="post">
-                            @Html.AntiForgeryToken()
-                            
-                            <div asp-validation-summary="All" class="text-danger mb-3"></div>
-                            
-                            <div class="mb-4">
-                                <label class="form-label" asp-for="Nome">Nome</label>
-                                <input asp-for="Nome" class="form-control form-control-lg" placeholder="Digite seu nome"/>
-                                <span asp-validation-for="Nome" class="text-danger"></span>
-                            </div>
+                <h1>Crie sua conta.</h1>
+                <p>Cadastre-se para encontrar eventos e participar das próximas corridas.</p>
+            </div>
 
-                            <div class="mb-4">
-                                <label class="form-label" asp-for="DataNascimento">Data de Nacimento</label>
-                                <input asp-for="DataNascimento" type="date" class="form-control form-control-lg"/>
-                                <span asp-validation-for="DataNascimento" class="text-danger"></span>
-                            </div>
-
-                            <div class="mb-4">
-    <label class="form-label" asp-for="Email">E-mail</label>
-    <input asp-for="Email" type="email" class="form-control form-control-lg" placeholder="exemplo@email.com" />
-    <span asp-validation-for="Email" class="text-danger"></span>
-</div>
-
-
-                                <div class="mb-4">
-                                    <label class="form-label" asp-for="Senha">Senha</label>
-                                    <input asp-for="Senha"
-                                           type="password"
-                                           class="form-control form-control-lg"
-                                           placeholder="********" />
-                                    <span asp-validation-for="Senha" class="text-danger"></span>
-                                </div>
-
-                            <div class="mb-4">
-                                <label class="form-label" asp-for="CPF">CPF</label>
-                                <input asp-for="CPF" class="form-control form-control-lg" placeholder="000.000.000-00"/>
-                                <span asp-validation-for="CPF" class="text-danger"></span>
-                            </div>
-
-                            <footer>        
-                                <div class="d-grid gap-2 mb-4">
-                                    <button class="btn btn-outline-light btn-lg" type="submit">
-                                        Cadastrar-se
-                                    </button>
-                                </div>
-                            </footer>
-                        </form>
-                    </div>
+            <div class="register-card">
+                <div class="register-card-header">
+                    <h2>Cadastro de corredor</h2>
+                    <p>Preencha seus dados para começar.</p>
                 </div>
+
+                <form asp-action="Create"
+                      asp-controller="Corredor"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="register-grid">
+                        <div class="register-field register-field-full">
+                            <label asp-for="Nome" class="register-label">
+                                <i class="bi bi-person"></i>
+                                Nome
+                            </label>
+
+                            <input asp-for="Nome"
+                                   class="register-input"
+                                   placeholder="Digite seu nome completo"
+                                   autocomplete="name" />
+
+                            <span asp-validation-for="Nome"
+                                  class="field-message"></span>
+                        </div>
+
+                        <div class="register-field">
+                            <label asp-for="DataNascimento" class="register-label">
+                                <i class="bi bi-calendar-event"></i>
+                                Data de nascimento
+                            </label>
+
+                            <input asp-for="DataNascimento"
+                                   type="date"
+                                   class="register-input" />
+
+                            <span asp-validation-for="DataNascimento"
+                                  class="field-message"></span>
+                        </div>
+
+                        <div class="register-field">
+                            <label asp-for="CPF" class="register-label">
+                                <i class="bi bi-card-text"></i>
+                                CPF
+                            </label>
+
+                            <input asp-for="CPF"
+                                   class="register-input"
+                                   placeholder="000.000.000-00"
+                                   inputmode="numeric"
+                                   autocomplete="off" />
+
+                            <span asp-validation-for="CPF"
+                                  class="field-message"></span>
+                        </div>
+
+                        <div class="register-field register-field-full">
+                            <label asp-for="Email" class="register-label">
+                                <i class="bi bi-envelope"></i>
+                                E-mail
+                            </label>
+
+                            <input asp-for="Email"
+                                   type="email"
+                                   class="register-input"
+                                   placeholder="exemplo@email.com"
+                                   autocomplete="email" />
+
+                            <span asp-validation-for="Email"
+                                  class="field-message"></span>
+                        </div>
+
+                        <div class="register-field register-field-full">
+                            <label asp-for="Senha" class="register-label">
+                                <i class="bi bi-lock"></i>
+                                Senha
+                            </label>
+
+                            <input asp-for="Senha"
+                                   type="password"
+                                   class="register-input"
+                                   placeholder="Crie uma senha segura"
+                                   autocomplete="new-password" />
+
+                            <span asp-validation-for="Senha"
+                                  class="field-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="register-actions">
+                        <button type="submit" class="register-submit-btn">
+                            <i class="bi bi-person-check"></i>
+                            Criar conta
+                        </button>
+
+                        <a asp-action="Login"
+                           asp-controller="Corredor"
+                           class="register-login-btn">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            Já tenho conta
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 </body>
 </html>
-
-
-
