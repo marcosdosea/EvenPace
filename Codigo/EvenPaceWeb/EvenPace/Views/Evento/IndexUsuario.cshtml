@@ -40,7 +40,54 @@
             return Url.Content(imagem);
         }
 
-        return Url.Content($"~/imagens/{imagem}");
+        if (imagem.Contains("/", StringComparison.Ordinal))
+        {
+            return Url.Content($"~/imagens/{imagem}");
+        }
+
+        return Url.Content($"~/imagens/banner-eventos/{imagem}");
+    }
+
+    private static string ObterTermosEstado(string? estado)
+    {
+        if (string.IsNullOrWhiteSpace(estado))
+        {
+            return string.Empty;
+        }
+
+        var estadoNormalizado = estado.Trim().ToUpperInvariant();
+
+        return estadoNormalizado switch
+        {
+            "AC" or "ACRE" => $"{estado} AC Acre",
+            "AL" or "ALAGOAS" => $"{estado} AL Alagoas",
+            "AP" or "AMAPA" or "AMAPÁ" => $"{estado} AP Amapa Amapá",
+            "AM" or "AMAZONAS" => $"{estado} AM Amazonas",
+            "BA" or "BAHIA" => $"{estado} BA Bahia",
+            "CE" or "CEARA" or "CEARÁ" => $"{estado} CE Ceara Ceará",
+            "DF" or "DISTRITO FEDERAL" => $"{estado} DF Distrito Federal",
+            "ES" or "ESPIRITO SANTO" or "ESPÍRITO SANTO" => $"{estado} ES Espirito Santo Espírito Santo",
+            "GO" or "GOIAS" or "GOIÁS" => $"{estado} GO Goias Goiás",
+            "MA" or "MARANHAO" or "MARANHÃO" => $"{estado} MA Maranhao Maranhão",
+            "MT" or "MATO GROSSO" => $"{estado} MT Mato Grosso",
+            "MS" or "MATO GROSSO DO SUL" => $"{estado} MS Mato Grosso do Sul",
+            "MG" or "MINAS GERAIS" => $"{estado} MG Minas Gerais",
+            "PA" or "PARA" or "PARÁ" => $"{estado} PA Para Pará",
+            "PB" or "PARAIBA" or "PARAÍBA" => $"{estado} PB Paraiba Paraíba",
+            "PR" or "PARANA" or "PARANÁ" => $"{estado} PR Parana Paraná",
+            "PE" or "PERNAMBUCO" => $"{estado} PE Pernambuco",
+            "PI" or "PIAUI" or "PIAUÍ" => $"{estado} PI Piaui Piauí",
+            "RJ" or "RIO DE JANEIRO" => $"{estado} RJ Rio de Janeiro",
+            "RN" or "RIO GRANDE DO NORTE" => $"{estado} RN Rio Grande do Norte",
+            "RS" or "RIO GRANDE DO SUL" => $"{estado} RS Rio Grande do Sul",
+            "RO" or "RONDONIA" or "RONDÔNIA" => $"{estado} RO Rondonia Rondônia",
+            "RR" or "RORAIMA" => $"{estado} RR Roraima",
+            "SC" or "SANTA CATARINA" => $"{estado} SC Santa Catarina",
+            "SP" or "SAO PAULO" or "SÃO PAULO" => $"{estado} SP Sao Paulo São Paulo",
+            "SE" or "SERGIPE" => $"{estado} SE Sergipe",
+            "TO" or "TOCANTINS" => $"{estado} TO Tocantins",
+            _ => estado
+        };
     }
 }
 
@@ -73,7 +120,7 @@
                 <h2>Corridas disponíveis</h2>
                 <p>Eventos futuros com inscrição aberta pelo EvenPace.</p>
             </div>
-            <span>@eventos.Count evento(s)</span>
+            <span id="events-count">@eventos.Count evento(s)</span>
         </div>
 
         @if (!eventos.Any())
@@ -85,13 +132,14 @@
         }
         else
         {
-            <div class="events-grid">
+            <div class="events-grid" id="events-grid">
                 @foreach (var evento in eventos)
                 {
                     var imagem = ObterImagem(evento.Imagem);
                     var inscricaoUrl = Url.Action("Index", "Inscricao", new { id = evento.Id });
+                    var termosBusca = $"{evento.Nome} {evento.Cidade} {ObterTermosEstado(evento.Estado)}";
 
-                    <article class="event-card">
+                    <article class="event-card" data-search="@termosBusca.ToLowerInvariant()">
                         <a href="@inscricaoUrl" class="event-card-link" aria-label="Ver inscrição de @evento.Nome">
                             <div class="event-image">
                                 @if (!string.IsNullOrWhiteSpace(imagem))
@@ -132,9 +180,62 @@
                     </article>
                 }
             </div>
+            <div class="events-empty events-empty-filter" id="events-empty-filter" hidden>
+                <strong>Nenhum evento encontrado.</strong>
+                <p>Tente buscar por outro nome, cidade ou estado.</p>
+            </div>
         }
     </div>
 </section>
+
+<script>
+    (() => {
+        const form = document.querySelector(".events-search");
+        const input = form?.querySelector('input[name="search"]');
+        const cards = Array.from(document.querySelectorAll(".event-card[data-search]"));
+        const count = document.getElementById("events-count");
+        const empty = document.getElementById("events-empty-filter");
+
+        if (!form || !input || cards.length === 0 || !count || !empty) {
+            return;
+        }
+
+        const normalize = value => value
+            .toLocaleLowerCase("pt-BR")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+
+        cards.forEach(card => {
+            card.dataset.search = normalize(`${card.dataset.search ?? ""} ${card.textContent ?? ""}`);
+        });
+
+        const filterEvents = () => {
+            const term = normalize(input.value);
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const isVisible = term === "" || (card.dataset.search ?? "").includes(term);
+                card.hidden = !isVisible;
+
+                if (isVisible) {
+                    visibleCount++;
+                }
+            });
+
+            count.textContent = `${visibleCount} evento(s)`;
+            empty.hidden = visibleCount > 0;
+        };
+
+        input.addEventListener("input", filterEvents);
+        form.addEventListener("submit", event => {
+            event.preventDefault();
+            filterEvents();
+        });
+
+        filterEvents();
+    })();
+</script>
 
 @section Styles {
     <style>

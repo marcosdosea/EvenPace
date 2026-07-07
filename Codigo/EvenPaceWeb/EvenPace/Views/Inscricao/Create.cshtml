@@ -5,6 +5,33 @@
 	var popupMessage = ViewBag.PopupMessage as string;
 }
 
+@functions {
+	private string ObterImagemEvento(string? imagem)
+	{
+		if (string.IsNullOrWhiteSpace(imagem))
+		{
+			return string.Empty;
+		}
+
+		if (imagem.StartsWith("http", StringComparison.OrdinalIgnoreCase) || imagem.StartsWith("/", StringComparison.Ordinal))
+		{
+			return imagem;
+		}
+
+		if (imagem.StartsWith("~", StringComparison.Ordinal))
+		{
+			return Url.Content(imagem);
+		}
+
+		if (imagem.Contains("/", StringComparison.Ordinal))
+		{
+			return Url.Content($"~/imagens/{imagem}");
+		}
+
+		return Url.Content($"~/imagens/banner-eventos/{imagem}");
+	}
+}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -363,7 +390,7 @@
 						<div class="hero-media">
 							@if (!string.IsNullOrEmpty(Model.ImagemEvento))
 							{
-								<img src="@Url.Content($"~/imagens/{Model.ImagemEvento}")" alt="@Model.NomeEvento" />
+								<img src="@ObterImagemEvento(Model.ImagemEvento)" alt="@Model.NomeEvento" />
 							}
 							else
 							{
