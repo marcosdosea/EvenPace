@@ -36,17 +36,14 @@ namespace EvenPace.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            // 1. Obtém o documento (CPF/CNPJ) do usuário logado
             var documentoSessao = User.Identity.Name;
 
-            // 2. Busca o ID da organização através do documento
             var organizacao = _context.Organizacaos
                 .FirstOrDefault(o => o.Cpf == documentoSessao || o.Cnpj == documentoSessao);
 
             if (organizacao == null)
                 return View(new List<EventoViewModel>());
 
-            // 3. Busca eventos filtrando pelo ID da organização
             var entidades = _service.GetByOrganizacao((int)organizacao.Id);
             var model = _mapper.Map<IEnumerable<EventoViewModel>>(entidades);
 
@@ -118,23 +115,16 @@ namespace EvenPace.Controllers
                         evento.Data = model.DataOnly.Value.Date.Add(model.HoraOnly.Value);
                     }
 
-                    // 1º PASSO: CRIAR O EVENTO PRIMEIRO
-                    // Isso insere no banco e captura o ID gerado pelo auto incremento
                     _service.Create(evento);
 
-                    // 2º PASSO: PROCESSAR A IMAGEM COM O ID CORRETO
                     if (model.ImagemUpload != null)
                     {
                         string extensao = Path.GetExtension(model.ImagemUpload.FileName);
 
-                        // Agora o evento.Id possui o número correto gerado pelo banco!
                         string nomeArquivo = $"EventoBanner_{evento.Id}{extensao}";
 
-                        // Salva a imagem no disco
                         evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload, nomeArquivo);
 
-                        // 3º PASSO: ATUALIZAR O REGISTRO
-                        // Fazemos o update apenas para colocar o nome correto da imagem na linha que acabamos de criar
                         _service.Edit(evento);
                     }
 
@@ -304,7 +294,6 @@ namespace EvenPace.Controllers
         /// <param name="search">Termo opcional de pesquisa para filtrar eventos pelo nome, cidade ou estado.</param>
         /// <returns>View contendo a vitrine de eventos compatíveis com a busca.</returns>
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> IndexUsuario(string? search)
         {
             // CPF salvo como UserName no Identity, sem ponto e hífen.
