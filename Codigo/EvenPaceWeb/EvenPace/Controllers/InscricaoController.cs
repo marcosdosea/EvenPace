@@ -17,16 +17,19 @@ namespace EvenPace.Controllers
         private readonly ICorredorService _corredorService;
         private readonly UserManager<UsuarioIdentity> _userManager;
         private readonly IMapper _mapper;
+        private readonly IEventosService _eventosService;
 
         public InscricaoController(
             IInscricaoService inscricaoService,
             ICorredorService corredorService,
             UserManager<UsuarioIdentity> userManager,
+            IEventosService eventosService,
             IMapper mapper)
         {
             _inscricaoService = inscricaoService;
             _corredorService = corredorService;
             _userManager = userManager;
+            _eventosService = eventosService;
             _mapper = mapper;
         }
 
@@ -221,10 +224,20 @@ namespace EvenPace.Controllers
             return RedirectToAction(nameof(Index), new { id = idEvento });
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAllByEvento(int idEvento)
         {
             var inscricoes = await _inscricaoService.GetAllByEventoAsync(idEvento);
+
             var inscricaoViewModel = _mapper.Map<List<InscricaoViewModel>>(inscricoes);
+
+            // Busca o evento
+            var evento = _eventosService.Get((int)idEvento);
+
+            // Envia informações para a View
+            ViewBag.NomeEvento = evento.Nome;
+            ViewBag.IdEventoAtual = idEvento;
+
             return View(inscricaoViewModel);
         }
 

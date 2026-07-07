@@ -6,174 +6,260 @@
 }
 
 <style>
-    /* Ajustes de Layout */
-    .dashboard-container {
-        display: flex;
-        min-height: 100vh;
-        width: 100%;
-    }
-
-    .sidebar {
-        width: 250px;
-        flex-shrink: 0;
-    }
-
     .content-area {
         flex-grow: 1;
-        background-color: #ffffff !important;
+        background: #fff;
         padding: 40px;
-        box-sizing: border-box;
         overflow-x: hidden;
     }
 
-    .org-top-bar {
+    /* Cabeçalho */
+    .page-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #e5e7eb;
         margin-bottom: 40px;
-        width: 100%;
+        flex-wrap: wrap;
+        gap: 20px;
     }
 
-    .btn-create-event {
-        background-color: #9ca3af;
-        color: #000000;
-        font-weight: 600;
-        border: none;
-        border-radius: 12px;
-        padding: 10px 24px;
-        text-decoration: none;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        transition: all 0.2s ease;
-        display: inline-block;
+    .header-title-group {
+        display: flex;
+        align-items: center;
     }
 
-        .btn-create-event:hover {
-            background-color: #4b5563;
-            color: #ffffff;
-        }
-
-    .section-title {
-        font-weight: 700;
-        font-size: 1.6rem;
-        margin-bottom: 35px;
+    .header-text h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 800;
         color: #1f2937;
     }
 
-    /* Estilos dos Cards */
+    .subtitle {
+        margin-top: 8px;
+        color: #6b7280;
+        font-size: 1rem;
+    }
+
+    /* Botão verde padrão do sistema */
+    .btn-green {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #28a745;
+        color: #fff;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 700;
+        transition: .25s;
+        box-shadow: 0 6px 18px rgba(40,167,69,.20);
+    }
+
+        .btn-green:hover {
+            background: #218838;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+    .btn-symbol {
+        font-size: 22px;
+        line-height: 1;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 35px;
+    }
+
+    /* Cards */
     .event-card-link {
+        display: block;
         text-decoration: none;
         color: inherit;
-        display: block;
-        transition: transform 0.2s;
+        transition: .25s;
     }
 
         .event-card-link:hover {
-            transform: translateY(-5px);
+            transform: translateY(-6px);
         }
 
     .event-card-container {
-        position: relative;
         margin-bottom: 20px;
     }
 
     .image-wrapper {
-        position: relative;
-        border-radius: 4px;
+        background: #fff;
+        border-radius: 18px;
         overflow: hidden;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        border: 1px solid #ececec;
+        box-shadow: 0 8px 25px rgba(0,0,0,.06);
     }
 
     .event-img {
         width: 100%;
-        height: 180px;
+        height: 210px;
         object-fit: cover;
         display: block;
     }
 
     .event-label-yellow {
-        background-color: #ffc107;
-        color: #000000;
+        background: #FFD54F;
+        color: #222;
+        padding: 14px;
         text-align: center;
         font-weight: 700;
-        padding: 8px 10px;
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 
-    /* Ícones de ação */
-    .action-icons-panel {
-        position: absolute;
-        top: 5px;
-        right: -35px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        z-index: 5;
+    .empty-state-card {
+        background: #fff;
+        border: 2px dashed #d9d9d9;
+        border-radius: 20px;
+        padding: 60px;
+        text-align: center;
+        max-width: 700px;
+        margin: auto;
     }
 
-    .btn-panel-icon {
-        background: none;
-        border: none;
-        font-size: 1.2rem;
-        text-decoration: none;
-        cursor: pointer;
+        .empty-state-card h3 {
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .empty-state-card p {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+    @@media(max-width:768px) {
+
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .header-text h1 {
+            font-size: 1.6rem;
+        }
+
+        .btn-green {
+            width: 100%;
+            justify-content: center;
+        }
     }
 
-    .icon-edit {
-        color: #6b7280;
-    }
-
-    .icon-delete {
-        color: #dc3545;
-        font-weight: bold;
-    }
 </style>
 
-<div class="org-top-bar">
-    <div>
-        <span class="text-muted small d-block" style="font-size: 0.85rem;">Bem vindo</span>
-        <h5 class="fw-bold m-0 text-dark">@ViewBag.NomeOrganizacao</h5>
+<header class="page-header">
+
+    <div class="header-title-group">
+
+        <div class="header-text">
+            <h1>Olá, @ViewBag.NomeOrganizacao 👋</h1>
+
+            <p class="subtitle">
+                Seja bem-vindo(a)! Gerencie seus eventos e acompanhe todas as informações da sua organização.
+            </p>
+
+        </div>
+
     </div>
-    <a asp-controller="Evento" asp-action="Create" class="btn-create-event">Criar novo evento</a>
-</div>
+
+    <a asp-controller="Evento"
+       asp-action="Create"
+       class="btn-green">
+
+        <span class="btn-symbol">+</span>
+
+        <span>Criar Evento</span>
+
+    </a>
+
+</header>
 
 <div class="container-fluid p-0">
-    <h3 class="section-title text-center text-dark">Meus eventos</h3>
 
-    <div class="row g-5 justify-content-start" style="padding-right: 40px;">
+    <h2 class="section-title">
+        Meus Eventos
+    </h2>
+
+    <div class="row g-5">
         @if (Model != null && Model.Any())
         {
             @foreach (var evento in Model)
             {
-                <div class="col-12 col-sm-6 col-md-4 col-xl-3">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+
                     <div class="event-card-container">
 
-                        <!-- Link clicável para Detalhes -->
-                        <a asp-controller="Evento" asp-action="Details" asp-route-id="@evento.Id" class="event-card-link">
+                        <a asp-controller="Evento"
+                           asp-action="Details"
+                           asp-route-id="@evento.Id"
+                           class="event-card-link">
+
                             <div class="image-wrapper">
+
                                 @if (!string.IsNullOrEmpty(evento.Imagem))
                                 {
-                                    <img src="@Url.Content("~/imagens/banner-eventos/" + evento.Imagem)" class="event-img" alt="@evento.Nome">
+                                    <img src="@Url.Content("~/imagens/banner-eventos/" + evento.Imagem)"
+                                         class="event-img"
+                                         alt="@evento.Nome" />
                                 }
                                 else
                                 {
-                                    <img src="https://placehold.co/300x180?text=EvenPace" class="event-img" alt="@evento.Nome">
+                                    <img src="https://placehold.co/600x400/f5f5f5/888888?text=EvenPace"
+                                         class="event-img"
+                                         alt="@evento.Nome" />
                                 }
-                                <div class="event-label-yellow">@evento.Nome</div>
+
+                                <div class="event-label-yellow">
+                                    @evento.Nome
+                                </div>
+
                             </div>
+
                         </a>
 
-                       
                     </div>
+
                 </div>
             }
         }
         else
         {
-            <div class="col-12 text-center mt-5">
-                <p class="text-muted">Nenhum evento criado por esta organização até o momento.</p>
+            <div class="col-12">
+
+                <div class="empty-state-card">
+
+                    <h3>
+                        Nenhum evento encontrado
+                    </h3>
+
+                    <p>
+                        Você ainda não criou nenhum evento.
+                        Clique no botão abaixo para criar seu primeiro evento e começar
+                        a gerenciar inscrições, kits, cupons e muito mais.
+                    </p>
+
+                    <a asp-controller="Evento"
+                       asp-action="Create"
+                       class="btn-green">
+
+                        <span class="btn-symbol">+</span>
+
+                        <span>Criar Evento</span>
+
+                    </a>
+
+                </div>
+
             </div>
         }
+
     </div>
+
 </div>

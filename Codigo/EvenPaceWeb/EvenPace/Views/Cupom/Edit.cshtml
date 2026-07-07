@@ -2,196 +2,159 @@
 
 @{
     ViewData["Title"] = "Editar Cupom";
+    Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+    <link rel="stylesheet" href="~/css/kit.css" />
 }
 
-<style>
-    :root {
-        --primary-color: #ffd700; 
-        --primary-hover: #e6c200;
-        --bg-light: #f8f9fa;
-        --text-black: #000;
-        --text-grey: #6c757d;
+<main class="main-container">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div asp-validation-summary="All" class="alert alert-danger"></div>
     }
 
-    main.cupom-page {
-        padding: 20px;
-        background-color: #fff;
-    }
-
-    header.form-header h1 {
-        font-weight: 800;
-        color: var(--text-black);
-    }
-
-    section.form-container {
-        background-color: var(--bg-light);
-        border-radius: 25px;
-        padding: 30px;
-        border: 1px solid #dee2e6;
-    }
-
-    /* Custom Input Estilizado */
-    .custom-input {
-        border: 2px solid var(--text-black);
-        border-radius: 12px;
-        padding: 10px;
-        width: 100%;
-        transition: 0.2s;
-    }
-
-        .custom-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-
-    /* Estilo do Switch (Toggle) */
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 26px;
-    }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 34px;
-    }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-    input:checked + .slider {
-        background-color: #28a745;
-    }
-
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
-
-    /* Botões */
-    .btn-save {
-        background-color: var(--primary-color);
-        color: #000;
-        border: none;
-        border-radius: 10px;
-        padding: 12px 30px;
-        font-weight: bold;
-    }
-
-        .btn-save:hover {
-            background-color: var(--primary-hover);
-        }
-
-    .btn-back {
-        background-color: #343a40;
-        color: #fff;
-        border-radius: 10px;
-        padding: 12px 30px;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-        .btn-back:hover {
-            color: #fff;
-            opacity: 0.9;
-        }
-</style>
-
-<main class="container cupom-page">
-    <header class="form-header mb-4">
-        <h1>Editar Cupom</h1>
-        <p class="text-muted small">ID: @Model.Id | Evento: [Nome Corrida]</p>
+    <header class="page-header">
+        <div class="header-titles">
+            <h1>Editar Cupom</h1>
+            <p class="subtitle">@ViewBag.NomeCorrida</p>
+        </div>
     </header>
 
-    <section class="form-container shadow-sm">
-        <form asp-action="Edit" method="post">
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="IdEvento" />
+    <form asp-action="Edit" method="post" class="form-kits">
 
-            <div class="row g-4">
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="mb-3">
-                        <label asp-for="Nome" class="form-label fw-bold">Nome do Cupom</label>
-                        <input asp-for="Nome" class="custom-input" placeholder="Ex: VERAO20" />
-                        <span asp-validation-for="Nome" class="text-danger small"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Desconto" class="form-label fw-bold">Desconto %</label>
-                        <input asp-for="Desconto" type="number" class="custom-input" />
-                        <span asp-validation-for="Desconto" class="text-danger small"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="QuantiadeDisponibilizada" class="form-label fw-bold">Qtd. Disponível</label>
-                        <input asp-for="QuantiadeDisponibilizada" class="custom-input" />
-                        <span asp-validation-for="QuantiadeDisponibilizada" class="text-danger small"></span>
-                    </div>
-                </div>
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="IdEvento" type="hidden" />
 
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="mb-3">
-                        <label asp-for="DataInicio" class="form-label fw-bold">Data de Início</label>
-                        <input asp-for="DataInicio" type="date" class="custom-input"
-                               value="@Model.DataInicio.ToString("yyyy-MM-dd")" />
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="DataTermino" class="form-label fw-bold">Data de Término</label>
-                        <input asp-for="DataTermino" type="date" class="custom-input"
-                               value="@Model.DataTermino.ToString("yyyy-MM-dd")" />
-                    </div>
-                </div>
+        <div class="form-block">
+            <label asp-for="Nome" class="label-bold">Nome do Cupom</label>
+            <input asp-for="Nome"
+                   class="input-gray"
+                   placeholder="Ex: VERAO20" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
 
-                <div class="col-12 col-lg-4">
-                    <label class="form-label d-block fw-bold">Status do Cupom</label>
-                    <div class="d-flex align-items-center bg-white p-3 border rounded">
-                        <label class="switch me-3">
-                            <input type="checkbox" asp-for="Status" id="status-toggle">
-                            <span class="slider"></span>
-                        </label>
-                        <span id="status-text" class="fw-bold text-uppercase"></span>
-                    </div>
-                </div>
+        <div class="row-flex">
 
-                <div class="col-12 d-flex flex-column flex-sm-row justify-content-end gap-3 mt-4">
-                    <a asp-action="Index" class="btn-back text-center order-2 order-sm-1">Cancelar</a>
-                    <button type="submit" class="btn-save order-1 order-sm-2">Atualizar Cupom</button>
-                </div>
+            <div class="col-fixed">
+                <label asp-for="Desconto" class="label-bold">
+                    Desconto (%)
+                </label>
+                <input asp-for="Desconto"
+                       type="number"
+                       class="input-gray" />
+                <span asp-validation-for="Desconto"
+                      class="text-danger"></span>
             </div>
-        </form>
-    </section>
+
+            <div class="col-grow">
+                <label asp-for="QuantiadeDisponibilizada"
+                       class="label-bold">
+                    Quantidade Disponível
+                </label>
+                <input asp-for="QuantiadeDisponibilizada"
+                       type="number"
+                       class="input-gray" />
+                <span asp-validation-for="QuantiadeDisponibilizada"
+                      class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="row-flex">
+
+            <div class="col-grow">
+                <label asp-for="DataInicio"
+                       class="label-bold">
+                    Data de Início
+                </label>
+
+                <input asp-for="DataInicio"
+                       type="date"
+                       class="input-gray" />
+
+                <span asp-validation-for="DataInicio"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="col-grow">
+                <label asp-for="DataTermino"
+                       class="label-bold">
+                    Data de Término
+                </label>
+
+                <input asp-for="DataTermino"
+                       type="date"
+                       class="input-gray" />
+
+                <span asp-validation-for="DataTermino"
+                      class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="form-block">
+
+            <fieldset class="sizes-fieldset">
+
+                <legend class="legend-title">
+                    Status do Cupom
+                </legend>
+
+                <label class="size-row" style="margin-bottom:0;">
+
+                    <span id="status-text"></span>
+
+                    <input asp-for="Status"
+                           type="checkbox"
+                           id="status-toggle"
+                           style="width:22px;height:22px;" />
+
+                </label>
+
+            </fieldset>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button type="submit"
+                    class="btn-green">
+                Atualizar
+            </button>
+
+            <a asp-action="Index"
+               asp-route-idEvento="@Model.IdEvento"
+               class="btn-gray">
+                Voltar
+            </a>
+
+        </div>
+
+    </form>
+
 </main>
 
 <script>
-    const toggle = document.getElementById('status-toggle');
-    const statusText = document.getElementById('status-text');
-    //Ola
-    const updateText = () => {
-        statusText.textContent = toggle.checked ? "Ativo" : "Desativado";
-        statusText.style.color = toggle.checked ? "#28a745" : "#dc3545";
-    };
+    const toggle = document.getElementById("status-toggle");
+    const statusText = document.getElementById("status-text");
 
-    updateText();
-    toggle.addEventListener('change', updateText);
+    function atualizarStatus() {
+        if (toggle.checked) {
+            statusText.textContent = "Ativo";
+            statusText.style.color = "#28a745";
+        } else {
+            statusText.textContent = "Desativado";
+            statusText.style.color = "#dc3545";
+        }
+    }
+
+    atualizarStatus();
+
+    toggle.addEventListener("change", atualizarStatus);
 </script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

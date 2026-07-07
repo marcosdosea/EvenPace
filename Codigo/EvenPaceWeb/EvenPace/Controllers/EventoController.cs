@@ -93,7 +93,6 @@ namespace EvenPace.Controllers
         [Authorize]
         public IActionResult Create(EventoViewModel model)
         {
-            // 1. Limpeza de validações automáticas que não se aplicam ao POST inicial
             ModelState.Remove("Imagem");
             ModelState.Remove("Data");
 
@@ -101,7 +100,6 @@ namespace EvenPace.Controllers
             {
                 try
                 {
-                    // 2. Identifica a organização logada para vincular o evento corretamente
                     var documentoSessao = User.Identity.Name;
                     var organizacao = _context.Organizacaos
                         .FirstOrDefault(o => o.Cpf == documentoSessao || o.Cnpj == documentoSessao);
@@ -112,44 +110,43 @@ namespace EvenPace.Controllers
                         return View(model);
                     }
 
-                    // 3. Mapeia a ViewModel para a Entidade do Banco
                     var evento = _mapper.Map<Evento>(model);
-
-                    // 4. Atribui o ID da organização logada (evita o Id fixo = 1)
                     evento.IdOrganizacao = (int)organizacao.Id;
 
-                    // 5. Combina Data e Hora em um único campo DateTime
                     if (model.DataOnly.HasValue && model.HoraOnly.HasValue)
                     {
                         evento.Data = model.DataOnly.Value.Date.Add(model.HoraOnly.Value);
                     }
 
-                    // 6. Processa o upload da imagem (Banner do evento)
+                    // 1º PASSO: CRIAR O EVENTO PRIMEIRO
+                    // Isso insere no banco e captura o ID gerado pelo auto incremento
+                    _service.Create(evento);
+
+                    // 2º PASSO: PROCESSAR A IMAGEM COM O ID CORRETO
                     if (model.ImagemUpload != null)
                     {
                         string extensao = Path.GetExtension(model.ImagemUpload.FileName);
+
+                        // Agora o evento.Id possui o número correto gerado pelo banco!
                         string nomeArquivo = $"EventoBanner_{evento.Id}{extensao}";
 
+                        // Salva a imagem no disco
                         evento.Imagem = SalvarImagemNoDisco(model.ImagemUpload, nomeArquivo);
 
-                        // C. Atualiza o banco com o nome da imagem
+                        // 3º PASSO: ATUALIZAR O REGISTRO
+                        // Fazemos o update apenas para colocar o nome correto da imagem na linha que acabamos de criar
                         _service.Edit(evento);
                     }
-
-                    // 7. Persiste no banco de dados via serviço
-                    _service.Create(evento);
 
                     TempData["MensagemSucesso"] = "Evento criado com sucesso! 🏃‍♂️";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    //_logger.LogError(ex, "Erro ao criar evento");
                     ModelState.AddModelError("", "Ocorreu um erro interno ao salvar o evento: " + ex.Message);
                 }
             }
 
-            // Se houver erro de validação, recarrega a página com o modelo
             ViewBag.TituloPagina = "Novo Evento";
             return View(model);
         }

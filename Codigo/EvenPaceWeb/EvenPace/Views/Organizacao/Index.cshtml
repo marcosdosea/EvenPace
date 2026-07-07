@@ -98,16 +98,14 @@
     }
 </style>
 
-<!-- Topbar alinhada com o topo do painel de conteúdo -->
 <div class="org-top-bar">
     <div>
-        <span class="text-muted small d-block" style="font-size: 0.85rem;">Bem vindo</span>
+        <span class="text-muted small d-block" style="font-size: 1.2rem;">Bem vindo</span>
         <h5 class="fw-bold m-0 text-dark">@ViewBag.NomeOrganizacao</h5>
     </div>
     <a asp-controller="Evento" asp-action="Create" class="btn-create-event">Criar novo evento</a>
 </div>
 
-<!-- Conteúdo Principal de Eventos -->
 <div class="container-fluid p-0">
     <h3 class="section-title text-center text-dark">Meus eventos</h3>
 
@@ -124,15 +122,6 @@
                             <div class="event-label-yellow">@evento.Nome</div>
                         </div>
 
-                        <!-- Ícones de Edição e Exclusão fora do card (lado direito) -->
-                        <div class="action-icons-panel">
-                            <a asp-controller="Evento" asp-action="Edit" asp-route-id="@evento.Id" class="btn-panel-icon icon-edit" title="Editar">
-                                ✏️
-                            </a>
-                            <a asp-controller="Evento" asp-action="Delete" asp-route-id="@evento.Id" class="btn-panel-icon icon-delete" title="Excluir">
-                                ❌
-                            </a>
-                        </div>
                     </div>
                 </div>
             }

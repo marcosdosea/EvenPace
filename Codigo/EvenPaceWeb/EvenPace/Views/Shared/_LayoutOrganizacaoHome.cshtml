@@ -32,6 +32,13 @@
                     <span class="menu-icon">🏠</span>
                     <span class="menu-text">Home</span>
                 </a>
+
+                <form asp-controller="Organizacao" asp-action="Logout" method="post" style="margin: 8px 15px;">
+                    <button type="submit" class="menu-item btn-logout" style="margin: 0; width: 100%; background: transparent; text-align: left; cursor: pointer; border: none; font-family: 'Manrope', sans-serif; font-size: 1rem;">
+                        <span class="menu-icon">🚪</span>
+                        <span class="menu-text">Sair</span>
+                    </button>
+                </form>
             </nav>
 
             <div class="sidebar-footer">

@@ -79,7 +79,7 @@ body {
     height: 60px;
     border-radius: 50%; /* Faz o círculo perfeito */
     background-color: #f0f0f0;
-    border: 3px solid #FEEA00; /* Borda destacada */
+    border: 3px solid #f0f0f0; /* Borda destacada */
     display: flex;
     align-items: center;
     justify-content: center;

@@ -21,22 +21,6 @@ namespace EvenPaceWeb.Controllers
         }
 
         /// <summary>
-        /// Aciona a visualização englobadora extraindo a relação sequencial provinda do banco de registros detalhando todas as parametrizações geradas ativas e inativas dos bônus transacionais de cupom listados pela plataforma organizacional.
-        /// </summary>
-        /// <returns>Disponibiliza um ViewModel relacional listando e compondo o formulário visual com as particularidades de cada código atrelado no hub principal do gerenciador.</returns>
-        /// <summary>
-        /// Aciona a visualização englobadora extraindo a relação sequencial provinda do banco de registros detalhando todas as parametrizações geradas ativas e inativas dos bônus transacionais de cupom listados pela plataforma organizacional.
-        /// </summary>
-        /// <returns>Disponibiliza um ViewModel relacional listando e compondo o formulário visual com as particularidades de cada código atrelado no hub principal do gerenciador.</returns>
-        public async Task<ActionResult> Index()
-        {
-            var cupons = await _cupomService.GetAll();
-
-            var cupomViewModels = _mapper.Map<List<CupomViewModel>>(cupons);
-
-            return View(cupomViewModels);
-        }
-        /// <summary>
         /// Destrincha as informações e particularidades aplicadas exclusivamente em um dos descontos da base para que possam ser checadas pelo seu gestor correspondente através das telas de apoio secundárias da requisição HTTP processada no model MVC.
         /// </summary>
         /// <param name="id">Código primário sequencial correspondente às propriedades atrelativas do cupom em questão nas listas SQL relacionais.</param>
@@ -52,13 +36,15 @@ namespace EvenPaceWeb.Controllers
         /// Transita o responsável direto pela gestão administrativa corporativa para o portal isolado em que os bônus podem vir à luz do desenvolvimento no formato visual, desatrelado aos bancos e sem interferências de lógicas preexistentes.
         /// </summary>
         /// <returns>Exposição imediata no método GET com espaço integral reservado e livre destinado à geração estipulada em prol de vantagens para inscrições por corredores associados.</returns>
-        public ActionResult Create()
+        public async Task<IActionResult> Index(uint? idEvento)
         {
-            // Busca os eventos para preencher o dropdown na tela
-            var eventos = _eventosService.GetAll(); // ou await se o método virar async Task
-            ViewBag.Eventos = new SelectList(eventos, "Id", "Nome");
+            ViewBag.IdEventoAtual = idEvento;
 
-            return View();
+            var cupons = await _cupomService.GetAll();
+
+            var cupomViewModels = _mapper.Map<List<CupomViewModel>>(cupons);
+
+            return View(cupomViewModels);
         }
         /// <summary>
         /// Atua efetuando o repasse e armazenamento em infraestrutura persistente de um desconto criado através das especificações de percentual e código da janela visual e enviando o repasse às instâncias apropriadas com a tratativa de vulnerabilidades e erros associados ao envio HTTP.
@@ -69,16 +55,31 @@ namespace EvenPaceWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CupomViewModel cupomViewModel)
         {
+            Console.WriteLine($"IdEvento = {cupomViewModel.IdEvento}");
+
             if (ModelState.IsValid)
             {
                 var cupom = _mapper.Map<Core.Cupom>(cupomViewModel);
 
+                Console.WriteLine($"Cupom.IdEvento = {cupom.IdEvento}");
+
                 await _cupomService.Create(cupom);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { idEvento = cupomViewModel.IdEvento });
             }
 
             return View(cupomViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Create(uint idEvento)
+        {
+            var model = new CupomViewModel
+            {
+                IdEvento = idEvento
+            };
+
+            return View(model);
         }
 
         /// <summary>
@@ -104,19 +105,6 @@ namespace EvenPaceWeb.Controllers
         /// <param name="id">Índice numérico exclusivo a ser procurado e transportado aos mecanismos submetidos.</param>
         /// <returns>Interface visual preenchida propícia para edições pontuais do gestor logado e do item alocado.</returns>
         public ActionResult Edit(int id)
-        {
-            var cupom = _cupomService.Get((int)id);
-
-            var cupomViewModel = _mapper.Map<CupomViewModel>(cupom);
-            return View(cupomViewModel);
-        }
-
-        /// <summary>
-        /// Solicita a preclusão dos registros fornecendo ao criador logístico uma janela de validação das intenções focadas e estritamente dedicadas a interromper a validade sistêmica do registro e atestar que a exclusão é assertiva daquele desconto.
-        /// </summary>
-        /// <param name="id">Dado pontual contendo rastreio referencial provido perante a arquitetura de acesso SQL das estruturas internas.</param>
-        /// <returns>Visualização que sumariza as dependências em modo reativo e fornece a decisão ao responsável e confirmador administrativo do bônus extinto.</returns>
-        public ActionResult Delete(int id)
         {
             var cupom = _cupomService.Get((int)id);
 

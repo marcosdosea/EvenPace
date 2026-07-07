@@ -484,4 +484,6 @@ textarea.input-gray {
         min-width: 45px !important;
         border-radius: 50% !important;
         padding: 0 !important;
-        font-size: 1.
+        font-size: 12px;
+    }
+}

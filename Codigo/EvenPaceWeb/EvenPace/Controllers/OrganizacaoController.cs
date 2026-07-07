@@ -18,6 +18,7 @@ namespace EvenPaceWeb.Controllers
         private readonly UserManager<UsuarioIdentity> _userManager;
         private readonly SignInManager<UsuarioIdentity> _signInManager;
 
+
         // Injete o IEventoService no construtor
         public OrganizacaoController(
             IOrganizacaoService organizacaoService,
@@ -37,6 +38,15 @@ namespace EvenPaceWeb.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -139,13 +149,17 @@ namespace EvenPaceWeb.Controllers
 
             if (ModelState.IsValid)
             {
+                // Variáveis de controle para sabermos se o usuário Identity foi salvo
+                bool usuarioIdentityCriado = false;
+                UsuarioIdentity novoUsuario = null;
+
                 try
                 {
                     model.Cep = new string(model.Cep?.Where(char.IsDigit).ToArray());
                     if (tipoDocumento == "CPF") model.Cpf = documentoLimpo;
                     if (tipoDocumento == "CNPJ") model.Cnpj = documentoLimpo;
 
-                    var novoUsuario = new UsuarioIdentity
+                    novoUsuario = new UsuarioIdentity
                     {
                         UserName = documentoLimpo,
                         PhoneNumber = model.Telefone,
@@ -153,17 +167,21 @@ namespace EvenPaceWeb.Controllers
                         NormalizedEmail = model.Email.ToUpper()
                     };
 
+                    // 1. Tenta criar o usuário no Identity (Isso já salva no banco)
                     var identityResult = await _userManager.CreateAsync(novoUsuario, model.Senha);
 
                     if (identityResult.Succeeded)
                     {
-                        // CORREÇÃO 3: Vincula explicitamente o usuário Identity à Role "Organizacao"
+                        usuarioIdentityCriado = true; // Marcamos que o usuário foi criado
+
                         await _userManager.AddToRoleAsync(novoUsuario, "Organizacao");
 
+                        // 2. Tenta criar a Organização no seu banco de dados
                         var organizacao = _mapper.Map<Core.Organizacao>(model);
                         _organizacaoService.Create(organizacao);
 
-                        // Opcional: Você pode logar o usuário automaticamente aqui se quiser, ou mandar para o login
+                        await _signInManager.SignInAsync(novoUsuario, isPersistent: false);
+
                         return RedirectToAction("Index", "Evento");
                     }
                     else
@@ -176,7 +194,13 @@ namespace EvenPaceWeb.Controllers
                 }
                 catch (Exception ex)
                 {
-                    // Captura o erro real retornado pelo banco de dados (SQL Server, PostgreSQL, etc.)
+                    // ROLLBACK MANUAL: Se caiu aqui e o usuário tinha sido criado, nós apagamos ele.
+                    if (usuarioIdentityCriado && novoUsuario != null)
+                    {
+                        await _userManager.DeleteAsync(novoUsuario);
+                    }
+
+                    // Captura o erro real retornado pelo banco de dados
                     var mensagemReal = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
                     ModelState.AddModelError("", "Erro ao salvar registros: " + mensagemReal);
                 }

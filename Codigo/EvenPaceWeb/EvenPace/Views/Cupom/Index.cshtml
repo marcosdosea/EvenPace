@@ -1,147 +1,289 @@
 ﻿@model IEnumerable<Models.CupomViewModel>
 
 @{
-    ViewData["Title"] = "Listagem de Cupons";
+    ViewData["Title"] = "Cupons";
+    Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
+
+    <link rel="stylesheet" href="~/css/kit.css" />
 }
 
 <style>
-    :root {
-        --primary-yellow: #ffd700;
-        --primary-hover: #e6c200;
-        --bg-light: #f8f9fa;
+    .table-container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
-    main.index-page {
-        padding: 20px;
-    }
-
-    .btn-create {
-        background-color: var(--bg-light);
-        color: #000;
-        border: 2px solid #000;
-        font-weight: bold;
+    .custom-table-wrapper {
+        background: #fff;
         border-radius: 12px;
-        transition: 0.3s;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0,0,0,.03);
+        overflow: hidden;
     }
 
-        .btn-create:hover {
-            background-color: var(--primary-yellow);
-            color: #000;
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .custom-table th {
+            background: #fafafa;
+            padding: 18px 20px;
+            font-weight: 700;
+            border-bottom: 1px solid #eee;
+            text-transform: uppercase;
         }
 
-    .evenpace-table thead th {
-        background-color: var(--bg-light);
-        border-bottom: 2px solid #dee2e6;
-        padding: 15px;
+        .custom-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .custom-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tr:hover {
+            background: #fcfcfc;
+        }
+
+    .badge-status {
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: .85rem;
     }
 
-    .evenpace-table td {
-        vertical-align: middle;
-        padding: 15px;
+        .badge-status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+    .table-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
     }
 
-    .status-badge {
-        font-size: 0.85rem;
-        padding: 5px 10px;
-        border-radius: 20px;
+    .action-link {
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
     }
+
+        .action-link.edit {
+            color: #444;
+        }
+
+        .action-link.delete {
+            color: #d32f2f;
+        }
+
+            .action-link.delete:hover {
+                color: #b71c1c;
+            }
 </style>
 
-<main class="container index-page">
-    <header class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
-        <section class="text-center text-md-start">
-            <h1 class="fw-bold mb-0">Cupons</h1>
-            <p class="text-muted mb-0">[Nome da Corrida]</p>
-        </section>
+<main class="main-container">
 
-        <nav>
-            <a asp-action="Create" class="btn btn-create px-4 py-2">
-                <i class="bi bi-plus-lg"></i> Criar Cupom
-            </a>
-        </nav>
-    </header>
+    <form id="deleteForm">
+        @Html.AntiForgeryToken()
+    </form>
 
-    <section class="card shadow-sm border-0 rounded-4">
-        <div class="table-responsive p-2">
-            <table class="table evenpace-table mb-0">
-                <thead>
-                    <tr>
-                        <th class="border-0">@Html.DisplayNameFor(model => model.Nome)</th>
-                        <th class="border-0">Início</th>
-                        <th class="border-0">Término</th>
-                        <th class="border-0 text-center">Status</th>
-                        <th class="border-0 text-center">Disponível</th>
-                        <th class="border-0 text-end">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td><span class="fw-bold">@item.Nome</span></td>
-                            <td class="text-nowrap">@item.DataInicio.ToShortDateString()</td>
-                            <td class="text-nowrap">@item.DataTermino.ToShortDateString()</td>
-                            <td class="text-center">
-                                @if (item.Status)
-                                {
-                                    <span class="badge bg-success status-badge">Ativo</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger status-badge">Desativado</span>
-                                }
-                            </td>
-                            <td class="text-center">
-                                <span class="badge bg-light text-dark border">@item.QuantiadeDisponibilizada</span>
-                            </td>
-                            <td class="text-end">
-                                <div class="d-flex justify-content-end gap-2">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-dark border-0 fw-bold">
-                                        Editar
-                                    </a>
-                                    <button type="button"
-                                            class="btn btn-sm btn-outline-danger border-0 fw-bold"
-                                            onclick="confirmarExclusao('@item.Id', '@item.Nome')">
-                                        Excluir
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert-custom">
+            @TempData["MensagemSucesso"]
         </div>
-    </section>
+    }
 
-    <div class="modal fade" id="modalExcluir" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow" style="border-radius: 20px;">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">Confirmar Exclusão</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body py-4">
-                    Tem certeza que deseja excluir o cupom <strong id="nomeCupomModal" class="text-danger"></strong>?
-                    <p class="small text-muted mt-2 mb-0">Esta ação não pode ser desfeita.</p>
-                </div>
-                <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-light fw-bold px-4" data-bs-dismiss="modal">Cancelar</button>
-                    <form id="formExcluir" method="post">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-danger fw-bold px-4">Confirmar Exclusão</button>
-                    </form>
-                </div>
+    <header class="page-header header-responsive" style="margin-bottom:30px;">
+        <div class="header-title-group">
+            <div class="header-text">
+                <h1>Cupons</h1>
+                <p class="subtitle">@ViewBag.NomeCorrida</p>
             </div>
         </div>
-    </div>
+
+        <a asp-action="Create"
+           asp-route-idEvento="@ViewBag.IdEventoAtual"
+           class="btn-green btn-responsive">
+
+            <span class="btn-symbol">+</span>
+            <span class="btn-text">Criar Cupom</span>
+
+        </a>
+    </header>
+
+    <section class="table-container">
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="custom-table-wrapper">
+
+                <table class="custom-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                            <th>Início</th>
+                            <th>Término</th>
+                            <th style="text-align:center;">Status</th>
+                            <th style="text-align:center;">Disponível</th>
+                            <th style="text-align:right;">Ações</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <strong>@item.Nome</strong>
+                                </td>
+
+                                <td>
+                                    @item.DataInicio.ToShortDateString()
+                                </td>
+
+                                <td>
+                                    @item.DataTermino.ToShortDateString()
+                                </td>
+
+                                <td style="text-align:center;">
+
+                                    @if (item.Status)
+                                    {
+                                        <span class="badge-status active">
+                                            Ativo
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-status inactive">
+                                            Inativo
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td style="text-align:center;">
+                                    @item.QuantiadeDisponibilizada
+                                </td>
+
+                                <td>
+
+                                    <div class="table-actions">
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="action-link edit">
+
+                                            ✏️ Editar
+
+                                        </a>
+
+                                        <a href="javascript:void(0)"
+                                           class="action-link delete"
+                                           onclick="excluirCupom(@item.Id, '@item.Nome')">
+
+                                            🗑️ Excluir
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="empty-state-card"
+                 style="grid-column:1/-1;text-align:center;padding:40px;border:2px dashed #ccc;">
+
+                <p>Nenhum cupom encontrado.</p>
+
+                <a asp-action="Create"
+                   asp-route-idEvento="@ViewBag.IdEventoAtual"
+                   style="text-decoration:underline;color:#28a745;font-weight:bold;">
+
+                    Clique aqui para criar o primeiro
+
+                </a>
+
+            </div>
+        }
+
+    </section>
+
 </main>
 
-<script>
-    function confirmarExclusao(id, nome) {
-        document.getElementById('nomeCupomModal').textContent = nome;
-        document.getElementById('formExcluir').action = '/Cupom/Delete/' + id;
+@section Scripts {
 
-        var modal = new bootstrap.Modal(document.getElementById('modalExcluir'));
-        modal.show();
-    }
-</script>
+    <script>
+
+        function excluirCupom(id, nome) {
+
+            if (!confirm("Deseja realmente excluir o cupom '" + nome + "'?"))
+                return;
+
+            const token =
+                document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            fetch('/Cupom/Delete/' + id, {
+
+                method: 'POST',
+
+                headers: {
+                    'RequestVerificationToken': token
+                }
+
+            })
+            .then(response => {
+
+                if (response.ok) {
+
+                    alert("Cupom excluído com sucesso!");
+
+                    location.reload();
+
+                } else {
+
+                    alert("Erro ao excluir o cupom.");
+
+                }
+
+            })
+            .catch(error => {
+
+                console.error(error);
+
+                alert("Erro ao conectar com o servidor.");
+
+            });
+
+        }
+
+    </script>
+
+}

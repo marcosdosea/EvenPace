@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EvenPace</title>
 
-    <!-- Exemplo de ordem correta no head -->
     <link rel="stylesheet" href="~/css/theme.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/evento-detalhes.css" /> <!-- Carregue este por último para que ele tenha prioridade -->
+    <link rel="stylesheet" href="~/css/evento-detalhes.css" /> 
     
 </head>
 <body>
@@ -32,7 +31,10 @@
                     <span class="menu-text">Resumo</span>
                 </a>
 
-                <a asp-controller="Ingresso" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual" class="menu-item">
+                <a asp-controller="Inscricao"
+                   asp-action="GetAllByEvento"
+                   asp-route-idEvento="@ViewBag.IdEventoAtual"
+                   class="menu-item">
                     <span class="menu-icon">🎟️</span>
                     <span class="menu-text">Ingressos</span>
                 </a>
@@ -52,7 +54,16 @@
                     <span class="menu-icon">✔️</span>
                     <span class="menu-text">Kits</span>
                 </a>
+
+                <form asp-controller="Organizacao" asp-action="Logout" method="post" style="margin: 8px 15px;">
+                    <button type="submit" class="menu-item btn-logout" style="margin: 0; width: 100%; background: transparent; text-align: left; cursor: pointer; border: none; font-family: 'Manrope', sans-serif; font-size: 1rem;">
+                        <span class="menu-icon">🚪</span>
+                        <span class="menu-text">Sair</span>
+                    </button>
+                </form>
+
             </nav>
+
 
             <div class="sidebar-footer">
                 <a href="@Url.Action("Perfil", "Usuario")" style="text-decoration: none; color: inherit;">
