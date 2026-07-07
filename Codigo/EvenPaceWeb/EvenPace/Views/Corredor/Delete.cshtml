@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    ViewData["Title"] = "Excluir Conta";
 }
 
 <!DOCTYPE html>
@@ -11,86 +12,329 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Excluir Conta</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
     <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(180deg, #FFD700 0%, #FFD700 60%, #111 100%);
-            font-family: Arial, sans-serif;
-        }
+            * {
+                box-sizing: border-box;
+            }
 
-        .page {
-            padding: 20px;
-            text-align: center;
-            color: #000;
-        }
+            body {
+                margin: 0;
+                min-height: 100vh;
+                background: #ffffff;
+                font-family: Arial, sans-serif;
+                color: #202124;
+            }
 
-        .card-confirm {
-            background: #111;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            color: #FFD700;
-        }
+            .profile-home {
+                position: relative;
+                width: 100%;
+                min-height: 100vh;
+                padding: 32px 20px 56px;
+                background: #ffffff;
+            }
 
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: #fff;
-            margin: 0 auto 1rem;
-            overflow: hidden;
-        }
+            .profile-back {
+                position: absolute;
+                top: 32px;
+                left: 20px;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 16px;
+                border: 1px solid #f1e2b6;
+                border-radius: 999px;
+                background: #fffdf6;
+                color: #765a12;
+                font-weight: 800;
+                text-decoration: none;
+                transition: transform 0.18s ease, background 0.18s ease;
+            }
 
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+                .profile-back:hover {
+                    background: #fff7d9;
+                    color: #765a12;
+                    transform: translateX(-3px);
+                }
 
-        .summary-box {
-            background: #000;
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
+            .profile-container {
+                width: min(100%, 980px);
+                margin: 0 auto;
+                padding-top: 78px;
+            }
 
-        .summary-label {
-            font-weight: 600;
-            color: #fff;
-        }
+            .profile-intro {
+                padding: 8px 0 30px;
+            }
 
-        .summary-value {
-            font-weight: bold;
-            color: #FFD700;
-        }
+            .profile-kicker {
+                display: inline-flex;
+                margin-bottom: 12px;
+                padding: 8px 14px;
+                border: 1px solid #efb4b4;
+                border-radius: 999px;
+                background: #fff5f5;
+                color: #a52a2a;
+                font-size: 0.9rem;
+                font-weight: 800;
+            }
+
+            .profile-intro h1 {
+                margin: 0 0 8px;
+                color: #202124;
+                font-size: clamp(2rem, 5vw, 3.4rem);
+                line-height: 1.04;
+                font-weight: 800;
+            }
+
+            .profile-intro p {
+                margin: 0;
+                color: #6b7280;
+                font-size: 1.05rem;
+            }
+
+            .profile-card {
+                width: 100%;
+                border: 1px solid #ece7d5;
+                border-radius: 12px;
+                background: #ffffff;
+                box-shadow: 0 18px 36px rgba(24, 24, 27, 0.07);
+                padding: 36px;
+            }
+
+            .delete-warning {
+                margin-bottom: 28px;
+                border: 1px solid #efb4b4;
+                border-radius: 10px;
+                background: #fff5f5;
+                color: #8e1f1f;
+                padding: 16px 18px;
+                line-height: 1.5;
+            }
+
+                .delete-warning strong {
+                    display: block;
+                    margin-bottom: 4px;
+                }
+
+            .profile-avatar {
+                width: 132px;
+                height: 132px;
+                margin: 0 auto 18px;
+                overflow: hidden;
+                border: 4px solid #fff7d9;
+                border-radius: 50%;
+                background: #fff7d9;
+                box-shadow: 0 8px 22px rgba(118, 90, 18, 0.15);
+            }
+
+                .profile-avatar img {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+            .profile-avatar-placeholder {
+                display: grid;
+                place-items: center;
+                width: 100%;
+                height: 100%;
+                color: #765a12;
+                font-size: 3.4rem;
+            }
+
+            .profile-header {
+                margin-bottom: 30px;
+                text-align: center;
+            }
+
+                .profile-header h2 {
+                    margin: 0 0 6px;
+                    font-size: 1.6rem;
+                    font-weight: 800;
+                }
+
+                .profile-header span {
+                    color: #6b7280;
+                }
+
+            .profile-info-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px;
+            }
+
+            .profile-info-item {
+                display: grid;
+                gap: 8px;
+                min-width: 0;
+                border: 1px solid #f1e2b6;
+                border-radius: 10px;
+                background: #fffdf6;
+                padding: 18px;
+            }
+
+            .profile-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                color: #88816f;
+                font-size: 0.8rem;
+                font-weight: 800;
+                text-transform: uppercase;
+            }
+
+                .profile-label i {
+                    color: #765a12;
+                }
+
+            .profile-info-item strong {
+                overflow-wrap: anywhere;
+                color: #2f2f2f;
+                font-size: 1.05rem;
+            }
+
+            .profile-actions {
+                display: flex;
+                gap: 12px;
+                margin-top: 30px;
+            }
+
+            .profile-delete-btn,
+            .profile-cancel-btn {
+                display: inline-flex;
+                flex: 1;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border-radius: 999px;
+                padding: 13px 18px;
+                font-family: inherit;
+                font-size: 1rem;
+                font-weight: 800;
+                text-decoration: none;
+                cursor: pointer;
+                transition: transform 0.18s ease, box-shadow 0.18s ease;
+            }
+
+            .profile-delete-btn {
+                border: 1px solid #d96464;
+                background: #c62828;
+                color: #ffffff;
+            }
+
+            .profile-cancel-btn {
+                border: 1px solid #d9d9d9;
+                background: #ffffff;
+                color: #4b5563;
+            }
+
+                .profile-delete-btn:hover,
+                .profile-cancel-btn:hover {
+                    transform: translateY(-2px);
+                    color: inherit;
+                    box-shadow: 0 8px 18px rgba(24, 24, 27, 0.1);
+                }
+
+            @@media (max-width: 575.98px) {
+                .profile-home {
+                    padding: 22px 14px 40px;
+                }
+
+                .profile-back {
+                    top: 22px;
+                    left: 14px;
+                    width: 44px;
+                    height: 44px;
+                    justify-content: center;
+                    padding: 0;
+                }
+
+                    .profile-back span {
+                        display: none;
+                    }
+
+                .profile-container {
+                    padding-top: 72px;
+                }
+
+                .profile-card {
+                    padding: 24px 18px;
+                }
+
+                .profile-info-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .profile-actions {
+                    flex-direction: column;
+                }
+            }
     </style>
 </head>
 
 <body>
-<div class="page">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-            <div class="card-confirm shadow-lg">
-                <h4 class="mb-3">Excluir conta de corredor</h4>
-                <p class="mb-4 text-warning">
-                    Tem certeza que deseja excluir sua conta? Esta ação não poderá ser desfeita.
-                </p>
+    <section class="profile-home">
 
-                <div class="avatar mb-3">
-                    <img src="https://i.pravatar.cc/300" alt="Foto Perfil" />
+        <a asp-action="Get"
+           asp-route-id="@Model.Id"
+           class="profile-back"
+           aria-label="Voltar para perfil"
+           title="Voltar">
+            <i class="bi bi-arrow-left"></i>
+            <span>Voltar</span>
+        </a>
+
+        <div class="profile-container">
+            <div class="profile-intro">
+                <span class="profile-kicker">Ação irreversível</span>
+                <h1>Excluir conta</h1>
+                <p>Revise os dados abaixo antes de confirmar a exclusão.</p>
+            </div>
+
+            <div class="profile-card">
+                <div class="delete-warning">
+                    <strong>Tem certeza que deseja excluir sua conta?</strong>
+                    Esta ação não poderá ser desfeita e seus dados de corredor serão removidos do sistema.
                 </div>
 
-                <div class="summary-box text-start">
-                    <div class="mb-2">
-                        <span class="summary-label">Nome:</span>
-                        <div class="summary-value">@Model.Nome</div>
+                <div class="profile-avatar">
+                    @if (!string.IsNullOrWhiteSpace(Model.FotoPerfil))
+                    {
+                        <img src="@Url.Content($"~/imagens/fotos-perfil/{Model.FotoPerfil}")"
+                             alt="Foto de perfil de @Model.Nome" />
+                    }
+                    else
+                    {
+                        <div class="profile-avatar-placeholder">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                    }
+                </div>
+
+                <div class="profile-header">
+                    <h2>@Model.Nome</h2>
+                    <span>Conta de corredor do EvenPace</span>
+                </div>
+
+                <div class="profile-info-grid">
+                    <div class="profile-info-item">
+                        <span class="profile-label">
+                            <i class="bi bi-person"></i>
+                            Nome
+                        </span>
+                        <strong>@Model.Nome</strong>
                     </div>
-                    <div class="mb-2">
-                        <span class="summary-label">CPF:</span>
-                        <div class="summary-value">@Model.CPF</div>
+
+                    <div class="profile-info-item">
+                        <span class="profile-label">
+                            <i class="bi bi-card-text"></i>
+                            CPF
+                        </span>
+                        <strong>@Model.CPF</strong>
                     </div>
                 </div>
 
@@ -98,21 +342,22 @@
                     @Html.AntiForgeryToken()
                     <input type="hidden" asp-for="Id" />
 
-                    <div class="d-grid gap-3 mt-4">
-                        <button type="submit" class="btn btn-danger fw-bold">
-                            <i class="bi bi-trash-fill me-2"></i>Excluir definitivamente
+                    <div class="profile-actions">
+                        <button type="submit" class="profile-delete-btn">
+                            <i class="bi bi-trash-fill"></i>
+                            Excluir definitivamente
                         </button>
-                        <a asp-action="Get" asp-route-id="@Model.Id" class="btn btn-outline-light fw-bold">
+
+                        <a asp-action="Get"
+                           asp-route-id="@Model.Id"
+                           class="profile-cancel-btn">
+                            <i class="bi bi-x-circle"></i>
                             Cancelar
                         </a>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    </section>
 </body>
 </html>
-

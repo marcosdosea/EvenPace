@@ -224,19 +224,91 @@ public class CorredorController : Controller
         }
     }
 
-    public ActionResult Delete(int id)
+    [HttpGet]
+    [Authorize]
+    public IActionResult Delete(int id)
     {
-        Corredor corredor = _corredorService.Get(id);
-        CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+        var cpfUsuarioLogado = User.Identity?.Name;
+
+        if (string.IsNullOrWhiteSpace(cpfUsuarioLogado))
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        var corredor = _corredorService.Get(id);
+
+        if (corredor == null || corredor.Cpf != cpfUsuarioLogado)
+        {
+            return Forbid();
+        }
+
+        var corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+
         return View(corredorModel);
     }
 
     [HttpPost]
+    [Authorize]
     [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, CorredorViewModel corredorModel)
+    [ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        _corredorService.Delete(id);
-        return RedirectToAction(nameof(Index));
+        var cpfUsuarioLogado = User.Identity?.Name;
+
+        if (string.IsNullOrWhiteSpace(cpfUsuarioLogado))
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        var corredor = _corredorService.Get(id);
+
+        if (corredor == null || corredor.Cpf != cpfUsuarioLogado)
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var usuarioIdentity = await _userManager.FindByNameAsync(corredor.Cpf);
+
+            if (usuarioIdentity == null)
+            {
+                TempData["MensagemErro"] =
+                    "Usuário de autenticação não encontrado.";
+
+                return RedirectToAction(nameof(Get), new { id });
+            }
+
+            var nomeFoto = corredor.FotoPerfil;
+
+            _corredorService.Delete(corredor.Id);
+
+            var resultadoIdentity = await _userManager.DeleteAsync(usuarioIdentity);
+
+            if (!resultadoIdentity.Succeeded)
+            {
+                TempData["MensagemErro"] =
+                    "O perfil foi removido, mas ocorreu um erro ao excluir o acesso de login.";
+
+                return RedirectToAction(nameof(Login));
+            }
+
+            DeletarFotoPerfil(nomeFoto);
+
+            await HttpContext.SignOutAsync();
+
+            TempData["MensagemSucesso"] = "Sua conta foi excluída com sucesso.";
+
+            return RedirectToAction(nameof(Login));
+        }
+        catch (Exception ex)
+        {
+            TempData["MensagemErro"] =
+                "Erro ao excluir conta: " +
+                (ex.InnerException?.Message ?? ex.Message);
+
+            return RedirectToAction(nameof(Get), new { id });
+        }
     }
 
     private string SalvarFotoPerfil(IFormFile foto)
