@@ -111,7 +111,7 @@
                             <p class="text-muted small mt-1">Preencha as informações cadastrais e defina seus dados de login</p>
                         </header>
 
-                        <form asp-action="Create" method="post">
+                        <form asp-action="Create" method="post" data-viacep-form>
                             @Html.AntiForgeryToken()
 
                             <div asp-validation-summary="ModelOnly" class="alert alert-danger small p-2 mb-4" role="alert"></div>
@@ -177,28 +177,28 @@
                                 <!-- CEP -->
                                 <div class="col-12 col-md-4 col-lg-3">
                                     <label asp-for="Cep" class="form-label">CEP</label>
-                                    <input asp-for="Cep" class="form-control custom-input" placeholder="00000-000" required />
+                                    <input asp-for="Cep" class="form-control custom-input" placeholder="00000-000" inputmode="numeric" required data-viacep-cep />
                                     <span asp-validation-for="Cep" class="text-danger small"></span>
                                 </div>
 
                                 <!-- Rua -->
                                 <div class="col-12 col-md-8 col-lg-9">
                                     <label asp-for="Rua" class="form-label">Logradouro (Rua/Avenida)</label>
-                                    <input asp-for="Rua" class="form-control custom-input" placeholder="Ex: Av. Central" required />
+                                    <input asp-for="Rua" class="form-control custom-input" placeholder="Ex: Av. Central" required data-viacep-rua />
                                     <span asp-validation-for="Rua" class="text-danger small"></span>
                                 </div>
 
                                 <!-- Bairro -->
                                 <div class="col-12 col-md-5">
                                     <label asp-for="Bairro" class="form-label">Bairro</label>
-                                    <input asp-for="Bairro" class="form-control custom-input" placeholder="Ex: Centro" required />
+                                    <input asp-for="Bairro" class="form-control custom-input" placeholder="Ex: Centro" required data-viacep-bairro />
                                     <span asp-validation-for="Bairro" class="text-danger small"></span>
                                 </div>
 
                                 <!-- Cidade -->
                                 <div class="col-12 col-md-5">
                                     <label asp-for="Cidade" class="form-label">Cidade</label>
-                                    <input asp-for="Cidade" class="form-control custom-input" placeholder="Ex: Itabaiana" required />
+                                    <input asp-for="Cidade" class="form-control custom-input" placeholder="Ex: Itabaiana" required readonly data-viacep-cidade />
                                     <span asp-validation-for="Cidade" class="text-danger small"></span>
                                 </div>
 
@@ -212,7 +212,7 @@
                                 <!-- Estado -->
                                 <div class="col-6 col-md-2 col-lg-2">
                                     <label asp-for="Estado" class="form-label">UF</label>
-                                    <input asp-for="Estado" class="form-control custom-input" placeholder="SE" maxlength="2" required />
+                                    <input asp-for="Estado" class="form-control custom-input" placeholder="SE" maxlength="2" required readonly data-viacep-estado />
                                     <span asp-validation-for="Estado" class="text-danger small"></span>
                                 </div>
 
@@ -238,6 +238,8 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script src="~/js/viacep.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

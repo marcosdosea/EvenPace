@@ -119,7 +119,7 @@
     </header>
 
     <section class="form-container shadow-sm">
-        <form asp-action="Edit" method="post">
+        <form asp-action="Edit" method="post" data-viacep-form>
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -158,7 +158,7 @@
                 <div class="col-12 col-md-4 col-lg-2">
                     <label asp-for="Cep" class="form-label">CEP</label>
                     <div class="input-wrapper">
-                        <input asp-for="Cep" class="custom-input" />
+                        <input asp-for="Cep" class="custom-input" inputmode="numeric" data-viacep-cep />
                         <i class="bi bi-pencil edit-icon"></i>
                     </div>
                     <span asp-validation-for="Cep" class="text-danger small"></span>
@@ -167,7 +167,7 @@
                 <div class="col-12 col-md-8 col-lg-6">
                     <label asp-for="Rua" class="form-label">Rua/Avenida</label>
                     <div class="input-wrapper">
-                        <input asp-for="Rua" class="custom-input" />
+                        <input asp-for="Rua" class="custom-input" data-viacep-rua />
                         <i class="bi bi-pencil edit-icon"></i>
                     </div>
                     <span asp-validation-for="Rua" class="text-danger small"></span>
@@ -176,7 +176,7 @@
                 <div class="col-12 col-lg-4">
                     <label asp-for="Bairro" class="form-label">Bairro</label>
                     <div class="input-wrapper">
-                        <input asp-for="Bairro" class="custom-input" />
+                        <input asp-for="Bairro" class="custom-input" data-viacep-bairro />
                         <i class="bi bi-pencil edit-icon"></i>
                     </div>
                     <span asp-validation-for="Bairro" class="text-danger small"></span>
@@ -185,8 +185,8 @@
                 <div class="col-12 col-md-6 col-lg-5">
                     <label asp-for="Cidade" class="form-label">Cidade</label>
                     <div class="input-wrapper">
-                        <input asp-for="Cidade" class="custom-input" />
-                        <i class="bi bi-pencil edit-icon"></i>
+                        <input asp-for="Cidade" class="custom-input" readonly data-viacep-cidade />
+                        <i class="bi bi-lock-fill edit-icon"></i>
                     </div>
                     <span asp-validation-for="Cidade" class="text-danger small"></span>
                 </div>
@@ -203,8 +203,8 @@
                 <div class="col-12 col-md-3 col-lg-3">
                     <label asp-for="Estado" class="form-label">Estado</label>
                     <div class="input-wrapper">
-                        <input asp-for="Estado" class="custom-input" maxlength="2" />
-                        <i class="bi bi-pencil edit-icon"></i>
+                        <input asp-for="Estado" class="custom-input" maxlength="2" readonly data-viacep-estado />
+                        <i class="bi bi-lock-fill edit-icon"></i>
                     </div>
                     <span asp-validation-for="Estado" class="text-danger small"></span>
                 </div>
@@ -223,4 +223,5 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="~/js/viacep.js"></script>
 }

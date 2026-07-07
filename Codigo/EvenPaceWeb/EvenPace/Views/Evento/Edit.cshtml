@@ -20,7 +20,7 @@
         </div>
     </header>
 
-    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-evento form-card-bg">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-evento form-card-bg" data-viacep-form>
 
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="Imagem" />
@@ -81,15 +81,20 @@
 
         <h3 style="margin-top: 30px; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">Localização</h3>
 
+        <div class="form-block">
+            <label for="CepEvento" class="label-bold">CEP</label>
+            <input id="CepEvento" name="CepEvento" class="input-gray" placeholder="00000-000" inputmode="numeric" data-viacep-cep />
+        </div>
+
         <div class="row-flex">
             <div class="col-grow">
                 <label asp-for="Rua" class="label-bold">RUA</label>
-                <input asp-for="Rua" class="input-gray" />
+                <input asp-for="Rua" class="input-gray" data-viacep-rua />
                 <span asp-validation-for="Rua" class="text-danger"></span>
             </div>
             <div class="col-grow">
                 <label asp-for="Bairro" class="label-bold">BAIRRO</label>
-                <input asp-for="Bairro" class="input-gray" />
+                <input asp-for="Bairro" class="input-gray" data-viacep-bairro />
                 <span asp-validation-for="Bairro" class="text-danger"></span>
             </div>
         </div>
@@ -97,12 +102,12 @@
         <div class="row-flex">
             <div class="col-grow">
                 <label asp-for="Cidade" class="label-bold">CIDADE</label>
-                <input asp-for="Cidade" class="input-gray" />
+                <input asp-for="Cidade" class="input-gray" readonly data-viacep-cidade />
                 <span asp-validation-for="Cidade" class="text-danger"></span>
             </div>
             <div class="col-fixed" style="width: 100px;">
                 <label asp-for="Estado" class="label-bold">UF</label>
-                <input asp-for="Estado" class="input-gray" maxlength="2" style="text-transform: uppercase;" />
+                <input asp-for="Estado" class="input-gray" maxlength="2" style="text-transform: uppercase;" readonly data-viacep-estado />
                 <span asp-validation-for="Estado" class="text-danger"></span>
             </div>
         </div>
@@ -120,4 +125,5 @@
 
     </form>
 </main>
+<script src="~/js/viacep.js"></script>
 <script src="~/js/evento.js"></script>

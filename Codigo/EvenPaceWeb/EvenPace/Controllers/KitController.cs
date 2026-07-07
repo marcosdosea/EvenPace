@@ -231,7 +231,8 @@ namespace EvenPace.Controllers
             string pastaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens");
             if (!Directory.Exists(pastaDestino)) Directory.CreateDirectory(pastaDestino);
 
-            string nomeUnico = Guid.NewGuid().ToString() + "_" + imagemUpload.FileName;
+            string extensao = Path.GetExtension(imagemUpload.FileName).ToLowerInvariant();
+            string nomeUnico = $"{Guid.NewGuid()}{extensao}";
             string caminhoCompleto = Path.Combine(pastaDestino, nomeUnico);
 
             using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
