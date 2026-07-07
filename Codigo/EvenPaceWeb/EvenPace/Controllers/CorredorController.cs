@@ -15,7 +15,7 @@ public class CorredorController : Controller
 {
     private ICorredorService _corredorService;
     private IMapper _mapper;
-    private readonly UserManager<UsuarioIdentity>  _userManager;
+    private readonly UserManager<UsuarioIdentity> _userManager;
     private readonly SignInManager<UsuarioIdentity> _signInManager;
 
     public CorredorController(
@@ -29,7 +29,7 @@ public class CorredorController : Controller
         _userManager = userManager;
         _signInManager = signInManager;
     }
-    
+
     [HttpGet]
     public IActionResult Login()
     {
@@ -154,29 +154,74 @@ public class CorredorController : Controller
         }
     }
 
+    [HttpGet]
     public ActionResult Edit(int id)
     {
         Corredor corredor = _corredorService.Get(id);
+
         if (corredor == null)
         {
-            return View(new CorredorViewModel());
+            return RedirectToAction(nameof(Login));
         }
+
         CorredorViewModel corredorModel = _mapper.Map<CorredorViewModel>(corredor);
+
         return View(corredorModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Edit(CorredorViewModel corredorModel)
+    public IActionResult Edit(CorredorViewModel corredorModel)
     {
-        if (ModelState.IsValid)
+        // E-mail e senha pertencem ao Identity e não são alterados nesta tela.
+        ModelState.Remove(nameof(corredorModel.Email));
+        ModelState.Remove(nameof(corredorModel.Senha));
+
+        // Foto é opcional.
+        ModelState.Remove(nameof(corredorModel.FotoPerfilUpload));
+
+        if (!ModelState.IsValid)
         {
-            var corredor = _mapper.Map<Corredor>(corredorModel);
-            _corredorService.Edit(corredor);
-            return RedirectToAction(nameof(Get), new { id = corredorModel.Id });
+            return View(corredorModel);
         }
 
-        return View(corredorModel);
+        var corredorExistente = _corredorService.Get(corredorModel.Id);
+
+        if (corredorExistente == null)
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        try
+        {
+            corredorExistente.Nome = corredorModel.Nome;
+            corredorExistente.DataNascimento = corredorModel.DataNascimento;
+
+            if (corredorModel.FotoPerfilUpload != null &&
+                corredorModel.FotoPerfilUpload.Length > 0)
+            {
+                string novaFoto = SalvarFotoPerfil(corredorModel.FotoPerfilUpload);
+
+                DeletarFotoPerfil(corredorExistente.FotoPerfil);
+
+                corredorExistente.FotoPerfil = novaFoto;
+            }
+
+            _corredorService.Edit(corredorExistente);
+
+            TempData["MensagemSucesso"] = "Perfil atualizado com sucesso!";
+            return RedirectToAction(nameof(Get), new { id = corredorExistente.Id });
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError(
+                "",
+                "Erro ao atualizar perfil: " +
+                (ex.InnerException?.Message ?? ex.Message)
+            );
+
+            return View(corredorModel);
+        }
     }
 
     public ActionResult Delete(int id)
@@ -193,4 +238,50 @@ public class CorredorController : Controller
         _corredorService.Delete(id);
         return RedirectToAction(nameof(Index));
     }
+
+    private string SalvarFotoPerfil(IFormFile foto)
+    {
+        string pasta = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "wwwroot",
+            "imagens",
+            "fotos-perfil"
+        );
+
+        if (!Directory.Exists(pasta))
+        {
+            Directory.CreateDirectory(pasta);
+        }
+
+        string extensao = Path.GetExtension(foto.FileName).ToLowerInvariant();
+        string nomeArquivo = $"{Guid.NewGuid()}{extensao}";
+        string caminhoCompleto = Path.Combine(pasta, nomeArquivo);
+
+        using var stream = new FileStream(caminhoCompleto, FileMode.Create);
+        foto.CopyTo(stream);
+
+        return nomeArquivo;
+    }
+
+    private void DeletarFotoPerfil(string? nomeArquivo)
+    {
+        if (string.IsNullOrWhiteSpace(nomeArquivo))
+        {
+            return;
+        }
+
+        string caminho = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "wwwroot",
+            "imagens",
+            "fotos-perfil",
+            nomeArquivo
+        );
+
+        if (System.IO.File.Exists(caminho))
+        {
+            System.IO.File.Delete(caminho);
+        }
+    }
+
 }

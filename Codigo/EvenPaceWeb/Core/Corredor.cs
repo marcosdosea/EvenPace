@@ -13,6 +13,8 @@ public partial class Corredor
 
     public DateTime DataNascimento { get; set; }
 
+    public string? FotoPerfil { get; set; }
+
     public virtual CartaoCredito? CartaoCredito { get; set; }
 
     public virtual ICollection<Inscricao> Inscricaos { get; set; } = new List<Inscricao>();

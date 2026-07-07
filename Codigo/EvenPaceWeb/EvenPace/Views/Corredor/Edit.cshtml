@@ -33,14 +33,12 @@
                 width: 100%;
                 min-height: 100vh;
                 padding: 32px 20px 56px;
-                background: #ffffff;
             }
 
             .profile-back {
                 position: absolute;
                 top: 32px;
                 left: 20px;
-                z-index: 2;
                 display: inline-flex;
                 align-items: center;
                 gap: 8px;
@@ -72,7 +70,6 @@
 
             .profile-kicker {
                 display: inline-flex;
-                align-items: center;
                 margin-bottom: 12px;
                 padding: 8px 14px;
                 border: 1px solid #f1e2b6;
@@ -85,7 +82,6 @@
 
             .profile-intro h1 {
                 margin: 0 0 8px;
-                color: #202124;
                 font-size: clamp(2rem, 5vw, 3.4rem);
                 line-height: 1.04;
                 font-weight: 800;
@@ -99,7 +95,6 @@
 
             .profile-card {
                 width: 100%;
-                overflow: hidden;
                 border: 1px solid #ece7d5;
                 border-radius: 12px;
                 background: #ffffff;
@@ -125,6 +120,15 @@
                     object-fit: cover;
                 }
 
+            .profile-avatar-placeholder {
+                display: grid;
+                place-items: center;
+                width: 100%;
+                height: 100%;
+                color: #765a12;
+                font-size: 3.4rem;
+            }
+
             .profile-header {
                 margin-bottom: 30px;
                 text-align: center;
@@ -132,7 +136,6 @@
 
                 .profile-header h2 {
                     margin: 0 0 6px;
-                    color: #202124;
                     font-size: 1.6rem;
                     font-weight: 800;
                 }
@@ -169,7 +172,6 @@
 
                 .profile-label i {
                     color: #765a12;
-                    font-size: 1rem;
                 }
 
             .profile-input,
@@ -198,6 +200,27 @@
                 color: #6b7280;
                 background: #f8f8f6;
                 cursor: not-allowed;
+            }
+
+            .profile-file-input {
+                cursor: pointer;
+                font-weight: 600;
+            }
+
+                .profile-file-input::file-selector-button {
+                    margin-right: 12px;
+                    border: 1px solid #f0d07e;
+                    border-radius: 999px;
+                    background: #ffe7a6;
+                    color: #443200;
+                    padding: 8px 12px;
+                    font-weight: 800;
+                    cursor: pointer;
+                }
+
+            .profile-photo-help {
+                color: #6b7280;
+                font-size: 0.82rem;
             }
 
             .field-message {
@@ -319,12 +342,22 @@
             <div class="profile-intro">
                 <span class="profile-kicker">Minha conta</span>
                 <h1>Editar perfil</h1>
-                <p>Atualize suas informações pessoais.</p>
+                <p>Atualize suas informações pessoais e sua foto.</p>
             </div>
 
             <div class="profile-card">
                 <div class="profile-avatar">
-                    <img src="https://i.pravatar.cc/300" alt="Foto de perfil" />
+                    @if (!string.IsNullOrWhiteSpace(Model.FotoPerfil))
+                    {
+                        <img src="@Url.Content($"~/imagens/fotos-perfil/{Model.FotoPerfil}")"
+                             alt="Foto de perfil de @Model.Nome" />
+                    }
+                    else
+                    {
+                        <div class="profile-avatar-placeholder">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                    }
                 </div>
 
                 <div class="profile-header">
@@ -332,19 +365,40 @@
                     <span>Altere apenas os dados permitidos.</span>
                 </div>
 
-                <form asp-action="Edit" method="post">
+                <form asp-action="Edit"
+                      method="post"
+                      enctype="multipart/form-data">
+
                     @Html.AntiForgeryToken()
 
                     <input type="hidden" asp-for="Id" />
-
-                    @* Mantém o CPF enviado no POST, sem permitir edição visual. *@
                     <input type="hidden" asp-for="CPF" />
+                    <input type="hidden" asp-for="FotoPerfil" />
 
                     <div asp-validation-summary="ModelOnly"
                          class="validation-summary">
                     </div>
 
                     <div class="profile-info-grid">
+                        <div class="profile-field profile-field-full">
+                            <label asp-for="FotoPerfilUpload" class="profile-label">
+                                <i class="bi bi-camera"></i>
+                                Foto de perfil
+                            </label>
+
+                            <input asp-for="FotoPerfilUpload"
+                                   type="file"
+                                   accept=".jpg,.jpeg,.png,.webp"
+                                   class="profile-input profile-file-input" />
+
+                            <span class="profile-photo-help">
+                                Formatos aceitos: JPG, JPEG, PNG e WEBP. Máximo de 5 MB.
+                            </span>
+
+                            <span asp-validation-for="FotoPerfilUpload"
+                                  class="field-message"></span>
+                        </div>
+
                         <div class="profile-field profile-field-full">
                             <label asp-for="Nome" class="profile-label">
                                 <i class="bi bi-person"></i>

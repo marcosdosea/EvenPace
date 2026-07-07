@@ -119,6 +119,10 @@ public partial class EvenPaceContext : DbContext
             entity.Property(e => e.DataNascimento)
                 .HasColumnType("date")
                 .HasColumnName("dataNascimento");
+
+            entity.Property(e => e.FotoPerfil)
+                .HasMaxLength(255)
+                .HasColumnName("foto_perfil");
         });
 
         modelBuilder.Entity<Cupom>(entity =>
