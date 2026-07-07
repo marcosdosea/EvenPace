@@ -293,29 +293,27 @@ namespace EvenPace.Controllers
         /// </summary>
         /// <param name="search">Termo opcional de pesquisa para filtrar eventos pelo nome, cidade ou estado.</param>
         /// <returns>View contendo a vitrine de eventos compatíveis com a busca.</returns>
+        /// <summary>
+        /// Exibe o catálogo geral de eventos disponíveis na plataforma para os usuários finais, permitindo buscas dinâmicas.
+        /// </summary>
+        /// <param name="search">Termo opcional de pesquisa para filtrar eventos pelo nome, cidade ou estado.</param>
+        /// <returns>View contendo a vitrine de eventos compatíveis com a busca.</returns>
         [HttpGet]
         public async Task<IActionResult> IndexUsuario(string? search)
         {
-            // CPF salvo como UserName no Identity, sem ponto e hífen.
+            // Verifica se existe um usuário autenticado
             string? cpfUsuarioLogado = User.Identity?.Name;
 
-            if (string.IsNullOrWhiteSpace(cpfUsuarioLogado))
+            if (!string.IsNullOrWhiteSpace(cpfUsuarioLogado))
             {
-                return RedirectToAction("Login", "Corredor");
+                var corredor = await _corredorService.GetByCpfAsync(cpfUsuarioLogado);
+
+                if (corredor != null)
+                {
+                    ViewBag.IdCorredor = corredor.Id;
+                    ViewBag.NomeCorredor = corredor.Nome;
+                }
             }
-
-            // Busca o perfil do corredor no banco principal.
-            var corredor = await _corredorService.GetByCpfAsync(cpfUsuarioLogado);
-
-            if (corredor == null)
-            {
-                await HttpContext.SignOutAsync();
-                return RedirectToAction("Login", "Corredor");
-            }
-
-            // Dados disponíveis para a View.
-            ViewBag.IdCorredor = corredor.Id;
-            ViewBag.NomeCorredor = corredor.Nome;
 
             search = search?.Trim();
             var agora = DateTime.Now;

@@ -86,7 +86,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = "EvenPace";
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-options.LoginPath = "/Home/Index";
+    options.LoginPath = "/Home/Index";
     // ReturnUrlParameter requires
     options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
     options.SlidingExpiration = true;
