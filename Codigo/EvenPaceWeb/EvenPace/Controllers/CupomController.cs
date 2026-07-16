@@ -36,15 +36,14 @@ namespace EvenPaceWeb.Controllers
         /// Transita o responsável direto pela gestão administrativa corporativa para o portal isolado em que os bônus podem vir à luz do desenvolvimento no formato visual, desatrelado aos bancos e sem interferências de lógicas preexistentes.
         /// </summary>
         /// <returns>Exposição imediata no método GET com espaço integral reservado e livre destinado à geração estipulada em prol de vantagens para inscrições por corredores associados.</returns>
-        public async Task<IActionResult> Index(uint? idEvento)
+        public async Task<IActionResult> Index(int idEvento)
         {
             ViewBag.IdEventoAtual = idEvento;
+            var evento = await _eventosService.GetAsync(idEvento); // Assíncrono corrigido[cite: 5]
+            ViewBag.NomeCorrida = evento?.Nome;
 
             var cupons = await _cupomService.GetAll();
-
-            var cupomViewModels = _mapper.Map<List<CupomViewModel>>(cupons);
-
-            return View(cupomViewModels);
+            return View(_mapper.Map<List<CupomViewModel>>(cupons));
         }
         /// <summary>
         /// Atua efetuando o repasse e armazenamento em infraestrutura persistente de um desconto criado através das especificações de percentual e código da janela visual e enviando o repasse às instâncias apropriadas com a tratativa de vulnerabilidades e erros associados ao envio HTTP.
@@ -64,7 +63,7 @@ namespace EvenPaceWeb.Controllers
                 Console.WriteLine($"Cupom.IdEvento = {cupom.IdEvento}");
 
                 await _cupomService.Create(cupom);
-
+                TempData["MensagemSucesso"] = "Cupom criado com sucesso!";
                 return RedirectToAction(nameof(Index), new { idEvento = cupomViewModel.IdEvento });
             }
 
@@ -72,13 +71,15 @@ namespace EvenPaceWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create(uint idEvento)
+        public IActionResult Create(int idEvento)
         {
-            var model = new CupomViewModel
-            {
-                IdEvento = idEvento
-            };
+            ViewBag.IdEventoAtual = idEvento;
 
+            // Busca o nome do evento para o cabeçalho[cite: 7]
+            var evento = _eventosService.Get(idEvento);
+            ViewBag.NomeCorrida = evento?.Nome;
+
+            var model = new CupomViewModel { IdEvento = (uint)idEvento };
             return View(model);
         }
 
@@ -95,8 +96,11 @@ namespace EvenPaceWeb.Controllers
             {
                 var cupom = _mapper.Map<Core.Cupom>(cupomViewModel);
                 await _cupomService.Edit(cupom);
+                TempData["MensagemSucesso"] = "Cupom atualizado com sucesso!";
+
+                return RedirectToAction(nameof(Index), new { idEvento = cupomViewModel.IdEvento });
             }
-            return RedirectToAction(nameof(Index));
+            return View(cupomViewModel);
         }
 
         /// <summary>
@@ -107,8 +111,13 @@ namespace EvenPaceWeb.Controllers
         public ActionResult Edit(int id)
         {
             var cupom = _cupomService.Get((int)id);
-
             var cupomViewModel = _mapper.Map<CupomViewModel>(cupom);
+
+            ViewBag.IdEventoAtual = (int)cupomViewModel.IdEvento;
+
+            var evento = _eventosService.Get((int)cupomViewModel.IdEvento);
+            ViewBag.NomeCorrida = evento?.Nome;
+
             return View(cupomViewModel);
         }
 
@@ -120,10 +129,23 @@ namespace EvenPaceWeb.Controllers
         /// <returns>Desvia a exibição temporal do utilizador retornando com fluxo processado em reescrita imediata no índice do repositório contendo todas as peças válidas que o circundavam antecipadamente antes de ter sido processado em apagamento lógico generalizado.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, CupomViewModel cupomViewModel)
+        public async Task<ActionResult> Delete(int id) // Adicionado 'async' e alterado retorno para 'Task<ActionResult>'
         {
-            _cupomService.Delete((int)id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var cupom = _cupomService.Get(id);
+                if (cupom == null) return NotFound();
+
+                // Agora o await funcionará corretamente aqui
+                await _cupomService.Delete(id);
+
+                TempData["MensagemSucesso"] = "Cupom excluído com sucesso!";
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
         }
     }
 }

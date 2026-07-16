@@ -20,31 +20,32 @@
 
             <nav class="sidebar-menu">
 
-                <a asp-controller="Evento" asp-action="Index" class="menu-item">
+                <a asp-controller="Evento" asp-action="Index"
+                   class="menu-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Evento" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")">
                     <span class="menu-icon">🏠</span>
                     <span class="menu-text">Home</span>
                 </a>
 
                 <a asp-controller="Evento" asp-action="Details" asp-route-id="@ViewBag.IdEventoAtual"
-                   class="menu-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Resumo" ? "active" : "")">
+                   class="menu-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Details" ? "active" : "")">
                     <span class="menu-icon">📑</span>
                     <span class="menu-text">Resumo</span>
                 </a>
 
-                <a asp-controller="Inscricao"
-                   asp-action="GetAllByEvento"
-                   asp-route-idEvento="@ViewBag.IdEventoAtual"
-                   class="menu-item">
+                <a asp-controller="Inscricao" asp-action="GetAllByEvento" asp-route-idEvento="@ViewBag.IdEventoAtual"
+                   class="menu-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Inscricao" ? "active" : "")">
                     <span class="menu-icon">🎟️</span>
                     <span class="menu-text">Ingressos</span>
                 </a>
 
-                <a asp-controller="Cupom" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual" class="menu-item">
+                <a asp-controller="Cupom" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual"
+                   class="menu-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cupom" ? "active" : "")">
                     <span class="menu-icon">🏷️</span>
                     <span class="menu-text">Cupons</span>
                 </a>
 
-                <a asp-controller="Financeiro" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual" class="menu-item">
+                <a asp-controller="Financeiro" asp-action="Index" asp-route-idEvento="@ViewBag.IdEventoAtual"
+                   class="menu-item @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Financeiro" ? "active" : "")">
                     <span class="menu-icon">💰</span>
                     <span class="menu-text">Financeiro</span>
                 </a>
@@ -61,7 +62,6 @@
                         <span class="menu-text">Sair</span>
                     </button>
                 </form>
-
             </nav>
 
 

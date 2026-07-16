@@ -6,6 +6,30 @@
     <link rel="stylesheet" href="~/css/evento.css" />
 }
 
+<style>
+    /* Estilo do Cabeçalho Padronizado (Padrão Ingressos) */
+    .page-head {
+        background: linear-gradient(135deg, #fffdf4, #ffffff);
+        border: 1px solid #ece7d5;
+        border-radius: 26px;
+        padding: 22px;
+        box-shadow: 0 18px 40px rgba(18, 18, 18, 0.06);
+        margin-bottom: 22px;
+    }
+
+        .page-head h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+    .subtitle {
+        margin: 8px 0 0;
+        color: #6f7780;
+    }
+</style>
+
 <main class="main-container">
 
     @if (!ViewData.ModelState.IsValid)
@@ -13,11 +37,10 @@
         <div asp-validation-summary="All" class="alert alert-danger"></div>
     }
 
-    <header class="page-header">
-        <div class="header-titles">
-            <h1>@ViewBag.TituloPagina</h1>
-            <p class="subtitle">Preencha as informações da corrida</p>
-        </div>
+    <!-- Cabeçalho Estilizado como a tela de Ingressos -->
+    <header class="page-head">
+        <h1>@ViewBag.TituloPagina</h1>
+        <p class="subtitle">Atualize as informações do seu evento</p>
     </header>
 
     <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-evento form-card-bg" data-viacep-form>
@@ -28,7 +51,7 @@
 
         <div class="form-block">
             <label asp-for="Nome" class="label-bold">NOME DO EVENTO</label>
-            <input asp-for="Nome" class="input-gray" placeholder="Ex: Corrida de Verão 2026" />
+            <input asp-for="Nome" class="input-gray" />
             <span asp-validation-for="Nome" class="text-danger"></span>
         </div>
 
@@ -45,24 +68,30 @@
             </div>
             <div class="col-grow">
                 <label asp-for="NumeroParticipantes" class="label-bold">Nº PARTICIPANTES</label>
-                <input asp-for="NumeroParticipantes" class="input-gray" type="number" placeholder="0" min="0" onchange="if(this.value < 0) this.value = 0;" />
+                <input asp-for="NumeroParticipantes" class="input-gray" type="number" />
                 <span asp-validation-for="NumeroParticipantes" class="text-danger"></span>
             </div>
         </div>
 
         <div class="form-block">
-            <label class="label-bold">IMAGEM DO BANNER</label>
+            <label class="label-bold">BANNER ATUAL</label>
+            @if (!string.IsNullOrEmpty(Model.Imagem))
+            {
+                <div class="mb-3">
+                    <img src="~/imagens/banner-eventos/@Model.Imagem" alt="Banner Atual" style="max-width: 200px; border-radius: 12px;" />
+                </div>
+            }
+            <label class="label-bold">SUBSTITUIR BANNER (OPCIONAL)</label>
             <div class="input-wrapper">
-                <input type="text" id="fileNameDisplay" class="input-gray" placeholder="Selecionar arquivo..." readonly />
+                <input type="text" id="fileNameDisplay" class="input-gray" placeholder="Selecionar novo arquivo..." readonly />
                 <span class="icon-upload">⬇</span>
                 <input asp-for="ImagemUpload" class="file-hidden" accept="image/*" onchange="document.getElementById('fileNameDisplay').value = this.files[0].name" />
             </div>
-            <span asp-validation-for="ImagemUpload" class="text-danger"></span>
         </div>
 
         <div class="form-block">
             <label asp-for="Descricao" class="label-bold">DESCRIÇÃO</label>
-            <textarea asp-for="Descricao" class="input-gray" placeholder="Detalhes da prova..."></textarea>
+            <textarea asp-for="Descricao" class="input-gray"></textarea>
             <span asp-validation-for="Descricao" class="text-danger"></span>
         </div>
 
@@ -90,12 +119,10 @@
             <div class="col-grow">
                 <label asp-for="Rua" class="label-bold">RUA</label>
                 <input asp-for="Rua" class="input-gray" data-viacep-rua />
-                <span asp-validation-for="Rua" class="text-danger"></span>
             </div>
             <div class="col-grow">
                 <label asp-for="Bairro" class="label-bold">BAIRRO</label>
                 <input asp-for="Bairro" class="input-gray" data-viacep-bairro />
-                <span asp-validation-for="Bairro" class="text-danger"></span>
             </div>
         </div>
 
@@ -103,19 +130,16 @@
             <div class="col-grow">
                 <label asp-for="Cidade" class="label-bold">CIDADE</label>
                 <input asp-for="Cidade" class="input-gray" readonly data-viacep-cidade />
-                <span asp-validation-for="Cidade" class="text-danger"></span>
             </div>
             <div class="col-fixed" style="width: 100px;">
                 <label asp-for="Estado" class="label-bold">UF</label>
-                <input asp-for="Estado" class="input-gray" maxlength="2" style="text-transform: uppercase;" readonly data-viacep-estado />
-                <span asp-validation-for="Estado" class="text-danger"></span>
+                <input asp-for="Estado" class="input-gray" readonly data-viacep-estado />
             </div>
         </div>
 
         <div class="form-block">
             <label asp-for="InfoRetiradaKit" class="label-bold">INFORMAÇÕES DE RETIRADA DO KIT</label>
-            <textarea asp-for="InfoRetiradaKit" class="input-gray" style="min-height: 80px;"></textarea>
-            <span asp-validation-for="InfoRetiradaKit" class="text-danger"></span>
+            <textarea asp-for="InfoRetiradaKit" class="input-gray"></textarea>
         </div>
 
         <div class="form-actions">

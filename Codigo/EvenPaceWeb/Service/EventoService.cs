@@ -12,6 +12,12 @@ namespace Service
             _context = context;
         }
 
+        public async Task<Evento> GetAsync(int id)
+        {
+            return await _context.Eventos.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        //public IEnumerable<Evento> GetAll() => _context.Eventos.AsNoTracking();
         /// <summary>
         /// Persiste as informações de um novo evento no banco de dados.
         /// </summary>

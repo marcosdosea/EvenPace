@@ -6,6 +6,30 @@
     <link rel="stylesheet" href="~/css/evento.css" />
 }
 
+<style>
+    /* Estilo do Cabeçalho Padronizado (Padrão Ingressos) */
+    .page-head {
+        background: linear-gradient(135deg, #fffdf4, #ffffff);
+        border: 1px solid #ece7d5;
+        border-radius: 26px;
+        padding: 22px;
+        box-shadow: 0 18px 40px rgba(18, 18, 18, 0.06);
+        margin-bottom: 22px;
+    }
+
+        .page-head h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+    .subtitle {
+        margin: 8px 0 0;
+        color: #6f7780;
+    }
+</style>
+
 <main class="main-container">
 
     @if (!ViewData.ModelState.IsValid)
@@ -13,11 +37,10 @@
         <div asp-validation-summary="All" class="alert alert-danger"></div>
     }
 
-    <header class="page-header">
-        <div class="header-titles">
-            <h1>@ViewBag.TituloPagina</h1>
-            <p class="subtitle">Preencha as informações da corrida</p>
-        </div>
+    <!-- Cabeçalho Estilizado como a tela de Ingressos -->
+    <header class="page-head">
+        <h1>@ViewBag.TituloPagina</h1>
+        <p class="subtitle">Preencha as informações da corrida</p>
     </header>
 
     <form asp-action="Create" method="post" enctype="multipart/form-data" class="form-evento form-card-bg" data-viacep-form>
