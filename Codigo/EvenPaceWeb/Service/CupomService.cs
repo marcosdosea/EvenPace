@@ -42,10 +42,12 @@ namespace Service
         /// <param name="id">Chave de registro rastreadora numérica que referencia irrestritamente a identidade de bônus a ser expurgada no arquivo mestre central do software mantenedor corporativo relacional interconectado às organizações presentes nas configurações sistêmicas mantenedoras em operações gerais estipuladas localmente.</param>
         public async Task Delete(int id)
         {
-            var cupom = _context.Cupoms.Find(id);
-
-            _context.Remove(cupom);
-            await _context.SaveChangesAsync();
+            var cupom = await _context.Cupoms.FindAsync(id); // Uso de FindAsync[cite: 7]
+            if (cupom != null)
+            {
+                _context.Remove(cupom);
+                await _context.SaveChangesAsync();
+            }
         }
 
         /// <summary>

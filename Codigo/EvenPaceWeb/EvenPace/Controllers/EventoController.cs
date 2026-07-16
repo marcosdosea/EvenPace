@@ -180,7 +180,15 @@ namespace EvenPace.Controllers
             {
                 try
                 {
+                    // 1. Busca o registro atual que está gravado no banco de dados para recuperar as FKs originais
+                    var eventoBanco = _service.Get(id);
+                    if (eventoBanco == null) return NotFound();
+
+                    // 2. Faz o mapeamento dos dados alterados na tela
                     var evento = _mapper.Map<Evento>(model);
+
+                    // 3. RECOMPÕE AS CHAVES OBRIGATÓRIAS que não mudam na edição
+                    evento.IdOrganizacao = eventoBanco.IdOrganizacao;
 
                     if (model.DataOnly.HasValue && model.HoraOnly.HasValue)
                     {
@@ -193,7 +201,6 @@ namespace EvenPace.Controllers
                         if (!string.IsNullOrEmpty(model.Imagem))
                             DeletarImagemDoDisco(model.Imagem);
 
-                        // Salva com o mesmo padrão de nomenclatura usando o ID que já existe
                         string extensao = Path.GetExtension(model.ImagemUpload.FileName);
                         string nomeArquivo = $"EventoBanner_{evento.Id}{extensao}";
 
@@ -204,6 +211,7 @@ namespace EvenPace.Controllers
                         evento.Imagem = model.Imagem;
                     }
 
+                    // 4. Envia o objeto restaurado para o serviço atualizar
                     _service.Edit(evento);
                     TempData["MensagemSucesso"] = "Evento atualizado com sucesso! ✏️";
 
@@ -211,7 +219,7 @@ namespace EvenPace.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Erro: " + ex.Message);
+                    ModelState.AddModelError("", "Erro ao persistir alterações: " + (ex.InnerException?.Message ?? ex.Message));
                 }
             }
 

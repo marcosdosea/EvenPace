@@ -3,22 +3,61 @@
 @{
     ViewData["Title"] = "Cupons";
     Layout = "~/Views/Shared/_LayoutOrganizacao.cshtml";
-
     <link rel="stylesheet" href="~/css/kit.css" />
 }
 
 <style>
+    /* Padrão de Cabeçalho Elegante */
+    .page-head {
+        background: linear-gradient(135deg, #fffdf4, #ffffff);
+        border: 1px solid #ece7d5;
+        border-radius: 26px;
+        padding: 22px;
+        box-shadow: 0 18px 40px rgba(18, 18, 18, 0.06);
+        margin-bottom: 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+        .page-head h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+    .subtitle {
+        margin: 8px 0 0;
+        color: #6f7780;
+    }
+
+    /* Estilo da Tabela */
     .table-container {
         max-width: 1100px;
-        margin: 40px auto;
+        margin: 20px auto;
         padding: 0 20px;
-        width: 100%;
-        box-sizing: border-box;
+    }
+
+    .alert-custom {
+        position: fixed;
+        top: 140px;
+        right: 20px;
+        z-index: 1000;
+        background: #d4edda;
+        color: #155724;
+        padding: 15px 25px;
+        border-radius: 8px;
+        border-left: 5px solid #28a745;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: opacity 0.5s;
     }
 
     .custom-table-wrapper {
         background: #fff;
-        border-radius: 12px;
+        border-radius: 20px;
         border: 1px solid #e0e0e0;
         box-shadow: 0 4px 15px rgba(0,0,0,.03);
         overflow: hidden;
@@ -42,14 +81,6 @@
             border-bottom: 1px solid #eee;
         }
 
-        .custom-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .custom-table tr:hover {
-            background: #fcfcfc;
-        }
-
     .badge-status {
         padding: 6px 12px;
         border-radius: 6px;
@@ -66,224 +97,84 @@
             background: #f8d7da;
             color: #721c24;
         }
-
-    .table-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 15px;
-    }
-
-    .action-link {
-        text-decoration: none;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-        .action-link.edit {
-            color: #444;
-        }
-
-        .action-link.delete {
-            color: #d32f2f;
-        }
-
-            .action-link.delete:hover {
-                color: #b71c1c;
-            }
 </style>
 
 <main class="main-container">
-
-    <form id="deleteForm">
-        @Html.AntiForgeryToken()
-    </form>
+    <form id="deleteForm">@Html.AntiForgeryToken()</form>
 
     @if (TempData["MensagemSucesso"] != null)
     {
-        <div class="alert-custom">
-            @TempData["MensagemSucesso"]
-        </div>
+        <div class="alert-custom">@TempData["MensagemSucesso"]</div>
     }
 
-    <header class="page-header header-responsive" style="margin-bottom:30px;">
-        <div class="header-title-group">
-            <div class="header-text">
-                <h1>Cupons</h1>
-                <p class="subtitle">@ViewBag.NomeCorrida</p>
-            </div>
+    <header class="page-head">
+        <div class="header-titles">
+            <h1>Cupons</h1>
+            <p class="subtitle">@ViewBag.NomeCorrida</p>
         </div>
-
-        <a asp-action="Create"
-           asp-route-idEvento="@ViewBag.IdEventoAtual"
-           class="btn-green btn-responsive">
-
-            <span class="btn-symbol">+</span>
-            <span class="btn-text">Criar Cupom</span>
-
+        <a asp-action="Create" asp-route-idEvento="@ViewBag.IdEventoAtual" class="btn-green">
+            <span class="btn-symbol">+</span> <span>Criar Cupom</span>
         </a>
     </header>
 
     <section class="table-container">
-
         @if (Model != null && Model.Any())
         {
             <div class="custom-table-wrapper">
-
                 <table class="custom-table">
-
                     <thead>
-
                         <tr>
-                            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                            <th>Nome</th>
                             <th>Início</th>
                             <th>Término</th>
                             <th style="text-align:center;">Status</th>
                             <th style="text-align:center;">Disponível</th>
                             <th style="text-align:right;">Ações</th>
                         </tr>
-
                     </thead>
-
                     <tbody>
-
                         @foreach (var item in Model)
                         {
                             <tr>
-
-                                <td>
-                                    <strong>@item.Nome</strong>
-                                </td>
-
-                                <td>
-                                    @item.DataInicio.ToShortDateString()
-                                </td>
-
-                                <td>
-                                    @item.DataTermino.ToShortDateString()
-                                </td>
-
+                                <td><strong>@item.Nome</strong></td>
+                                <td>@item.DataInicio.ToShortDateString()</td>
+                                <td>@item.DataTermino.ToShortDateString()</td>
                                 <td style="text-align:center;">
-
-                                    @if (item.Status)
-                                    {
-                                        <span class="badge-status active">
-                                            Ativo
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge-status inactive">
-                                            Inativo
-                                        </span>
-                                    }
-
+                                    <span class="badge-status @(item.Status ? "active" : "inactive")">
+                                        @(item.Status ? "Ativo" : "Inativo")
+                                    </span>
                                 </td>
-
-                                <td style="text-align:center;">
-                                    @item.QuantiadeDisponibilizada
+                                <td style="text-align:center;">@item.QuantiadeDisponibilizada</td>
+                                <td style="text-align:right;">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" style="margin-right:15px; color:#444; font-weight:600;">✏️ Editar</a>
+                                    <a href="javascript:void(0)" onclick="excluirCupom(@item.Id, '@item.Nome')" style="color:#d32f2f; font-weight:600;">🗑️ Excluir</a>
                                 </td>
-
-                                <td>
-
-                                    <div class="table-actions">
-
-                                        <a asp-action="Edit"
-                                           asp-route-id="@item.Id"
-                                           class="action-link edit">
-
-                                            ✏️ Editar
-
-                                        </a>
-
-                                        <a href="javascript:void(0)"
-                                           class="action-link delete"
-                                           onclick="excluirCupom(@item.Id, '@item.Nome')">
-
-                                            🗑️ Excluir
-
-                                        </a>
-
-                                    </div>
-
-                                </td>
-
                             </tr>
                         }
-
                     </tbody>
-
                 </table>
-
             </div>
         }
-        else
-        {
-            <div class="empty-state-card"
-                 style="grid-column:1/-1;text-align:center;padding:40px;border:2px dashed #ccc;">
-
-                <p>Nenhum cupom encontrado.</p>
-
-                <a asp-action="Create"
-                   asp-route-idEvento="@ViewBag.IdEventoAtual"
-                   style="text-decoration:underline;color:#28a745;font-weight:bold;">
-
-                    Clique aqui para criar o primeiro
-
-                </a>
-
-            </div>
-        }
-
     </section>
-
 </main>
 
-@section Scripts {
-
-    <script>
-
-        function excluirCupom(id, nome) {
-
-            if (!confirm("Deseja realmente excluir o cupom '" + nome + "'?"))
-                return;
-
-            const token =
-                document.querySelector('input[name="__RequestVerificationToken"]').value;
-
-            fetch('/Cupom/Delete/' + id, {
-
-                method: 'POST',
-
-                headers: {
-                    'RequestVerificationToken': token
-                }
-
-            })
-            .then(response => {
-
-                if (response.ok) {
-
-                    alert("Cupom excluído com sucesso!");
-
-                    location.reload();
-
-                } else {
-
-                    alert("Erro ao excluir o cupom.");
-
-                }
-
-            })
-            .catch(error => {
-
-                console.error(error);
-
-                alert("Erro ao conectar com o servidor.");
-
-            });
-
+<script>
+    function excluirCupom(id, nome) {
+        if (!confirm("Deseja realmente excluir o cupom '" + nome + "'?")) return;
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        fetch('/Cupom/Delete/' + id, { method: 'POST', headers: { 'RequestVerificationToken': token } })
+            .then(response => { if (response.ok) location.reload(); else alert("Erro ao excluir."); });
+    }
+    
+    // Script para desaparecer a mensagem automaticamente
+    setTimeout(function () {
+        var alert = document.querySelector('.alert-custom');
+        if (alert) {
+            alert.style.transition = "opacity 0.5s ease";
+            alert.style.opacity = "0";
+            setTimeout(function () { alert.style.display = 'none'; }, 500);
         }
+    }, 4000); // A mensagem desaparece após 4 segundos
 
-    </script>
-
-}
+  
+</script>

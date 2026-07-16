@@ -15,6 +15,7 @@ namespace Core.Service
         IEnumerable<Evento> GetAll();
         IEnumerable<Evento> GetByName(string nome);
         IEnumerable<Evento> GetByOrganizacao(int idOrganizacao);
+        Task<Evento> GetAsync(int id);
 
     }
 }

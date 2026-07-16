@@ -6,23 +6,43 @@
     <link rel="stylesheet" href="~/css/kit.css" />
 }
 
+<style>
+    /* Padrão visual Ingressos */
+    .page-head {
+        background: linear-gradient(135deg, #fffdf4, #ffffff);
+        border: 1px solid #ece7d5;
+        border-radius: 26px;
+        padding: 22px;
+        box-shadow: 0 18px 40px rgba(18, 18, 18, 0.06);
+        margin-bottom: 22px;
+    }
+
+        .page-head h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+    .subtitle {
+        margin: 8px 0 0;
+        color: #6f7780;
+    }
+</style>
+
 <main class="main-container">
 
     @if (TempData["MensagemSucesso"] != null)
     {
-        <div class="alert-custom">
-            @TempData["MensagemSucesso"]
-        </div>
+        <div class="alert-custom">@TempData["MensagemSucesso"]</div>
     }
 
-    <header class="page-header header-responsive" style="margin-bottom: 30px;">
-        <div class="header-title-group">
-            <div class="header-text">
-                <h1>Kits</h1>
-                <p class="subtitle">@ViewBag.NomeCorrida</p>
-            </div>
+    <!-- Cabeçalho no padrão Ingressos -->
+    <header class="page-head" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <div class="header-titles">
+            <h1>Kits</h1>
+            <p class="subtitle">@ViewBag.NomeCorrida</p>
         </div>
-
         <a asp-action="Create"
            asp-route-idEvento="@ViewBag.IdEventoAtual"
            class="btn-green btn-responsive">

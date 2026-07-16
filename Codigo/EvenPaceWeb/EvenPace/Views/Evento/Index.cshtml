@@ -6,6 +6,33 @@
 }
 
 <style>
+    /* Notificação Toast */
+    .toast-mensagem {
+        position: fixed;
+        top: 140px;
+        right: 20px;
+        z-index: 1000;
+        background: #d4edda;
+        color: #155724;
+        padding: 15px 25px;
+        border-radius: 8px;
+        border-left: 5px solid #28a745;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: opacity 0.5s;
+    }
+
+    @@keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
     .content-area {
         flex-grow: 1;
         background: #fff;
@@ -13,7 +40,6 @@
         overflow-x: hidden;
     }
 
-    /* Cabeçalho */
     .page-header {
         display: flex;
         justify-content: space-between;
@@ -41,7 +67,6 @@
         font-size: 1rem;
     }
 
-    /* Botão verde padrão do sistema */
     .btn-green {
         display: inline-flex;
         align-items: center;
@@ -75,7 +100,6 @@
         margin-bottom: 35px;
     }
 
-    /* Cards */
     .event-card-link {
         display: block;
         text-decoration: none;
@@ -125,18 +149,7 @@
         margin: auto;
     }
 
-        .empty-state-card h3 {
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .empty-state-card p {
-            color: #6b7280;
-            margin-bottom: 25px;
-        }
-
     @@media(max-width:768px) {
-
         .page-header {
             flex-direction: column;
             align-items: flex-start;
@@ -151,115 +164,78 @@
             justify-content: center;
         }
     }
-
 </style>
 
-<header class="page-header">
+<main class="main-container">
 
-    <div class="header-title-group">
-
-        <div class="header-text">
-            <h1>Olá, @ViewBag.NomeOrganizacao 👋</h1>
-
-            <p class="subtitle">
-                Seja bem-vindo(a)! Gerencie seus eventos e acompanhe todas as informações da sua organização.
-            </p>
-
+    <!-- Notificação de Sucesso que aparece no canto -->
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div id="toast-sucesso" class="toast-mensagem">
+            @TempData["MensagemSucesso"]
         </div>
+    }
 
-    </div>
+    <header class="page-header">
+        <div class="header-title-group">
+            <div class="header-text">
+                <h1>Olá, @ViewBag.NomeOrganizacao 👋</h1>
+                <p class="subtitle">Seja bem-vindo(a)! Gerencie seus eventos.</p>
+            </div>
+        </div>
+        <a asp-controller="Evento" asp-action="Create" class="btn-green">
+            <span class="btn-symbol">+</span>
+            <span>Criar Evento</span>
+        </a>
+    </header>
 
-    <a asp-controller="Evento"
-       asp-action="Create"
-       class="btn-green">
-
-        <span class="btn-symbol">+</span>
-
-        <span>Criar Evento</span>
-
-    </a>
-
-</header>
-
-<div class="container-fluid p-0">
-
-    <h2 class="section-title">
-        Meus Eventos
-    </h2>
-
-    <div class="row g-5">
-        @if (Model != null && Model.Any())
-        {
-            @foreach (var evento in Model)
+    <div class="container-fluid p-0">
+        <h2 class="section-title">Meus Eventos</h2>
+        <div class="row g-5">
+            @if (Model != null && Model.Any())
             {
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-
-                    <div class="event-card-container">
-
-                        <a asp-controller="Evento"
-                           asp-action="Details"
-                           asp-route-id="@evento.Id"
-                           class="event-card-link">
-
-                            <div class="image-wrapper">
-
-                                @if (!string.IsNullOrEmpty(evento.Imagem))
-                                {
-                                    <img src="@Url.Content("~/imagens/banner-eventos/" + evento.Imagem)"
-                                         class="event-img"
-                                         alt="@evento.Nome" />
-                                }
-                                else
-                                {
-                                    <img src="https://placehold.co/600x400/f5f5f5/888888?text=EvenPace"
-                                         class="event-img"
-                                         alt="@evento.Nome" />
-                                }
-
-                                <div class="event-label-yellow">
-                                    @evento.Nome
+                @foreach (var evento in Model)
+                {
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                        <div class="event-card-container">
+                            <a asp-controller="Evento" asp-action="Details" asp-route-id="@evento.Id" class="event-card-link">
+                                <div class="image-wrapper">
+                                    @if (!string.IsNullOrEmpty(evento.Imagem))
+                                    {
+                                        <img src="@Url.Content("~/imagens/banner-eventos/" + evento.Imagem)" class="event-img" alt="@evento.Nome" />
+                                    }
+                                    else
+                                    {
+                                        <img src="https://placehold.co/600x400/f5f5f5/888888?text=EvenPace" class="event-img" alt="@evento.Nome" />
+                                    }
+                                    <div class="event-label-yellow">@evento.Nome</div>
                                 </div>
-
-                            </div>
-
-                        </a>
-
+                            </a>
+                        </div>
                     </div>
-
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="empty-state-card">
+                        <h3>Nenhum evento encontrado</h3>
+                        <p>Você ainda não criou nenhum evento. Clique abaixo para começar.</p>
+                        <a asp-controller="Evento" asp-action="Create" class="btn-green"><span>Criar Evento</span></a>
+                    </div>
                 </div>
             }
-        }
-        else
-        {
-            <div class="col-12">
-
-                <div class="empty-state-card">
-
-                    <h3>
-                        Nenhum evento encontrado
-                    </h3>
-
-                    <p>
-                        Você ainda não criou nenhum evento.
-                        Clique no botão abaixo para criar seu primeiro evento e começar
-                        a gerenciar inscrições, kits, cupons e muito mais.
-                    </p>
-
-                    <a asp-controller="Evento"
-                       asp-action="Create"
-                       class="btn-green">
-
-                        <span class="btn-symbol">+</span>
-
-                        <span>Criar Evento</span>
-
-                    </a>
-
-                </div>
-
-            </div>
-        }
-
+        </div>
     </div>
+</main>
 
-</div>
+<script>
+    // Script para remover a notificação após 4 segundos
+    setTimeout(function() {
+        var toast = document.getElementById('toast-sucesso');
+        if (toast) {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 500);
+        }
+    }, 4000);
+</script>
