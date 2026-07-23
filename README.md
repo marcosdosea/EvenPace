@@ -12,4 +12,4 @@ Sistema para gestão de divulgação e inscrições de corridas.
 
 # ▶️Vídeo de Apresentação
 
-[Assistir ao vídeo de apresentação](https://drive.google.com/file/d/1SWC3US6FS6pTnB7avZ7_2qRIeGt8g34n/view?usp=sharing)
+[Assistir ao vídeo de apresentação](https://youtube.com/shorts/dKeYaYTSEZ4?feature=share)
